@@ -89,6 +89,13 @@
     .contact-info-container {
       margin: 0;
     }
+    .contact-info-upper-container {
+      gap: 1rem;               /* Space between Gmail & LinkedIn blocks */
+    }
+    
+    .contact-info-container {
+      margin: 0.5rem 0;
+    }
     .contact-info-container p,
     .nav-links li a,
     .menu-links span {
@@ -141,4 +148,4 @@
       height: 20px;
     }
 }
-  
+

@@ -13,6 +13,7 @@
     --dark-bg: #1a1a1a;
     --dark-text: #cccccc;
     --dark-title: #ffffff;
+    --nav-bg: rgba(255, 255, 255, 0.85);
 }
 
 body {
@@ -25,6 +26,7 @@ body {
 body.dark-theme {
     background: var(--dark-bg);
     color: var(--dark-text);
+    --nav-bg: rgba(30, 30, 30, 0.9);
 }
 
 body.dark-theme .title {
@@ -85,7 +87,24 @@ a:hover {
 
 .logo {
     font-size: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px; /* 👈 Tight gap */
+    letter-spacing: -1px; /* 👈 Reduces space between R and checkmark */
+    color: black; /* 👈 Force black color */
 }
+  
+  
+.logo img.check-icon {
+    margin-left: 0; /* 👈 Remove margin */
+    transform: translateY(1px); /* 👈 Align icon a little better vertically */
+  }
+
+
+body.dark-theme .logo {
+    color: white; /* 👈 White in dark theme */
+}
+
 
 .logo:hover {
     cursor: default;
@@ -139,8 +158,13 @@ body.dark-theme .check-icon {
 /* HAMBURGER MENU */
 #hamburger-nav {
     display: none;
+    position: absolute; /* or relative, depending on parent */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999; /* stay above profile pic */
 }
-
+  
 .hamburger-menu {
     position: relative;
     display: inline-block;
@@ -170,16 +194,28 @@ body.dark-theme .hamburger-icon span {
     position: absolute;
     top: 100%;
     right: 0;
-    background-color: white;
+    background-color: var(--nav-bg); /* 👈 Uses the variable now */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Add soft shadow for light theme */
     width: fit-content;
     max-height: 0;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
+    border-radius: 15px; /* Adjust curve size as needed */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* optional: soft shadow */
 }
 
+
 body.dark-theme .menu-links {
-    background-color: #2d2d2d;
+    background-color: rgba(45, 45, 45, 0.8); /* Dark theme */
 }
+
+.menu-links a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+}
+
 
 .menu-links a, .menu-links span {
     display: block;
@@ -253,6 +289,9 @@ section {
     padding: 15vh 2rem 5vh;
     text-align: left;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 1; /* Lower than hamburger nav */
+    margin-top: 4rem; /* Add spacing to push below nav */
 }
 
 /* Container for Profile Pic */
@@ -439,7 +478,7 @@ body.dark-theme .btn-color-2:hover {
 .arrow {
     position: absolute;
     right: -5rem;
-    bottom: 2.5rem;
+    bottom: 5rem;
 }
 
 .details-container {
@@ -473,6 +512,7 @@ body.dark-theme .details-container {
 #experience {
     padding: 4rem 1rem;
     text-align: center;
+    position: relative;
 }
   
 .experience-container {
