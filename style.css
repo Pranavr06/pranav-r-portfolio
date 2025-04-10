@@ -501,7 +501,7 @@ body.dark-theme .btn-color-2:hover {
   
 
 .arrow:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) !important;
     transition: transform 0.2s ease-in-out;
 }
   
@@ -884,4 +884,3 @@ footer p {
       text-align: center;
     }
 }
-  

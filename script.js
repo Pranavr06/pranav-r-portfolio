@@ -54,8 +54,8 @@ faders.forEach(section => {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const roles = ["STUDENT", "TECH ENTHUSIAST", "SOFTWARE EXPLORER"];
-
+    const roles = ["STUDENT", "TECH ENTHUSIAST", "SOFTWARE EXPLORER",];
+    
     let index = 0;
     let charIndex = 0;
     const typingElement = document.querySelector(".typing");
