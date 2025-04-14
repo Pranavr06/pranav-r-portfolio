@@ -291,8 +291,9 @@ section {
     flex-wrap: wrap;
     position: relative;
     z-index: 1; /* Lower than hamburger nav */
-    margin-top: 4rem; /* Add spacing to push below nav */
+    margin-top: 1rem; /* Add spacing to push below nav */
 }
+
 
 /* Container for Profile Pic */
 #profile .section__pic-container {
@@ -321,7 +322,7 @@ section {
         align-items: center;
         text-align: center;
         height: auto;
-        padding-top: 10vh;
+        padding-top: 20vh;
     }
 
     #profile .section__pic-container {
