@@ -297,8 +297,8 @@ section {
 
 /* Container for Profile Pic */
 #profile .section__pic-container {
-    width: 250px;
-    height: 250px;
+    width: 350px;
+    height: 350px;
     overflow: hidden;
     border-radius: 50%;
     display: flex;
@@ -378,9 +378,10 @@ section {
 /* ICONS */
 .icon {
     cursor: pointer;
-    height: 2rem;
-    transition: filter 0.3s ease;
+    transition: filter 0.3s ease, transform 0.3s ease; /* Include transform in transition */
     filter: brightness(0); /* black in light theme */
+    transform: scale(1.2);  /* Increase the size by a factor (adjust as needed) */
+    max-width: none;      /* Prevent image max width limitations */
 }
 
 body.dark-theme .icon {
