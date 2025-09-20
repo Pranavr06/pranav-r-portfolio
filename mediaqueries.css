@@ -63,12 +63,22 @@
     width: 22px;
     height: 22px;
   }
+  
+  /* Testimonial & Blog */
+  .testimonial-card, .blog-card {
+    max-width: 100%;
+  }
+  
+  /* Contact form */
+  #contact-form {
+    max-width: 90%;
+  }
 }
 
 @media screen and (max-width: 600px) {
   #contact,
   footer {
-    height: 40vh;
+    height: auto;
   }
   #profile {
     height: 83vh;
@@ -90,7 +100,7 @@
     margin: 0;
   }
   .contact-info-upper-container {
-    gap: 1rem;               /* Space between Gmail & LinkedIn blocks */
+    gap: 1rem;         /* Space between Gmail & LinkedIn blocks */
   }
   
   .contact-info-container {
@@ -147,5 +157,21 @@
     width: 20px;
     height: 20px;
   }
-}
+  
+  /* Testimonials & Blog on small screens */
+  .testimonial-container, .blog-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .testimonial-card, .blog-card {
+    width: 90%;
+  }
 
+  /* Contact form on small screens */
+  #contact-form {
+    padding: 1.5rem;
+    width: 90%;
+  }
+}
