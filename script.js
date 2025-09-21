@@ -56,8 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("hamburger-icon")?.addEventListener("click", toggleMenu);
 
     // Profile Buttons
-    document.querySelector(".download-cv")?.addEventListener("click", () => window.open("./assets/resume.pdf"));
-    document.querySelector(".contact-info")?.addEventListener("click", () => location.href = "./#contact");
+    document.querySelector(".download-cv")?.addEventListener("click", () => window.open(document.querySelector(".download-cv").getAttribute("data-href")));
+    document.querySelector(".contact-info")?.addEventListener("click", () => location.href = document.querySelector(".contact-info").getAttribute("data-href"));
 
     // Social Links
     document.querySelectorAll(".social-link").forEach(link => {
@@ -72,6 +72,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Contact Email Link
     document.querySelector(".email-link")?.addEventListener("click", () => window.open(document.querySelector(".email-link").getAttribute("data-href")));
+
+    // Certificate Buttons
+    document.querySelectorAll("#certificate .btn-color-2").forEach(button => {
+        button.addEventListener("click", () => window.open(button.getAttribute("data-href")));
+    });
+
+    // Project Buttons
+    document.querySelectorAll("#projects .btn-color-2").forEach(button => {
+        button.addEventListener("click", () => window.open(button.getAttribute("data-href")));
+    });
 });
 
 // FADE-IN ON SCROLL

@@ -54,6 +54,7 @@
     </script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mediaqueries.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,600&display=swap">
 </head>
 <body>
     <nav id="desktop-nav">
@@ -106,15 +107,15 @@
             <h1 class="title">PRANAV R</h1>
             <p class="section__text__p2"><span class="typing"></span></p>
             <div class="btn-container">
-                <button class="btn btn-color-2 download-cv">Download CV</button>
-                <button class="btn btn-color-2 contact-info">Contact Info</button>
+                <button class="btn btn-color-2 download-cv" data-href="./assets/resume.pdf">Download CV</button>
+                <button class="btn btn-color-2 contact-info" data-href="#contact">Contact Info</button>
             </div>
             <div id="socials-container">
                 <img src="./assets/linkedin.png" alt="My LinkedIn Profile" class="icon social-link" data-href="https://www.linkedin.com/in/pranavr06/" loading="lazy"/>
                 <img src="./assets/github.png" alt="My Github Profile" class="icon social-link" data-href="https://github.com/Pranavr06" loading="lazy"/>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="./#about" loading="lazy"/>
+        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#about" loading="lazy"/>
     </section>
     <section id="about" class="fade-in-section">
         <p class="section__text__p1">Get to know more</p>
@@ -141,7 +142,7 @@
                 </div>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="./#experience" loading="lazy"/>
+        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#experience" loading="lazy"/>
     </section>
     <section id="experience" class="fade-in-section">
         <p class="section__text__p1">Explore My</p>
@@ -186,7 +187,7 @@
                 </div>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="./#certificate" loading="lazy"/>
+        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#certificate" loading="lazy"/>
     </section>
     <section id="certificate" class="fade-in-section">
         <p class="section__text__p1">My Achievements</p>
@@ -200,7 +201,7 @@
                     <h2 class="experience-sub-title project-title">Python Course</h2>
                     <p>Completed Python course.</p>
                     <div class="btn-container">
-                        <button class="btn btn-color-2" onclick="window.open('./assets/python-certificate.pdf')">View</button>
+                        <button class="btn btn-color-2" data-href="./assets/python-certificate.pdf">View</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
@@ -210,7 +211,7 @@
                     <h2 class="experience-sub-title project-title">MATLAB Course</h2>
                     <p>Finished MATLAB programming fundamentals.</p>
                     <div class="btn-container">
-                        <button class="btn btn-color-2" onclick="window.open('./assets/matlab-certificate.pdf')">View</button>
+                        <button class="btn btn-color-2" data-href="./assets/matlab-certificate.pdf">View</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
@@ -220,7 +221,7 @@
                     <h2 class="experience-sub-title project-title">AIML WEBINAR</h2>
                     <p>Attended a webinar on AIML organized by NMAM Institute of Technology.</p>
                     <div class="btn-container">
-                        <button class="btn btn-color-2" onclick="window.open('./assets/AIML-webinar-certificate-pranavr.pdf')">View</button>
+                        <button class="btn btn-color-2" data-href="./assets/AIML-webinar-certificate-pranavr.pdf">View</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
@@ -230,7 +231,7 @@
                     <h2 class="experience-sub-title project-title">Cybersecurity Course</h2>
                     <p>Cybersecurity beginner.</p>
                     <div class="btn-container">
-                        <button class="btn btn-color-2" onclick="window.open('./assets/cybersecurity-certificate.pdf')">View</button>
+                        <button class="btn btn-color-2" data-href="./assets/cybersecurity-certificate.pdf">View</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
@@ -240,12 +241,12 @@
                     <h2 class="experience-sub-title project-title">AIC Nitte Internship</h2>
                     <p>Completed hands-on internship at Atal Incubation Centre Nitte (AIC Nitte), supporting startup incubation, innovation mentoring, and entrepreneurial ecosystem development under NITI Aayog's Atal Innovation Mission.</p>
                     <div class="btn-container">
-                        <button class="btn btn-color-2" onclick="window.open('./assets/aic-nitte-internship-certificate.pdf')">View</button>
+                        <button class="btn btn-color-2" data-href="./assets/aic-nitte-internship-certificate.pdf">View</button>
                     </div>
                 </div>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="./#projects" loading="lazy"/>
+        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#projects" loading="lazy"/>
     </section>
     <section id="projects" class="fade-in-section">
         <p class="section__text__p1">Browse My Recent</p> 
@@ -258,7 +259,7 @@
                     </div>
                     <h2 class="experience-sub-title project-title">Project One</h2>
                     <div class="btn-container"> 
-                        <button class="btn btn-color-2" onclick="window.open('https://www.tinkercad.com/things/6RzgDxL78sa-3d-aircraft-model-?sharecode=3UfX2aLB1Bk-RHtGx5QpFzzxNaWX-S-VhvhygTqSYzA')">View</button>
+                        <button class="btn btn-color-2" data-href="https://www.tinkercad.com/things/6RzgDxL78sa-3d-aircraft-model-?sharecode=3UfX2aLB1Bk-RHtGx5QpFzzxNaWX-S-VhvhygTqSYzA">View</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
@@ -268,7 +269,7 @@
                     <h2 class="experience-sub-title project-title">3D Aircraft Model</h2>
                     <p>Designed a detailed 3D aircraft model using TinkerCAD, showcasing skills in 3D modeling and design.</p>
                     <div class="btn-container"> 
-                        <button class="btn btn-color-2" onclick="window.open('https://www.tinkercad.com/things/6RzgDxL78sa-3d-aircraft-model-?sharecode=3UfX2aLB1Bk-RHtGx5QpFzzxNaWX-S-VhvhygTqSYzA')">View</button>
+                        <button class="btn btn-color-2" data-href="https://www.tinkercad.com/things/6RzgDxL78sa-3d-aircraft-model-?sharecode=3UfX2aLB1Bk-RHtGx5QpFzzxNaWX-S-VhvhygTqSYzA">View</button>
                     </div>
                 </div>
                 <div class="details-container color-container">
@@ -278,12 +279,12 @@
                     <h2 class="experience-sub-title project-title">Python Task Manager</h2>
                     <p>Developed a command-line task manager in Python to organize tasks with CRUD functionality.</p>
                     <div class="btn-container"> 
-                        <button class="btn btn-color-2" onclick="window.open('https://github.com/Pranavr06/python-task-manager')">View</button>
+                        <button class="btn btn-color-2" data-href="https://github.com/Pranavr06/python-task-manager">View</button>
                     </div>
                 </div>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="./#testimonials" loading="lazy"/>
+        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#testimonials" loading="lazy"/>
     </section>
     <section id="testimonials" class="fade-in-section">
         <p class="section__text__p1">What others say</p>
@@ -310,7 +311,7 @@
                 </div>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="./#blog" loading="lazy"/>
+        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#blog" loading="lazy"/>
     </section>
     <section id="blog" class="fade-in-section">
         <p class="section__text__p1">My Insights</p>
@@ -329,7 +330,7 @@
                 <a href="/blog/cybersecurity-importance" class="blog-link">Read More &rarr;</a>
             </div>
         </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="./#contact" loading="lazy"/>
+        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#contact" loading="lazy"/>
     </section>
     <section id="contact" class="fade-in-section">
         <p class="section__text__p1">Get in Touch</p>
@@ -364,7 +365,7 @@
                 <p><a href="https://www.linkedin.com/in/pranavr06/">LinkedIn</a></p>
             </div>
         </div>
-        <img src="./assets/arrow-invert.png" alt="Arrow icon" class="icon arrow scroll-up" data-href="./#desktop-nav" loading="lazy"/>
+        <img src="./assets/arrow-invert.png" alt="Arrow icon" class="icon arrow scroll-up" data-href="#desktop-nav" loading="lazy"/>
     </section>
     <footer>
         <nav>
