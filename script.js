@@ -1,28 +1,24 @@
 // MENU TOGGLE
 function toggleMenu() {
     const menu = document.querySelector(".menu-links");
-    const icon = document.querySelector(".hamburger-icon");
+    const icon = document.querySelector("#hamburger-icon");
 
     menu.classList.toggle("open");
     icon.classList.toggle("open");
+    icon.setAttribute("aria-expanded", menu.classList.contains("open") ? "true" : "false");
 
-    // Disable scrolling when menu is open (optional)
     document.body.style.overflow = menu.classList.contains("open") ? "hidden" : "";
 }
 
 // CLOSE MENU WHEN CLICKED OUTSIDE
 document.addEventListener("click", function (e) {
     const menu = document.querySelector(".menu-links");
-    const icon = document.querySelector(".hamburger-icon");
+    const icon = document.querySelector("#hamburger-icon");
 
-    // If menu is open and click is outside both menu and icon
-    if (
-        menu.classList.contains("open") &&
-        !menu.contains(e.target) &&
-        !icon.contains(e.target)
-    ) {
+    if (menu.classList.contains("open") && !menu.contains(e.target) && !icon.contains(e.target)) {
         menu.classList.remove("open");
         icon.classList.remove("open");
+        icon.setAttribute("aria-expanded", "false");
         document.body.style.overflow = "";
     }
 });
@@ -45,9 +41,7 @@ function toggleTheme() {
 document.addEventListener("DOMContentLoaded", () => {
     const savedTheme = localStorage.getItem("theme");
     const isDark = savedTheme === "dark";
-    if (isDark) {
-        document.body.classList.add("dark-theme");
-    }
+    if (isDark) document.body.classList.add("dark-theme");
 
     const themeToggle = document.getElementById("theme-toggle");
     const themeToggleMobile = document.getElementById("theme-toggle-mobile");
@@ -57,15 +51,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
     if (themeToggleMobile) themeToggleMobile.addEventListener("click", toggleTheme);
+
+    // Hamburger Menu
+    document.getElementById("hamburger-icon")?.addEventListener("click", toggleMenu);
+
+    // Profile Buttons
+    document.querySelector(".download-cv")?.addEventListener("click", () => window.open("./assets/resume.pdf"));
+    document.querySelector(".contact-info")?.addEventListener("click", () => location.href = "./#contact");
+
+    // Social Links
+    document.querySelectorAll(".social-link").forEach(link => {
+        link.addEventListener("click", () => window.open(link.getAttribute("data-href")));
+    });
+
+    // Scroll Arrows
+    document.querySelectorAll(".scroll-down").forEach(arrow => {
+        arrow.addEventListener("click", () => location.href = arrow.getAttribute("data-href"));
+    });
+    document.querySelector(".scroll-up")?.addEventListener("click", () => location.href = document.querySelector(".scroll-up").getAttribute("data-href"));
+
+    // Contact Email Link
+    document.querySelector(".email-link")?.addEventListener("click", () => window.open(document.querySelector(".email-link").getAttribute("data-href")));
 });
 
 // FADE-IN ON SCROLL
 const faders = document.querySelectorAll('.fade-in-section');
-const appearOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
-};
-
+const appearOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
 const appearOnScroll = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (!entry.isIntersecting) return;
@@ -74,9 +85,7 @@ const appearOnScroll = new IntersectionObserver((entries, observer) => {
     });
 }, appearOptions);
 
-faders.forEach(section => {
-    appearOnScroll.observe(section);
-});
+faders.forEach(section => appearOnScroll.observe(section));
 
 // TYPING EFFECT
 document.addEventListener("DOMContentLoaded", function () {
@@ -109,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (typingElement) type();
 });
 
-// BOUNCE LINK CLICK
+// BOUNCE LINK CLICK (Not used currently, kept for future)
 function startBounce(element, targetHref) {
     element.classList.add("bounce");
     setTimeout(() => {
@@ -117,7 +126,8 @@ function startBounce(element, targetHref) {
     }, 300);
 }
 
-document.getElementById('contact-form').addEventListener('submit', async function (e) {
+// CONTACT FORM SUBMISSION
+document.getElementById('contact-form')?.addEventListener('submit', async function (e) {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
