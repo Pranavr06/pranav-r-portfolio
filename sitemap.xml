@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <!-- Main Pages -->
     <url>
         <loc>https://pranavr.netlify.app/</loc>
         <lastmod>2025-10-20</lastmod>
@@ -27,7 +26,6 @@
         <priority>0.8</priority>
     </url>
 
-    <!-- Blog Posts -->
     <url>
         <loc>https://pranavr.netlify.app/blog/web-development-guide.html</loc>
         <lastmod>2025-08-21</lastmod>
