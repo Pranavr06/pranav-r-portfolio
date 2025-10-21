@@ -132,11 +132,11 @@
                 <p>Cross-Site Scripting (XSS) is an attack where malicious scripts are injected into otherwise benign and trusted websites. By sanitizing input, you convert potentially harmful characters (like <code>&lt;</code>, <code>&gt;</code>, <code>"</code>) into their safe HTML entity equivalents, which renders the script harmless. Here’s a simple example of sanitizing a string in JavaScript:</p>
                 <div class="code-block-container">
                     <pre><code class="language-javascript">function sanitizeInput(input) {
-    return input.replace(/[&<>"']/g, function(match) {
+    return input.replace(/[&<>""']/g, function(match) {
         return {
             '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
+            '&lt;': '&lt;',
+            '&gt;': '&gt;',
             '"': '&quot;',
             "'": '&#x27;'
         }[match];
