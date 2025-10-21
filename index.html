@@ -8,16 +8,17 @@
     <meta name="msvalidate.01" content="B0BCBF5CB00352D5696094A5A18CE1EA" />
     <link rel="icon" type="image/png" href="./assets/pranavr-favicon.png" />
     <meta name="description" content="Explore Pranav R's portfolio: web development projects, skills, and certifications from NMAMIT NITTE. Connect for collaboration!">
-    <meta name="keywords" content="Pranav R, web developer, portfolio, NMAMIT NITTE, full-stack development, Python, cybersecurity, UI/UX, student projects">
+    <meta name="keywords" content="Pranav R, web developer, portfolio, NMAMIT NITTE, full-stack development, Python, cybersecurity, UI/UX, student projects, HTML, CSS, JavaScript">
+    <link rel="canonical" href="https://pranavr.netlify.app/" />
     <meta name="author" content="Pranav R">
-    <meta property="og:title" content="Pranav R Portfolio">
+    <meta property="og:title" content="Pranav R | Web Developer & Information Science Student Portfolio">
     <meta property="og:description" content="Explore Pranav R's portfolio - Projects, Experience, Certificates, and more.">
     <meta property="og:image" content="https://pranavr.netlify.app/assets/pranavr-og-image.png" />
     <meta property="og:url" content="https://pranavr.netlify.app/">
     <meta property="og:site_name" content="Pranav R Portfolio">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Pranav R Portfolio">
+    <meta name="twitter:title" content="Pranav R | Web Developer & Information Science Student Portfolio">
     <meta name="twitter:description" content="Explore Pranav R's portfolio - student, developer, and tech enthusiast.">
     <meta name="twitter:image" content="https://pranavr.netlify.app/assets/pranavr-og-image.png">
     <meta name="twitter:site" content="@PranavR2006">
@@ -48,342 +49,489 @@
       "hasOccupation": {
         "@type": "Occupation",
         "name": "Web Developer",
-        "skills": ["HTML", "CSS", "SQL", "Git", "Python", "Cybersecurity", "UI/UX Design"]
+        "skills": ["HTML", "CSS", "JavaScript", "SQL", "Git", "Python", "Cybersecurity", "UI/UX Design"]
       }
     }
     </script>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="mediaqueries.css">
+    <link rel="preload" href="./assets/profile-pic.png" as="image">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/mediaqueries.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,600&display=swap">
 </head>
 <body>
     <nav id="desktop-nav">
-        <div class="logo">PRANAV R
-            <img src="./assets/checkmark.png" alt="Verified" class="check-icon" loading="lazy"/>
-        </div>
+        <div class="logo">PRANAV R<img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/></div>
         <div>
             <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#certificate">Certificates</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#blog">Blog</a></li>
-                <li><a href="#contact">Contact</a></li>
-                <li><span id="theme-toggle" class="theme-toggle">🌞</span></li>
+                <li><a href="#about" aria-label="Go to About section">About</a></li>
+                <li><a href="#experience" aria-label="Go to Experience section">Experience</a></li>
+                <li><a href="#certificate" aria-label="Go to Certificates section">Certificates</a></li>
+                <li><a href="#projects" aria-label="Go to Projects section">Projects</a></li>
+                <li><a href="#testimonials" aria-label="Go to Testimonials section">Testimonials</a></li>
+                <li><a href="#blog" aria-label="Go to Blog section">Blog</a></li>
+                <li><a href="#contact" aria-label="Go to Contact section">Contact</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme">🌞</button></li>
             </ul>
         </div>
     </nav>
     <nav id="hamburger-nav">
-        <div class="logo">PRANAV R
-            <img src="./assets/checkmark.png" alt="Verified" class="check-icon" loading="lazy"/>
-        </div>
+        <div class="logo">PRANAV R<img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/></div>
         <div class="hamburger-menu">
-            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false">     
+            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle mobile navigation menu" aria-expanded="false">     
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
             <div class="menu-links">
                 <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#certificate">Certificates</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><span id="theme-toggle-mobile" class="theme-toggle">🌞</span></li>
+                    <li><a href="#about" class="menu-item" aria-label="Go to About section">About</a></li>
+                    <li><a href="#experience" class="menu-item" aria-label="Go to Experience section">Experience</a></li>
+                    <li><a href="#certificate" class="menu-item" aria-label="Go to Certificates section">Certificates</a></li>
+                    <li><a href="#projects" class="menu-item" aria-label="Go to Projects section">Projects</a></li>
+                    <li><a href="#testimonials" class="menu-item" aria-label="Go to Testimonials section">Testimonials</a></li>
+                    <li><a href="#blog" class="menu-item" aria-label="Go to Blog section">Blog</a></li>
+                    <li><a href="#contact" class="menu-item" aria-label="Go to Contact section">Contact</a></li>
+                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme">🌞</button></li>
                 </ul>
             </div>
         </div>
     </nav>
-    <section id="profile"> 
-        <div class="section__pic-container"> 
-            <img src="./assets/profile-pic.png" alt="Profile photo of Pranav R, aspiring engineer and web developer" loading="lazy">  
-        </div>
-        <div class="section__text">
-            <p class="section__text__p1">Hello, I'm</p>
-            <h1 class="title">PRANAV R</h1>
-            <p class="section__text__p2"><span class="typing"></span></p>
-            <div class="btn-container">
-                <button class="btn btn-color-2 download-cv" data-href="./assets/resume.pdf">Download CV</button>
-                <button class="btn btn-color-2 contact-info" data-href="#contact">Contact Info</button>
+    <main>
+        <section id="profile"> 
+            <div class="section__pic-container"> 
+                <img src="./assets/profile-pic.png" alt="Profile photo of Pranav R, aspiring engineer and web developer" loading="lazy">  
             </div>
-            <div id="socials-container">
-                <img src="./assets/linkedin.png" alt="My LinkedIn Profile" class="icon social-link" data-href="https://www.linkedin.com/in/pranavr06/" loading="lazy"/>
-                <img src="./assets/github.png" alt="My Github Profile" class="icon social-link" data-href="https://github.com/Pranavr06" loading="lazy"/>
+            <div class="section__text">
+                <p class="section__text__p1">Hello, I'm</p>
+                <div class="title"><strong>PRANAV R</strong></div>
+                <p class="section__text__p2"><span class="typing"></span></p>
+                <div class="btn-container">
+                    <a href="./assets/resume.pdf" class="btn btn-color-2" target="_blank" rel="noopener noreferrer" aria-label="Download Pranav R's resume">Download CV</a>
+                    <a href="#contact" class="btn btn-color-2" aria-label="Go to contact information">Contact Info</a>
+                </div>
+                <div id="socials-container">
+                    <a href="https://www.linkedin.com/in/pranavr06/" target="_blank" rel="noopener noreferrer" aria-label="Visit Pranav R's LinkedIn profile">
+                        <img src="./assets/linkedin.png" alt="LinkedIn profile icon" class="icon social-link" loading="lazy"/>
+                    </a>
+                    <a href="https://github.com/PranavR06" target="_blank" rel="noopener noreferrer" aria-label="Visit Pranav R's GitHub profile">
+                        <img src="./assets/github.png" alt="GitHub profile icon" class="icon social-link" loading="lazy"/>
+                    </a>
+                </div>
             </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#about" loading="lazy"/>
-    </section>
-    <section id="about" class="fade-in-section">
-        <p class="section__text__p1">Get to know more</p>
-        <h1 class="title">About Me</h1>
-        <div class="section-container">
-            <div class="section__pic-container">
-                <img src="./assets/about-pic.png" alt="Profile Picture" class="about-pic" loading="lazy"/>
+            <a href="#about" class="scroll-down-link" aria-label="Scroll to about section">
+                <img src="./assets/arrow.png" alt="Scroll down to about section" class="icon arrow scroll-down" data-href="#about" loading="lazy"/>
+            </a>
+        </section>
+        <section id="about" class="fade-in-section">
+            <p class="section__text__p1">Get to know more</p>
+            <h1 class="title">About Me</h1>
+            <div class="section-container">
+                <div class="section__pic-container">
+                    <img src="./assets/about-pic.png" alt="Profile picture of Pranav R in about section" class="about-pic" loading="lazy"/>
+                </div>
+                <div class="about-details-container">
+                    <div class="about-containers">
+                        <div class="details-container">
+                            <img src="./assets/experience.png" alt="Experience icon" class="icon" loading="lazy"/>
+                            <h3>Experience</h3>
+                            <p>Beginner<br>Student</p>
+                        </div>
+                        <div class="details-container">
+                            <img src="./assets/education.png" alt="Education icon" class="icon" loading="lazy"/>
+                            <h3>Education</h3>
+                            <p>BTech<br>Undergraduate</p>
+                        </div>
+                    </div>
+                    <div class="text-container">
+                        <p>As an Information Science student at NMAMIT NITTE, I specialize in building scalable and secure web applications. With a strong foundation in full-stack development and a keen interest in cybersecurity, I am passionate about transforming complex problems into elegant and robust digital solutions. My curiosity also extends to Python, 3D modeling, and UI/UX design, which provide a versatile edge to my technical skill set. This portfolio is a curated showcase of my journey and projects. I invite you to explore my work and connect for potential collaborations.</p>
+                    </div>
+                </div>
             </div>
-            <div class="about-details-container">
+            <a href="#experience" class="scroll-down-link" aria-label="Scroll to experience section">
+                <img src="./assets/arrow.png" alt="Scroll down to experience section" class="icon arrow scroll-down" data-href="#experience" loading="lazy"/>
+            </a>
+        </section>
+        <section id="experience" class="fade-in-section">
+            <p class="section__text__p1">Explore My</p>
+            <h2 class="title">Experience</h2>
+            <div class="experience-container">
+                <div class="experience-card left">
+                    <h2>Frontend Development</h2>
+                    <ul class="skills">
+                        <li class="skill">
+                            <img src="./assets/checkmark.png" alt="Experience level indicator" class="icon" loading="lazy"/>
+                            <div>
+                                <h3>HTML</h3>
+                                <div class="progress-bar">
+                                    <div class="progress progress-60"></div>
+                                </div>
+                                <p>Intermediate</p>
+                            </div>
+                        </li>
+                        <li class="skill">
+                            <img src="./assets/checkmark.png" alt="Experience level indicator" class="icon" loading="lazy"/>
+                            <div>
+                                <h3>CSS</h3>
+                                <div class="progress-bar">
+                                    <div class="progress progress-60"></div>
+                                </div>
+                                <p>Intermediate</p>
+                            </div>
+                        </li>
+                        <li class="skill">
+                            <img src="./assets/checkmark.png" alt="Experience level indicator" class="icon" loading="lazy"/>
+                            <div>
+                                <h3>JavaScript</h3>
+                                <div class="progress-bar">
+                                    <div class="progress progress-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="JavaScript proficiency 50%"></div>
+                                </div>
+                                <p>Intermediate</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="experience-card right">
+                    <h2>Backend Development</h2>
+                    <ul class="skills">
+                        <li class="skill">
+                            <img src="./assets/checkmark.png" alt="Experience level indicator" class="icon" loading="lazy"/>
+                            <div>
+                                <h3>SQL</h3>
+                                <div class="progress-bar">
+                                    <div class="progress progress-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="SQL proficiency 50%"></div>
+                                </div>
+                                <p>Intermediate</p> 
+                            </div>
+                        </li>
+                        <li class="skill">
+                            <img src="./assets/checkmark.png" alt="Experience level indicator" class="icon" loading="lazy"/>
+                            <div>
+                                <h3>Git</h3>
+                                <div class="progress-bar">
+                                    <div class="progress progress-60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Git proficiency 60%"></div>
+                                </div>
+                                <p>Intermediate</p>
+                            </div>
+                        </li>
+                        <li class="skill">
+                            <img src="./assets/checkmark.png" alt="Experience level indicator" class="icon" loading="lazy"/>
+                            <div>
+                                <h3>Python</h3>
+                                <div class="progress-bar">
+                                    <div class="progress progress-60" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Python proficiency 60%"></div>
+                                </div>
+                                <p>Intermediate</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="experience-card center">
+                    <h2>Tools & Technologies</h2>
+                    <ul class="skills">
+                        <li class="skill">
+                            <img src="./assets/checkmark.png" alt="Experience level indicator" class="icon" loading="lazy"/>
+                            <div>
+                                <h3>UI/UX Design</h3>
+                                <div class="progress-bar">
+                                    <div class="progress progress-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="UI/UX Design proficiency 50%"></div>
+                                </div>
+                                <p>Intermediate</p>
+                            </div>
+                        </li>
+                        <li class="skill">
+                            <img src="./assets/checkmark.png" alt="Experience level indicator" class="icon" loading="lazy"/>
+                            <div>
+                                <h3>3D Modeling</h3>
+                                <div class="progress-bar">
+                                    <div class="progress progress-50" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" aria-label="3D Modeling proficiency 50%"></div>
+                                </div>
+                                <p>Intermediate</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a href="#certificate" class="scroll-down-link" aria-label="Scroll to certificates section">
+                <img src="./assets/arrow.png" alt="Scroll down to certificates section" class="icon arrow scroll-down" data-href="#certificate" loading="lazy"/>
+            </a>
+        </section>
+        <section id="certificate" class="fade-in-section">
+            <p class="section__text__p1">My Achievements</p>
+            <h2 class="title">Certificates</h2>
+            <div class="experience-details-container">
                 <div class="about-containers">
-                    <div class="details-container">
-                        <img src="./assets/experience.png" alt="Experience Icon" class="icon" loading="lazy"/>
-                        <h3>Experience</h3>
-                        <p>Beginner<br>Student</p>
-                    </div>
-                    <div class="details-container">
-                        <img src="./assets/education.png" alt="Education Icon" class="icon" loading="lazy"/>
-                        <h3>Education</h3>
-                        <p>BTech<br>Undergraduate</p>
-                    </div>
-                </div>
-                <div class="text-container">
-                    <p>I am Pranav R, an Information Science student at NMAMIT NITTE, with a strong passion for web development and technology-driven problem solving. My focus lies in building scalable and secure web applications, and I’m currently sharpening my skills in full-stack development and cybersecurity. I also actively explore areas like Python programming, 3D modeling, and UI/UX design to broaden my technical perspective. This website highlights my journey, projects, and skills — feel free to explore and connect!</p>
-                </div>
-            </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#experience" loading="lazy"/>
-    </section>
-    <section id="experience" class="fade-in-section">
-        <p class="section__text__p1">Explore My</p>
-        <h1 class="title">Experience</h1>
-        <div class="experience-container">
-            <div class="experience-card left">
-                <h2>Frontend Development</h2>
-                <div class="skills">
-                    <div class="skill">
-                        <img src="./assets/checkmark.png" alt="Checkmark" class="icon" loading="lazy"/>
-                        <div>
-                            <h3>HTML</h3>
-                            <p>Intermediate</p>
+                    <article class="details-container color-container">
+                        <div class="article-container">
+                            <img src="./assets/AIC-logo.png" alt="AIC Nitte Logo - Atal Incubation Centre" class="certificate-logo" loading="lazy"/>
                         </div>
-                    </div>
-                    <div class="skill">
-                        <img src="./assets/checkmark.png" alt="Checkmark" class="icon" loading="lazy"/>
-                        <div>
-                            <h3>CSS</h3>
-                            <p>Intermediate</p>
+                        <h3 class="experience-sub-title project-title">AIC Nitte Internship</h3>
+                        <p class="certificate-date">Completed: May 2025</p>
+                        <p>Hands-on internship focusing on tech innovation at Atal Incubation Centre Nitte.</p>
+                        <div class="skill-tags">
+                            <span class="tag">Tech Innovation</span>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="experience-card right">
-                <h2>Backend Development</h2>
-                <div class="skills">
-                    <div class="skill">
-                        <img src="./assets/checkmark.png" alt="Checkmark" class="icon" loading="lazy"/>
-                        <div>
-                            <h3>SQL</h3>
-                            <p>Basic</p>
+                        <p class="achievement-highlight">Completed in under 4 months.</p>
+                        <div class="btn-container">
+                            <a href="./assets/AIC-certificate.pdf" class="btn btn-color-2" target="_blank" rel="noopener noreferrer" aria-label="View AIC Nitte Internship certificate">View</a>
                         </div>
-                    </div>
-                    <div class="skill">
-                        <img src="./assets/checkmark.png" alt="Checkmark" class="icon" loading="lazy"/>
-                        <div>
-                            <h3>Git</h3>
-                            <p>Intermediate</p>
+                    </article>
+                    <article class="details-container color-container">
+                        <div class="article-container">
+                            <img src="./assets/python-logo.png" alt="Python course logo" class="certificate-logo" loading="lazy"/>
                         </div>
-                    </div>
+                        <h3 class="experience-sub-title project-title">Python Course</h3>
+                        <p class="certificate-date">Completed: March 2025</p>
+                        <p>Mastered Python programming basics, including data structures and file handling.</p>
+                        <div class="skill-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Data Structures</span>
+                        </div>
+                        <p class="achievement-highlight">Issued by University of Michigan</p>
+                        <div class="btn-container">
+                            <a href="./assets/python-certificate.pdf" class="btn btn-color-2" target="_blank" rel="noopener noreferrer" aria-label="View Python Course certificate">View</a>
+                        </div>
+                    </article>
+                    <article class="details-container color-container">
+                        <div class="article-container">
+                            <img src="./assets/microsoft-logo.png" alt="Microsoft logo" class="certificate-logo" loading="lazy"/>
+                        </div>
+                        <h3 class="experience-sub-title project-title">Applied AI Challenge</h3>
+                        <p class="certificate-date">Completed: September 2025</p>
+                        <p>Completed a 13.3-hour challenge on implementing practical AI solutions with Azure Cognitive Services.</p>
+                        <div class="skill-tags">
+                            <span class="tag">Applied AI</span>
+                            <span class="tag">Azure AI</span>
+                        </div>
+                        <div class="btn-container">
+                            <a href="./assets/microsoft-applied-ai-learning-certificate.pdf" class="btn btn-color-2" target="_blank" rel="noopener noreferrer" aria-label="View Applied AI Challenge certificate">View</a>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#certificate" loading="lazy"/>
-    </section>
-    <section id="certificate" class="fade-in-section">
-        <p class="section__text__p1">My Achievements</p>
-        <h1 class="title">Certificates</h1>
-        <div class="experience-details-container">
-            <div class="about-containers">
-                <div class="details-container color-container">
-                    <div class="article-container">
-                        <img src="./assets/AIC-logo.png" alt="AIC Nitte Logo - Atal Incubation Centre" class="certificate-logo" loading="lazy"/>
-                    </div>
-                    <h2 class="experience-sub-title project-title">AIC Nitte Internship</h2>
-                    <p>Completed hands-on internship at Atal Incubation Centre Nitte (AIC Nitte)</p>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2" data-href="./assets/AIC-certificate.pdf">View</button>
-                    </div>
-                </div>
-                <div class="details-container color-container">
-                    <div class="article-container">
-                        <img src="./assets/python-logo.png" alt="Python Logo" class="certificate-logo" loading="lazy"/>
-                    </div>
-                    <h2 class="experience-sub-title project-title">Python Course</h2>
-                    <p>Completed Python course.</p>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2" data-href="./assets/python-certificate.pdf">View</button>
-                    </div>
-                </div>
-                <div class="details-container color-container">
-                    <div class="article-container">
-                        <img src="./assets/matlab-logo.png" alt="MATLAB Logo" class="certificate-logo" loading="lazy"/>
-                    </div>
-                    <h2 class="experience-sub-title project-title">MATLAB Course</h2>
-                    <p>Finished MATLAB programming fundamentals.</p>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2" data-href="./assets/matlab-certificate.pdf">View</button>
-                    </div>
-                </div>
-                <div class="details-container color-container">
-                    <div class="article-container">
-                        <img src="./assets/aiml-webinar.png" alt="AI-ML Webinar Logo" class="certificate-logo" loading="lazy"/>
-                    </div>
-                    <h2 class="experience-sub-title project-title">AIML WEBINAR</h2>
-                    <p>Attended a webinar on AIML organized by NMAM Institute of Technology.</p>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2" data-href="./assets/AIML-webinar-certificate-pranavr.pdf">View</button>
-                    </div>
-                </div>
-                <div class="details-container color-container">
-                    <div class="article-container">
-                        <img src="./assets/cybersecurity-logo.png" alt="Cybersecurity Logo" class="certificate-logo" loading="lazy"/>
-                    </div>
-                    <h2 class="experience-sub-title project-title">Cybersecurity Course</h2>
-                    <p>Cybersecurity beginner.</p>
-                    <div class="btn-container">
-                        <button class="btn btn-color-2" data-href="./assets/cybersecurity-certificate.pdf">View</button>
-                    </div>
+            <div class="btn-container view-more-container">
+                <a href="/certificate.html" class="btn btn-color-2 view-more" aria-label="View more certificates">View more</a>
+            </div>
+            <a href="#projects" class="scroll-down-link" aria-label="Scroll to projects section">
+                <img src="./assets/arrow.png" alt="Scroll down to projects section" class="icon arrow scroll-down" data-href="#projects" loading="lazy"/>
+            </a>
+        </section>
+        <section id="projects" class="fade-in-section">
+            <p class="section__text__p1">Browse My Recent</p> 
+            <h2 class="title">Projects</h2>
+            <div class="experience-details-container">
+                <div class="project-grid">
+                    <article class="details-container color-container" data-status="completed">
+                        <div class="status-tag status-completed">Completed</div>
+                        <figure>
+                            <img src="./assets/project-1.png" alt="3D Aircraft Model project by Pranav R" class="project-img" loading="lazy"/>
+                            <figcaption><h2 class="experience-sub-title project-title">3D Aircraft Model</h2></figcaption>
+                        </figure>
+                        <p>Designed a detailed 3D aircraft model using TinkerCAD, showcasing skills in 3D modeling and design. Built with TinkerCAD.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">TinkerCAD</span>
+                            <span class="tech-tag">3D Modeling</span>
+                        </div>
+                        <div class="btn-container"> 
+                            <a href="https://www.tinkercad.com/things/6RzgDxL78sa-3d-aircraft-model-?sharecode=3UfX2aLB1Bk-RHtGx5QpFzzxNaWX-S-VhvhygTqSYzA" class="btn btn-color-2" target="_blank" rel="noopener noreferrer" aria-label="View 3D Aircraft Model project">View Project</a>
+                        </div>
+                    </article>
+                    <article class="details-container color-container" data-status="in-progress">
+                        <div class="status-tag status-in-progress">In Progress</div>
+                        <figure>
+                            <img src="./assets/project-4.png" alt="Promotional banner for the PassGuard project, indicating it is a work in progress" class="project-img" loading="lazy"/>
+                            <figcaption><h2 class="experience-sub-title project-title">PassGuard</h2></figcaption>
+                        </figure>
+                        <p>A cybersecurity tool built with Python to analyze password strength and promote better security habits.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Flask</span>
+                        </div>
+                        <div class="btn-container"> 
+                            <button class="btn btn-color-2" disabled aria-label="View PassGuard tool (in progress)">View (In Progress)</button>
+                        </div>
+                    </article>
+                    <article class="details-container color-container" data-status="planned">
+                        <div class="status-tag status-planned">Planned</div>
+                        <figure>
+                            <img src="./assets/stay-tuned.png" alt="Placeholder image for Sentiment Analysis AI project" class="project-img" loading="lazy"/>
+                            <figcaption><h2 class="experience-sub-title project-title">Sentiment Analysis AI</h2></figcaption>
+                        </figure>
+                        <p>A planned machine learning model to perform sentiment analysis on user reviews using NLP techniques.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">TensorFlow</span>
+                        </div>
+                        <div class="btn-container"> 
+                            <button class="btn btn-color-2" disabled aria-label="View Sentiment Analysis AI project (planned)">View (Planned)</button>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#projects" loading="lazy"/>
-    </section>
-    <section id="projects" class="fade-in-section">
-        <p class="section__text__p1">Browse My Recent</p> 
-        <h1 class="title">Projects</h1>
-        <div class="experience-details-container">
-            <div class="about-containers">
-                <div class="details-container color-container">
-                    <div class="article-container">
-                        <img src="./assets/project-1.png" alt="3D Aircraft Model by Pranav R" class="project-img" loading="lazy"/>
+            <div class="btn-container view-more-container">
+                <a href="/projects.html" class="btn btn-color-2 view-more" aria-label="View more projects">View more</a>
+            </div>
+            <a href="#testimonials" class="scroll-down-link" aria-label="Scroll to testimonials section">
+                <img src="./assets/arrow.png" alt="Scroll down to testimonials section" class="icon arrow scroll-down" data-href="#testimonials" loading="lazy"/>
+            </a>
+        </section>
+        <section id="testimonials" class="fade-in-section">
+            <p class="section__text__p1">What others say</p>
+            <h2 class="title">Testimonials</h2>
+            <div class="testimonial-grid-container">
+                <figure class="testimonial-card">
+                    <blockquote>
+                        <p>"Pranav R is a highly motivated and skilled individual. His dedication to learning new technologies is truly impressive."</p>
+                    </blockquote>
+                    <figcaption class="testimonial-author">
+                        <img src="./assets/client-1.png" alt="Profile photo of Shreyas J Aradhya" class="author-img" loading="lazy"/>
+                        <div class="author-info">
+                            <h3>Shreyas J Aradhya</h3>
+                            <p class="author-title">Peer, ECE'28, NMAMIT</p>
+                        </div>
+                    </figcaption>
+                </figure>
+                <figure class="testimonial-card">
+                    <blockquote>
+                        <p>"Working with Pranav R on a project was a great experience. He's a quick learner and a valuable team player."</p>
+                    </blockquote>
+                    <figcaption class="testimonial-author">
+                        <img src="./assets/client-2.png" alt="Profile photo of Pramukh A Nayak" class="author-img" loading="lazy"/>
+                        <div class="author-info">
+                            <h3>Pramukh A Nayak</h3>
+                            <p class="author-title">Peer, ISE'28, NMAMIT</p>
+                        </div>
+                    </figcaption>
+                </figure>
+                <figure class="testimonial-card">
+                    <blockquote>
+                        <p>"His analytical skills and creative approach to problem-solving are top-notch. Pranav R is an asset to any team he joins."</p>
+                    </blockquote>
+                    <figcaption class="testimonial-author">
+                        <img src="./assets/client-3.png" alt="Profile photo of Dr. Esha M" class="author-img" loading="lazy"/>
+                        <div class="author-info">
+                            <h3>Dr. Esha M</h3>
+                            <p class="author-title">Educator</p>
+                        </div>
+                    </figcaption>
+                </figure>
+            </div>
+            <div class="btn-container view-more-container">
+                <a href="/testimonials.html" class="btn btn-color-2 view-more" aria-label="View more testimonials">View more</a>
+            </div>
+            <a href="#blog" class="scroll-down-link" aria-label="Scroll to blog section">
+                <img src="./assets/arrow.png" alt="Scroll down to blog section" class="icon arrow scroll-down" data-href="#blog" loading="lazy"/>
+            </a>
+        </section>
+        <section id="blog" class="fade-in-section">
+            <p class="section__text__p1">My Insights</p>
+            <h2 class="title">Blog</h2>
+            <div class="blog-grid-container">
+                <article class="blog-card">
+                    <img src="./assets/blog-1.png" alt="Illustration for a web development guide" class="blog-img" loading="lazy"/>
+                    <div class="blog-content">
+                        <div class="blog-metadata">
+                            <span class="blog-category">Web Development</span>
+                            <span class="blog-date">August 21, 2025</span>
+                        </div>
+                        <h2 class="blog-title">Getting Started with Web Development</h2>
+                        <p class="blog-excerpt">A beginner-friendly guide to learning the fundamentals of HTML, CSS, and JavaScript to build and launch your very first website.</p>
+                        <a href="/blog/web-development-guide.html" class="blog-link" aria-label="Read more about Getting Started with Web Development">Read More &rarr;</a>
                     </div>
-                    <h2 class="experience-sub-title project-title">3D Aircraft Model</h2>
-                    <p>Designed a detailed 3D aircraft model using TinkerCAD, showcasing skills in 3D modeling and design.</p>
-                    <div class="btn-container"> 
-                        <button class="btn btn-color-2" data-href="https://www.tinkercad.com/things/6RzgDxL78sa-3d-aircraft-model-?sharecode=3UfX2aLB1Bk-RHtGx5QpFzzxNaWX-S-VhvhygTqSYzA">View</button>
+                </article>
+                <article class="blog-card">
+                    <img src="./assets/blog-2.png" alt="Illustration about the importance of cybersecurity" class="blog-img" loading="lazy"/>
+                    <div class="blog-content">
+                        <div class="blog-metadata">
+                            <span class="blog-category">Cybersecurity</span>
+                            <span class="blog-date">September 21, 2025</span>
+                        </div>
+                        <h2 class="blog-title">The Importance of Cybersecurity</h2>
+                        <p class="blog-excerpt">An exploration of basic security principles, why they are crucial for every developer, and simple steps to protect your projects.</p>
+                        <a href="/blog/cybersecurity-importance.html" class="blog-link" aria-label="Read more about The Importance of Cybersecurity">Read More &rarr;</a>
                     </div>
+                </article>
+                <article class="blog-card">
+                    <img src="./assets/blog-3.png" alt="Illustration for a Git and GitHub guide" class="blog-img" loading="lazy"/>
+                    <div class="blog-content">
+                         <div class="blog-metadata">
+                            <span class="blog-category">Developer Tools</span>
+                            <span class="blog-date">October 20, 2025</span>
+                        </div>
+                        <h2 class="blog-title">Mastering the Basics of Git & GitHub</h2>
+                        <p class="blog-excerpt">Unlock the power of version control. This post breaks down the essential Git commands and collaboration workflows on GitHub.</p>
+                        <a href="/blog/git-and-github-basics.html" class="blog-link" aria-label="Read more about Mastering the Basics of Git & GitHub">Read More &rarr;</a>
+                    </div>
+                </article>
+            </div>
+            <div class="btn-container view-more-container">
+                <a href="/blog.html" class="btn btn-color-2 view-more" aria-label="View more blog posts">View more</a>
+            </div>
+            <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section">
+                <img src="./assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" data-href="#contact" loading="lazy"/>
+            </a>
+        </section>
+        <section id="contact" class="fade-in-section">
+            <p class="section__text__p1">Get in Touch</p>
+            <h2 class="title">Contact Me</h2>
+            <div class="contact-form-container">
+                <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/">
+                    <p class="hidden">
+                        <label>Don’t fill this out: <input name="bot-field" /></label>
+                    </p>
+                    <input type="hidden" name="form-name" value="contact">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required autocomplete="off"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-color-1" id="submit-btn">Send Message</button>
+                    </div>
+                    <div id="form-status" role="status" aria-live="polite" class="visually-hidden"></div>
+                </form>
+            </div>
+            <div class="contact-info-upper-container">
+                <div class="contact-info-container">
+                    <a href="mailto:pranavkundapura18@gmail.com?subject=Professional%20Inquiry&body=Hi%20Pranav%2C%0A%0AI%20recently%20visited%20your%20portfolio%20and%20was%20very%20impressed%20with%20your%20work.%20I%27d%20love%20to%20discuss%20a%20potential%20opportunity%20or%20collaboration.%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards%2C%0A[Your%20Name]" class="contact-link" aria-label="Send email to Pranav R">
+                        <img src="./assets/email.png" alt="Email contact icon" class="icon contact-icon" loading="lazy"/>
+                        <span class="contact-text">Email</span>
+                    </a>
                 </div>
-                <div class="details-container color-container">
-                    <div class="article-container">
-                        <img src="./assets/project-2.png" alt="Project 2" class="project-img" loading="lazy"/>
-                    </div>
-                    <h2 class="experience-sub-title project-title">Project 2</h2>
-                    <p>Working on it</p>
-                    <div class="btn-container"> 
-                        <button class="btn btn-color-2" data-href="#projects">View</button>
-                    </div>
-                </div>
-                <div class="details-container color-container">
-                    <div class="article-container">
-                        <img src="./assets/project-3.png" alt="Project 3" class="project-img" loading="lazy"/>
-                    </div>
-                    <h2 class="experience-sub-title project-title">Project 3</h2>
-                    <p>Working on it</p>
-                    <div class="btn-container"> 
-                        <button class="btn btn-color-2" data-href="#projects">View</button>
-                    </div>
+                <div class="contact-info-container">
+                    <a href="https://www.linkedin.com/in/pranavr06/" target="_blank" rel="noopener noreferrer" class="contact-link" aria-label="Visit Pranav R's LinkedIn profile">
+                        <img src="./assets/linkedin.png" alt="LinkedIn contact icon" class="icon contact-icon" loading="lazy"/>
+                        <span class="contact-text">LinkedIn</span>
+                    </a>
                 </div>
             </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#testimonials" loading="lazy"/>
-    </section>
-    <section id="testimonials" class="fade-in-section">
-        <p class="section__text__p1">What others say</p>
-        <h1 class="title">Testimonials</h1>
-        <div class="testimonial-container">
-            <div class="testimonial-card">
-                <p>"Pranav R is a highly motivated and skilled individual. His dedication to learning new technologies is truly impressive."</p>
-                <div class="testimonial-author">
-                    <img src="./assets/client1.png" alt="User icon" class="author-img" loading="lazy"/>
-                    <div class="author-info">
-                        <h3>Shreyas J Aradhya</h3>
-                        <p>ECE'28, NMAMIT</p>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <p>"Working with Pranav R on a project was a great experience. He's a quick learner and a valuable team player."</p>
-                <div class="testimonial-author">
-                    <img src="./assets/client2.png" alt="User icon" class="author-img" loading="lazy"/>
-                    <div class="author-info">
-                        <h3>Pramukh A Nayak</h3>
-                        <p>ISE'28, NMAMIT</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#blog" loading="lazy"/>
-    </section>
-    <section id="blog" class="fade-in-section">
-        <p class="section__text__p1">My Insights</p>
-        <h1 class="title">Blog</h1>
-        <div class="blog-container">
-            <div class="blog-card">
-                <img src="./assets/blog-1.png" alt="Web Development Guide by Pranav R" class="blog-img" loading="lazy"/>
-                <h3 class="blog-title">Getting Started with Web Development</h3>
-                <p class="blog-excerpt">Learn HTML, CSS, and JavaScript basics to build your first website with this beginner-friendly guide.</p>
-                <a href="/blog/web-development-guide" class="blog-link">Read More &rarr;</a>
-            </div>
-            <div class="blog-card">
-                <img src="./assets/blog-2.png" alt="Cybersecurity Importance by Pranav R" class="blog-img" loading="lazy"/>
-                <h3 class="blog-title">The Importance of Cybersecurity</h3>
-                <p class="blog-excerpt">Exploring basic security principles and why they are crucial for every developer.</p>
-                <a href="/blog/cybersecurity-importance" class="blog-link">Read More &rarr;</a>
-            </div>
-        </div>
-        <img src="./assets/arrow.png" alt="Arrow icon" class="icon arrow scroll-down" data-href="#contact" loading="lazy"/>
-    </section>
-    <section id="contact" class="fade-in-section">
-        <p class="section__text__p1">Get in Touch</p>
-        <h1 class="title">Contact Me</h1>
-        <div class="contact-form-container">
-            <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
-                <input type="hidden" name="form-name" value="contact">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Your Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-color-1">Send Message</button>
-                </div>
-            </form>
-        </div>
-        <div class="contact-info-upper-container">
-            <div class="contact-info-container">
-                <img src="./assets/email.png" alt="Email icon" class="icon contact-icon email-link" data-href="mailto:pranavkundapura18@gmail.com?subject=Professional%20Inquiry&body=Hi%20Pranav%2C%0A%0AI%20recently%20visited%20your%20portfolio%20and%20was%20very%20impressed%20with%20your%20work.%20I%27d%20love%20to%20discuss%20a%20potential%20opportunity%20or%20collaboration.%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards%2C%0A[Your%20Name]" loading="lazy"/>
-                <p><a href="mailto:pranavkundapura18@gmail.com?subject=Professional%20Inquiry&body=Hi%20Pranav%2C%0A%0AI%20recently%20visited%20your%20portfolio%20and%20was%20very%20impressed%20with%20your%20work.%20I%27d%20love%20to%20discuss%20a%20potential%20opportunity%20or%20collaboration.%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards%2C%0A[Your%20Name]">Email</a></p>
-            </div>
-            <div class="contact-info-container">
-                <img src="./assets/linkedin.png" alt="LinkedIn icon" class="icon contact-icon social-link" data-href="https://www.linkedin.com/in/pranavr06/" loading="lazy"/>
-                <p><a href="https://www.linkedin.com/in/pranavr06/">LinkedIn</a></p>
-            </div>
-        </div>
-        <img src="./assets/arrow-invert.png" alt="Arrow icon" class="icon arrow scroll-up" data-href="#desktop-nav" loading="lazy"/>
-    </section>
+            <a href="#desktop-nav" class="scroll-up-link" aria-label="Scroll to top of page">
+                <img src="./assets/arrow-invert.png" alt="Scroll to top of page" class="icon arrow scroll-up" data-href="#desktop-nav" loading="lazy"/>
+            </a>
+        </section>
+    </main>
     <footer>
         <nav>
             <div class="nav-links-container">
                 <ul class="nav-links">
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#experience">Experience</a></li>
-                    <li><a href="#certificate">Certificates</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#about" aria-label="Go to About section">About</a></li>
+                    <li><a href="#experience" aria-label="Go to Experience section">Experience</a></li>
+                    <li><a href="#certificate" aria-label="Go to Certificates section">Certificates</a></li>
+                    <li><a href="#projects" aria-label="Go to Projects section">Projects</a></li>
+                    <li><a href="#testimonials" aria-label="Go to Testimonials section">Testimonials</a></li>
+                    <li><a href="#blog" aria-label="Go to Blog section">Blog</a></li>
+                    <li><a href="#contact" aria-label="Go to Contact section">Contact</a></li>
                 </ul>
             </div>
         </nav>
-        <p>Copyright © 2025 <a href="#profile" class="no-underline">Pranav R</a> - All rights reserved.</p>
+        <p id="copyright">Copyright © 2025 <a href="#profile" class="no-underline" aria-label="Go to Pranav R's profile section">Pranav R</a> - All rights reserved.</p>
     </footer>
-    <script src="script.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>

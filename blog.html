@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pranav R's Blog</title>
+    <meta name="description" content="Read articles, insights, and tutorials by Pranav R covering web development, cybersecurity, Git, UI/UX design, and other technology topics for aspiring developers.">
+    <meta name="keywords" content="Pranav R, blog, articles, web development, cybersecurity, Git, GitHub, UI/UX, design principles, tech insights, student developer, HTML, CSS, JavaScript">
+    <meta name="author" content="Pranav R">
+
+    <meta name="google-site-verification" content="Gdi3HiTiI14fjgrSlY6l0IbQznimK0IBHaX7XD6LKYk" />
+    <meta name="msvalidate.01" content="B0BCBF5CB00352D5696094A5A18CE1EA" />
+    <link rel="icon" type="image/png" href="./assets/pranavr-favicon.png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://pranavr.netlify.app/blog.html" />
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pranavr.netlify.app/blog.html">
+    <meta property="og:site_name" content="Pranav R Portfolio">
+    <meta property="og:title" content="Tech Articles & Guides | Pranav R's Blog">
+    <meta property="og:description" content="Insights and tutorials on web development, cybersecurity, Git, UI/UX, and more.">
+    <meta property="og:image" content="https://pranavr.netlify.app/assets/blog-og-image.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@PranavR2006">
+    <meta name="twitter:url" content="https://pranavr.netlify.app/blog.html">
+    <meta name="twitter:title" content="Tech Articles & Guides | Pranav R's Blog">
+    <meta name="twitter:description" content="Insights and tutorials on web development, cybersecurity, Git, UI/UX, and more.">
+    <meta name="twitter:image" content="https://pranavr.netlify.app/assets/blog-og-image.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "Pranav R's Blog",
+      "url": "https://pranavr.netlify.app/blog.html",
+      "description": "Articles, insights, and tutorials by Pranav R covering web development, cybersecurity, Git, UI/UX design, and other technology topics.",
+      "author": {
+        "@type": "Person",
+        "name": "Pranav R",
+        "url": "https://pranavr.netlify.app/"
+      },
+      "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://pranavr.netlify.app/blog/web-development-guide.html"
+          },
+          "headline": "Getting Started with Web Development",
+          "description": "A beginner-friendly guide to learning the fundamentals of HTML, CSS, and JavaScript to build and launch your very first website.",
+          "image": "https://pranavr.netlify.app/assets/blog-1.png",
+          "author": { "@type": "Person", "name": "Pranav R" },
+          "datePublished": "2025-08-21",
+          "keywords": "web development, HTML, CSS, JavaScript, beginner guide"
+        },
+        {
+          "@type": "BlogPosting",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://pranavr.netlify.app/blog/cybersecurity-importance.html"
+          },
+          "headline": "The Importance of Cybersecurity",
+          "description": "An exploration of basic security principles, why they are crucial for every developer, and simple steps to protect your projects.",
+          "image": "https://pranavr.netlify.app/assets/blog-2.png",
+          "author": { "@type": "Person", "name": "Pranav R" },
+          "datePublished": "2025-09-21",
+          "keywords": "cybersecurity, security principles, developer security"
+        },
+        {
+          "@type": "BlogPosting",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://pranavr.netlify.app/blog/git-and-github-basics.html"
+          },
+          "headline": "Mastering the Basics of Git & GitHub",
+          "description": "Unlock the power of version control. This post breaks down the essential Git commands and collaboration workflows on GitHub.",
+          "image": "https://pranavr.netlify.app/assets/blog-3.png",
+          "author": { "@type": "Person", "name": "Pranav R" },
+          "datePublished": "2025-10-20",
+          "keywords": "Git, GitHub, version control, developer tools"
+        },
+        {
+          "@type": "BlogPosting",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://pranavr.netlify.app/blog/ui-ux-principles-for-devs.html"
+          },
+          "headline": "Essential UI/UX Principles for Developers",
+          "description": "You don't need to be a designer to build beautiful apps. Learn Essential UI/UX principles to improve your front-end projects today.",
+          "image": "https://pranavr.netlify.app/assets/blog-4.png",
+          "author": { "@type": "Person", "name": "Pranav R" },
+          "datePublished": "2025-10-21",
+          "keywords": "UI/UX, design principles, front-end development"
+        }
+      ]
+    }
+    </script>
+    
+    <link rel="stylesheet" href="css/blog.css">
+    <link rel="stylesheet" href="css/mediaqueriesblog.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,600&display=swap">
+</head>
+<body>
+    <nav id="desktop-nav">
+        <div class="logo">PRANAV R
+            <img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/>
+        </div>
+        <div>
+            <ul class="nav-links">
+                <li><a href="/" aria-label="Go to homepage">Home</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme">🌞</button></li>
+            </ul>
+        </div>
+    </nav>
+    <nav id="hamburger-nav">
+        <div class="logo">PRANAV R
+            <img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/>
+        </div>
+        <div class="hamburger-menu">
+            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="menu-links">
+                <ul>
+                    <li><a href="/" class="menu-item" aria-label="Go to homepage">Home</a></li>
+                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme">🌞</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <section id="blog" class="fade-in-section mobile-spacing">
+            <p class="section__text__p1">My Insights & Articles</p>
+            <h1 class="title">Pranav R's Blog</h1>
+            <div class="blog-grid-container">
+                <article class="blog-card">
+                    <img src="./assets/blog-1.png" alt="Illustration for a web development guide" class="blog-img" loading="lazy"/>
+                    <div class="blog-content">
+                        <div class="blog-metadata">
+                            <span class="blog-category">Web Development</span>
+                            <span class="blog-date">August 21, 2025</span>
+                        </div>
+                        <h2 class="blog-title">Getting Started with Web Development</h2>
+                        <p class="blog-excerpt">A beginner-friendly guide to learning the fundamentals of HTML, CSS, and JavaScript to build and launch your very first website.</p>
+                        <a href="/blog/web-development-guide.html" class="blog-link" aria-label="Read more about Getting Started with Web Development">Read More &rarr;</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <img src="./assets/blog-2.png" alt="Illustration about the importance of cybersecurity" class="blog-img" loading="lazy"/>
+                    <div class="blog-content">
+                         <div class="blog-metadata">
+                            <span class="blog-category">Cybersecurity</span>
+                            <span class="blog-date">September 21, 2025</span>
+                        </div>
+                        <h2 class="blog-title">The Importance of Cybersecurity</h2>
+                        <p class="blog-excerpt">An exploration of basic security principles, why they are crucial for every developer, and simple steps to protect your projects.</p>
+                        <a href="/blog/cybersecurity-importance.html" class="blog-link" aria-label="Read more about The Importance of Cybersecurity">Read More &rarr;</a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <img src="./assets/blog-3.png" alt="Illustration for a Git and GitHub guide" class="blog-img" loading="lazy"/>
+                    <div class="blog-content">
+                         <div class="blog-metadata">
+                            <span class="blog-category">Developer Tools</span>
+                            <span class="blog-date">October 20, 2025</span>
+                        </div>
+                        <h2 class="blog-title">Mastering the Basics of Git & GitHub</h2>
+                        <p class="blog-excerpt">Unlock the power of version control. This post breaks down the essential Git commands and collaboration workflows on GitHub.</p>
+                        <a href="/blog/git-and-github-basics.html" class="blog-link" aria-label="Read more about Mastering the Basics of Git & GitHub">Read More &rarr;</a>
+                    </div>
+                </article>
+                 <article class="blog-card">
+                    <img src="./assets/blog-4.png" alt="Illustration about UI/UX principles" class="blog-img" loading="lazy"/>
+                    <div class="blog-content">
+                         <div class="blog-metadata">
+                            <span class="blog-category">Design</span>
+                            <span class="blog-date">October 21, 2025</span>
+                        </div>
+                        <h2 class="blog-title">Essential UI/UX Principles for Developers</h2>
+                        <p class="blog-excerpt">You don't need to be a designer to build beautiful apps. Learn Essential UI/UX principles to improve your front-end projects today.</p>
+                        <a href="/blog/ui-ux-principles-for-devs.html" class="blog-link" aria-label="Read more about Essential UI/UX Principles for Developers">Read More &rarr;</a>
+                    </div>
+                </article>
+            </div>
+            <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section" data-href="#contact">
+                <img src="./assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" loading="lazy"/>
+            </a>
+        </section>
+
+        <section id="contact" class="fade-in-section">
+            <p class="section__text__p1">Get in Touch</p>
+            <h2 class="title">Contact Me</h2>
+            <div class="contact-form-container">
+                <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/">
+                    <p class="hidden">
+                        <label>Don’t fill this out: <input name="bot-field" /></label>
+                    </p>
+                    <input type="hidden" name="form-name" value="contact">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required autocomplete="off"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-color-1" id="submit-btn">Send Message</button>
+                    </div>
+                    <div id="form-status" role="status" aria-live="polite" class="visually-hidden"></div>
+                </form>
+            </div>
+            <div class="contact-info-upper-container">
+                <div class="contact-info-container">
+                    <a href="mailto:pranavkundapura18@gmail.com?subject=Blog%20Inquiry" class="contact-link" aria-label="Send email to Pranav R">
+                        <img src="./assets/email.png" alt="Email contact icon" class="icon contact-icon email-link" loading="lazy"/>
+                        <span class="contact-text">Email</span>
+                    </a>
+                </div>
+                <div class="contact-info-container">
+                    <a href="https://www.linkedin.com/in/pranavr06/" target="_blank" rel="noopener noreferrer" class="contact-link" aria-label="Visit Pranav R's LinkedIn profile">
+                        <img src="./assets/linkedin.png" alt="LinkedIn contact icon" class="icon contact-icon social-link" loading="lazy"/>
+                        <span class="contact-text">LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+            <a href="#desktop-nav" class="scroll-up-link" aria-label="Scroll to top of page" data-href="#desktop-nav">
+                <img src="./assets/arrow-invert.png" alt="Scroll to top of page" class="icon arrow scroll-up" loading="lazy"/>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <nav>
+            <div class="nav-links-container">
+                <ul class="nav-links">
+                    <li><a href="/" aria-label="Go to homepage">Home</a></li>
+                </ul>
+            </div>
+        </nav>
+        <p id="copyright">Copyright © 2025 <a href="/" class="no-underline" aria-label="Go to Pranav R's homepage">Pranav R</a> - All rights reserved.</p>
+    </footer>
+    <script src="main.js"></script>
+</body>
+</html>
