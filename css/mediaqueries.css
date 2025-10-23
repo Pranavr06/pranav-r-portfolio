@@ -113,16 +113,13 @@
   .contact-info-upper-container {
     gap: 1rem;         /* Space between Gmail & LinkedIn blocks */
   }
-  .contact-info-upper-container {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
   
   .contact-info-container {
     margin: 0.5rem 0;
   }
-  .contact-info-container .contact-text, /* More specific targeting for contact text */
-  .nav-links li a {
+  .contact-info-container p,
+  .nav-links li a,
+  .menu-links span {
     font-size: 1rem; /* This was a bug, should be on .menu-links a */
   }
   .btn {
@@ -149,7 +146,7 @@
     font-size: 1.25rem;
   }
   .title {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   .text-container {
     text-align: justify;
@@ -195,7 +192,12 @@
 
   /* Contact form on small screens */
   #contact-form {
-    padding: 1.5rem; /* Consistent with blog.css */
+    padding: 2rem;
+    width: 90%;
+  }
+  .form-group input,
+  .form-group textarea {
+    padding: 1rem;
   }
 
   .arrow {
