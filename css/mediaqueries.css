@@ -192,8 +192,8 @@
 
   /* Contact form on small screens */
   #contact-form {
-    padding: 2rem;
-    width: 90%;
+    padding: 2rem 1.5rem; /* Adjust horizontal padding */
+    width: 80%; /* Reduce form width on small screens */
   }
   .form-group input,
   .form-group textarea {
