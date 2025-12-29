@@ -85,31 +85,15 @@ nav {
 }
 
 .logo {
-    font-size: 2rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    letter-spacing: -1px;
-    color: black;
-}
-
-body.dark-theme .logo {
-    color: white;
+    height: 2rem;
+    width: auto;
 }
 
 .logo:hover {
-    cursor: default;
+    cursor: pointer;
 }
 
-.check-icon {
-    width: 24px;
-    height: 24px;
-    margin-left: 8px;
-    vertical-align: middle;
-    filter: invert(0);
-}
-
-body.dark-theme .check-icon {
+body.dark-theme .logo {
     filter: invert(1);
 }
 
@@ -236,6 +220,10 @@ section {
 .filter-container {
     text-align: center;
     margin: 1rem 0 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
 
 #certificate-filter {
@@ -341,6 +329,97 @@ body.dark-theme .achievement-highlight {
     display: none;
 }
 
+/* MENU STYLES */
+.details-container {
+    position: relative; /* Ensure absolute children are relative to this */
+}
+
+.menu-container {
+    position: relative;
+    display: inline-block;
+}
+
+.details-container .menu-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-text);
+    transition: background-color 0.3s;
+}
+
+body.dark-theme .menu-btn {
+    color: var(--dark-text);
+}
+
+.menu-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+body.dark-theme .menu-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.options-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: var(--light-bg);
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+    min-width: 140px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.options-menu.open {
+    display: flex;
+}
+
+body.dark-theme .options-menu {
+    background-color: #2d2d2d;
+    border-color: #555;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.menu-option {
+    background: none;
+    border: none;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--light-text);
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+body.dark-theme .menu-option {
+    color: var(--dark-text);
+}
+
+.menu-option:hover {
+    background-color: #f0f0f0;
+}
+
+body.dark-theme .menu-option:hover {
+    background-color: #3a3a3a;
+}
+
 /* CERTIFICATE CARDS - Reused and adapted from index.css */
 .experience-details-container {
     max-width: 1200px;
@@ -367,6 +446,10 @@ body.dark-theme .achievement-highlight {
 .details-container:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.details-container:has(.options-menu.open) {
+    z-index: 20; /* Ensure the active card's menu appears above others */
 }
 
 body.dark-theme .details-container {
@@ -645,4 +728,80 @@ footer p {
 /* Apply the animation to the main content area */
 #main-content {
   animation: gentle-fade-in 0.7s ease-out forwards;
+}
+
+/* TOAST NOTIFICATION */
+.toast-notification {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background-color: rgba(30, 30, 30, 0.95);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.toast-notification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+body.dark-theme .toast-notification {
+    background-color: rgba(240, 240, 240, 0.95);
+    color: #1a1a1a;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+/* ACCESSIBLE TOOLTIPS */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-5px);
+    background-color: rgba(30, 30, 30, 0.9);
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-bottom: 5px;
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:focus-visible::before {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+body.dark-theme [data-tooltip]::before {
+    background-color: rgba(220, 220, 220, 0.9);
+    color: #000;
+    box-shadow: 0 2px 5px rgba(255,255,255,0.1);
+}
+
+@media (hover: none), screen and (max-width: 600px) {
+    [data-tooltip]::before {
+        display: none;
+    }
 }

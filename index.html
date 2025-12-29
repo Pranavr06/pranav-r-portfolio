@@ -60,7 +60,9 @@
 </head>
 <body>
     <nav id="desktop-nav">
-        <div class="logo">PRANAV R<img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/></div>
+        <a href="/" class="logo-link" aria-label="Go to homepage">
+            <img src="./assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
         <div>
             <ul class="nav-links">
                 <li><a href="#about" aria-label="Go to About section">About</a></li>
@@ -70,14 +72,16 @@
                 <li><a href="#testimonials" aria-label="Go to Testimonials section">Testimonials</a></li>
                 <li><a href="#blog" aria-label="Go to Blog section">Blog</a></li>
                 <li><a href="#contact" aria-label="Go to Contact section">Contact</a></li>
-                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme">🌞</button></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
             </ul>
         </div>
     </nav>
     <nav id="hamburger-nav">
-        <div class="logo">PRANAV R<img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/></div>
+        <a href="/" class="logo-link" aria-label="Go to homepage">
+            <img src="./assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
         <div class="hamburger-menu">
-            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle mobile navigation menu" aria-expanded="false">     
+            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle mobile navigation menu" aria-expanded="false" data-tooltip="Menu">     
                 <span></span>
                 <span></span>
                 <span></span>
@@ -91,7 +95,7 @@
                     <li><a href="#testimonials" class="menu-item" aria-label="Go to Testimonials section">Testimonials</a></li>
                     <li><a href="#blog" class="menu-item" aria-label="Go to Blog section">Blog</a></li>
                     <li><a href="#contact" class="menu-item" aria-label="Go to Contact section">Contact</a></li>
-                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme">🌞</button></li>
+                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
                 </ul>
             </div>
         </div>
@@ -110,16 +114,16 @@
                     <a href="#contact" class="btn btn-color-2" aria-label="Go to contact information">Contact Info</a>
                 </div>
                 <div id="socials-container">
-                    <a href="https://www.linkedin.com/in/pranavr06/" target="_blank" rel="noopener noreferrer" aria-label="Visit Pranav R's LinkedIn profile">
+                    <a href="https://www.linkedin.com/in/pranavr06/" target="_blank" rel="noopener noreferrer" aria-label="Visit Pranav R's LinkedIn profile" data-tooltip="LinkedIn">
                         <img src="./assets/linkedin.png" alt="LinkedIn profile icon" class="icon social-link" loading="lazy"/>
                     </a>
-                    <a href="https://github.com/PranavR06" target="_blank" rel="noopener noreferrer" aria-label="Visit Pranav R's GitHub profile">
+                    <a href="https://github.com/PranavR06" target="_blank" rel="noopener noreferrer" aria-label="Visit Pranav R's GitHub profile" data-tooltip="GitHub">
                         <img src="./assets/github.png" alt="GitHub profile icon" class="icon social-link" loading="lazy"/>
                     </a>
                 </div>
             </div>
             <a href="#about" class="scroll-down-link" aria-label="Scroll to about section">
-                <img src="./assets/arrow.png" alt="Scroll down to about section" class="icon arrow scroll-down" data-href="#about" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to about section" class="icon arrow scroll-down" data-href="#about" loading="lazy" title="Scroll down"/>
             </a>
         </section>
         <section id="about" class="fade-in-section">
@@ -148,7 +152,7 @@
                 </div>
             </div>
             <a href="#experience" class="scroll-down-link" aria-label="Scroll to experience section">
-                <img src="./assets/arrow.png" alt="Scroll down to experience section" class="icon arrow scroll-down" data-href="#experience" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to experience section" class="icon arrow scroll-down" data-href="#experience" loading="lazy" title="Scroll down"/>
             </a>
         </section>
         <section id="experience" class="fade-in-section">
@@ -252,7 +256,7 @@
                 </div>
             </div>
             <a href="#certificate" class="scroll-down-link" aria-label="Scroll to certificates section">
-                <img src="./assets/arrow.png" alt="Scroll down to certificates section" class="icon arrow scroll-down" data-href="#certificate" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to certificates section" class="icon arrow scroll-down" data-href="#certificate" loading="lazy" title="Scroll down"/>
             </a>
         </section>
         <section id="certificate" class="fade-in-section">
@@ -261,6 +265,16 @@
             <div class="experience-details-container">
                 <div class="about-containers">
                     <article class="details-container color-container">
+                        <div class="menu-container">
+                            <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                            </button>
+                            <div class="options-menu">
+                                <button class="menu-option btn-copy-link">Copy Link</button>
+                                <button class="menu-option btn-share">Share</button>
+                                <button class="menu-option btn-download-pdf">Download PDF</button>
+                            </div>
+                        </div>
                         <div class="article-container">
                             <img src="./assets/AIC-logo.png" alt="AIC Nitte Logo - Atal Incubation Centre" class="certificate-logo" loading="lazy"/>
                         </div>
@@ -276,6 +290,16 @@
                         </div>
                     </article>
                     <article class="details-container color-container">
+                        <div class="menu-container">
+                            <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                            </button>
+                            <div class="options-menu">
+                                <button class="menu-option btn-copy-link">Copy Link</button>
+                                <button class="menu-option btn-share">Share</button>
+                                <button class="menu-option btn-download-pdf">Download PDF</button>
+                            </div>
+                        </div>
                         <div class="article-container">
                             <img src="./assets/python-logo.png" alt="Python course logo" class="certificate-logo" loading="lazy"/>
                         </div>
@@ -292,6 +316,16 @@
                         </div>
                     </article>
                     <article class="details-container color-container">
+                        <div class="menu-container">
+                            <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                            </button>
+                            <div class="options-menu">
+                                <button class="menu-option btn-copy-link">Copy Link</button>
+                                <button class="menu-option btn-share">Share</button>
+                                <button class="menu-option btn-download-pdf">Download PDF</button>
+                            </div>
+                        </div>
                         <div class="article-container">
                             <img src="./assets/microsoft-logo.png" alt="Microsoft logo" class="certificate-logo" loading="lazy"/>
                         </div>
@@ -312,7 +346,7 @@
                 <a href="/certificate.html" class="btn btn-color-2 view-more" aria-label="View more certificates">View more</a>
             </div>
             <a href="#projects" class="scroll-down-link" aria-label="Scroll to projects section">
-                <img src="./assets/arrow.png" alt="Scroll down to projects section" class="icon arrow scroll-down" data-href="#projects" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to projects section" class="icon arrow scroll-down" data-href="#projects" loading="lazy" title="Scroll down"/>
             </a>
         </section>
         <section id="projects" class="fade-in-section">
@@ -321,7 +355,18 @@
             <div class="experience-details-container">
                 <div class="project-grid">
                     <article class="details-container color-container" data-status="completed">
-                        <div class="status-tag status-completed">Completed</div>
+                        <div class="menu-container">
+                            <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                            </button>
+                            <div class="options-menu">
+                                <button class="menu-option btn-copy-link">Copy Link</button>
+                                <button class="menu-option btn-share">Share</button>
+                            </div>
+                        </div>
+                        <div class="status-wrapper">
+                            <div class="status-tag status-completed">Completed</div>
+                        </div>
                         <figure>
                             <img src="./assets/project-1.png" alt="3D Aircraft Model project by Pranav R" class="project-img" loading="lazy"/>
                             <figcaption><h2 class="experience-sub-title project-title">3D Aircraft Model</h2></figcaption>
@@ -336,7 +381,18 @@
                         </div>
                     </article>
                     <article class="details-container color-container" data-status="in-progress">
-                        <div class="status-tag status-in-progress">In Progress</div>
+                        <div class="menu-container">
+                            <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                            </button>
+                            <div class="options-menu">
+                                <button class="menu-option btn-copy-link">Copy Link</button>
+                                <button class="menu-option btn-share">Share</button>
+                            </div>
+                        </div>
+                        <div class="status-wrapper">
+                            <div class="status-tag status-in-progress">In Progress</div>
+                        </div>
                         <figure>
                             <img src="./assets/project-4.png" alt="Promotional banner for the PassGuard project, indicating it is a work in progress" class="project-img" loading="lazy"/>
                             <figcaption><h2 class="experience-sub-title project-title">PassGuard</h2></figcaption>
@@ -351,7 +407,18 @@
                         </div>
                     </article>
                     <article class="details-container color-container" data-status="planned">
-                        <div class="status-tag status-planned">Planned</div>
+                        <div class="menu-container">
+                            <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                            </button>
+                            <div class="options-menu">
+                                <button class="menu-option btn-copy-link">Copy Link</button>
+                                <button class="menu-option btn-share">Share</button>
+                            </div>
+                        </div>
+                        <div class="status-wrapper">
+                            <div class="status-tag status-planned">Planned</div>
+                        </div>
                         <figure>
                             <img src="./assets/stay-tuned.png" alt="Placeholder image for Sentiment Analysis AI project" class="project-img" loading="lazy"/>
                             <figcaption><h2 class="experience-sub-title project-title">Sentiment Analysis AI</h2></figcaption>
@@ -371,7 +438,7 @@
                 <a href="/projects.html" class="btn btn-color-2 view-more" aria-label="View more projects">View more</a>
             </div>
             <a href="#testimonials" class="scroll-down-link" aria-label="Scroll to testimonials section">
-                <img src="./assets/arrow.png" alt="Scroll down to testimonials section" class="icon arrow scroll-down" data-href="#testimonials" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to testimonials section" class="icon arrow scroll-down" data-href="#testimonials" loading="lazy" title="Scroll down"/>
             </a>
         </section>
         <section id="testimonials" class="fade-in-section">
@@ -385,8 +452,19 @@
                     <figcaption class="testimonial-author">
                         <img src="./assets/client-1.png" alt="Profile photo of Shreyas J Aradhya" class="author-img" loading="lazy"/>
                         <div class="author-info">
-                            <h3>Shreyas J Aradhya</h3>
-                            <p class="author-title">Peer, ECE'28, NMAMIT</p>
+                            <div class="author-text">
+                                <h3>Shreyas J Aradhya</h3>
+                                <p class="author-title">Peer, ECE'28, NMAMIT</p>
+                            </div>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
                         </div>
                     </figcaption>
                 </figure>
@@ -397,8 +475,19 @@
                     <figcaption class="testimonial-author">
                         <img src="./assets/client-2.png" alt="Profile photo of Pramukh A Nayak" class="author-img" loading="lazy"/>
                         <div class="author-info">
-                            <h3>Pramukh A Nayak</h3>
-                            <p class="author-title">Peer, ISE'28, NMAMIT</p>
+                            <div class="author-text">
+                                <h3>Pramukh A Nayak</h3>
+                                <p class="author-title">Peer, ISE'28, NMAMIT</p>
+                            </div>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
                         </div>
                     </figcaption>
                 </figure>
@@ -409,8 +498,19 @@
                     <figcaption class="testimonial-author">
                         <img src="./assets/client-3.png" alt="Profile photo of Dr. Esha M" class="author-img" loading="lazy"/>
                         <div class="author-info">
-                            <h3>Dr. Esha M</h3>
-                            <p class="author-title">Educator</p>
+                            <div class="author-text">
+                                <h3>Dr. Esha M</h3>
+                                <p class="author-title">Educator</p>
+                            </div>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
                         </div>
                     </figcaption>
                 </figure>
@@ -419,7 +519,7 @@
                 <a href="/testimonials.html" class="btn btn-color-2 view-more" aria-label="View more testimonials">View more</a>
             </div>
             <a href="#blog" class="scroll-down-link" aria-label="Scroll to blog section">
-                <img src="./assets/arrow.png" alt="Scroll down to blog section" class="icon arrow scroll-down" data-href="#blog" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to blog section" class="icon arrow scroll-down" data-href="#blog" loading="lazy" title="Scroll down"/>
             </a>
         </section>
         <section id="blog" class="fade-in-section">
@@ -427,39 +527,77 @@
             <h2 class="title">Blog</h2>
             <div class="blog-grid-container">
                 <article class="blog-card">
-                    <img src="./assets/blog-1.png" alt="Illustration for a web development guide" class="blog-img" loading="lazy"/>
+                    <div class="blog-card-header">
+                        <img src="./assets/blog-5.png" alt="Illustration about green technology and energy conservation" class="blog-img" loading="lazy"/>
+                        <h2 class="blog-title">Tech for Good: How Software Can Drive Energy Conservation</h2>
+                    </div>
                     <div class="blog-content">
                         <div class="blog-metadata">
-                            <span class="blog-category">Web Development</span>
-                            <span class="blog-date">August 21, 2025</span>
+                            <span class="blog-category">Sustainability</span>
+                            <span>12 min read &bull; <span class="blog-date">December 21, 2025</span></span>
                         </div>
-                        <h2 class="blog-title">Getting Started with Web Development</h2>
-                        <p class="blog-excerpt">A beginner-friendly guide to learning the fundamentals of HTML, CSS, and JavaScript to build and launch your very first website.</p>
-                        <a href="/blog/web-development-guide.html" class="blog-link" aria-label="Read more about Getting Started with Web Development">Read More &rarr;</a>
+                        <p class="blog-excerpt">Discover how clean code, IoT, and smart design can drive energy conservation. A developer's perspective on building sustainable technology.</p>
+                        <div class="blog-footer">
+                            <a href="/blog/tech-for-good-energy-conservation.html" class="blog-link" aria-label="Read more about Tech for Good: How Software Can Drive Energy Conservation">Read More &rarr;</a>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </article>
                 <article class="blog-card">
-                    <img src="./assets/blog-2.png" alt="Illustration about the importance of cybersecurity" class="blog-img" loading="lazy"/>
+                    <div class="blog-card-header">
+                        <img src="./assets/blog-4.png" alt="Illustration about UI/UX principles" class="blog-img" loading="lazy"/>
+                        <h2 class="blog-title">Essential UI/UX Principles for Developers</h2>
+                    </div>
                     <div class="blog-content">
                         <div class="blog-metadata">
-                            <span class="blog-category">Cybersecurity</span>
-                            <span class="blog-date">September 21, 2025</span>
+                            <span class="blog-category">Design</span>
+                            <span>12 min read &bull; <span class="blog-date">November 21, 2025</span></span>
                         </div>
-                        <h2 class="blog-title">The Importance of Cybersecurity</h2>
-                        <p class="blog-excerpt">An exploration of basic security principles, why they are crucial for every developer, and simple steps to protect your projects.</p>
-                        <a href="/blog/cybersecurity-importance.html" class="blog-link" aria-label="Read more about The Importance of Cybersecurity">Read More &rarr;</a>
+                        <p class="blog-excerpt">You don't need to be a designer to build beautiful apps. Learn Essential UI/UX principles to improve your front-end projects today.</p>
+                        <div class="blog-footer">
+                            <a href="/blog/ui-ux-principles-for-devs.html" class="blog-link" aria-label="Read more about Essential UI/UX Principles for Developers">Read More &rarr;</a>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </article>
                 <article class="blog-card">
-                    <img src="./assets/blog-3.png" alt="Illustration for a Git and GitHub guide" class="blog-img" loading="lazy"/>
+                    <div class="blog-card-header">
+                        <img src="./assets/blog-3.png" alt="Illustration for a Git and GitHub guide" class="blog-img" loading="lazy"/>
+                        <h2 class="blog-title">Mastering the Basics of Git &amp; GitHub</h2>
+                    </div>
                     <div class="blog-content">
                          <div class="blog-metadata">
                             <span class="blog-category">Developer Tools</span>
-                            <span class="blog-date">October 20, 2025</span>
+                            <span>13 min read &bull; <span class="blog-date">October 21, 2025</span></span>
                         </div>
-                        <h2 class="blog-title">Mastering the Basics of Git & GitHub</h2>
                         <p class="blog-excerpt">Unlock the power of version control. This post breaks down the essential Git commands and collaboration workflows on GitHub.</p>
-                        <a href="/blog/git-and-github-basics.html" class="blog-link" aria-label="Read more about Mastering the Basics of Git & GitHub">Read More &rarr;</a>
+                        <div class="blog-footer">
+                            <a href="/blog/git-and-github-basics.html" class="blog-link" aria-label="Read more about Mastering the Basics of Git & GitHub">Read More &rarr;</a>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
                     </div>
                 </article>
             </div>
@@ -467,7 +605,7 @@
                 <a href="/blog.html" class="btn btn-color-2 view-more" aria-label="View more blog posts">View more</a>
             </div>
             <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section">
-                <img src="./assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" data-href="#contact" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" data-href="#contact" loading="lazy" title="Scroll down"/>
             </a>
         </section>
         <section id="contact" class="fade-in-section">
@@ -512,7 +650,7 @@
                 </div>
             </div>
             <a href="#desktop-nav" class="scroll-up-link" aria-label="Scroll to top of page">
-                <img src="./assets/arrow-invert.png" alt="Scroll to top of page" class="icon arrow scroll-up" data-href="#desktop-nav" loading="lazy"/>
+                <img src="./assets/arrow-invert.png" alt="Scroll to top of page" class="icon arrow scroll-up" data-href="#desktop-nav" loading="lazy" title="Scroll to top"/>
             </a>
         </section>
     </main>
@@ -530,7 +668,7 @@
                 </ul>
             </div>
         </nav>
-        <p id="copyright">Copyright © 2025 <a href="#profile" class="no-underline" aria-label="Go to Pranav R's profile section">Pranav R</a> - All rights reserved.</p>
+        <p id="copyright">Copyright © 2025 <a href="/" class="no-underline" aria-label="Go to Pranav R's homepage">Pranav R</a> - All rights reserved.</p>
     </footer>
     <script src="main.js"></script>
 </body>

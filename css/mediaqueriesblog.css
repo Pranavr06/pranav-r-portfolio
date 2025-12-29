@@ -31,6 +31,18 @@
     .post-content h2 {
         font-size: 1.8rem;
     }
+    .post-content h3 {
+        font-size: 1.5rem;
+    }
+    .blog-banner {
+        height: 300px;
+    }
+    .banner-title {
+        font-size: 2.8rem;
+    }
+    .toc-title {
+        font-size: 1.4rem !important;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -43,6 +55,9 @@
     }
     .featured-img {
         max-width: 100%;
+    }
+    .blog-banner {
+        height: 250px;
     }
     .post-content {
         font-size: 1rem;
@@ -85,5 +100,14 @@
     }
     .post-content h2 {
         font-size: 1.6rem;
+    }
+    .post-content h3 {
+        font-size: 1.4rem;
+    }
+    .banner-title {
+        font-size: 2.2rem;
+    }
+    .toc-title {
+        font-size: 1.3rem !important;
     }
 }

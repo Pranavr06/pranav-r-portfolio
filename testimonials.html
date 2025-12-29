@@ -111,22 +111,22 @@
 </head>
 <body>
     <nav id="desktop-nav">
-        <div class="logo">PRANAV R
-            <img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/>
-        </div>
+        <a href="/" class="logo-link" aria-label="Go to homepage">
+            <img src="./assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
         <div>
             <ul class="nav-links">
                 <li><a href="/" aria-label="Go to homepage">Home</a></li>
-                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme">🌞</button></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
             </ul>
         </div>
     </nav>
     <nav id="hamburger-nav">
-        <div class="logo">PRANAV R
-            <img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/>
-        </div>
+        <a href="/" class="logo-link" aria-label="Go to homepage">
+            <img src="./assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
         <div class="hamburger-menu">
-            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
+            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false" data-tooltip="Menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -134,7 +134,7 @@
             <div class="menu-links">
                 <ul>
                     <li><a href="/" class="menu-item" aria-label="Go to homepage">Home</a></li>
-                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme">🌞</button></li>
+                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
                 </ul>
             </div>
         </div>
@@ -144,58 +144,119 @@
         <section id="testimonials" class="fade-in-section mobile-spacing">
             <p class="section__text__p1">What Others Say</p>
             <h1 class="title">Testimonials for Pranav R</h1>
+            <div class="filter-container">
+                <label for="testimonial-filter" class="visually-hidden">Filter Testimonials</label>
+                <select id="testimonial-filter">
+                    <option value="all">All</option>
+                    <option value="peer">Peers</option>
+                    <option value="educator">Educators</option>
+                </select>
+                <div class="menu-container page-menu">
+                    <button class="menu-btn" aria-label="More options" data-tooltip="More options">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                    </button>
+                    <div class="options-menu">
+                        <button class="menu-option btn-copy-link">Copy Link</button>
+                        <button class="menu-option btn-share">Share</button>
+                    </div>
+                </div>
+            </div>
             <div class="testimonial-grid-container">
-                <figure class="testimonial-card">
+                <figure class="testimonial-card" id="testimonial-shreyas" data-status="peer">
                     <blockquote>
                         <p>"Pranav R is a highly motivated and skilled individual. His dedication to learning new technologies and solving complex problems is truly impressive."</p>
                     </blockquote>
                     <figcaption class="testimonial-author">
                         <img src="./assets/client-1.png" alt="Profile photo of Shreyas J Aradhya" class="author-img" loading="lazy"/>
                         <div class="author-info">
-                            <h3>Shreyas J Aradhya</h3>
-                            <p class="author-title">Peer, ECE'28, NMAMIT</p>
+                            <div class="author-text">
+                                <h3>Shreyas J Aradhya</h3>
+                                <p class="author-title">Peer, ECE'28, NMAMIT</p>
+                            </div>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
                         </div>
                     </figcaption>
                 </figure>
-                <figure class="testimonial-card">
+                <figure class="testimonial-card" id="testimonial-pramukh" data-status="peer">
                     <blockquote>
                         <p>"Working with Pranav R on a project was a great experience. He's a quick learner, an excellent communicator, and a valuable team player who consistently delivers high-quality work."</p>
                     </blockquote>
                     <figcaption class="testimonial-author">
                         <img src="./assets/client-2.png" alt="Profile photo of Pramukh A Nayak" class="author-img" loading="lazy"/>
                         <div class="author-info">
-                            <h3>Pramukh A Nayak</h3>
-                            <p class="author-title">Peer, ISE'28, NMAMIT</p>
+                            <div class="author-text">
+                                <h3>Pramukh A Nayak</h3>
+                                <p class="author-title">Peer, ISE'28, NMAMIT</p>
+                            </div>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
                         </div>
                     </figcaption>
                 </figure>
-                <figure class="testimonial-card">
+                <figure class="testimonial-card" id="testimonial-esha" data-status="educator">
                     <blockquote>
                         <p>"His analytical skills and creative approach to problem-solving are top-notch. Pranav R is an asset to any team he joins."</p>
                     </blockquote>
                     <figcaption class="testimonial-author">
                         <img src="./assets/client-3.png" alt="Profile photo of Dr. Esha M" class="author-img" loading="lazy"/>
                         <div class="author-info">
-                            <h3>Dr. Esha M</h3>
-                            <p class="author-title">Educator</p>
+                            <div class="author-text">
+                                <h3>Dr. Esha M</h3>
+                                <p class="author-title">Educator</p>
+                            </div>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
                         </div>
                     </figcaption>
                 </figure>
-                <figure class="testimonial-card">
+                <figure class="testimonial-card" id="testimonial-prathwik" data-status="peer">
                     <blockquote>
                         <p>"During his internship, Pranav R showed remarkable initiative and a strong grasp of technical concepts. He's a dedicated individual with a bright future ahead."</p>
                     </blockquote>
                     <figcaption class="testimonial-author">
                         <img src="./assets/client-4.png" alt="Profile photo of Rohan Gupta" class="author-img" loading="lazy"/>
                         <div class="author-info">
-                            <h3>Prathwik Shetty</h3>
-                            <p class="author-title">Peer, ISE'28, NMAMIT</p>
+                            <div class="author-text">
+                                <h3>Prathwik Shetty</h3>
+                                <p class="author-title">Peer, ISE'28, NMAMIT</p>
+                            </div>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
                         </div>
                     </figcaption>
                 </figure>
             </div>
             <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section" data-href="#contact">
-                <img src="./assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" loading="lazy" title="Scroll down"/>
             </a>
         </section>
 
@@ -241,7 +302,7 @@
                 </div>
             </div>
             <a href="#desktop-nav" class="scroll-up-link" aria-label="Scroll to top of page" data-href="#desktop-nav">
-                <img src="./assets/arrow-invert.png" alt="Scroll to top of page" class="icon arrow scroll-up" loading="lazy"/>
+                <img src="./assets/arrow-invert.png" alt="Scroll to top of page" class="icon arrow scroll-up" loading="lazy" title="Scroll to top"/>
             </a>
         </section>
     </main>

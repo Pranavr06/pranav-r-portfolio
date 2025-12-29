@@ -96,6 +96,9 @@
   .btn-container {
     flex-wrap: wrap;
   }
+  .filter-container {
+    flex-wrap: wrap;
+  }
 
   /* Ensure single-button containers don't wrap */
   .view-more-container,

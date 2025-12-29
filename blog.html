@@ -79,7 +79,7 @@
           "description": "Unlock the power of version control. This post breaks down the essential Git commands and collaboration workflows on GitHub.",
           "image": "https://pranavr.netlify.app/assets/blog-3.png",
           "author": { "@type": "Person", "name": "Pranav R" },
-          "datePublished": "2025-10-20",
+          "datePublished": "2025-10-21",
           "keywords": "Git, GitHub, version control, developer tools"
         },
         {
@@ -92,8 +92,22 @@
           "description": "You don't need to be a designer to build beautiful apps. Learn Essential UI/UX principles to improve your front-end projects today.",
           "image": "https://pranavr.netlify.app/assets/blog-4.png",
           "author": { "@type": "Person", "name": "Pranav R" },
-          "datePublished": "2025-10-21",
+          "datePublished": "2025-11-21",
           "keywords": "UI/UX, design principles, front-end development"
+        }
+        ,
+        {
+          "@type": "BlogPosting",
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://pranavr.netlify.app/blog/tech-for-good-energy-conservation.html"
+          },
+          "headline": "Tech for Good: How Software Can Drive Energy Conservation",
+          "description": "Discover how clean code, IoT, and smart design can drive energy conservation. A developer's perspective on building sustainable technology.",
+          "image": "https://pranavr.netlify.app/assets/blog-5.png",
+          "author": { "@type": "Person", "name": "Pranav R" },
+          "datePublished": "2025-12-21",
+          "keywords": "green coding, energy conservation, sustainable technology, IoT"
         }
       ]
     }
@@ -105,22 +119,22 @@
 </head>
 <body>
     <nav id="desktop-nav">
-        <div class="logo">PRANAV R
-            <img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/>
-        </div>
+        <a href="/" class="logo-link" aria-label="Go to homepage">
+            <img src="./assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
         <div>
             <ul class="nav-links">
                 <li><a href="/" aria-label="Go to homepage">Home</a></li>
-                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme">🌞</button></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
             </ul>
         </div>
     </nav>
     <nav id="hamburger-nav">
-        <div class="logo">PRANAV R
-            <img src="./assets/checkmark.png" alt="Verified badge" class="check-icon" loading="lazy"/>
-        </div>
+        <a href="/" class="logo-link" aria-label="Go to homepage">
+            <img src="./assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
         <div class="hamburger-menu">
-            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false">
+            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false" data-tooltip="Menu">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -128,7 +142,7 @@
             <div class="menu-links">
                 <ul>
                     <li><a href="/" class="menu-item" aria-label="Go to homepage">Home</a></li>
-                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme">🌞</button></li>
+                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
                 </ul>
             </div>
         </div>
@@ -138,58 +152,153 @@
         <section id="blog" class="fade-in-section mobile-spacing">
             <p class="section__text__p1">My Insights & Articles</p>
             <h1 class="title">Pranav R's Blog</h1>
+            <div class="filter-container">
+                <label for="blog-filter" class="visually-hidden">Filter Blog Posts</label>
+                <select id="blog-filter">
+                    <option value="latest">Latest</option>
+                    <option value="popular">Popular</option>
+                    <option value="old">Oldest</option>
+                    <option value="all">All</option>
+                </select>
+                <div class="menu-container page-menu">
+                    <button class="menu-btn" aria-label="More options" data-tooltip="More options">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                    </button>
+                    <div class="options-menu">
+                        <button class="menu-option btn-copy-link">Copy Link</button>
+                        <button class="menu-option btn-share">Share</button>
+                    </div>
+                </div>
+            </div>
             <div class="blog-grid-container">
-                <article class="blog-card">
-                    <img src="./assets/blog-1.png" alt="Illustration for a web development guide" class="blog-img" loading="lazy"/>
+                <article class="blog-card" id="web-dev-guide-post" data-date="2025-08-21">
+                    <div class="blog-card-header">
+                        <img src="./assets/blog-1.png" alt="Illustration for a web development guide" class="blog-img" loading="lazy"/>
+                        <h2 class="blog-title">Getting Started with Web Development</h2>
+                    </div>
                     <div class="blog-content">
                         <div class="blog-metadata">
                             <span class="blog-category">Web Development</span>
-                            <span class="blog-date">August 21, 2025</span>
+                            <span>13 min read &bull; <span class="blog-date">August 21, 2025</span></span>
                         </div>
-                        <h2 class="blog-title">Getting Started with Web Development</h2>
                         <p class="blog-excerpt">A beginner-friendly guide to learning the fundamentals of HTML, CSS, and JavaScript to build and launch your very first website.</p>
-                        <a href="/blog/web-development-guide.html" class="blog-link" aria-label="Read more about Getting Started with Web Development">Read More &rarr;</a>
+                        <div class="blog-footer">
+                            <a href="/blog/web-development-guide.html" class="blog-link" aria-label="Read more about Getting Started with Web Development">Read More &rarr;</a>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </article>
-                <article class="blog-card">
-                    <img src="./assets/blog-2.png" alt="Illustration about the importance of cybersecurity" class="blog-img" loading="lazy"/>
+                <article class="blog-card" id="cybersecurity-post" data-date="2025-09-21">
+                    <div class="blog-card-header">
+                        <img src="./assets/blog-2.png" alt="Illustration about the importance of cybersecurity" class="blog-img" loading="lazy"/>
+                        <h2 class="blog-title">The Importance of Cybersecurity</h2>
+                    </div>
                     <div class="blog-content">
                          <div class="blog-metadata">
                             <span class="blog-category">Cybersecurity</span>
-                            <span class="blog-date">September 21, 2025</span>
+                            <span>12 min read &bull; <span class="blog-date">September 21, 2025</span></span>
                         </div>
-                        <h2 class="blog-title">The Importance of Cybersecurity</h2>
                         <p class="blog-excerpt">An exploration of basic security principles, why they are crucial for every developer, and simple steps to protect your projects.</p>
-                        <a href="/blog/cybersecurity-importance.html" class="blog-link" aria-label="Read more about The Importance of Cybersecurity">Read More &rarr;</a>
+                        <div class="blog-footer">
+                            <a href="/blog/cybersecurity-importance.html" class="blog-link" aria-label="Read more about The Importance of Cybersecurity">Read More &rarr;</a>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </article>
-                <article class="blog-card">
-                    <img src="./assets/blog-3.png" alt="Illustration for a Git and GitHub guide" class="blog-img" loading="lazy"/>
+                <article class="blog-card" id="git-github-post" data-date="2025-10-21" data-popular="true">
+                    <div class="blog-card-header">
+                        <img src="./assets/blog-3.png" alt="Illustration for a Git and GitHub guide" class="blog-img" loading="lazy"/>
+                        <h2 class="blog-title">Mastering the Basics of Git &amp; GitHub</h2>
+                    </div>
                     <div class="blog-content">
                          <div class="blog-metadata">
                             <span class="blog-category">Developer Tools</span>
-                            <span class="blog-date">October 20, 2025</span>
+                            <span>13 min read &bull; <span class="blog-date">October 21, 2025</span></span>
                         </div>
-                        <h2 class="blog-title">Mastering the Basics of Git & GitHub</h2>
                         <p class="blog-excerpt">Unlock the power of version control. This post breaks down the essential Git commands and collaboration workflows on GitHub.</p>
-                        <a href="/blog/git-and-github-basics.html" class="blog-link" aria-label="Read more about Mastering the Basics of Git & GitHub">Read More &rarr;</a>
+                        <div class="blog-footer">
+                            <a href="/blog/git-and-github-basics.html" class="blog-link" aria-label="Read more about Mastering the Basics of Git & GitHub">Read More &rarr;</a>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </article>
-                 <article class="blog-card">
-                    <img src="./assets/blog-4.png" alt="Illustration about UI/UX principles" class="blog-img" loading="lazy"/>
+                 <article class="blog-card" id="ui-ux-post" data-date="2025-11-21" data-popular="true">
+                    <div class="blog-card-header">
+                        <img src="./assets/blog-4.png" alt="Illustration about UI/UX principles" class="blog-img" loading="lazy"/>
+                        <h2 class="blog-title">Essential UI/UX Principles for Developers</h2>
+                    </div>
                     <div class="blog-content">
                          <div class="blog-metadata">
                             <span class="blog-category">Design</span>
-                            <span class="blog-date">October 21, 2025</span>
+                            <span>12 min read &bull; <span class="blog-date">November 21, 2025</span></span>
                         </div>
-                        <h2 class="blog-title">Essential UI/UX Principles for Developers</h2>
                         <p class="blog-excerpt">You don't need to be a designer to build beautiful apps. Learn Essential UI/UX principles to improve your front-end projects today.</p>
-                        <a href="/blog/ui-ux-principles-for-devs.html" class="blog-link" aria-label="Read more about Essential UI/UX Principles for Developers">Read More &rarr;</a>
+                        <div class="blog-footer">
+                            <a href="/blog/ui-ux-principles-for-devs.html" class="blog-link" aria-label="Read more about Essential UI/UX Principles for Developers">Read More &rarr;</a>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="blog-card" id="tech-for-good-post" data-date="2025-12-21" data-popular="false">
+                    <div class="blog-card-header">
+                        <img src="./assets/blog-5.png" alt="Illustration about green technology and energy conservation" class="blog-img" loading="lazy"/>
+                        <h2 class="blog-title">Tech for Good: How Software Can Drive Energy Conservation</h2>
+                    </div>
+                    <div class="blog-content">
+                         <div class="blog-metadata">
+                            <span class="blog-category">Sustainability</span>
+                            <span>12 min read &bull; <span class="blog-date">December 21, 2025</span></span>
+                        </div>
+                        <p class="blog-excerpt">Discover how clean code, IoT, and smart design can drive energy conservation. A developer's perspective on building sustainable technology.</p>
+                        <div class="blog-footer">
+                            <a href="/blog/tech-for-good-energy-conservation.html" class="blog-link" aria-label="Read more about Tech for Good: How Software Can Drive Energy Conservation">Read More &rarr;</a>
+                            <div class="menu-container">
+                                <button class="menu-btn card-menu-btn" aria-label="More options" data-tooltip="More options">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                                </button>
+                                <div class="options-menu">
+                                    <button class="menu-option btn-copy-link">Copy Link</button>
+                                    <button class="menu-option btn-share">Share</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </article>
             </div>
             <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section" data-href="#contact">
-                <img src="./assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" loading="lazy"/>
+                <img src="./assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" loading="lazy" title="Scroll down"/>
             </a>
         </section>
 
@@ -235,7 +344,7 @@
                 </div>
             </div>
             <a href="#desktop-nav" class="scroll-up-link" aria-label="Scroll to top of page" data-href="#desktop-nav">
-                <img src="./assets/arrow-invert.png" alt="Scroll to top of page" class="icon arrow scroll-up" loading="lazy"/>
+                <img src="./assets/arrow-invert.png" alt="Scroll to top of page" class="icon arrow scroll-up" loading="lazy" title="Scroll to top"/>
             </a>
         </section>
     </main>

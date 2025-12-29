@@ -18,13 +18,23 @@ function toggleMenu() {
 }
 
 /**
- * Toggles the website's theme between light and dark mode.
+ * Sets the theme to 'light', 'dark', or 'system'.
+ * @param {string} mode 
  */
-function toggleTheme() {
-    document.body.classList.toggle("dark-theme");
-    const isDark = document.body.classList.contains("dark-theme");
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-    updateThemeIcons(isDark);
+function setTheme(mode) {
+    localStorage.setItem("theme", mode);
+    let isDark = false;
+
+    if (mode === "system") {
+        isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    } else {
+        isDark = mode === "dark";
+    }
+
+    if (isDark) document.body.classList.add("dark-theme");
+    else document.body.classList.remove("dark-theme");
+
+    updateThemeIcons(mode);
 
     // Also toggle syntax highlighting theme
     const lightTheme = document.getElementById('light-theme-highlight');
@@ -33,14 +43,47 @@ function toggleTheme() {
 }
 
 /**
- * Updates the theme toggle icons based on the current theme.
- * @param {boolean} isDark - True if the dark theme is active.
+ * Toggles the website's theme between light, dark, and system mode.
+ * @returns {string} The new theme mode.
  */
-function updateThemeIcons(isDark) {
-    const themeIcon = isDark ? "🌙" : "🌞";
+function toggleTheme() {
+    const currentMode = localStorage.getItem("theme") || "system";
+    let nextMode = "light";
+    
+    if (currentMode === "light") nextMode = "dark";
+    else if (currentMode === "dark") nextMode = "system";
+    
+    setTheme(nextMode);
+    return nextMode;
+}
+
+/**
+ * Updates the theme toggle icons based on the current theme mode.
+ * @param {string} mode - 'light', 'dark', or 'system'
+ */
+function updateThemeIcons(mode) {
+    let icon, titleText;
+    // Detect OS for shortcut text
+    const isMac = typeof navigator !== 'undefined' && /Mac/i.test(navigator.userAgent);
+    const shortcutKey = isMac ? "Cmd + Alt + L" : "Ctrl + Alt + L";
+
+    if (mode === "light") {
+        icon = "🌞";
+        titleText = "Switch to Dark Mode";
+    } else if (mode === "dark") {
+        icon = "🌙";
+        titleText = "Switch to System Theme";
+    } else {
+        icon = "🌓";
+        titleText = "Switch to Light Mode";
+    }
+
+    const themeTitle = `${titleText} (${shortcutKey})`;
     document.querySelectorAll(".theme-toggle").forEach(toggle => {
         if (toggle) {
-            toggle.textContent = themeIcon;
+            toggle.textContent = icon;
+            toggle.setAttribute("data-tooltip", themeTitle);
+            toggle.removeAttribute("title");
         }
     });
 }
@@ -121,10 +164,23 @@ function filterItems(containerSelector, filterValue) {
         item.style.display = isVisible ? 'flex' : 'none';
 
         if (isVisible) {
+            if (item.classList.contains('scale-out-hidden') || item.style.display === 'none') {
+                item.style.display = ''; // Revert to CSS default (flex)
+                void item.offsetWidth; // Force reflow
+                item.classList.remove('scale-out-hidden');
+            }
+
             visibleCount++;
             // Add the category of the visible item to the set
             const category = item.closest('[data-category]')?.dataset.category;
             if (category) visibleCategories.add(category);
+        } else {
+            item.classList.add('scale-out-hidden');
+            setTimeout(() => {
+                if (item.classList.contains('scale-out-hidden')) {
+                    item.style.display = 'none';
+                }
+            }, 500); // Matches CSS transition duration
         }
     });
 
@@ -134,6 +190,52 @@ function filterItems(containerSelector, filterValue) {
     });
 
     if (countSpan) countSpan.textContent = `(${visibleCount})`;
+}
+
+/**
+ * Filters and sorts blog posts based on a filter value.
+ * @param {string} filterValue - The value to filter/sort by ('latest', 'popular', 'old', 'all').
+ */
+function filterBlogPosts(filterValue) {
+    const container = document.querySelector('.blog-grid-container');
+    if (!container) return;
+
+    const allItems = Array.from(container.children);
+    let itemsToShow;
+
+    // 1. Determine which items to show based on filter
+    if (filterValue === 'popular') {
+        itemsToShow = allItems.filter(item => item.dataset.popular === 'true');
+    } else {
+        itemsToShow = allItems; // For 'all', 'latest', 'old', we start with all items
+    }
+
+    // 2. Sort the items that will be shown
+    if (filterValue === 'latest' || filterValue === 'all' || filterValue === 'popular') {
+        itemsToShow.sort((a, b) => new Date(b.dataset.date) - new Date(a.dataset.date));
+    } else if (filterValue === 'old') {
+        itemsToShow.sort((a, b) => new Date(a.dataset.date) - new Date(b.dataset.date));
+    }
+    
+    // 3. Animate and update display for all items
+    allItems.forEach(item => {
+        const shouldShow = itemsToShow.includes(item);
+        if (shouldShow) {
+            if (item.classList.contains('scale-out-hidden') || item.style.display === 'none') {
+                item.style.display = '';
+                void item.offsetWidth;
+                item.classList.remove('scale-out-hidden');
+            }
+        } else {
+            item.classList.add('scale-out-hidden');
+            setTimeout(() => {
+                if (item.classList.contains('scale-out-hidden')) item.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    // 4. Re-order the DOM elements
+    setTimeout(() => itemsToShow.forEach(item => container.appendChild(item)), 100);
 }
 
 /**
@@ -163,21 +265,149 @@ function initCopyCodeButtons() {
     });
 }
 
+/**
+ * Displays a toast notification with a message.
+ * @param {string} message - The message to display.
+ */
+function showToast(message) {
+    let toast = document.querySelector('.toast-notification');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        document.body.appendChild(toast);
+    }
+    
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    // Clear previous timeout if exists to handle rapid clicks
+    if (toast.timeoutId) clearTimeout(toast.timeoutId);
+    
+    toast.timeoutId = setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
+/**
+ * Initializes the "More options" menus for certificates.
+ */
+function initMenus() {
+    document.addEventListener('click', (e) => {
+        const menuBtn = e.target.closest('.menu-btn');
+        const copyBtn = e.target.closest('.btn-copy-link');
+        const shareBtn = e.target.closest('.btn-share');
+        const downloadBtn = e.target.closest('.btn-download-pdf');
+        
+        // Close all open menus if click is outside
+        if (!menuBtn && !e.target.closest('.options-menu')) {
+            document.querySelectorAll('.options-menu.open').forEach(menu => menu.classList.remove('open'));
+            return;
+        }
+
+        if (menuBtn) {
+            e.stopPropagation();
+            const menu = menuBtn.nextElementSibling;
+            // Close others
+            document.querySelectorAll('.options-menu.open').forEach(m => {
+                if (m !== menu) m.classList.remove('open');
+            });
+            menu.classList.toggle('open');
+        }
+
+        if (copyBtn) {
+            const card = copyBtn.closest('.details-container, .testimonial-card, .blog-card');
+            let url = window.location.href.split('#')[0];
+            if (card && card.id) {
+                url += '#' + card.id;
+            }
+            
+            navigator.clipboard.writeText(url).then(() => {
+                showToast('Link copied');
+            });
+            copyBtn.closest('.options-menu').classList.remove('open');
+        }
+
+        if (shareBtn) {
+            const card = shareBtn.closest('.details-container, .testimonial-card, .blog-card');
+            let url = window.location.href.split('#')[0];
+            let title = document.title;
+            let text = `Check out this page from Pranav R's portfolio: ${document.title}`;
+
+            if (card) {
+                if (card.id) url += '#' + card.id;
+
+                if (card.classList.contains('testimonial-card')) {
+                    const authorEl = card.querySelector('.author-info h3');
+                    if (authorEl) {
+                        title = `Testimonial for Pranav R`;
+                        text = `Check out this testimonial for Pranav R from ${authorEl.textContent}!`;
+                    }
+                } else if (card.classList.contains('blog-card')) {
+                    const titleEl = card.querySelector('.blog-title');
+                    if (titleEl) {
+                        title = titleEl.textContent;
+                        text = `Check out the blog post "${title}" on Pranav R's portfolio.`;
+                    }
+                } else { // It's a .details-container
+                    const titleEl = card.querySelector('.project-title');
+                    if (titleEl) {
+                        title = titleEl.textContent;
+                        if (card.closest('#projects')) {
+                            text = `Check out the project "${title}" on Pranav R's portfolio.`;
+                        } else { // Assumes #certificate
+                            text = `Check out the achievement "${title}" on Pranav R's portfolio.`;
+                        }
+                    }
+                }
+            }
+
+            if (navigator.share) {
+                navigator.share({ title, text, url }).catch(console.error);
+            } else {
+                // Fallback to copy link
+                navigator.clipboard.writeText(url).then(() => showToast('Link copied as fallback'));
+            }
+            shareBtn.closest('.options-menu').classList.remove('open');
+        }
+
+        if (downloadBtn) {
+            const card = downloadBtn.closest('.details-container');
+            if (card) {
+                const viewLink = card.querySelector('.btn-container a');
+                const href = viewLink ? viewLink.getAttribute('href') : null;
+                
+                if (href && href !== '#' && href !== '') {
+                    const link = document.createElement('a');
+                    link.href = viewLink.href; // Use absolute URL for download
+                    link.setAttribute('download', ''); // Let browser handle filename
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    showToast('Certificate not available');
+                }
+            }
+            downloadBtn.closest('.options-menu').classList.remove('open');
+        }
+    });
+}
+
 
 // --- Main Script Execution ---
 document.addEventListener("DOMContentLoaded", () => {
     // 1. INITIAL THEME SETUP
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-        document.body.classList.add("dark-theme");
-    }
-    updateThemeIcons(document.body.classList.contains("dark-theme"));
+    const savedTheme = localStorage.getItem("theme") || "system";
+    setTheme(savedTheme);
 
-    // Set initial syntax highlighting theme
-    const lightTheme = document.getElementById('light-theme-highlight');
-    const darkTheme = document.getElementById('dark-theme-highlight');
-    if (lightTheme && darkTheme) [lightTheme.disabled, darkTheme.disabled] = [document.body.classList.contains("dark-theme"), !document.body.classList.contains("dark-theme")];
+    // Listener for system theme changes
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener('change', () => {
+        if (localStorage.getItem("theme") === "system") {
+            setTheme("system");
+        }
+    });
     
     // 2. START TYPING ANIMATION
     if (document.querySelector(".section__text__p2 .typing")) initTypingEffect();
@@ -290,7 +520,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Dynamic Copyright Year
     const copyrightP = document.getElementById('copyright');
     if (copyrightP) {
-        copyrightP.innerHTML = `Copyright © ${new Date().getFullYear()} <a href="#profile" class="no-underline">Pranav R</a> - All rights reserved.`;
+        copyrightP.innerHTML = `Copyright © ${new Date().getFullYear()} <a href="/" class="no-underline" aria-label="Go to Pranav R's homepage">Pranav R</a> - All rights reserved.`;
     }
 
     // Fade-in sections on scroll
@@ -336,6 +566,24 @@ document.addEventListener("DOMContentLoaded", () => {
         filterItems('#projects', 'all'); // Initial call
     }
 
+    // Testimonial Page Filter Logic
+    const testimonialFilter = document.getElementById('testimonial-filter');
+    if (testimonialFilter) {
+        testimonialFilter.addEventListener('change', (e) => filterItems('#testimonials', e.target.value));
+    }
+
+    // Blog Page Filter & Sort Logic
+    const blogFilter = document.getElementById('blog-filter');
+    if (blogFilter) {
+        blogFilter.addEventListener('change', (e) => filterBlogPosts(e.target.value));
+        filterBlogPosts('latest'); // Initial sort on page load
+    }
+
+    // Initialize menus if they exist on the page
+    if (document.querySelector('.menu-container')) {
+        initMenus();
+    }
+
     // Blog Page Copy Code Button
     initCopyCodeButtons();
 
@@ -343,4 +591,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof hljs !== 'undefined') {
         hljs.highlightAll();
     }
+
+    // Global Keyboard Shortcut for Theme Toggle
+    document.addEventListener('keydown', (e) => {
+        // Ignore if typing in an input, textarea, or contenteditable element
+        if (e.target.matches && e.target.matches('input, textarea, [contenteditable]')) return;
+
+        // Check for Ctrl+Alt+L (Windows/Linux) or Cmd+Alt+L (macOS)
+        if ((e.ctrlKey || e.metaKey) && e.altKey && e.code === 'KeyL') {
+            e.preventDefault();
+            const newMode = toggleTheme();
+            const displayMode = newMode.charAt(0).toUpperCase() + newMode.slice(1);
+            showToast(`Theme switched to ${displayMode}`);
+        }
+    });
 });
