@@ -161,11 +161,10 @@ function filterItems(containerSelector, filterValue) {
     items.forEach(item => {
         const status = item.dataset.status;
         const isVisible = filterValue === 'all' || status === filterValue;
-        item.style.display = isVisible ? 'flex' : 'none';
 
         if (isVisible) {
-            if (item.classList.contains('scale-out-hidden') || item.style.display === 'none') {
-                item.style.display = ''; // Revert to CSS default (flex)
+            if (item.classList.contains('scale-out-hidden') || item.classList.contains('hidden')) {
+                item.classList.remove('hidden');
                 void item.offsetWidth; // Force reflow
                 item.classList.remove('scale-out-hidden');
             }
@@ -178,7 +177,7 @@ function filterItems(containerSelector, filterValue) {
             item.classList.add('scale-out-hidden');
             setTimeout(() => {
                 if (item.classList.contains('scale-out-hidden')) {
-                    item.style.display = 'none';
+                    item.classList.add('hidden');
                 }
             }, 500); // Matches CSS transition duration
         }
@@ -186,7 +185,7 @@ function filterItems(containerSelector, filterValue) {
 
     // Show/hide category titles based on whether they have visible items
     categoryTitles.forEach(title => {
-        title.style.display = visibleCategories.has(title.dataset.category) ? 'block' : 'none';
+        visibleCategories.has(title.dataset.category) ? title.classList.remove('hidden') : title.classList.add('hidden');
     });
 
     if (countSpan) countSpan.textContent = `(${visibleCount})`;
@@ -221,15 +220,15 @@ function filterBlogPosts(filterValue) {
     allItems.forEach(item => {
         const shouldShow = itemsToShow.includes(item);
         if (shouldShow) {
-            if (item.classList.contains('scale-out-hidden') || item.style.display === 'none') {
-                item.style.display = '';
+            if (item.classList.contains('scale-out-hidden') || item.classList.contains('hidden')) {
+                item.classList.remove('hidden');
                 void item.offsetWidth;
                 item.classList.remove('scale-out-hidden');
             }
         } else {
             item.classList.add('scale-out-hidden');
             setTimeout(() => {
-                if (item.classList.contains('scale-out-hidden')) item.style.display = 'none';
+                if (item.classList.contains('scale-out-hidden')) item.classList.add('hidden');
             }, 500);
         }
     });
@@ -316,27 +315,47 @@ function initMenus() {
             menu.classList.toggle('open');
         }
 
-        if (copyBtn) {
-            const card = copyBtn.closest('.details-container, .testimonial-card, .blog-card');
-            let url = window.location.href.split('#')[0];
-            if (card && card.id) {
-                url += '#' + card.id;
+        // --- REVISED LOGIC FOR COPY & SHARE ---
+        if (copyBtn || shareBtn) {
+            const card = (copyBtn || shareBtn).closest('.details-container, .testimonial-card, .blog-card');
+            if (!card) return;
+
+            let urlToShare = '';
+
+            // Case 1: It's a blog card with a direct link.
+            const blogLink = card.querySelector('a.blog-link');
+            if (blogLink) {
+                urlToShare = blogLink.href;
+            } else if (card.id) {
+                // Case 2: It's another type of card with an ID.
+                const parentSection = card.closest('section[id]');
+                const viewMoreLink = parentSection ? parentSection.querySelector('a.view-more') : null;
+
+                if (viewMoreLink) {
+                    // On a summary page like index.html, build URL from the "View more" link
+                    const baseUrl = viewMoreLink.href.split('#')[0];
+                    urlToShare = `${baseUrl}#${card.id}`;
+                } else {
+                    // On a dedicated page, link to the anchor on the current page.
+                    const currentUrl = window.location.href.split('#')[0];
+                    urlToShare = `${currentUrl}#${card.id}`;
+                }
+            } else {
+                // Fallback for cards without an ID or a clear link structure.
+                urlToShare = window.location.href.split('#')[0];
             }
-            
-            navigator.clipboard.writeText(url).then(() => {
-                showToast('Link copied');
-            });
-            copyBtn.closest('.options-menu').classList.remove('open');
-        }
 
-        if (shareBtn) {
-            const card = shareBtn.closest('.details-container, .testimonial-card, .blog-card');
-            let url = window.location.href.split('#')[0];
-            let title = document.title;
-            let text = `Check out this page from Pranav R's portfolio: ${document.title}`;
+            // Handle the specific button action
+            if (copyBtn) {
+                navigator.clipboard.writeText(urlToShare).then(() => {
+                    showToast('Link copied');
+                });
+                copyBtn.closest('.options-menu').classList.remove('open');
+            }
 
-            if (card) {
-                if (card.id) url += '#' + card.id;
+            if (shareBtn) {
+                let title = document.title;
+                let text = `Check out this page from Pranav R's portfolio: ${document.title}`;
 
                 if (card.classList.contains('testimonial-card')) {
                     const authorEl = card.querySelector('.author-info h3');
@@ -350,7 +369,7 @@ function initMenus() {
                         title = titleEl.textContent;
                         text = `Check out the blog post "${title}" on Pranav R's portfolio.`;
                     }
-                } else { // It's a .details-container
+                } else { // .details-container
                     const titleEl = card.querySelector('.project-title');
                     if (titleEl) {
                         title = titleEl.textContent;
@@ -361,16 +380,17 @@ function initMenus() {
                         }
                     }
                 }
-            }
 
-            if (navigator.share) {
-                navigator.share({ title, text, url }).catch(console.error);
-            } else {
-                // Fallback to copy link
-                navigator.clipboard.writeText(url).then(() => showToast('Link copied as fallback'));
+                if (navigator.share) {
+                    navigator.share({ title, text, url: urlToShare }).catch(console.error);
+                } else {
+                    navigator.clipboard.writeText(urlToShare).then(() => showToast('Link copied as fallback'));
+                }
+                shareBtn.closest('.options-menu').classList.remove('open');
             }
-            shareBtn.closest('.options-menu').classList.remove('open');
+            return; // Prevent download logic from running if copy/share was handled
         }
+        // --- END REVISED LOGIC ---
 
         if (downloadBtn) {
             const card = downloadBtn.closest('.details-container');
@@ -382,7 +402,7 @@ function initMenus() {
                     const link = document.createElement('a');
                     link.href = viewLink.href; // Use absolute URL for download
                     link.setAttribute('download', ''); // Let browser handle filename
-                    link.style.display = 'none';
+                    link.className = 'hidden';
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
@@ -483,9 +503,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const formStatus = document.getElementById('form-status');
 
             // Reset status on new submission
-            formStatus.style.display = 'none';
             formStatus.className = '';
             formStatus.textContent = '';
+            formStatus.classList.add('hidden');
 
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending...';
@@ -498,14 +518,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (formStatus) {
                     formStatus.textContent = 'Message sent successfully! Thank you.';
                     formStatus.className = 'success';
-                    formStatus.style.display = 'block';
+                    formStatus.classList.remove('hidden');
                 }
                 this.reset(); // Clear the form fields
             }).catch(() => {
                 if (formStatus) {
                     formStatus.textContent = 'An error occurred. Please try again.';
                     formStatus.className = 'error';
-                    formStatus.style.display = 'block';
+                    formStatus.classList.remove('hidden');
                 }
             }).finally(() => {
                 // Re-enable the button after a short delay
