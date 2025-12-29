@@ -50,7 +50,7 @@
         grid-template-columns: 1fr;
     }
     .post-metadata {
-        flex-direction: column;
+        flex-direction: row;
         gap: 0.5rem;
     }
     .featured-img {

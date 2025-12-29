@@ -17,3 +17,29 @@
     # THE BIG FIX: Content Security Policy
     # Note: If you add SRI hashes to your HTML, you don't need to change this policy.
     Content-Security-Policy = "default-src 'none'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';"
+
+# Redirect rules for social media crawlers to the serverless function
+[[redirects]]
+  from = "/share/:type/:id"
+  to = "/.netlify/functions/generate-card"
+  status = 200 # Serve the function's content directly
+  force = true # Ensure this rule runs even if a file exists at the path
+  conditions = { User-Agent = ["Twitterbot", "facebookexternalhit", "LinkedInBot", "Discordbot"] }
+
+# Redirect rule for real users visiting a shared certificate link
+[[redirects]]
+  from = "/share/certificate/:id"
+  to = "/certificate.html#:id"
+  status = 301 # Permanent redirect
+
+# Redirect rule for real users visiting a shared project link
+[[redirects]]
+  from = "/share/project/:id"
+  to = "/projects.html#:id"
+  status = 301
+
+# Redirect rule for real users visiting a shared testimonial link
+[[redirects]]
+  from = "/share/testimonial/:id"
+  to = "/testimonials.html#:id"
+  status = 301

@@ -315,33 +315,31 @@ function initMenus() {
             menu.classList.toggle('open');
         }
 
-        // --- REVISED LOGIC FOR COPY & SHARE ---
         if (copyBtn || shareBtn) {
             const card = (copyBtn || shareBtn).closest('.details-container, .testimonial-card, .blog-card');
-            if (!card) return;
+            
+            let urlToShare;
+            const origin = window.location.origin;
 
-            let urlToShare = '';
-
-            // Case 1: It's a blog card with a direct link.
-            const blogLink = card.querySelector('a.blog-link');
-            if (blogLink) {
-                urlToShare = blogLink.href;
-            } else if (card.id) {
-                // Case 2: It's another type of card with an ID.
-                const parentSection = card.closest('section[id]');
-                const viewMoreLink = parentSection ? parentSection.querySelector('a.view-more') : null;
-
-                if (viewMoreLink) {
-                    // On a summary page like index.html, build URL from the "View more" link
-                    const baseUrl = viewMoreLink.href.split('#')[0];
-                    urlToShare = `${baseUrl}#${card.id}`;
+            if (card) {
+                // Case 1: It's a blog card on a summary page with a direct link.
+                const blogLink = card.querySelector('a.blog-link');
+                if (blogLink) {
+                    urlToShare = blogLink.href;
+                } else if (card.id) {
+                    // Case 2: It's a shareable item (certificate, project, testimonial).
+                    let itemType = 'item'; // fallback
+                    if (card.closest('#certificate')) itemType = 'certificate';
+                    else if (card.closest('#projects')) itemType = 'project';
+                    else if (card.closest('#testimonials')) itemType = 'testimonial';
+                    
+                    urlToShare = `${origin}/share/${itemType}/${card.id}`;
                 } else {
-                    // On a dedicated page, link to the anchor on the current page.
-                    const currentUrl = window.location.href.split('#')[0];
-                    urlToShare = `${currentUrl}#${card.id}`;
+                    // Fallback for cards without an ID or a clear link structure.
+                    urlToShare = window.location.href.split('#')[0];
                 }
             } else {
-                // Fallback for cards without an ID or a clear link structure.
+                // Fallback for page-level menus (like on individual blog post pages)
                 urlToShare = window.location.href.split('#')[0];
             }
 
@@ -357,32 +355,34 @@ function initMenus() {
                 let title = document.title;
                 let text = `Check out this page from Pranav R's portfolio: ${document.title}`;
 
-                if (card.classList.contains('testimonial-card')) {
-                    const authorEl = card.querySelector('.author-info h3');
-                    if (authorEl) {
-                        title = `Testimonial for Pranav R`;
-                        text = `Check out this testimonial for Pranav R from ${authorEl.textContent}!`;
-                    }
-                } else if (card.classList.contains('blog-card')) {
-                    const titleEl = card.querySelector('.blog-title');
-                    if (titleEl) {
-                        title = titleEl.textContent;
-                        text = `Check out the blog post "${title}" on Pranav R's portfolio.`;
-                    }
-                } else { // .details-container
-                    const titleEl = card.querySelector('.project-title');
-                    if (titleEl) {
-                        title = titleEl.textContent;
-                        if (card.closest('#projects')) {
-                            text = `Check out the project "${title}" on Pranav R's portfolio.`;
-                        } else { // Assumes #certificate
-                            text = `Check out the achievement "${title}" on Pranav R's portfolio.`;
+                if (card) { // Only try to get specific text if we're in a card
+                    if (card.classList.contains('testimonial-card')) {
+                        const authorEl = card.querySelector('.author-info h3');
+                        if (authorEl) {
+                            title = `Testimonial for Pranav R`;
+                            text = `Check out this testimonial for Pranav R from ${authorEl.textContent}!`;
+                        }
+                    } else if (card.classList.contains('blog-card')) {
+                        const titleEl = card.querySelector('.blog-title');
+                        if (titleEl) {
+                            title = titleEl.textContent;
+                            text = `Check out the blog post "${title}" on Pranav R's portfolio.`;
+                        }
+                    } else { // .details-container
+                        const titleEl = card.querySelector('.project-title');
+                        if (titleEl) {
+                            title = titleEl.textContent;
+                            if (card.closest('#projects')) {
+                                text = `Check out the project "${title}" on Pranav R's portfolio.`;
+                            } else { // Assumes #certificate
+                                text = `Check out the achievement "${title}" on Pranav R's portfolio.`;
+                            }
                         }
                     }
                 }
 
                 if (navigator.share) {
-                    navigator.share({ title, text, url: urlToShare }).catch(console.error);
+                    navigator.share({ title, text, url: urlToShare }).catch(err => console.error("Share failed:", err));
                 } else {
                     navigator.clipboard.writeText(urlToShare).then(() => showToast('Link copied as fallback'));
                 }
@@ -390,7 +390,6 @@ function initMenus() {
             }
             return; // Prevent download logic from running if copy/share was handled
         }
-        // --- END REVISED LOGIC ---
 
         if (downloadBtn) {
             const card = downloadBtn.closest('.details-container');

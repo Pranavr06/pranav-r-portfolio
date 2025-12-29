@@ -262,11 +262,13 @@ body.dark-theme .featured-img {
 .post-metadata {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 1rem;
     font-size: 0.9rem;
     color: #888;
     margin-bottom: 2rem;
     text-align: center;
+    align-items: center;
 }
 body.dark-theme .post-metadata {
     color: #aaa;
