@@ -327,13 +327,17 @@ function initMenus() {
                 if (blogLink) {
                     urlToShare = blogLink.href;
                 } else if (card.id) {
-                    // Case 2: It's a shareable item (certificate, project, testimonial).
-                    let itemType = 'item'; // fallback
-                    if (card.closest('#certificate')) itemType = 'certificate';
-                    else if (card.closest('#projects')) itemType = 'project';
-                    else if (card.closest('#testimonials')) itemType = 'testimonial';
-                    
-                    urlToShare = `${origin}/share/${itemType}/${card.id}`;
+                    // Case 2: It's a shareable item (certificate, project, testimonial). Generate a hash link.
+                    let pageName = '';
+                    if (card.closest('#certificate')) pageName = 'certificate.html';
+                    else if (card.closest('#projects')) pageName = 'projects.html';
+                    else if (card.closest('#testimonials')) pageName = 'testimonials.html';
+
+                    if (pageName) {
+                        urlToShare = `${origin}/${pageName}#${card.id}`;
+                    } else {
+                        urlToShare = `${window.location.href.split('#')[0]}#${card.id}`;
+                    }
                 } else {
                     // Fallback for cards without an ID or a clear link structure.
                     urlToShare = window.location.href.split('#')[0];
