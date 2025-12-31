@@ -154,7 +154,10 @@
                 
                 <h2 id="cia-triad">The CIA Triad: The Pillars of Security</h2>
                 <p>Before diving into code, it's essential to understand the model that guides information security policies within an organization. This is known as the <strong>CIA Triad</strong>:</p>
-                <img src="../assets/cyber-cia-triad.webp" alt="Diagram of the CIA Triad showing Confidentiality, Integrity, and Availability" class="featured-img" loading="lazy">
+                <figure>
+                    <img src="../assets/cyber-cia-triad.webp" alt="Diagram of the CIA Triad showing Confidentiality, Integrity, and Availability" class="featured-img" loading="lazy">
+                    <figcaption>Diagram of the CIA Triad showing Confidentiality, Integrity, and Availability</figcaption>
+                </figure>
                 <ul>
                     <li><strong>Confidentiality:</strong> Ensuring that sensitive information is accessed only by an authorized person. For example, only you should be able to see your bank account balance. Encryption and access controls are key here.</li>
                     <li><strong>Integrity:</strong> Maintaining the consistency, accuracy, and trustworthiness of data over its entire lifecycle. Data must not be changed in transit, and steps must be taken to ensure data cannot be altered by unauthorized people (for example, in a breach).</li>
@@ -176,7 +179,10 @@
                     <li><strong>Authentication (AuthN):</strong> Verifying <em>who</em> a user is (e.g., logging in with a password or FaceID).</li>
                     <li><strong>Authorization (AuthZ):</strong> Verifying <em>what</em> the user is allowed to do (e.g., an admin can delete posts, but a regular user cannot).</li>
                 </ul>
-                <img src="../assets/cyber-authn-vs-authz.webp" alt="Visual comparison of Authentication (ID badge) versus Authorization (Access Keycard)" class="featured-img" loading="lazy">
+                <figure>
+                    <img src="../assets/cyber-authn-vs-authz.webp" alt="Visual comparison of Authentication (ID badge) versus Authorization (Access Keycard)" class="featured-img" loading="lazy">
+                    <figcaption>Visual comparison of Authentication (ID badge) versus Authorization (Access Keycard)</figcaption>
+                </figure>
                 <p>A common vulnerability is having strong authentication but weak authorization, allowing logged-in users to access admin pages simply by guessing the URL.</p>
 
                 <h2 id="common-vulnerabilities">Common Web Vulnerabilities (OWASP)</h2>
@@ -188,7 +194,10 @@
                     <li><strong>Insecure Deserialization:</strong> This often leads to remote code execution. Even if it doesn't, it can be used to perform attacks, including replay attacks, injection attacks, and privilege escalation attacks.</li>
                     <li><strong>Cross-Site Request Forgery (CSRF):</strong> This attack tricks a logged-in user's browser into making an unwanted request to your application (e.g., changing their email or transferring funds) without their consent. To prevent this, use anti-CSRF tokens—unique, secret values that your server generates and requires for any sensitive request.</li>
                 </ul>
-                <img src="../assets/cyber-sql-injection.webp" alt="Abstract visualization of SQL Injection attack where malicious code enters a database query" class="featured-img" loading="lazy">
+                <figure>
+                    <img src="../assets/cyber-sql-injection.webp" alt="Abstract visualization of SQL Injection attack where malicious code enters a database query" class="featured-img" loading="lazy">
+                    <figcaption>Abstract visualization of SQL Injection attack where malicious code enters a database query</figcaption>
+                </figure>
 
                 <h2 id="practical-steps">Practical Steps for Developers</h2>
                 <p>Putting theory into practice is the best way to build secure applications. Here are three actionable steps you can take today to significantly improve the security of your projects:</p>
@@ -226,7 +235,10 @@ npm audit fix</code></pre>
                 <h3 id="password-security">4. Password Security Best Practices</h3>
                 <p>Never store passwords in plain text. If your database is leaked, every user account is compromised. Instead, use <strong>hashing</strong>. Hashing turns a password into a scrambled string of characters that cannot be reversed.</p>
                 <p>Use strong, slow hashing algorithms like <strong>bcrypt</strong> or <strong>Argon2</strong>. These are designed to be computationally expensive, making it incredibly difficult for attackers to crack passwords using brute-force methods. Also, always add a unique "salt" (random data) to each password before hashing to prevent rainbow table attacks.</p>
-                <img src="../assets/cyber-password-hashing.webp" alt="Illustration showing a plain text password transforming into a secure hash string" class="featured-img" loading="lazy">
+                <figure>
+                    <img src="../assets/cyber-password-hashing.webp" alt="Illustration showing a plain text password transforming into a secure hash string" class="featured-img" loading="lazy">
+                    <figcaption>Illustration showing a plain text password transforming into a secure hash string</figcaption>
+                </figure>
 
                 <h3 id="secure-apis">5. Secure Your APIs and Endpoints</h3>
                 <p>Modern applications heavily rely on APIs. A critical vulnerability here is <strong>Broken Access Control</strong>, where a user can access data they shouldn't be able to see (e.g., viewing another user's profile by changing an ID in the URL, like <code>/api/users/123</code> to <code>/api/users/456</code>). Always verify on the server-side that the authenticated user has the right to access or modify the requested resource on every single request.</p>
@@ -247,7 +259,10 @@ npm audit fix</code></pre>
 
                 <h2 id="devsecops">DevSecOps: Shifting Left</h2>
                 <p>Traditionally, security was a final step before deployment. In modern workflows, we use <strong>DevSecOps</strong>, which integrates security practices into the DevOps process. This is often called "Shifting Left"—moving security earlier in the development timeline.</p>
-                <img src="../assets/cyber-devsecops.webp" alt="DevSecOps infinity loop symbol with a security shield integrated" class="featured-img" loading="lazy">
+                <figure>
+                    <img src="../assets/cyber-devsecops.webp" alt="DevSecOps infinity loop symbol with a security shield integrated" class="featured-img" loading="lazy">
+                    <figcaption>DevSecOps infinity loop symbol with a security shield integrated</figcaption>
+                </figure>
                 <p>This involves automated security testing (SAST/DAST) in your CI/CD pipelines. Every time you push code, automated tools scan for vulnerabilities, ensuring that security is a continuous process rather than a final hurdle.</p>
 
                 <h2 id="human-element">Beyond Code: The Human Element</h2>
@@ -261,6 +276,9 @@ npm audit fix</code></pre>
                 <p>Explore resources like <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer" aria-label="Visit OWASP Top 10 Security Risks for cybersecurity resources">OWASP’s Top 10 Security Risks</a> or <a href="https://www.freecodecamp.org/learn/information-security/" target="_blank" rel="noopener noreferrer" aria-label="Visit freeCodeCamp for cybersecurity tutorials">freeCodeCamp’s cybersecurity tutorials</a> to deepen your knowledge. Check out my <a href="/projects.html#passguard-project" aria-label="View PassGuard cybersecurity tool project">PassGuard project</a> for a practical example of applying security principles!</p>
                 
                 <p>Got questions about securing your code? Reach out via the contact form below or explore my other <a href="/blog.html" aria-label="View more blog posts by Pranav R">blog posts</a> for additional insights!</p>
+                <div class="blog-disclaimer">
+                    <p><strong>Note:</strong> This article was written with the assistance of AI tools. Some images used in this post are AI-generated.</p>
+                </div>
             </div>
             <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section" data-href="#contact">
                 <img src="../assets/arrow.png" alt="Scroll down to contact section" class="icon arrow scroll-down" loading="lazy" title="Scroll down"/>

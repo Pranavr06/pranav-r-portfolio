@@ -239,18 +239,48 @@ body.dark-theme .details-container:hover {
     height: 200px;
     object-fit: cover;
     border-radius: 1rem;
-    margin-bottom: 1rem;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.details-container figure {
+    position: relative;
+    margin: 0 0 1rem 0;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.details-container figure::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+}
+
+.details-container figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    z-index: 2;
+    text-align: left;
 }
 
 .experience-sub-title.project-title {
-    margin-bottom: 0.5rem;
-    color: var(--light-title);
-    font-size: 1.35rem;
+    margin-bottom: 0;
+    color: #ffffff !important;
+    font-size: 1.5rem;
     font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
 body.dark-theme .experience-sub-title.project-title {
-    color: var(--dark-title);
+    color: #ffffff !important;
 }
 
 .details-container p {
@@ -278,6 +308,45 @@ body.dark-theme .experience-sub-title.project-title {
 body.dark-theme .tech-tag {
     background-color: #3a3a3a;
     color: #ddd;
+}
+
+.details-container:hover .project-img {
+    transform: scale(1.05);
+}
+
+/* Project Card Footer */
+.project-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    width: 100%;
+}
+
+.read-more-link {
+    font-weight: 600;
+}
+
+.read-more-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.read-more-disabled:hover {
+    text-decoration: none;
+    color: black;
+}
+
+body.dark-theme .read-more-disabled:hover {
+    color: var(--dark-text);
+}
+
+/* Override .btn width for project cards */
+.project-btn {
+    width: auto;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
 }
 
 /* MENU STYLES */
@@ -380,6 +449,7 @@ body.dark-theme .menu-option:hover {
     overflow: hidden;
     border-top-left-radius: 2rem;
     pointer-events: none;
+    z-index: 10;
 }
 
 .status-tag {
@@ -586,4 +656,176 @@ body.dark-theme [data-tooltip]::before {
     [data-tooltip]::before {
         display: none;
     }
+}
+
+/* INDIVIDUAL PROJECT PAGE STYLES (from blog.css) */
+#blog-post {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 4rem 0;
+}
+
+.blog-banner {
+    width: 100%;
+    max-width: 800px;
+    height: 350px;
+    margin: 0 auto 2rem auto;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.banner-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.blog-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay for text readability */
+    z-index: 1;
+}
+
+.blog-banner .banner-title {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    margin: 0;
+}
+
+.post-metadata {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 2rem;
+    text-align: center;
+    align-items: center;
+}
+body.dark-theme .post-metadata {
+    color: #aaa;
+}
+.post-author {
+    color: #555;
+}
+body.dark-theme .post-author {
+    color: #ccc;
+}
+.post-content {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+.post-content h2 {
+    font-size: 2rem;
+    margin: 2rem 0 1rem 0;
+    color: var(--light-title);
+}
+body.dark-theme .post-content h2 {
+    color: var(--dark-title);
+}
+.post-content h3 {
+    font-size: 1.7rem;
+    margin: 1.8rem 0 1rem 0;
+    color: var(--light-title);
+}
+body.dark-theme .post-content h3 {
+    color: var(--dark-title);
+}
+.post-content p {
+    margin-bottom: 1.5rem;
+}
+.post-content ul {
+    list-style-position: inside;
+    padding-left: 1rem;
+    margin-bottom: 1.5rem;
+}
+.post-content li {
+    margin-bottom: 0.5rem;
+}
+.post-content .btn-container {
+    margin-top: 2rem;
+}
+ 
+/* Style for single images with captions */
+figure.project-image-container {
+    margin: 1.5rem 0;
+    width: 100%;
+}
+
+figure.project-image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px; /* Matches your modern, rounded aesthetic */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Gentle shadow for depth */
+}
+
+figcaption {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.8rem;
+    font-style: italic;
+}
+
+/* Style for the 2-image grid gallery */
+.image-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns side-by-side */
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.grid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures images fill their boxes neatly */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Helper classes for spacing */
+.add-margin-top { margin-top: 2rem; }
+.add-margin-bottom { margin-bottom: 2rem; }
+
+/* Dark mode adjustments for captions */
+body.dark-theme figcaption {
+    color: #aaa;
+}
+
+/* Disclaimer Style */
+.project-disclaimer {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 2rem;
+    font-style: italic;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1rem;
+}
+
+body.dark-theme .project-disclaimer {
+    color: #aaa;
+    border-color: #444;
 }

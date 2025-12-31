@@ -20,6 +20,19 @@
     .title {
         font-size: 2.5rem;
     }
+    /* Individual Project Page Styles */
+    .post-content {
+        max-width: 700px;
+    }
+    .post-content h2 {
+        font-size: 1.8rem;
+    }
+    .post-content h3 {
+        font-size: 1.5rem;
+    }
+    .blog-banner {
+        height: 300px;
+    }
 }
 
 @media screen and (max-width: 600px) {
@@ -55,5 +68,22 @@
     }
     #contact-form {
         padding: 1.5rem;
+    }
+    /* Individual Project Page Styles */
+    .post-metadata {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+    .blog-banner {
+        height: 250px;
+    }
+    .post-content {
+        font-size: 1rem;
+    }
+    .post-content h2 {
+        font-size: 1.6rem;
+    }
+    .post-content h3 {
+        font-size: 1.4rem;
     }
 }

@@ -214,6 +214,20 @@ body.dark-theme .featured-img {
     box-shadow: 0 4px 10px rgba(255,255,255,0.1);
 }
 
+.post-content figure {
+    margin: 2rem 0;
+    text-align: center;
+}
+.post-content figcaption {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+body.dark-theme .post-content figcaption {
+    color: #aaa;
+}
+
 /* NEW: Blog Banner with HTML/CSS Text Overlay */
 .blog-banner {
     width: 100%;
@@ -413,6 +427,7 @@ body.dark-theme .copy-code-btn.copied {
 
 /* BUTTONS, ICONS, CONTACT, FOOTER */
 .btn-container { display: flex; justify-content: center; gap: 1rem; margin-top: auto; padding-top: 1rem; }
+
 .btn { font-weight: 600; padding: 1rem; width: 8rem; border-radius: 2rem; cursor: pointer; }
 .btn-color-1 { border: 1px solid rgb(53, 53, 53); background: rgb(53, 53, 53); color: white; }
 .btn-color-1:hover { background: rgb(0, 0, 0); }
@@ -674,4 +689,19 @@ body.dark-theme [data-tooltip]::before {
     [data-tooltip]::before {
         display: none;
     }
+}
+
+/* Disclaimer Style */
+.blog-disclaimer {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 2rem;
+    font-style: italic;
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1rem;
+}
+
+body.dark-theme .blog-disclaimer {
+    color: #aaa;
+    border-color: #444;
 }

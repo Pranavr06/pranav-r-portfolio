@@ -834,7 +834,37 @@ body.dark-theme .color-container:hover {
     height: 200px;
     object-fit: cover;
     border-radius: 1rem;
-    margin-bottom: 1rem;
+    display: block;
+    transition: transform 0.3s ease;
+    margin-bottom: 0;
+}
+
+.details-container figure {
+    position: relative;
+    margin: 0 0 1rem 0;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.details-container figure::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%);
+    pointer-events: none;
+}
+
+.details-container figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem;
+    z-index: 2;
+    text-align: left;
 }
 
 .experience-sub-title.project-title {
@@ -844,6 +874,14 @@ body.dark-theme .color-container:hover {
     font-weight: 600;
 }
 
+/* Specific styling for Project cards on homepage */
+#projects .experience-sub-title.project-title {
+    margin-bottom: 0;
+    color: #ffffff !important;
+    font-size: 1.5rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+}
+
 /* Set a base font size for sub-titles on larger screens */
 .experience-sub-title {
     font-size: 1.75rem;
@@ -851,6 +889,10 @@ body.dark-theme .color-container:hover {
 
 body.dark-theme .experience-sub-title.project-title {
     color: var(--dark-title);
+}
+
+body.dark-theme #projects .experience-sub-title.project-title {
+    color: #ffffff !important;
 }
 
 .article-container {
@@ -889,6 +931,7 @@ body.dark-theme .tech-tag {
     overflow: hidden;
     border-top-left-radius: 2rem;
     pointer-events: none;
+    z-index: 10;
 }
 .tech-stack {
     display: flex;
@@ -926,6 +969,10 @@ body.dark-theme .tech-tag {
 .status-completed { background-color: #28a745; }
 .status-in-progress { background-color: #007bff; }
 .status-planned { background-color: #6c757d; }
+
+.details-container:hover .project-img {
+    transform: scale(1.05);
+}
 /* TESTIMONIALS */
 #testimonials {
     padding: 4vh;
@@ -1162,6 +1209,20 @@ body.dark-theme .blog-link {
 
 .blog-link:hover {
     text-decoration: underline;
+}
+
+.disabled-link {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.disabled-link:hover {
+    text-decoration: none;
+    color: black;
+}
+
+body.dark-theme .disabled-link:hover {
+    color: var(--dark-text);
 }
 
 /* CONTACT */
@@ -1512,6 +1573,21 @@ body.dark-theme [data-tooltip]::before {
     [data-tooltip]::before {
         display: none;
     }
+}
+
+.project-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    width: 100%;
+}
+
+.project-btn {
+    width: auto;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
 }
 
 /* MENU STYLES */
