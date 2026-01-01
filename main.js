@@ -324,13 +324,16 @@ function initMenus() {
             if (card) {
                 // Case 1: It's a blog card on a summary page with a direct link.
                 const blogLink = card.querySelector('a.blog-link');
+                const projectLink = card.querySelector('a.read-more-link');
+
                 if (blogLink) {
                     urlToShare = blogLink.href;
+                } else if (projectLink) {
+                    urlToShare = projectLink.href;
                 } else if (card.id) {
                     // Case 2: It's a shareable item (certificate, project, testimonial). Generate a hash link.
                     let pageName = '';
                     if (card.closest('#certificate')) pageName = 'certificate.html';
-                    else if (card.closest('#projects')) pageName = 'projects.html';
                     else if (card.closest('#testimonials')) pageName = 'testimonials.html';
 
                     if (pageName) {

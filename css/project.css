@@ -296,6 +296,10 @@ body.dark-theme .experience-sub-title.project-title {
     justify-content: center;
 }
 
+.post-content .tech-stack {
+    justify-content: flex-start;
+}
+
 .tech-tag {
     background-color: #e0e0e0;
     color: #333;
