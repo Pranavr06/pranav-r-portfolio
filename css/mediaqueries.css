@@ -75,6 +75,12 @@
   }
 }
 
+@media screen and (max-width: 992px) {
+  .project-grid {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
 @media screen and (max-width: 600px) {
   #contact,
   footer {

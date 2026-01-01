@@ -1207,6 +1207,34 @@ body.dark-theme .blog-link {
     color: var(--dark-text);
 }
 
+.read-more-link {
+    color: black;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+body.dark-theme .read-more-link {
+    color: var(--dark-text);
+}
+
+.read-more-link:hover {
+    text-decoration: underline;
+}
+
+.read-more-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.read-more-disabled:hover {
+    text-decoration: none;
+    color: black;
+}
+
+body.dark-theme .read-more-disabled:hover {
+    color: var(--dark-text);
+}
+
 .blog-link:hover {
     text-decoration: underline;
 }
