@@ -3,66 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vaultary Project Report | Pranav R</title>
-    <meta name="description" content="Vaultary: A Zero-Knowledge Identity Management System featuring OAuth 2.0, AES-256 encryption, and extensive security documentation.">
-    <meta name="keywords" content="Vaultary, Cybersecurity, Password Vault, Python, Flask, Supabase, OAuth, AES-256, Pranav R">
+    <title>Vaultary - Identity & Security Platform | Pranav R</title>
+    <meta name="description" content="Vaultary is a comprehensive identity and security platform featuring advanced password analysis, real-time breach detection, and a secure vault.">
+    <meta name="keywords" content="Vaultary, cybersecurity, password manager, password strength, zxcvbn, haveibeenpwned, python flask, security tool, Pranav R">
     <meta name="author" content="Pranav R">
-
-    <meta name="google-site-verification" content="Gdi3HiTiI14fjgrSlY6l0IbQznimK0IBHaX7XD6LKYk" />
-    <meta name="msvalidate.01" content="B0BCBF5CB00352D5696094A5A18CE1EA" />
-
-    <link rel="canonical" href="https://pranavr.netlify.app/projects/vaultary.html" />
-
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://pranavr.netlify.app/projects/vaultary.html">
-    <meta property="og:site_name" content="Pranav R Portfolio">
-    <meta property="og:title" content="Vaultary | Secure Identity Management System">
-    <meta property="og:description" content="A production-ready Zero-Knowledge password vault with multi-provider OAuth and military-grade encryption.">
-    <meta property="og:image" content="https://pranavr.netlify.app/assets/project-3.png">
+    <meta property="og:title" content="Vaultary - Identity & Security Platform | Pranav R">
+    <meta property="og:description" content="A comprehensive identity and security platform featuring advanced password analysis and breach detection.">
+    <meta property="og:image" content="https://pranavr.netlify.app/assets/project-3.webp">
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@PranavR2006">
     <meta name="twitter:url" content="https://pranavr.netlify.app/projects/vaultary.html">
-    <meta name="twitter:title" content="Vaultary | Secure Identity Management System">
-    <meta name="twitter:description" content="A production-ready Zero-Knowledge password vault with multi-provider OAuth and military-grade encryption.">
-    <meta name="twitter:image" content="https://pranavr.netlify.app/assets/project-3.png">
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareSourceCode",
-      "name": "Vaultary",
-      "author": {
-        "@type": "Person",
-        "name": "Pranav R",
-        "url": "https://pranavr.netlify.app/"
-      },
-      "programmingLanguage": "Python",
-      "runtimePlatform": "Vercel",
-      "description": "Zero-Knowledge Password Manager and Identity System."
-    }
-    </script>
+    <meta name="twitter:title" content="Vaultary - Identity & Security Platform | Pranav R">
+    <meta name="twitter:description" content="A comprehensive identity and security platform featuring advanced password analysis and breach detection.">
+    <meta name="twitter:image" content="https://pranavr.netlify.app/assets/project-3.webp">
 
     <link rel="icon" type="image/png" href="../assets/pranavr-favicon.png" />
+    <link rel="canonical" href="https://pranavr.netlify.app/projects/vaultary.html" />
+
     <link rel="stylesheet" href="../css/project.css">
     <link rel="stylesheet" href="../css/mediaqueriesproject.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,600&display=swap">
 </head>
 <body>
     <nav id="desktop-nav">
-        <a href="/" class="logo-link" aria-label="Go to homepage">
+        <a href="../index.html" class="logo-link" aria-label="Go to homepage">
             <img src="../assets/logo.svg" alt="Pranav R logo" class="logo" />
         </a>
         <div>
             <ul class="nav-links">
-                <li><a href="/" aria-label="Go to homepage">Home</a></li>
-                <li><a href="/projects.html" aria-label="Go to projects page">Projects</a></li>
+                <li><a href="../index.html" aria-label="Go to homepage">Home</a></li>
+                <li><a href="../projects.html" aria-label="Go to projects">Projects</a></li>
                 <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
             </ul>
         </div>
     </nav>
     <nav id="hamburger-nav">
-        <a href="/" class="logo-link" aria-label="Go to homepage">
+        <a href="../index.html" class="logo-link" aria-label="Go to homepage">
             <img src="../assets/logo.svg" alt="Pranav R logo" class="logo" />
         </a>
         <div class="hamburger-menu">
@@ -73,8 +54,8 @@
             </div>
             <div class="menu-links">
                 <ul>
-                    <li><a href="/" class="menu-item" aria-label="Go to homepage">Home</a></li>
-                    <li><a href="/projects.html" class="menu-item" aria-label="Go to projects page">Projects</a></li>
+                    <li><a href="../index.html" class="menu-item" aria-label="Go to homepage">Home</a></li>
+                    <li><a href="../projects.html" class="menu-item" aria-label="Go to projects">Projects</a></li>
                     <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
                 </ul>
             </div>
@@ -82,14 +63,15 @@
     </nav>
 
     <main id="main-content">
-        <section id="blog-post" class="mobile-spacing">
-            <header class="blog-banner">
-                <img src="../assets/project-3.webp" alt="Vaultary Security Architecture Banner" class="banner-img" loading="eager">
-                <h1 class="title banner-title">Vaultary</h1>
-            </header>
+        <section id="blog-post">
+            <div class="blog-banner">
+                <img src="../assets/project-3.webp" alt="Vaultary Project Banner" class="banner-img" loading="lazy"/>
+                <h1 class="banner-title">Vaultary</h1>
+            </div>
+            
             <div class="post-metadata">
-                <span class="post-category">Identity & Security</span>
-                <span class="post-author">Python • Flask • Supabase • OAuth</span>
+                <span class="post-category">Cybersecurity</span>
+                <span class="post-author">Tech: Python, Flask</span>
                 <span>By Pranav R</span>
                 <div class="menu-container page-menu">
                     <button class="menu-btn" aria-label="More options" data-tooltip="More options">
@@ -101,89 +83,102 @@
                     </div>
                 </div>
             </div>
+
             <div class="post-content">
-                <h2>1. Executive Summary</h2>
                 <div class="tech-stack">
-                    <span class="tech-tag">Flask (Backend)</span>
-                    <span class="tech-tag">Supabase (PostgreSQL)</span>
-                    <span class="tech-tag">OAuth 2.0</span>
-                    <span class="tech-tag">AES-256</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">Flask</span>
+                    <span class="tech-tag">Cybersecurity</span>
+                    <span class="tech-tag">Cryptography</span>
                 </div>
-                <p>Vaultary is a production-ready <strong>Identity Management System</strong> built to solve the issue of credential theft. Unlike standard password managers, Vaultary employs a <strong>Zero-Knowledge Architecture</strong>, ensuring that the server never sees the user's raw master password. The system integrates seamless login via Google and GitHub and enforces security through Time-based One-Time Passwords (TOTP).</p>
+
+                <p class="add-margin-top"><strong>Vaultary</strong> is a comprehensive identity and security platform designed to help users analyze password strength, detect breaches, and manage credentials securely. It goes beyond simple rule-based checking by analyzing mathematical entropy and integrating with live breach databases.</p>
 
                 <div class="btn-container">
-                    <a href="https://vaultary.vercel.app" target="_blank" rel="noopener noreferrer" class="btn btn-color-2">Live Demo</a>
-                    <a href="https://github.com/Pranavr06/Vaultary" target="_blank" rel="noopener noreferrer" class="btn btn-color-2">View Source</a>
+                    <a href="https://vaultary.vercel.app" target="_blank" rel="noopener noreferrer" class="btn btn-color-1">Live Demo</a>
+                    <a href="https://github.com/PranavR06/Vaultary" target="_blank" rel="noopener noreferrer" class="btn btn-color-2">GitHub Repo</a>
                 </div>
 
                 <hr class="section-divider">
 
-                <h2>2. Security Architecture</h2>
-                <p>The core philosophy of Vaultary is "Trust No One" (Zero Trust). The security model is built on three pillars:</p>
-
-                <h3>2.1 Zero-Knowledge Encryption</h3>
-                <p>User data is encrypted using <strong>AES-256</strong> (Advanced Encryption Standard). The encryption key is derived from the user's Master Password, which is never stored in the database. Even if the Supabase database is compromised, the attacker only sees encrypted gibberish.</p>
-
-                <h3>2.2 Authentication Flow</h3>
-                <p>We moved away from storing local passwords to using <strong>OpenID Connect (OIDC)</strong>. This delegates trust to major providers, reducing the attack surface.</p>
+                <h2>1. Features</h2>
+                <p>Vaultary is packed with features ensuring robust security and user management:</p>
                 <ul>
-                    <li><strong>Primary Auth:</strong> OAuth 2.0 via Google and GitHub.</li>
-                    <li><strong>Secondary Auth:</strong> TOTP (Time-based One-Time Password) using <code>pyotp</code>, compatible with Google Authenticator.</li>
+                    <li><strong>Advanced Password Strength Analysis:</strong> Uses <code>zxcvbn</code> to calculate entropy, crack time, and score (0-4). It provides specific feedback (warnings and suggestions) and visualizes the security breakdown using a Radar Chart.</li>
+                    <li><strong>Real-time Breach Detection:</strong> Integrates with the <strong>HaveIBeenPwned API</strong> to check if a password has appeared in known data breaches. It uses k-Anonymity (sending only the first 5 characters of the SHA-1 hash) to protect user privacy.</li>
+                    <li><strong>Secure Password Vault:</strong> Allows users to save credentials (Site Name, URL, Username, Password). Passwords are encrypted using <strong>AES-256 Encryption</strong> (Fernet) before storage.</li>
+                    <li><strong>User Authentication & Management:</strong> Supports local email/password login with Bcrypt hashing, OAuth (Google, GitHub, LinkedIn), email verification, and secure password resets.</li>
+                    <li><strong>Two-Factor Authentication (2FA):</strong> Time-based One-Time Password (TOTP) support compatible with apps like Google Authenticator.</li>
+                    <li><strong>Dashboard Tools:</strong> Includes profile management, an admin panel for user management, session timeout handling, and a secure server-side password generator.</li>
                 </ul>
 
-                <figure class="project-image-container add-margin-top">
-                    <img src="../assets/project-3.webp" alt="Showing encryption logs" loading="lazy">
-                    <figcaption>Backend Logs: Successful OAuth handshake and Token Exchange.</figcaption>
+                <figure class="project-image-container">
+                    <img src="../assets/vaultary-dashboard.webp" alt="Vaultary Main Dashboard with Radar Chart" loading="lazy">
+                    <figcaption>Visual analytics dashboard featuring the security radar chart.</figcaption>
                 </figure>
 
-                <hr class="section-divider">
+                <h2>2. Uses</h2>
+                <ul>
+                    <li><strong>Security Auditing:</strong> Users can test their passwords to see how long they would take to crack and if they are vulnerable to dictionary attacks or keyboard patterns.</li>
+                    <li><strong>Credential Management:</strong> Acts as a web-based password manager to store login details securely.</li>
+                    <li><strong>Identity Protection:</strong> Helps users verify if their credentials have been compromised in public leaks.</li>
+                    <li><strong>Educational Tool:</strong> Demonstrates why certain passwords (like "P@ssword1") are weak despite meeting standard complexity rules.</li>
+                </ul>
 
-                <h2>3. Technical Challenges & Report</h2>
-                <p>During the deployment phase to Vercel (Production), several critical engineering challenges were encountered. Below is the technical report on how they were resolved.</p>
-
-                <h3>ISSUE #1: OAuth Protocol Mismatch (Vercel Proxy)</h3>
-                <div class="report-box bug">
-                        <strong>Status:</strong> ✅ Resolved<br>
-                        <strong>Description:</strong> Login worked on `localhost` but failed on Vercel with a `500 Internal Server Error` / `MismatchingStateError`.
-                </div>
-                    <p><strong>Root Cause:</strong> Vercel's serverless functions sit behind a reverse proxy. The internal request logic in Flask detected `HTTP` traffic, generating a callback URL like `http://vaultary...`. However, OAuth providers (GitHub/Google) strictly require `HTTPS`.</p>
-                    <p><strong>The Fix:</strong> We had to explicitly force the URL scheme generator to ignore the internal protocol and enforce HTTPS.</p>
-                    <div class="code-block">
-# app.py - Fix Applied
-url_for('github_callback', _external=True, _scheme='https')
-                    </div>
-
-                <h3>ISSUE #2: LinkedIn OAuth API Failure</h3>
-                <div class="report-box bug">
-                        <strong>Status:</strong> ⚠️ Deprecated / Fixed via Removal<br>
-                        <strong>Description:</strong> LinkedIn authentication resulted in persistent `client_secret` missing errors despite correct environment variables.
-                </div>
-                    <p><strong>Technical Decision:</strong> To prioritize system stability for the final release, the LinkedIn module was deprecated. The system now relies exclusively on the more stable Google and GitHub OIDC implementations. This decision improved overall system uptime and reduced dependency overhead.</p>
-
-                <h3>ISSUE #3: Database Connection Handling</h3>
-                <div class="report-box success">
-                        <strong>Status:</strong> ✅ Optimized<br>
-                        <strong>Description:</strong> Serverless functions spin down rapidly, leading to potential database connection drops.
-                </div>
-                    <p><strong>Solution:</strong> Implemented a connection pooling strategy with Supabase (PostgreSQL) and ensured that `psycopg2` handles cursor closures gracefully within the Flask application context.</p>
-
-                <hr class="section-divider">
-
-                <h2>4. Features & Analysis Tools</h2>
-                <p>Beyond storage, Vaultary actively analyzes security hygiene.</p>
-                
-                <h3>Entropy Analysis</h3>
-                <p>We utilize the <code>zxcvbn</code> algorithm to calculate password entropy (bits of randomness). This detects patterns humans often think are clever but computers guess easily (e.g., "P@ssword123").</p>
+                <h2>3. The Vaultary Difference</h2>
+                <p>Unlike traditional checkers that rely on simple rules (e.g., "1 uppercase, 1 number"), Vaultary offers:</p>
+                <ul>
+                    <li><strong>Entropy vs. Rules:</strong> Analyzes mathematical entropy (randomness) rather than just character counts.</li>
+                    <li><strong>Pattern Recognition:</strong> Detects common patterns like keyboard walks (e.g., "qwerty"), repetitions, and common substitutions (e.g., '@' for 'a').</li>
+                    <li><strong>Breach Integration:</strong> Connects to live breach databases to flag compromised passwords.</li>
+                    <li><strong>Visual Analytics:</strong> Provides a graphical breakdown of <em>why</em> a password is strong or weak, rather than just a green/red bar.</li>
+                </ul>
 
                 <figure class="project-image-container">
-                    <img src="../assets/password-entropy.webp" alt="Diagram visualizing entropy" loading="lazy">
-                    <figcaption>Visualizing Entropy: How randomness beats pattern matching.</figcaption>
+                    <img src="../assets/password-entropy.webp" alt="Password Entropy Visualization" loading="lazy">
+                    <figcaption>Understanding password entropy: Randomness vs. Complexity.</figcaption>
                 </figure>
 
-                <h2>5. Future Roadmap</h2>
+                <h2>4. Technical Stack</h2>
+                <figure class="project-image-container">
+                    <img src="../assets/vaultary-architecture.webp" alt="Vaultary System Architecture Diagram" loading="lazy">
+                    <figcaption>System architecture showing data flow between User, Flask App, and APIs.</figcaption>
+                </figure>
+
+                <div class="report-box">
+                    <p><strong>Backend Framework:</strong> Python Flask</p>
+                    <p><strong>Database:</strong> SQLAlchemy ORM (SQLite for dev, PostgreSQL for production)</p>
+                    <p><strong>Authentication:</strong> JWT (HTTP-only cookies), Authlib (OAuth), Flask-Bcrypt</p>
+                    <p><strong>Security Libraries:</strong> Cryptography (Fernet), Flask-Limiter, Flask-Talisman</p>
+                    <p><strong>Frontend:</strong> HTML5, CSS3 (Variables), Vanilla JavaScript, Chart.js</p>
+                </div>
+
+                <h2>5. Code Review & Limitations</h2>
+                <p>Based on the current codebase, here are some technical observations and areas for future improvement:</p>
+                
+                <div class="report-box bug">
+                    <h3>"Zero-Knowledge" Architecture</h3>
+                    <p>The current implementation claims "Zero-Knowledge," but the server holds the <code>VAULT_KEY</code> and performs decryption. In a true Zero-Knowledge architecture, decryption happens <em>only</em> on the client side using a key derived from the user's master password that the server never sees. Currently, if the server is compromised, the vault keys are accessible.</p>
+                </div>
+
+                <div class="report-box bug">
+                    <h3>JWT Invalidation</h3>
+                    <p>The logout function simply clears the cookie on the client. Since JWTs are stateless, the token remains valid until it expires (1 hour). Implementing a token blacklist (e.g., using Redis) would prevent a stolen token from being used after logout.</p>
+                </div>
+
+                <div class="report-box">
+                    <h3>Rate Limiting Storage</h3>
+                    <p>The limiter uses in-memory storage. If deployed on a platform with multiple workers (like Gunicorn) or serverless functions, rate limits might not be shared across instances, making them less effective.</p>
+                </div>
+                
+                <div class="report-box">
+                    <h3>Input Validation</h3>
+                    <p>While regex validation is present, adopting strict schema validation libraries (like Pydantic or Marshmallow) would enhance robustness against malformed data.</p>
+                </div>
+
+                <h2>6. Future Roadmap</h2>
                 <ul>
-                    <li><strong>Biometric Integration:</strong> implementing WebAuthn for fingerprint login.</li>
-                    <li><strong>Dark Web Monitoring:</strong> Integration with HaveIBeenPwned API to alert users of breached credentials.</li>
+                    <li><strong>Biometric Integration:</strong> Implementing WebAuthn for fingerprint login.</li>
                     <li><strong>Secure Notes:</strong> Extending the vault to store unstructured text data.</li>
                 </ul>
 
@@ -241,12 +236,12 @@ url_for('github_callback', _external=True, _scheme='https')
         <nav>
             <div class="nav-links-container">
                 <ul class="nav-links">
-                    <li><a href="/" aria-label="Go to homepage">Home</a></li>
-                    <li><a href="/projects.html" aria-label="Go to projects page">Projects</a></li>
+                    <li><a href="../index.html" aria-label="Go to homepage">Home</a></li>
+                    <li><a href="../projects.html" aria-label="Go to projects">Projects</a></li>
                 </ul>
             </div>
         </nav>
-        <p id="copyright">Copyright © 2026 <a href="/" class="no-underline">Pranav R</a> - All rights reserved.</p>
+        <p id="copyright">Copyright © 2025 <a href="../index.html" class="no-underline" aria-label="Go to Pranav R's homepage">Pranav R</a> - All rights reserved.</p>
     </footer>
     <script src="../main.js"></script>
 </body>
