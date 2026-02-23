@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Building Vaultary: Beyond "Password123" | Pranav R's Blog</title>
+    <meta name="description" content="Discover the engineering behind Vaultary. This post explores password entropy, secure architecture, and how I built a robust identity platform using Python and Flask.">
+    <meta name="keywords" content="Vaultary, cybersecurity, password manager, zxcvbn, Python, Flask, web development, Pranav R, secure coding, encryption">
+    <meta name="author" content="Pranav R">
+
+    <meta name="google-site-verification" content="Gdi3HiTiI14fjgrSlY6l0IbQznimK0IBHaX7XD6LKYk" />
+    <meta name="msvalidate.01" content="B0BCBF5CB00352D5696094A5A18CE1EA" />
+    <link rel="icon" type="image/png" href="../assets/pranavr-favicon.png" />
+
+    <link rel="canonical" href="https://pranavr.netlify.app/blog/vaultary-blog.html" />
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://pranavr.netlify.app/blog/vaultary-blog.html">
+    <meta property="og:site_name" content="Pranav R Portfolio">
+    <meta property="og:title" content="Building Vaultary: Beyond 'Password123' | Pranav R's Blog">
+    <meta property="og:description" content="Discover the engineering behind Vaultary. This post explores password entropy, secure architecture, and how I built a robust identity platform using Python and Flask.">
+    <meta property="og:image" content="https://pranavr.netlify.app/assets/blog-6.png">
+    <meta property="article:published_time" content="2026-01-21">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@PranavR2006">
+    <meta name="twitter:url" content="https://pranavr.netlify.app/blog/vaultary-blog.html">
+    <meta name="twitter:title" content="Building Vaultary: Beyond 'Password123' | Pranav R's Blog">
+    <meta name="twitter:description" content="Discover the engineering behind Vaultary. This post explores password entropy, secure architecture, and how I built a robust identity platform using Python and Flask.">
+    <meta name="twitter:image" content="https://pranavr.netlify.app/assets/blog-6.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://pranavr.netlify.app/blog/vaultary-blog.html"
+      },
+      "headline": "Building Vaultary: Beyond 'Password123'",
+      "description": "Discover the engineering behind Vaultary. This post explores password entropy, secure architecture, and how I built a robust identity platform using Python and Flask.",
+      "image": "https://pranavr.netlify.app/assets/blog-6.webp",
+      "author": {
+        "@type": "Person",
+        "name": "Pranav R",
+        "url": "https://pranavr.netlify.app/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pranav R Portfolio",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://pranavr.netlify.app/assets/pranavr-favicon.png"
+        }
+      },
+      "datePublished": "2026-01-21",
+      "dateModified": "2026-01-21",
+      "keywords": "Vaultary, cybersecurity, password manager, zxcvbn, Python, Flask"
+    }
+    </script>
+
+    <link rel="stylesheet" href="../css/blog.css">
+    <link rel="stylesheet" href="../css/mediaqueriesblog.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,600&display=swap">
+    <!-- Syntax Highlighting Themes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" integrity="sha512-0aV8nC7C97h8A2OxfJznkQ2/f1r88yXy3877lJ3k8c9c788k8z7l9l8m7n8o9p0q" crossorigin="anonymous" id="light-theme-highlight">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" integrity="sha512-rO+olRTkcf304DQBxSWxln8JXCzTHlKnIdnMUwYvQL9/5apzo8YYQvY/zXl6O2tP92jJ6B4n9k8z4k7l7m9l9w==" crossorigin="anonymous" id="dark-theme-highlight" disabled>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="desktop-nav">
+        <a href="/" class="logo-link" aria-label="Go to homepage">
+            <img src="../assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
+        <div>
+            <ul class="nav-links">
+                <li><a href="/" aria-label="Go to homepage">Home</a></li>
+                <li><a href="/blog.html" aria-label="Go to blog page">Blog</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
+            </ul>
+        </div>
+    </nav>
+    <nav id="hamburger-nav">
+        <a href="/" class="logo-link" aria-label="Go to homepage">
+            <img src="../assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
+        <div class="hamburger-menu">
+            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false" data-tooltip="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="menu-links">
+                <ul>
+                    <li><a href="/" class="menu-item" aria-label="Go to homepage">Home</a></li>
+                    <li><a href="/blog.html" class="menu-item" aria-label="Go to blog page">Blog</a></li>
+                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <section id="blog-post" class="mobile-spacing">
+            <header class="blog-banner">
+                <img src="../assets/blog-6.webp" alt="Vaultary Project Banner" class="banner-img" loading="eager">
+                <h1 class="title banner-title">Building Vaultary: Beyond "Password123"</h1>
+            </header>
+            <div class="post-metadata">
+                <span class="post-category">Cybersecurity</span>
+                <span class="reading-time">12 min read</span>
+                <span class="post-date">January 21, 2026</span>
+                <span class="post-author">By Pranav R</span>
+                <div class="menu-container page-menu">
+                    <button class="menu-btn" aria-label="More options" data-tooltip="More options">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                    </button>
+                    <div class="options-menu">
+                        <button class="menu-option btn-copy-link">Copy Link</button>
+                        <button class="menu-option btn-share">Share</button>
+                    </div>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>In the world of cybersecurity, the weakest link is often the human element. We reuse passwords, we choose "Password123", and we forget to update credentials. I built <strong>Vaultary</strong> not just as a password manager, but as an educational platform to help users understand <em>why</em> their passwords are weak and how to fix them.</p>
+                
+                <div class="toc-container">
+                    <h3 class="toc-title">Table of Contents</h3>
+                    <ul>
+                        <li><a href="#the-problem">The Problem with Traditional Checkers</a></li>
+                        <li><a href="#entropy-vs-complexity">Entropy vs. Complexity</a></li>
+                        <li><a href="#zxcvbn-deep-dive">Under the Hood: How Zxcvbn Thinks</a></li>
+                        <li><a href="#tech-stack">The Tech Stack</a></li>
+                        <li><a href="#breach-detection">Real-Time Breach Detection</a></li>
+                        <li><a href="#secure-architecture">Secure Architecture</a></li>
+                        <li><a href="#ux-security">Designing for Humans: The UX of Security</a></li>
+                        <li><a href="#threat-model">Threat Model & Security Boundaries</a></li>
+                        <li><a href="#deployment-challenges">From Localhost to Production</a></li>
+                        <li><a href="#engineering-lessons">Engineering Lessons</a></li>
+                        <li><a href="#conclusion">Conclusion</a></li>
+                    </ul>
+                </div>
+
+                <h2 id="the-problem">The Problem with Traditional Checkers</h2>
+                <p>We've all seen them: "Password must contain 1 uppercase, 1 number, and 1 symbol." The issue is that <code>P@ssword1</code> meets all these criteria, yet it takes a modern cracking rig milliseconds to guess. Traditional regex-based checkers measure compliance, not security.</p>
+                <figure>
+                    <img src="../assets/vaultary-password-comparison.webp" alt="Infographic comparing a weak 'complex' password vs. a strong 'passphrase'" class="featured-img" loading="lazy">
+                    <figcaption>Contrast between traditional complexity rules and modern passphrase security.</figcaption>
+                </figure>
+                <p>Vaultary takes a different approach. It uses <strong>zxcvbn</strong>, a library developed by Dropbox, to estimate the realistic strength of a password based on pattern matching and entropy calculation.</p>
+
+                <h2 id="entropy-vs-complexity">Entropy vs. Complexity</h2>
+                <p>Complexity is about character sets. Entropy is about randomness. A password like <code>correct horse battery staple</code> (from the famous XKCD comic) has high entropy but low complexity (no symbols or numbers). It is actually much harder to crack than <code>Tr0ub4dor&3</code>.</p>
+                <p>In Vaultary, I visualize this data using a Radar Chart, breaking down the score into guesses, crack time, and specific warnings.</p>
+                <figure>
+                    <img src="../assets/vaultary-radar-chart.webp" alt="Sleek, high-tech radar chart displaying cybersecurity metrics" class="featured-img" loading="lazy">
+                    <figcaption>Vaultary's radar chart visualizing entropy and pattern strength.</figcaption>
+                </figure>
+
+                <h2 id="zxcvbn-deep-dive">Under the Hood: How Zxcvbn Thinks</h2>
+                <p>Most password checkers are "dumb"—they just check if you followed the rules. Zxcvbn (developed by Dropbox) is different because it tries to crack your password like a hacker would.</p>
+                <p>It doesn't just look for characters; it looks for patterns:</p>
+                <ul>
+                    <li><strong>Dictionaries:</strong> It checks against massive lists of common passwords, names, and pop culture references (like "superman" or "password").</li>
+                    <li><strong>Spatial Matching:</strong> It knows that <code>qwerty</code> and <code>asdfgh</code> are adjacent keys on a keyboard.</li>
+                    <li><strong>Repeats and Sequences:</strong> It detects <code>aaaaa</code> or <code>12345</code> instantly.</li>
+                </ul>
+                <p>By calculating the "entropy" (bits of randomness) based on these patterns, it gives a much more accurate estimate of how long a password would survive against a dedicated attack.</p>
+
+                <h2 id="tech-stack">The Tech Stack</h2>
+                <p>To build a secure and responsive platform, I chose a robust stack:</p>
+                <ul>
+                    <li><strong>Backend:</strong> Python Flask for its flexibility and extensive library support.</li>
+                    <li><strong>Database:</strong> SQLAlchemy ORM with PostgreSQL for production reliability.</li>
+                    <li><strong>Security:</strong> <code>bcrypt</code> for hashing, <code>cryptography</code> (Fernet) for vault encryption.</li>
+                    <li><strong>Frontend:</strong> Vanilla JavaScript and Chart.js for lightweight, fast visualizations.</li>
+                </ul>
+
+                <h2 id="breach-detection">Real-Time Breach Detection</h2>
+                <p>One of the coolest features in Vaultary is checking if a password has been exposed in a data breach. But how do you send a user's password to an API without exposing it? The answer is <strong>k-Anonymity</strong>.</p>
+                <p>Vaultary hashes the password using SHA-1, takes the first 5 characters of the hash, and sends <em>only those 5 characters</em> to the HaveIBeenPwned API. The API returns a list of all hashes starting with those 5 characters. Vaultary then checks locally if the full hash matches any in the list.</p>
+                <div class="code-block-container">
+                    <pre><code class="language-python">import hashlib
+import requests
+
+def check_pwned_api(password):
+    sha1password = hashlib.sha1(password.encode('utf-8')).hexdigest().upper()
+    first5_char, tail = sha1password[:5], sha1password[5:]
+    response = requests.get('https://api.pwnedpasswords.com/range/' + first5_char)
+    
+    # Check if tail is in response text...
+    return count</code></pre>
+                    <button class="copy-code-btn" aria-label="Copy Python code to clipboard">Copy</button>
+                </div>
+                <figure>
+                    <img src="../assets/vaultary-k-anonymity.webp" alt="Technical flow diagram explaining k-Anonymity with password hashing" class="featured-img" loading="lazy">
+                    <figcaption>How k-Anonymity protects your password during breach checks.</figcaption>
+                </figure>
+
+                <h2 id="secure-architecture">Secure Architecture</h2>
+                <p>Security isn't just a feature; it's the foundation. Here are a few principles I applied:</p>
+                <ul>
+                    <li><strong>Encryption at Rest:</strong> User vault data is encrypted using AES-256 (Fernet) before it ever touches the database.</li>
+                    <li><strong>HTTP Security Headers:</strong> Implemented HSTS, X-Frame-Options, and Content-Security-Policy to prevent XSS and Clickjacking.</li>
+                    <li><strong>Rate Limiting:</strong> Using Flask-Limiter to prevent brute-force attacks on login endpoints.</li>
+                </ul>
+                <figure>
+                    <img src="../assets/vaultary-encryption-diagram.webp" alt="3D isometric diagram of data encryption at rest" class="featured-img" loading="lazy">
+                    <figcaption>Data flow showing encryption at rest before database storage.</figcaption>
+                </figure>
+
+                <h2 id="ux-security">Designing for Humans: The UX of Security</h2>
+                <p>Security tools are often intimidating, filled with technical jargon and red warning signs. With Vaultary, I wanted to flip the script. Security should be educational, not scary.</p>
+                <p>Instead of a binary "Weak/Strong" indicator, I implemented a <strong>Radar Chart</strong>. This breaks down the password's strength into four dimensions:</p>
+                <ul>
+                    <li><strong>Guesses:</strong> The estimated number of attempts needed to crack it.</li>
+                    <li><strong>Crack Time:</strong> How long it would take a computer to guess it.</li>
+                    <li><strong>Pattern Strength:</strong> How predictable the character sequence is.</li>
+                    <li><strong>Entropy:</strong> The raw mathematical randomness.</li>
+                </ul>
+                <p>This visual feedback loop helps users understand <em>why</em> their password is weak. Seeing the "Crack Time" jump from "Instant" to "Centuries" just by adding a second word is a powerful motivator.</p>
+
+                <h2 id="threat-model">Threat Model & Security Boundaries</h2>
+                <p>While building Vaultary, I realized that security features alone are not enough — every system must clearly define what it protects against and what remains out of scope. It was a humbling moment to accept that I couldn't build an "unhackable" system, only one that raises the cost of attack significantly.</p>
+
+                <p>Vaultary is designed to mitigate:</p>
+                <ul>
+                    <li>Weak password selection through entropy-based analysis</li>
+                    <li>Use of previously breached credentials via HaveIBeenPwned integration</li>
+                    <li>Credential exposure at rest through AES-256 encryption</li>
+                    <li>Basic brute-force attempts via rate limiting</li>
+                </ul>
+
+                <p>However, it is important to be explicit about current limitations. Vaultary does <strong>not yet implement true zero-knowledge encryption</strong>. Because the server currently holds the encryption key, a full server compromise could theoretically expose vault data. This was an intentional learning milestone and is part of the future roadmap for improvement.</p>
+
+                <h2 id="deployment-challenges">From Localhost to Production</h2>
+                <p>Building Vaultary on my local machine was one thing; deploying it securely to the web was another beast entirely. Moving from a development environment to production introduced several hurdles:</p>
+                <ul>
+                    <li><strong>Environment Variables:</strong> Hardcoding API keys is a cardinal sin. I had to set up a robust system using <code>python-dotenv</code> for local development and secure environment variables on the hosting platform to manage the <code>SECRET_KEY</code> and database credentials.</li>
+                    <li><strong>Database Migrations:</strong> I used <strong>Alembic</strong> for database migrations. Handling schema changes without losing user data required careful planning and testing.</li>
+                    <li><strong>HTTPS Enforcement:</strong> On localhost, HTTP is fine. In production, it's a vulnerability. I configured Flask-Talisman to force HTTPS and set Strict-Transport-Security (HSTS) headers to ensure browsers never connect over an insecure channel.</li>
+                </ul>
+
+                <h2 id="engineering-lessons">Engineering Lessons from Vaultary</h2>
+                <p>Building Vaultary shifted my mindset from simply making features work to thinking like a defender. The journey wasn't smooth. I remember staring at my screen at 2 AM, frustrated because my implementation of k-Anonymity was returning errors, or realizing that my "secure" token handling was vulnerable to XSS. These moments of failure were where the real learning happened.</p>
+
+                <p>A few key lessons stood out:</p>
+                <ul>
+                    <li><strong>Regex complexity rules are outdated.</strong> Real attackers exploit patterns and leaked datasets, not just missing symbols.</li>
+                    <li><strong>Zero-knowledge architecture is harder than it sounds.</strong> Proper key derivation and client-side crypto require careful design. I struggled significantly with managing key states between sessions without exposing them to the server.</li>
+                    <li><strong>Authentication systems fail at the edges.</strong> Logout invalidation, token lifetime, and rate limiting all introduce subtle risks that I initially overlooked.</li>
+                    <li><strong>User education matters.</strong> Visual feedback (like the radar chart) significantly improves user understanding compared to simple strength bars. Connecting the technical "why" to the user's "how" was a design challenge in itself.</li>
+                </ul>
+                <figure>
+                    <img src="../assets/vaultary-human-element.webp" alt="Conceptual digital art representing the human element in cybersecurity" class="featured-img" loading="lazy">
+                    <figcaption>Balancing the technical maze with user-friendly security.</figcaption>
+                </figure>
+
+                <p>These insights will directly influence the next iteration of Vaultary.</p>
+
+                <h2 id="conclusion">Conclusion</h2>
+                <p>Building Vaultary taught me that security is a constant battle between usability and protection. By leveraging modern tools like zxcvbn and k-Anonymity, we can build systems that are both secure and user-friendly.</p>
+                <p>Check out the <a href="/projects/vaultary.html">project details page</a> for more info or view the source code on <a href="https://github.com/PranavR06/Vaultary" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+                
+                <div class="blog-disclaimer">
+                    <p><strong>Note:</strong> This article was written with the assistance of AI tools. Some images used in this post are AI-generated.</p>
+                </div>
+            </div>
+            <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section" data-href="#contact">
+                <img src="../assets/arrow.webp" alt="Scroll down to contact section" class="icon arrow scroll-down" loading="lazy" title="Scroll down"/>
+            </a>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="fade-in-section">
+            <p class="section__text__p1">Get in Touch</p>
+            <h2 class="title">Contact Me</h2>
+            <div class="contact-form-container">
+                <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/">
+                    <p class="hidden">
+                        <label>Don’t fill this out: <input name="bot-field" /></label>
+                    </p>
+                    <input type="hidden" name="form-name" value="contact">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required autocomplete="off"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-color-1" id="submit-btn">Send Message</button>
+                    </div>
+                    <div id="form-status" role="status" aria-live="polite" class="visually-hidden"></div>
+                </form>
+            </div>
+            <div class="contact-info-upper-container">
+                <div class="contact-info-container">
+                    <a href="mailto:pranavkundapura18@gmail.com?subject=Blog%20Inquiry" class="contact-link" aria-label="Send email to Pranav R">
+                        <img src="../assets/email.webp" alt="Email contact icon" class="icon contact-icon email-link" loading="lazy"/>
+                        <span class="contact-text">Email</span>
+                    </a>
+                </div>
+                <div class="contact-info-container">
+                    <a href="https://www.linkedin.com/in/pranavr06/" target="_blank" rel="noopener noreferrer" class="contact-link" aria-label="Visit Pranav R's LinkedIn profile">
+                        <img src="../assets/linkedin.webp" alt="LinkedIn contact icon" class="icon contact-icon social-link" loading="lazy"/>
+                        <span class="contact-text">LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+            <a href="#desktop-nav" class="scroll-up-link" aria-label="Scroll to top of page" data-href="#desktop-nav">
+                <img src="../assets/arrow-invert.webp" alt="Scroll to top of page" class="icon arrow scroll-up" loading="lazy" title="Scroll to top"/>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <nav>
+            <div class="nav-links-container">
+                <ul class="nav-links">
+                    <li><a href="/" aria-label="Go to homepage">Home</a></li>
+                    <li><a href="/blog.html" aria-label="Go to blog page">Blog</a></li>
+                </ul>
+            </div>
+        </nav>
+        <p id="copyright">Copyright © 2025 <a href="/" class="no-underline" aria-label="Go to Pranav R's homepage">Pranav R</a> - All rights reserved.</p>
+    </footer>
+    <script src="../main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gM5r4dNhjJ9p79Y4sv2pG9A1iPPO198ddA==" crossorigin="anonymous"></script>
+</body>
+</html>

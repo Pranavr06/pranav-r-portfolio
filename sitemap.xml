@@ -52,6 +52,16 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://pranavr.netlify.app/blog/vaultary-blog.html</loc>
+        <lastmod>2026-01-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/blog/ai-summit-ind-2026.html</loc>
+        <lastmod>2026-02-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://pranavr.netlify.app/projects/personal-portfolio.html</loc>
         <lastmod>2025-01-01</lastmod>
         <priority>0.7</priority>
