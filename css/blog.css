@@ -705,3 +705,20 @@ body.dark-theme .blog-disclaimer {
     color: #aaa;
     border-color: #444;
 }
+
+/* Report Box for Benchmarks and Callouts */
+.report-box {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-left: 4px solid #007bff;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+}
+body.dark-theme .report-box {
+    background: #2c2c2c;
+    border-color: #444;
+}
+.report-box.success { border-left-color: #28a745; }
+.report-box h4 { margin-top: 0; }
+}
