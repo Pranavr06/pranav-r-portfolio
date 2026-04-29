@@ -413,7 +413,7 @@ function initMenus() {
         if (downloadBtn) {
             const card = downloadBtn.closest('.details-container');
             if (card) {
-                const viewLink = card.querySelector('.btn-container a');
+                const viewLink = card.querySelector('.btn-container a, .project-card-footer a.btn');
                 const href = viewLink ? viewLink.getAttribute('href') : null;
                 
                 if (href && href !== '#' && href !== '') {
