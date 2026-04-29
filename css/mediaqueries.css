@@ -154,23 +154,18 @@
   .text-container {
     text-align: justify;
   }
-  .about-containers {
+  .about-containers,
+  .project-grid {
     grid-template-columns: 1fr;
   }
 
-  /* Experience card tweaks */
-  .details-container {
-    padding: 1.25rem;
-  }
-  article h3 {
-    font-size: 0.95rem;
-  }
-  article p {
-    font-size: 0.8rem;
-  }
   .icon {
     width: 20px;
     height: 20px;
+  }
+  
+  .project-img {
+    height: 250px;
   }
   
   /* Testimonials & Blog on small screens */
