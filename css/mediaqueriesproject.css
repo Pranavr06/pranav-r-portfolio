@@ -8,8 +8,15 @@
     section {
         margin: 0 5%;
     }
-    .arrow {
-        display: none;
+    /* Add padding to the project article so content doesn't touch screen edges */
+    #blog-post {
+        padding: 4rem 5%;
+    }
+    .scroll-down-link, .scroll-up-link {
+        right: -2rem; /* Keep arrows visible inside the margins */
+    }
+    #blog-post .scroll-down-link {
+        right: 1rem;
     }
 }
 
@@ -33,7 +40,12 @@
     .blog-banner {
         height: 300px;
     }
+     /* Adjust team grid minimum width slightly on medium screens */
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
 }
+
 
 @media screen and (max-width: 600px) {
     #contact, footer {
@@ -47,6 +59,9 @@
         margin-bottom: 2rem;
     }
     .contact-info-upper-container {
+        flex-wrap: wrap;
+    }
+    .btn-container {
         flex-wrap: wrap;
     }
     .contact-info-container p, .nav-links li a {
@@ -85,5 +100,36 @@
     }
     .post-content h3 {
         font-size: 1.4rem;
+    }
+    .banner-title {
+        font-size: 1.6rem;
+    }
+        
+    /* Force single column for image gallery on mobile */
+    .image-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+        /* Force single column for team cards on mobile */
+        .team-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        .team-img {
+            height: 320px;
+        }
+        .team-info {
+            padding: 1.25rem;
+        }
+
+    /* Center mentor details on mobile */
+    .report-box-flex {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .scroll-down-link, .scroll-up-link {
+        display: none; /* Strictly hide on small screens */
     }
 }

@@ -19,6 +19,7 @@ body {
     background: var(--light-bg);
     color: var(--light-text);
     transition: background 0.3s, color 0.3s;
+    overflow-x: hidden;
 }
 
 body.dark-theme {
@@ -32,6 +33,7 @@ body.dark-theme .title {
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 p {
@@ -244,6 +246,7 @@ section {
     margin: 0 10rem;
     box-sizing: border-box;
     min-height: fit-content;
+    position: relative;
 }
 
 .section-container {
@@ -370,18 +373,15 @@ body.dark-theme .icon {
 
 .btn {
     font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 2rem;
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     transition: all 300ms ease;
-    padding: 1rem;
-    width: 8rem;
-    border-radius: 2rem;
-    cursor: pointer;
-}
-
-.btn {
-    font-weight: 600;
-    padding: 0.75rem 1.25rem; /* Reduced padding */
-    border-radius: 2rem;
-    cursor: pointer;
 }
 
 .btn[disabled] {
@@ -536,154 +536,141 @@ body.dark-theme .details-container {
     position: relative;
 }
   
-.experience-container {
-    display: flex;
-    flex-direction: row; /* side by side */
-    justify-content: center; /* horizontally center */
-    align-items: flex-start; /* Align cards to the top */
-    gap: 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    flex-wrap: wrap;            /* for responsiveness */
-    height: 50%; /* Optional: Full height of section */
-}
-
-
-  
-.experience-card {
-    background-color: #fff;
-    border: 2px solid rgb(163, 163, 163);
-    border-radius: 15px;
-    padding: 1rem;
-    flex: 1 1 45%; /* Allow cards to grow and shrink */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: transform 0.3s ease;
+.expertise-focus {
     text-align: center;
-} 
-  
-  
-body.dark-theme .experience-card {
-    background-color: #2d2d2d;
-    border-color: #444;
+    font-weight: 600;
+    color: #007bff;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
 }
-  
-.experience-card h2 {
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    color: #333;
+
+body.dark-theme .expertise-focus {
+    color: #58a6ff;
 }
-  
-body.dark-theme .experience-card h2 {
-    color: #fff;
+
+.expertise-intro {
+    text-align: center;
+    color: var(--light-text);
+    max-width: 700px;
+    margin: -1.5rem auto 3rem auto;
+    font-size: 1.05rem;
+    line-height: 1.6;
 }
-  
-.skills {
+
+body.dark-theme .expertise-intro {
+    color: var(--dark-text);
+}
+
+.expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 3rem auto;
+}
+
+.expertise-card {
+    background: rgb(250, 250, 250);
+    border: 1px solid rgb(163, 163, 163);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    text-align: left;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
-    align-items: center;
+    transition: transform 0.3s ease;
 }
-  
-.skills {
-    list-style: none;
-    padding-left: 0;
+
+.expertise-card.highlighted-expertise {
+    border: 2px solid #007bff;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.08);
 }
-  
-.skill {
+
+.expertise-card:hover {
+    transform: scale(1.02) translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-theme .expertise-card {
+    background: #2d2d2d;
+    border-color: #555555;
+}
+
+body.dark-theme .expertise-card.highlighted-expertise {
+    border-color: #58a6ff;
+    box-shadow: 0 4px 15px rgba(88, 166, 255, 0.1);
+}
+
+body.dark-theme .expertise-card:hover {
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.12);
+}
+
+.expertise-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: var(--light-title);
+}
+
+body.dark-theme .expertise-title {
+    color: var(--dark-title);
+}
+
+.expertise-skills {
     display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-  
-.icon {
-    width: 25px;
-    height: 25px;
-    color: white;
-    fill: white;
-    filter: drop-shadow(0 0 2px #fff); /* subtle glow */
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
-  
-.skill h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    color: #333;
+.expertise-proof {
+    list-style-type: disc;
+    padding-left: 1.2rem;
+    color: var(--light-text);
 }
-  
-.skill p {
-    margin: 0;
+
+body.dark-theme .expertise-proof {
+    color: var(--dark-text);
+}
+
+.expertise-proof li {
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 96%; /* Reduces text width inside cards for better readability */
+}
+
+.expertise-work {
+    margin-top: auto;
+    padding-top: 1.5rem; /* Increased spacing between bullets and relevant work */
     font-size: 0.9rem;
-    color: #555; /* Increased contrast from #666 */
-}
-  
-body.dark-theme .skill h3 {
-    color: #fff;
-}
-  
-body.dark-theme .skill p {
-    color: #ccc;
+    color: var(--light-text);
+    border-top: 1px solid #e0e0e0;
 }
 
-.progress-bar {
-    width: 100%;
-    height: 10px;
-    background: #e0e0e0;
-    border-radius: 5px;
-    overflow: hidden;
-}
-.progress {
-    height: 100%;
-    background: #007bff;
-    width: 0; /* Initial width for animation */
-    transition: width 1s ease-in-out; /* Slower, smoother transition */
+body.dark-theme .expertise-work {
+    color: var(--dark-text);
+    border-top-color: #444;
 }
 
-body.dark-theme .progress {
-    background: #0095ff; /* Brighter blue for dark mode */
+.expertise-link {
+    color: #0069d9;
+    font-weight: 600; /* More prominent */
+    text-decoration: none;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
 }
 
-.progress.animated.progress-60 {
-    width: 60%;
+body.dark-theme .expertise-link {
+    color: #58a6ff;
 }
 
-.progress.animated.progress-40 {
-    width: 40%;
-}
-  
-.progress.animated.progress-50 {
-    width: 50%;
+.expertise-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: #004085;
 }
 
-.progress.animated.progress-25 {
-    width: 25%;
-}
-  
-/* Responsive */
-@media screen and (max-width: 768px) {
-.experience-container {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .experience-card {
-      width: 90%;
-      align-self: center !important;
-    }
-  
-    .experience-card h2 {
-      font-size: 1.3rem;
-    }
-  
-    .skill h3 {
-      font-size: 1rem;
-    }
-  
-    .skill p {
-      font-size: 0.85rem;
-    }
+body.dark-theme .expertise-link:hover {
+    color: #79b8ff;
 }
 
 .icon {
@@ -874,8 +861,8 @@ body.dark-theme .color-container:hover {
     font-weight: 600;
 }
 
-/* Specific styling for Project cards on homepage */
-#projects .experience-sub-title.project-title {
+/* Specific styling for Collection/Project card captions on homepage */
+figcaption .experience-sub-title.project-title {
     margin-bottom: 0;
     color: #ffffff !important;
     font-size: 1.5rem;
@@ -891,7 +878,7 @@ body.dark-theme .experience-sub-title.project-title {
     color: var(--dark-title);
 }
 
-body.dark-theme #projects .experience-sub-title.project-title {
+body.dark-theme figcaption .experience-sub-title.project-title {
     color: #ffffff !important;
 }
 
@@ -969,6 +956,18 @@ body.dark-theme .tech-tag {
 .status-completed { background-color: #28a745; }
 .status-in-progress { background-color: #007bff; }
 .status-planned { background-color: #6c757d; }
+.status-collection { background-color: #6f42c1; }
+
+#empty-state-message {
+    display: none;
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+}
+#empty-state-message .title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
 
 .details-container:hover .project-img {
     transform: scale(1.05);
@@ -994,7 +993,7 @@ body.dark-theme .tech-tag {
 }
 .testimonial-card {
     background: rgb(250, 250, 250);
-    border: 1px solid rgb(220, 220, 220);
+    border: 1px solid rgb(163, 163, 163);
     border-radius: 1.5rem;
     padding: 1.5rem;
     text-align: center;
@@ -1092,7 +1091,7 @@ body.dark-theme .author-info .author-title {
 
 .blog-card, article.blog-card {
     background: rgb(250, 250, 250);
-    border: 1px solid rgb(220, 220, 220);
+    border: 1px solid rgb(163, 163, 163);
     border-radius: 1.5rem;
     text-align: left;
     display: flex;
@@ -1544,6 +1543,8 @@ footer p {
     transition: all 0.3s ease;
     font-size: 0.9rem;
     pointer-events: none;
+    text-align: center;
+    max-width: 90vw;
 }
 
 .toast-notification.show {
@@ -1597,6 +1598,19 @@ body.dark-theme [data-tooltip]::before {
     box-shadow: 0 2px 5px rgba(255,255,255,0.1);
 }
 
+nav [data-tooltip]::before {
+    bottom: auto;
+    top: 100%;
+    transform: translateX(-50%) translateY(5px);
+    margin-bottom: 0;
+    margin-top: 5px;
+}
+
+nav [data-tooltip]:hover::before,
+nav [data-tooltip]:focus-visible::before {
+    transform: translateX(-50%) translateY(10px);
+}
+
 @media (hover: none), screen and (max-width: 600px) {
     [data-tooltip]::before {
         display: none;
@@ -1610,6 +1624,10 @@ body.dark-theme [data-tooltip]::before {
     margin-top: auto;
     padding-top: 1rem;
     width: 100%;
+}
+
+.project-card-footer.center-footer {
+    justify-content: center;
 }
 
 .project-btn {

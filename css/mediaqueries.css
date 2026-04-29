@@ -6,9 +6,6 @@
   .about-containers {
     grid-template-columns: repeat(2, 1fr);
   }
-  .experience-containers {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media screen and (max-width: 1200px) {
@@ -26,8 +23,8 @@
   .section-container {
     display: block;
   }
-  .arrow {
-    display: none; /* Hide the arrow on smaller screens */
+  .scroll-down-link, .scroll-up-link {
+    right: -2rem; /* Consistent spacing with other pages */
   }
   section,
   .section-container {
@@ -44,9 +41,6 @@
   .about-containers {
     margin-top: 0;
     grid-template-columns: repeat(2, 1fr);
-  }
-  .experience-containers {
-    grid-template-columns: 1fr;
   }
 
   /* Experience section responsiveness */
@@ -163,9 +157,6 @@
   .about-containers {
     grid-template-columns: 1fr;
   }
-  .experience-containers {
-    grid-template-columns: 1fr;
-  }
 
   /* Experience card tweaks */
   .details-container {
@@ -209,8 +200,7 @@
     padding: 1rem;
   }
 
-  .arrow {
-    right: 1rem;
-    bottom: 2rem;
+  .scroll-down-link, .scroll-up-link {
+    display: none; /* Strictly hide on small screens */
   }
 }

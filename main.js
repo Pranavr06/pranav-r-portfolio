@@ -95,7 +95,7 @@ function initTypingEffect() {
     const typingElement = document.querySelector(".section__text__p2 .typing");
     if (!typingElement) return; // Exit if the element doesn't exist
 
-    const roles = ["STUDENT", "WEB DEVELOPER", "TECH ENTHUSIAST"];
+    const roles = ["STUDENT", "TECH INNOVATOR", "TECH ENTHUSIAST"];
     let roleIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -189,6 +189,12 @@ function filterItems(containerSelector, filterValue) {
     });
 
     if (countSpan) countSpan.textContent = `(${visibleCount})`;
+
+    // Handle Empty State Message
+    const emptyMsg = container.querySelector('#empty-state-message');
+    if (emptyMsg) {
+        emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
 }
 
 /**
@@ -316,7 +322,7 @@ function initMenus() {
         }
 
         if (copyBtn || shareBtn) {
-            const card = (copyBtn || shareBtn).closest('.details-container, .testimonial-card, .blog-card');
+            const card = (copyBtn || shareBtn).closest('.details-container, .testimonial-card, .blog-card, .expertise-card');
             
             let urlToShare;
             const origin = window.location.origin;
@@ -375,6 +381,12 @@ function initMenus() {
                             title = titleEl.textContent;
                             text = `Check out the blog post "${title}" on Pranav R's portfolio.`;
                         }
+                } else if (card.classList.contains('expertise-card')) {
+                    const titleEl = card.querySelector('.expertise-title');
+                    if (titleEl) {
+                        title = titleEl.textContent;
+                        text = `Check out my expertise in "${title}" on Pranav R's portfolio.`;
+                    }
                     } else { // .details-container
                         const titleEl = card.querySelector('.project-title');
                         if (titleEl) {
@@ -470,16 +482,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    function handleThemeToggleClick() {
+        const newMode = toggleTheme();
+        const displayMode = newMode.charAt(0).toUpperCase() + newMode.slice(1);
+        showToast(`Theme switched to ${displayMode}`);
+    }
+
     const themeToggleDesktop = document.getElementById('theme-toggle');
     if (themeToggleDesktop) {
-        themeToggleDesktop.addEventListener('click', toggleTheme);
+        themeToggleDesktop.addEventListener('click', handleThemeToggleClick);
     }
 
     const themeToggleMobile = document.getElementById('theme-toggle-mobile');
     if (themeToggleMobile) {
-        themeToggleMobile.addEventListener('click', () => {
-            toggleTheme();
-        });
+        themeToggleMobile.addEventListener('click', handleThemeToggleClick);
     }
     
     // Universal link handler for elements with [data-href]
@@ -487,8 +503,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const target = e.target.closest('[data-href]');
         if (target) {
             const href = target.dataset.href;
-            if (href.startsWith('http') || href.startsWith('./assets')) {
-                window.open(href, '_blank');
+            if (href.startsWith('http') || href.includes('/assets/') || href.startsWith('./assets') || href.startsWith('../assets') || href.endsWith('.pdf')) {
+                window.open(href, '_blank', 'noopener,noreferrer');
             } else if (href.startsWith('#')) {
                 document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
                 // Prevent default anchor behavior

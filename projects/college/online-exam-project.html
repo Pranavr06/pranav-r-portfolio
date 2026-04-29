@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Examination Management System | Pranav R</title>
+    <meta name="description" content="A secure, scalable Online Examination & Proctoring System built with FastAPI, YOLOv8, and AWS S3 by Pranav R.">
+    <meta name="keywords" content="Online Examination System, AI Proctoring, YOLOv8, FastAPI, College Project, Pranav R">
+    <meta name="author" content="Pranav R">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://pranavr.netlify.app/projects/college/online-exam-project.html" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://pranavr.netlify.app/projects/college/online-exam-project.html">
+    <meta property="og:site_name" content="Pranav R Portfolio">
+    <meta property="og:title" content="Online Examination Management System | Pranav R">
+    <meta property="og:description" content="A secure, scalable Online Examination & Proctoring System built with FastAPI, YOLOv8, and AWS S3 by Pranav R.">
+    <meta property="og:image" content="https://pranavr.netlify.app/assets/college-4.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@PranavR2006">
+    <meta name="twitter:url" content="https://pranavr.netlify.app/projects/college/online-exam-project.html">
+    <meta name="twitter:title" content="Online Examination Management System | Pranav R">
+    <meta name="twitter:description" content="A secure, scalable Online Examination & Proctoring System built with FastAPI, YOLOv8, and AWS S3 by Pranav R.">
+    <meta name="twitter:image" content="https://pranavr.netlify.app/assets/college-4.png">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Online Examination Management System",
+      "description": "A secure, scalable Online Examination & Proctoring System built with FastAPI, YOLOv8, and AWS S3.",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "url": "https://pranavr.netlify.app/projects/college/online-exam-project.html",
+      "author": { "@type": "Person", "name": "Pranav R", "url": "https://pranavr.netlify.app/" },
+      "image": "https://pranavr.netlify.app/assets/college-4.png"
+    }
+    </script>
+    
+    <link rel="icon" type="image/png" href="../../assets/pranavr-favicon.png" />
+    
+    <!-- CSS paths point back two levels to the root css folder -->
+    <link rel="stylesheet" href="../../css/project.css">
+    <link rel="stylesheet" href="../../css/mediaqueriesproject.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,600&display=swap">
+</head>
+<body>
+    <nav id="desktop-nav">
+        <a href="../../index.html" class="logo-link" aria-label="Go to homepage">
+            <img src="../../assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
+        <div>
+            <ul class="nav-links">
+                <li><a href="../../index.html" aria-label="Go to homepage">Home</a></li>
+                <li><a href="../college-projects.html" aria-label="Go to college projects">College Projects</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
+            </ul>
+        </div>
+    </nav>
+    <nav id="hamburger-nav">
+        <a href="../../index.html" class="logo-link" aria-label="Go to homepage">
+            <img src="../../assets/logo.svg" alt="Pranav R logo" class="logo" />
+        </a>
+        <div class="hamburger-menu">
+            <div id="hamburger-icon" class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-expanded="false" data-tooltip="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="menu-links">
+                <ul>
+                    <li><a href="../../index.html" class="menu-item" aria-label="Go to homepage">Home</a></li>
+                    <li><a href="../college-projects.html" class="menu-item" aria-label="Go to college projects">College Projects</a></li>
+                    <li><button id="theme-toggle-mobile" class="theme-toggle menu-item" aria-label="Toggle light or dark theme" data-tooltip="Toggle theme">🌞</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        <article id="blog-post"> 
+            <div class="blog-banner">
+                <!-- Add a relevant banner image inside your assets folder -->
+                <img src="../../assets/college-4.webp" alt="Online Examination Management System Banner" class="banner-img" loading="lazy">
+                <h1 class="banner-title">Online Examination Management System</h1>
+            </div>
+            
+            <div class="post-metadata">
+                <span class="blog-category">AI-Powered Web Application</span>
+                <div class="tech-stack">
+                    <span class="tech-tag">FastAPI</span>
+                    <span class="tech-tag">YOLOv8</span>
+                    <span class="tech-tag">AWS S3</span>
+                    <span class="tech-tag">MySQL</span>
+                </div>
+                <div class="menu-container page-menu">
+                    <button type="button" class="menu-btn" aria-label="More options" data-tooltip="More options">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                    </button>
+                    <div class="options-menu">
+                        <button type="button" class="menu-option btn-copy-link">Copy Link</button>
+                        <button type="button" class="menu-option btn-share">Share</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-content">
+                <div class="btn-container add-margin-bottom">
+                    <a href="https://github.com/Pranavr06" target="_blank" rel="noopener noreferrer" class="btn btn-color-1">View Source Code</a>
+                    <a href="../../assets/online-exam-report.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-color-2">View Report</a>
+                </div>
+
+                <h2>Project Overview</h2>
+                <p>The Online Examination Management System (OEMS) is a full-stack web application designed to conduct secure, scalable, and intelligent online examinations. The system integrates real-time AI-based proctoring with a robust backend architecture to ensure exam integrity, prevent malpractice, and provide seamless exam management for students and administrators.</p>
+                <p>Unlike basic exam portals, OEMS focuses heavily on security, automation, and real-time monitoring, combining computer vision with cloud infrastructure to simulate a controlled examination environment remotely.</p>
+
+                <h2>Core Features</h2>
+                
+                <h3>AI Proctoring System</h3>
+                <p>The core strength of the system lies in its intelligent proctoring module powered by YOLOv8 and OpenCV.</p>
+                <ul>
+                    <li>Real-time object detection using YOLOv8 (Ultralytics)</li>
+                    <li>Detection of mobile phones to prevent unfair assistance</li>
+                    <li>Detection of multiple persons in the frame indicating malpractice</li>
+                    <li>Continuous monitoring via webcam feed</li>
+                    <li>Automatic screenshot capture when suspicious activity is detected</li>
+                    <li>Conditional storage of evidence only when violations occur</li>
+                    <li>Confidence threshold tuning to reduce false positives</li>
+                    <li>Frame sampling optimization to balance performance and detection accuracy</li>
+                </ul>
+                <p><em>This module ensures that the system is not just passive but actively enforces exam discipline.</em></p>
+
+                <h3>Student Module</h3>
+                <p>The student interface is designed to be simple yet secure, ensuring minimal distraction while maintaining strict control.</p>
+                <ul>
+                    <li>Secure authentication system (JWT/session-based)</li>
+                    <li>Personalized dashboard displaying assigned exams</li>
+                    <li>Timer-based examination system with strict duration control</li>
+                    <li>Auto-submission upon timeout or rule violation</li>
+                    <li>Real-time proctoring activated during exams</li>
+                    <li>Prevention of tab switching, refresh attempts, and unauthorized navigation</li>
+                    <li>Smooth UI/UX for answering questions without lag</li>
+                </ul>
+
+                <h3>Teacher &amp; Admin Module</h3>
+                <p>The admin panel provides full control over exam lifecycle and monitoring.</p>
+                <ul>
+                    <li>Create, update, and delete examinations</li>
+                    <li>Question bank management (MCQs)</li>
+                    <li>Assign exams to specific students or groups</li>
+                    <li>Monitor ongoing exams in real-time</li>
+                    <li>Access detailed proctoring reports with captured evidence</li>
+                    <li>View and analyze student performance</li>
+                </ul>
+                <p><em>Note: Proper role-based access control (RBAC) is implemented to differentiate admin and teacher permissions.</em></p>
+
+                <h3>Evaluation System</h3>
+                <ul>
+                    <li>Automatic evaluation of objective-type questions</li>
+                    <li>Instant result generation after submission</li>
+                    <li>Storage of results for future access</li>
+                    <li>Basic analytics for performance tracking</li>
+                </ul>
+
+                <h3>Cloud &amp; Storage Integration</h3>
+                <p>To handle evidence efficiently and cost-effectively:</p>
+                <ul>
+                    <li>Integration with AWS S3 for storing violation screenshots</li>
+                    <li>Structured storage format: <code>user_id / exam_id / timestamp</code></li>
+                    <li>Upload triggered only on detection events (not continuous streaming)</li>
+                    <li>Reduces unnecessary cloud storage costs</li>
+                </ul>
+
+                <h3>Security Features</h3>
+                <p>Security is treated as a primary design concern rather than an afterthought.</p>
+                <ul>
+                    <li>JWT-based authentication for secure session handling</li>
+                    <li>Input validation and sanitization across all endpoints</li>
+                    <li>Protection against: Multiple concurrent logins, Tab switching and window focus loss, Page refresh bypass attempts</li>
+                    <li>Secure REST API built using FastAPI</li>
+                    <li>Basic logging of suspicious activities and violations</li>
+                </ul>
+                
+                <h2>Team &amp; Contributions</h2>
+                <div class="team-grid">
+                    <div class="team-card highlighted-card">
+                        <img src="../../assets/pranavr.webp" alt="Pranav R" class="team-img" loading="lazy">
+                        <div class="team-info">
+                            <h3 class="team-name">Pranav R</h3>
+                            <span class="team-role">Full-Stack AI Engineer</span>
+                            <ul class="team-contributions-list">
+                                <li>Spearheaded the overall project development, leading both the full-stack architecture and AI proctoring integration.</li>
+                                <li>Developed the core AI engine (YOLOv8), secure backend API (FastAPI), and cloud evidence pipeline (AWS S3).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="../../assets/NNM24IS164.webp" alt="Pratham (164)" class="team-img" loading="lazy">
+                        <div class="team-info">
+                            <h3 class="team-name">Pratham <span>(164)</span></h3>
+                            <span class="team-role">Frontend Developer</span>
+                            <p class="team-contribution">Built the secure exam interface and student dashboards, ensuring a seamless user experience.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <img src="../../assets/NNM24IS171.webp" alt="Prathwik" class="team-img" loading="lazy">
+                        <div class="team-info">
+                            <h3 class="team-name">Prathwik</h3>
+                            <span class="team-role">Backend API Developer</span>
+                            <p class="team-contribution">Developed the FastAPI backend architecture and integrated the database for secure data handling.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Technology Stack</h2>
+                <ul>
+                    <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+                    <li><strong>Backend:</strong> FastAPI / Flask (REST API architecture)</li>
+                    <li><strong>AI &amp; Computer Vision:</strong> YOLOv8 (Ultralytics), OpenCV</li>
+                    <li><strong>Database:</strong> MySQL / PostgreSQL</li>
+                    <li><strong>Cloud Services:</strong> AWS S3 (evidence storage)</li>
+                </ul>
+
+                <h2>System Interface &amp; Walkthrough</h2>
+                
+                <h3>1. Login</h3>
+                <p>A secure authentication gateway featuring role-based routing to ensure users are directed to their specific functional dashboards.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-login.webp" alt="Secure Login Interface" loading="lazy">
+                    <figcaption>The unified login portal for all system users.</figcaption>
+                </figure>
+                
+                <h3>2. Superadmin Dashboard</h3>
+                <p>The highest level of access designed for managing global system settings, institutional onboarding, and overall compliance.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-superadmin.webp" alt="Superadmin Interface" loading="lazy">
+                    <figcaption>Global control center for the OEMS platform.</figcaption>
+                </figure>
+
+                <h3>3. Admin Dashboard</h3>
+                <p>An institutional control center for administrators to manage teacher accounts, student enrollments, and broad examination schedules.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-admin.webp" alt="Admin Interface" loading="lazy">
+                    <figcaption>Institutional management and user administration hub.</figcaption>
+                </figure>
+
+                <h3>4. Teacher Dashboard</h3>
+                <p>A dedicated interface for educators to create dynamic question banks, assign specific exams, and review detailed proctoring alerts.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-teacher.webp" alt="Teacher Interface" loading="lazy">
+                    <figcaption>Educator portal for exam creation and monitoring.</figcaption>
+                </figure>
+
+                <h3>5. Student Dashboard</h3>
+                <p>A secure, personalized portal where students access assigned exams, view upcoming schedules, and review past performance.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-student.webp" alt="Student Dashboard Interface" loading="lazy">
+                    <figcaption>The secure student portal displaying assigned exams and active timers.</figcaption>
+                </figure>
+
+                <h3>6. Secure Exam Interface</h3>
+                <p>A distraction-free environment featuring a live countdown timer, strict tab-switching prevention, and active background monitoring.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-exam-interface.webp" alt="Secure Exam Interface" loading="lazy">
+                    <figcaption>A highly monitored exam interface with real-time tracking.</figcaption>
+                </figure>
+
+                <h3>7. AI Detection (Proctoring)</h3>
+                <p>The core YOLOv8 engine actively analyzes webcam feeds in real-time to detect mobile phones and unauthorized persons within the frame.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-ai-detection.webp" alt="AI Real-Time Detection" loading="lazy">
+                    <figcaption>YOLOv8 actively flagging a mobile phone during a live exam session.</figcaption>
+                </figure>
+
+                <h3>8. Violation Evidence</h3>
+                <p>When the confidence threshold is met, the system conditionally captures the exact frame and securely uploads it to AWS S3, logging the event.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-violation-evidence.webp" alt="Violation Evidence Log" loading="lazy">
+                    <figcaption>Time-stamped evidence securely stored and linked to the specific exam session.</figcaption>
+                </figure>
+
+                <h3>9. Results &amp; Analytics</h3>
+                <p>Instant, automated evaluation of submissions with granular performance analytics and scorecard generation.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-results.webp" alt="Automated Results and Analytics" loading="lazy">
+                    <figcaption>Automated scoring and student performance breakdown.</figcaption>
+                </figure>
+
+                <h2>System Architecture</h2>
+                <p>A highly modular data flow ensuring that heavy AI processing and cloud uploads only occur conditionally, preserving bandwidth and reducing AWS costs.</p>
+                <ul>
+                    <li>Client (browser) captures video frames during the exam</li>
+                    <li>Frames are sent to the backend API at controlled intervals</li>
+                    <li>YOLO model processes frames for object detection</li>
+                    <li>If a violation is detected:<br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; Screenshot is captured<br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; Uploaded to AWS S3<br>&nbsp;&nbsp;&nbsp;&nbsp;&bull; Event logged in database</li>
+                    <li>Admin dashboard retrieves logs and evidence for review</li>
+                </ul>
+                
+                <figure class="project-image-container">
+                    <img src="../../assets/online-exam-er-diagram.webp" alt="System Architecture Diagram" loading="lazy">
+                    <figcaption>The system architecture mapping the flow from Client to YOLOv8 to AWS S3.</figcaption>
+                </figure>
+
+                <h3>Database Design (ER Diagram)</h3>
+                <p>The application relies on a robust relational database schema to seamlessly connect users, examinations, question banks, and AI proctoring evidence logs.</p>
+                <figure class="project-image-container">
+                    <img src="../../assets/oems-database-er-diagram.webp" alt="Entity Relationship Diagram of the entire system" loading="lazy">
+                    <figcaption>Entity-Relationship (ER) Diagram mapping the core tables and their associations across the entire system.</figcaption>
+                </figure>
+
+                <h2>Challenges &amp; Solutions</h2>
+                <ul>
+                    <li><strong>Real-time Processing vs Performance:</strong> Continuous frame processing is computationally expensive.<br><em>Solution:</em> Implemented frame skipping and asynchronous processing.</li>
+                    <li><strong>False Positives in Detection:</strong> Incorrect detections affecting credibility.<br><em>Solution:</em> Tuned confidence thresholds and validation logic.</li>
+                    <li><strong>Cloud Cost Optimization:</strong> Storing large amounts of unnecessary data.<br><em>Solution:</em> Conditional uploads only when violations occur.</li>
+                    <li><strong>Exam Security Loopholes:</strong> Users bypassing restrictions via refresh/tab switch.<br><em>Solution:</em> Implemented strict session monitoring and event tracking.</li>
+                </ul>
+
+                <h2>Key Highlights</h2>
+                <ul>
+                    <li>Combines AI + full-stack + cloud</li>
+                    <li>Solves a real-world problem (exam malpractice)</li>
+                    <li>Shows system design thinking (not just UI)</li>
+                    <li>Goes beyond UI by addressing security and scalability</li>
+                </ul>
+
+                <h2>Academic Context &amp; Guidance</h2>
+                <p>This project was made for the subject <strong>DATABASE MANAGEMENT SYSTEMS</strong> (Course Code: CS2102-1), under the expert guidance of:</p>
+                <div class="report-box report-box-flex">
+                    <img src="../../assets/prashanth-kumar.webp" alt="Mr. Prashanth Kumar" class="instructor-img" loading="lazy">
+                    <div>
+                        <h3 class="instructor-name">Mr. Prashanth Kumar</h3>
+                        <p class="instructor-text"><strong>Designation:</strong> Assistant Professor Gd.II</p>
+                        <p class="instructor-text"><strong>Institution:</strong> NMAM Institute of Technology (NMAMIT), Nitte</p>
+                        <p class="instructor-email"><strong>Email:</strong> <a href="mailto:prashanth.kumar@nitte.edu.in">prashanth.kumar@nitte.edu.in</a></p>
+                    </div>
+                </div>
+
+                <h2>Future Improvements</h2>
+                <ul>
+                    <li>Role-Based Access Control (Admin / Teacher / Student separation)</li>
+                    <li>Advanced analytics dashboard</li>
+                    <li>Live proctoring dashboard for admins</li>
+                    <li>Integration with WebRTC for optimized video streaming</li>
+                    <li>AI model improvements for higher accuracy</li>
+                    <li>Deployment on scalable cloud infrastructure (AWS/GCP)</li>
+                </ul>
+            </div>
+            <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section" data-href="#contact">
+                <img src="../../assets/arrow.webp" alt="Scroll down to contact section" class="icon arrow scroll-down" loading="lazy" title="Scroll down"/>
+            </a>
+        </article>
+
+        <section id="contact" class="fade-in-section">
+            <p class="section__text__p1">Get in Touch</p>
+            <h2 class="title">Contact Me</h2>
+            <div class="contact-form-container">
+                <form id="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/">
+                    <p class="hidden">
+                        <label>Don’t fill this out: <input name="bot-field" /></label>
+                    </p>
+                    <input type="hidden" name="form-name" value="contact">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required autocomplete="off"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-color-1" id="submit-btn">Send Message</button>
+                    </div>
+                    <div id="form-status" role="status" aria-live="polite" class="visually-hidden"></div>
+                </form>
+            </div>
+            <div class="contact-info-upper-container">
+                <div class="contact-info-container">
+                    <a href="mailto:pranavkundapura18@gmail.com?subject=Project%20Inquiry" class="contact-link" aria-label="Send email to Pranav R">
+                        <img src="../../assets/email.webp" alt="Email contact icon" class="icon contact-icon" loading="lazy"/>
+                        <span class="contact-text">Email</span>
+                    </a>
+                </div>
+                <div class="contact-info-container">
+                    <a href="https://www.linkedin.com/in/pranavr06/" target="_blank" rel="noopener noreferrer" class="contact-link" aria-label="Visit Pranav R's LinkedIn profile">
+                        <img src="../../assets/linkedin.webp" alt="LinkedIn contact icon" class="icon contact-icon" loading="lazy"/>
+                        <span class="contact-text">LinkedIn</span>
+                    </a>
+                </div>
+            </div>
+            <a href="#desktop-nav" class="scroll-up-link" aria-label="Scroll to top of page" data-href="#desktop-nav">
+                <img src="../../assets/arrow-invert.webp" alt="Scroll to top of page" class="icon arrow scroll-up" loading="lazy" title="Scroll to top"/>
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <nav>
+            <div class="nav-links-container">
+                <ul class="nav-links">
+                    <li><a href="../../index.html" aria-label="Go to homepage">Home</a></li>
+                    <li><a href="../college-projects.html" aria-label="Go to college projects">College Projects</a></li>
+                </ul>
+            </div>
+        </nav>
+        <p id="copyright"></p>
+    </footer>
+    <!-- JS path points back two levels -->
+    <script src="../../main.js"></script>
+</body>
+</html>

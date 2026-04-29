@@ -39,7 +39,7 @@
       },
       "headline": "Database Design Mistakes That Break Production Systems",
       "description": "Common database design mistakes that quietly break performance, scalability, and data integrity in real applications.",
-      "image": "https://pranavr.netlify.app/assets/blog-8.webp",
+      "image": "https://pranavr.netlify.app/assets/blog-8.png",
       "author": {
         "@type": "Person",
         "name": "Pranav R",
@@ -141,7 +141,7 @@
                     </ul>
                 </div>
 
-                <h2 id="why-it-matters">🏗️ Why Database Design Matters in Real Applications</h2>
+                <h2 id="why-it-matters">Why Database Design Matters in Real Applications</h2>
                 <p>The database is usually the hardest part to scale. You can refactor code in a sprint. Changing a schema with millions of rows takes weeks and often downtime.</p>
                 <p>Good design buys you:</p>
                 <ul>
@@ -150,7 +150,7 @@
                     <li><strong>Developer Velocity:</strong> A clean schema is easier to code against.</li>
                 </ul>
 
-                <h2 id="mistake-1">🔑 Mistake #1: Missing or Poor Primary Keys</h2>
+                <h2 id="mistake-1">Mistake #1: Missing or Poor Primary Keys</h2>
                 <p>Every table needs a primary key (PK). It’s the row's identity. Without it, ORMs break and referencing data is impossible.</p>
                 <p>The debate usually lands on <strong>Auto-increment vs. UUIDs</strong>:</p>
                 <ul>
@@ -159,7 +159,7 @@
                 </ul>
                 <p><strong>The Rule:</strong> Just pick one, but never rely on implicit row IDs. Define a PK explicitly.</p>
 
-                <h2 id="mistake-2">📐 Mistake #2: Wrong Normalization Strategy</h2>
+                <h2 id="mistake-2">Mistake #2: Wrong Normalization Strategy</h2>
                 <p>Textbooks love the Third Normal Form (3NF). In production, strict adherence to 3NF can kill read performance.</p>
                 <ul>
                     <li><strong>Over-normalization:</strong> If you need 8 joins just to display a user profile, you’ve gone too far.</li>
@@ -171,7 +171,7 @@
                 </figure>
                 <p><strong>The Tradeoff:</strong> Normalize for write-heavy data to ensure integrity. Denormalize cautiously for read-heavy data to avoid expensive joins.</p>
 
-                <h2 id="mistake-3">⚡ Mistake #3: Ignoring Indexes</h2>
+                <h2 id="mistake-3">Mistake #3: Ignoring Indexes</h2>
                 <p>This is the #1 cause of slow apps. Without an index, the database performs a <strong>Full Table Scan</strong>—it looks at every single row to find what you asked for.</p>
                 <figure>
                     <img src="../assets/index-scan-vs-full-scan.webp" alt="Comparison of Full Table Scan vs Index Scan" class="featured-img" loading="lazy">
@@ -187,7 +187,7 @@ CREATE INDEX idx_users_email ON users(email);</code></pre>
                 </div>
                 <p>However, indexes aren't free. They speed up reads but slow down writes because the index must be updated too. Index columns you frequently filter (`WHERE`) or sort (`ORDER BY`) on. Don't index everything.</p>
                 <div class="report-box success">
-                    <h4>🚀 Benchmark Reality Check</h4>
+                    <h4>Benchmark Reality Check</h4>
                     <p>Querying 1 million rows for a specific email:</p>
                     <ul>
                         <li><strong>Without Index:</strong> ~450ms (Full Table Scan)</li>
@@ -196,7 +196,7 @@ CREATE INDEX idx_users_email ON users(email);</code></pre>
                     <p>That is a <strong>50x</strong> performance improvement with one line of SQL.</p>
                 </div>
 
-                <h2 id="mistake-4">🔗 Mistake #4: Poor Relationship Design</h2>
+                <h2 id="mistake-4">Mistake #4: Poor Relationship Design</h2>
                 <p>Don't store relationships as comma-separated lists. Storing `1,2,3` in a `course_ids` column is a trap. You can't join on it efficiently, and you can't index it.</p>
                 <p><strong>Good Design:</strong> Use a <strong>Junction Table</strong> for Many-to-Many relationships.</p>
                 <figure>
@@ -205,7 +205,7 @@ CREATE INDEX idx_users_email ON users(email);</code></pre>
                 </figure>
                 <p>Also, use <strong>Foreign Keys</strong>. They stop you from creating "orphan" records that point to nowhere.</p>
 
-                <h2 id="mistake-5">📈 Mistake #5: Designing Without Thinking About Scale</h2>
+                <h2 id="mistake-5">Mistake #5: Designing Without Thinking About Scale</h2>
                 <p>It works on localhost with 10 rows. Will it work with 10 million?</p>
                 <ul>
                     <li><strong>Pagination Strategy:</strong> Avoid <code>OFFSET</code> pagination for large datasets (it gets slower the deeper you go). Use <strong>Cursor-based pagination</strong>.</li>
@@ -213,7 +213,7 @@ CREATE INDEX idx_users_email ON users(email);</code></pre>
                     <li><strong>Archival Strategy:</strong> Plan for how you will handle old data before your logs table eats all your storage.</li>
                 </ul>
 
-                <h2 id="mistake-6">🐢 Mistake #6: The N+1 Query Problem (The ORM Trap)</h2>
+                <h2 id="mistake-6">Mistake #6: The N+1 Query Problem (The ORM Trap)</h2>
                 <p>ORMs make fetching data too easy. The <strong>N+1 problem</strong> is classic: fetching a list (1 query) then looping to fetch related data (N queries).</p>
                 <figure>
                     <img src="../assets/n-plus-one-problem.webp" alt="Diagram illustrating the N+1 query problem" class="featured-img" loading="lazy">
@@ -233,12 +233,12 @@ const users = await db.users.findMany({
                     <button class="copy-code-btn" aria-label="Copy code to clipboard">Copy</button>
                 </div>
 
-                <h2 id="mistake-7">💸 Mistake #7: Storing Money as Float</h2>
+                <h2 id="mistake-7">Mistake #7: Storing Money as Float</h2>
                 <p>Never use <code>FLOAT</code> for money. Computers are bad at binary fractions.</p>
                 <p><strong>The Problem:</strong> <code>0.1 + 0.2</code> often equals <code>0.30000000000000004</code>. In finance, this penny-shaving adds up to major errors.</p>
                 <p><strong>The Fix:</strong> Use <code>DECIMAL</code> in SQL, or store values as integers (cents). Your accounting team will thank you.</p>
 
-                <h2 id="mistake-8">🛡️ Mistake #8: Ignoring Transactions</h2>
+                <h2 id="mistake-8">Mistake #8: Ignoring Transactions</h2>
                 <p>If you deduct money from User A but the server crashes before adding it to User B, money vanishes. Transactions ensure atomicity—either everything happens, or nothing does.</p>
                 <div class="code-block-container">
                     <pre><code class="language-sql">BEGIN TRANSACTION;
@@ -248,14 +248,14 @@ COMMIT; -- Only saves if both updates succeeded</code></pre>
                     <button class="copy-code-btn" aria-label="Copy SQL code to clipboard">Copy</button>
                 </div>
 
-                <h2 id="mistake-9">🔒 Mistake #9: Ignoring Database Security</h2>
+                <h2 id="mistake-9">Mistake #9: Ignoring Database Security</h2>
                 <p>Your database needs its own armor.</p>
                 <ul>
                     <li><strong>SQL Injection:</strong> Never concatenate strings into queries. Always use <strong>Prepared Statements</strong>.</li>
                     <li><strong>Least Privilege:</strong> Don't connect as <code>root</code>. Create a specific user with only the permissions it needs.</li>
                 </ul>
 
-                <h2 id="real-example">🏫 Mini Real Example: Assignment Submission System</h2>
+                <h2 id="real-example">Mini Real Example: Assignment Submission System</h2>
                 <p>Let's look at a classroom app schema to see these principles in action.</p>
                 
                 <figure>
@@ -284,7 +284,7 @@ COMMIT; -- Only saves if both updates succeeded</code></pre>
                     <button class="copy-code-btn" aria-label="Copy SQL code to clipboard">Copy</button>
                 </div>
 
-                <h2 id="checklist">✅ Practical Checklist: Before You Finalize</h2>
+                <h2 id="checklist">Practical Checklist: Before You Finalize</h2>
                 <p>Before you commit that schema, run it through this checklist:</p>
                 <ul>
                     <li>Does every table have a Primary Key?</li>
@@ -295,11 +295,11 @@ COMMIT; -- Only saves if both updates succeeded</code></pre>
                     <li>Are data types optimized (e.g., not using strings for dates)?</li>
                 </ul>
 
-                <h2 id="final-thoughts">🏁 Conclusion</h2>
+                <h2 id="final-thoughts">Conclusion</h2>
                 <p>A good database schema scales silently. A bad one becomes the loudest, most expensive part of your stack. Don't just create tables; design a foundation.</p>
 
                 <div class="blog-disclaimer">
-                    <p><strong>Note:</strong> This article was written and edited by Pranav R. AI tools were used for assistance with drafting and visual assets.</p>
+                    <p><strong>Disclaimer</strong>: This article was written and edited by Pranav R. AI tools were used for assistance with drafting and visual assets.</p>
                 </div>
             </div>
             <a href="#contact" class="scroll-down-link" aria-label="Scroll to contact section" data-href="#contact">

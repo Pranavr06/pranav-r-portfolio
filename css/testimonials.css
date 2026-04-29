@@ -109,6 +109,14 @@ section { padding-top: 4vh; margin: 0 10rem; box-sizing: border-box; min-height:
     gap: 1rem;
 }
 
+.reviews-tag {
+    cursor: default;
+    padding: 0.4rem 1.2rem;
+    font-size: 0.9rem;
+    pointer-events: none;
+    border-radius: 2rem;
+}
+
 #testimonial-filter {
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -147,7 +155,7 @@ body.dark-theme #testimonial-filter {
     padding: 4rem 0;
 }
 .testimonial-grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 2rem; max-width: 1200px; margin: 2rem auto 0 auto; }
-.testimonial-card { background: white; border-radius: 1.5rem; border: 1px solid rgb(220, 220, 220); text-align: center; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; padding: 1.5rem; position: relative; }
+.testimonial-card { background: white; border-radius: 1.5rem; border: 1px solid rgb(163, 163, 163); text-align: center; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; padding: 1.5rem; position: relative; }
 .testimonial-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
 body.dark-theme .testimonial-card { background: #2d2d2d; border-color: #555; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
 body.dark-theme .testimonial-card:hover { box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1); }
@@ -263,8 +271,13 @@ body.dark-theme .btn-color-1:hover { background: #ffffff; color: #000000; }
 body.dark-theme .btn-color-2 { border: 1px solid #ffffff; background: none; color: white; }
 body.dark-theme .btn-color-2:hover { background: #ffffff; color: #000000; }
 .icon { cursor: pointer; height: 2rem; }
-.arrow { position: absolute; right: -5rem; bottom: 2.5rem; }
-.scroll-up { bottom: 2.5rem; }
+.scroll-down-link, .scroll-up-link {
+    display: inline-block;
+    position: absolute;
+    bottom: 2.5rem;
+    right: -5rem;
+}
+.arrow { width: 30px; height: 30px; }
 
 #contact { display: flex; justify-content: center; flex-direction: column; min-height: 70vh; position: relative; }
 .contact-form-container { display: flex; justify-content: center; margin-bottom: 2rem; width: 100%; }
@@ -376,6 +389,8 @@ body.dark-theme .contact-icon {
     transition: all 0.3s ease;
     font-size: 0.9rem;
     pointer-events: none;
+    text-align: center;
+    max-width: 90vw;
 }
 
 .toast-notification.show {

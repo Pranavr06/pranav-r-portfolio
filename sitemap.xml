@@ -63,7 +63,7 @@
     </url>
     <url>
         <loc>https://pranavr.netlify.app/blog/database-design-mistakes-real-applications.html</loc>
-        <lastmod>2026-03-07</lastmod>
+        <lastmod>2026-03-21</lastmod>
         <priority>0.7</priority>
     </url>
     <url>
@@ -89,6 +89,61 @@
     <url>
         <loc>https://pranavr.netlify.app/projects/sentiment-analysis-ai.html</loc>
         <lastmod>2025-01-05</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/experiences.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/experiences/professional-journey.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/experiences/technical-expertise.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/experiences/aic-nitte.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/experiences/my-bharat-budget.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/projects/college-projects.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/blog/evm-architecture-india.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/projects/college/mentor-mentees-project.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/projects/college/classroom-management-project.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/projects/college/marketing-prediction-project.html</loc>
+        <lastmod>2026-04-21</lastmod>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://pranavr.netlify.app/projects/college/online-exam-project.html</loc>
+        <lastmod>2026-04-21</lastmod>
         <priority>0.7</priority>
     </url>
 </urlset>
