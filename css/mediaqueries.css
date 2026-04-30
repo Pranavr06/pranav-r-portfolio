@@ -181,7 +181,7 @@
   }
   .blog-card, .testimonial-card {
     margin: 0 auto; /* Center the card when it's in a single column */
-    width: 97%;
+    width: 100%;
   }
 
   /* Contact form on small screens */
