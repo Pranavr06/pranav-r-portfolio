@@ -339,7 +339,7 @@ function initMenus() {
                 } else if (card.id) {
                     // Case 2: It's a shareable item (certificate, project, testimonial). Generate a hash link.
                     let pageName = '';
-                    if (card.closest('#certificate')) pageName = 'certificate.html';
+                    if (card.closest('#certificate')) pageName = 'certificates.html';
                     else if (card.closest('#testimonials')) pageName = 'testimonials.html';
 
                     if (pageName) {
