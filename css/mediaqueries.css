@@ -73,6 +73,10 @@
   .project-grid {
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
+  .testimonial-grid-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -169,19 +173,14 @@
   }
   
   /* Testimonials & Blog on small screens */
-  .testimonial-grid-container {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
   .blog-grid-container {
     grid-template-columns: 1fr; /* Make blog cards stack in a single column */
   }
-  
-  .blog-card {
-    margin: 0 auto; /* Center the card when it's in a single column */
+  .testimonial-author {
+    justify-content: center;
   }
-
-  .blog-card {
+  .blog-card, .testimonial-card {
+    margin: 0 auto; /* Center the card when it's in a single column */
     width: 97%;
   }
 
