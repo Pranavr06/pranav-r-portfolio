@@ -1,0 +1,1 @@
+export default function Experience() { return <section id='experience'><p className='section__text__p1'>My Professional Journey</p><h2 className='title'>Experiences</h2><p style={{textAlign: 'center', marginTop: '2rem'}}>Dynamic Experience Content Coming Soon...</p></section>; }

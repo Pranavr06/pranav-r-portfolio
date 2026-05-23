@@ -1,0 +1,57 @@
+import type { Metadata } from "next";
+import { Poppins } from "next/font/google";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import FadeInObserver from "@/components/FadeInObserver";
+import "./globals.css";
+
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600"],
+  subsets: ["latin"],
+  variable: "--font-poppins",
+});
+
+export const metadata: Metadata = {
+  title: "Pranav R Portfolio",
+  description: "Explore Pranav R's portfolio: tech innovation projects, skills, and certifications from NMAMIT NITTE. Connect for collaboration!",
+  keywords: "Pranav R, tech innovator, software engineer, portfolio, NMAMIT NITTE, full-stack development, Python, cybersecurity, UI/UX, HTML, CSS, JavaScript",
+  authors: [{ name: "Pranav R" }],
+  openGraph: {
+    title: "Pranav R | Tech Innovator & Information Science Student Portfolio",
+    description: "Explore Pranav R's portfolio - Projects, Experience, Certificates, and more.",
+    url: "https://pranavr.netlify.app/",
+    siteName: "Pranav R Portfolio",
+    images: [
+      {
+        url: "https://pranavr.netlify.app/assets/pranavr-og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pranav R | Tech Innovator & Information Science Student Portfolio",
+    description: "Explore Pranav R's portfolio - student, developer, and tech enthusiast.",
+    images: ["https://pranavr.netlify.app/assets/pranavr-og-image.png"],
+    site: "@PranavR2006",
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={poppins.className}>
+        <FadeInObserver />
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  );
+}

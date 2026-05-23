@@ -1,0 +1,1 @@
+export default function Testimonials() { return <section id='testimonials'><p className='section__text__p1'>What others say</p><h2 className='title'>Testimonials</h2><p style={{textAlign: 'center', marginTop: '2rem'}}>Dynamic Testimonials Content Coming Soon...</p></section>; }
