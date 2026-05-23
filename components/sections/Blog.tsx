@@ -1,10 +1,13 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import Image from "next/image";
+import FadeInSection from "@/components/FadeInSection";
 
 export default async function Blog() {
   const { data: blogs, error } = await supabase
     .from("blogs")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false })
     .limit(3);
 
@@ -13,7 +16,7 @@ export default async function Blog() {
   }
 
   return (
-    <section id="blog" className="fade-in-section">
+    <FadeInSection id="blog">
       <p className="section__text__p1">My Insights</p>
       <h2 className="title">Blog</h2>
       <div className="blog-grid-container">
@@ -46,10 +49,10 @@ export default async function Blog() {
         )}
       </div>
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
-          <a href="/blogs" className="btn btn-color-2 view-more" aria-label="View more blog posts">
+          <Link href="/blogs" className="btn btn-color-2 view-more" aria-label="View more blog posts">
             View more
-          </a>
+          </Link>
       </div>
-    </section>
+    </FadeInSection>
   );
 }

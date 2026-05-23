@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
+import FadeInSection from "@/components/FadeInSection";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -31,7 +32,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="fade-in-section">
+    <FadeInSection id="contact">
       <p className="section__text__p1">Get in Touch</p>
       <h2 className="title">Contact Me</h2>
       <div className="contact-form-container">
@@ -92,14 +93,23 @@ export default function Contact() {
           </a>
         </div>
       </div>
-      <Link href="#desktop-nav" className="scroll-up-link" aria-label="Scroll to top of page">
+      <a 
+        href="#desktop-nav" 
+        className="scroll-up-link" 
+        aria-label="Scroll to top of page"
+        onClick={(e) => {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      >
         <img
           src="/assets/arrow-invert.webp"
           alt="Scroll to top of page"
           className="icon arrow scroll-up"
           title="Scroll to top"
+          style={{ width: "30px", height: "30px" }}
         />
-      </Link>
-    </section>
+      </a>
+    </FadeInSection>
   );
 }

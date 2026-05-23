@@ -18,6 +18,7 @@ export default function ManageBlogs() {
   const [category, setCategory] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [slug, setSlug] = useState("");
+  const [sortOrder, setSortOrder] = useState("0");
 
   useEffect(() => {
     const checkUser = async () => {
@@ -30,7 +31,7 @@ export default function ManageBlogs() {
 
   const fetchBlogs = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("blogs").select("*").order("created_at", { ascending: false });
+    const { data, error } = await supabase.from("blogs").select("*").order("sort_order", { ascending: true }).order("created_at", { ascending: false });
     if (!error && data) setBlogs(data);
     setLoading(false);
   };
@@ -39,14 +40,14 @@ export default function ManageBlogs() {
     e.preventDefault();
     
     const { error } = await supabase.from("blogs").insert([{
-      title, excerpt, content, read_time_minutes: parseInt(readTime), category, image_url: imageUrl, slug
+      title, excerpt, content, read_time_minutes: parseInt(readTime), category, image_url: imageUrl, slug, sort_order: parseInt(sortOrder) || 0
     }]);
 
     if (error) {
       alert("Error adding blog: " + error.message);
     } else {
       alert("Blog added successfully!");
-      setTitle(""); setExcerpt(""); setContent(""); setReadTime(""); setCategory(""); setImageUrl(""); setSlug("");
+      setTitle(""); setExcerpt(""); setContent(""); setReadTime(""); setCategory(""); setImageUrl(""); setSlug(""); setSortOrder("0");
       fetchBlogs();
     }
   };
@@ -78,6 +79,7 @@ export default function ManageBlogs() {
             <textarea placeholder="Excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} required style={{...inputStyle, minHeight: "60px"}} />
             <textarea placeholder="Content (HTML or Text)" value={content} onChange={(e) => setContent(e.target.value)} required style={{...inputStyle, minHeight: "150px"}} />
             <input placeholder="Image URL (e.g. /assets/blog-1.webp)" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required style={inputStyle} />
+            <input type="number" placeholder="Sort Order (e.g. 1)" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
             <button type="submit" className="btn btn-color-1">Add Blog Post</button>
           </form>
         </div>
@@ -89,7 +91,7 @@ export default function ManageBlogs() {
               <div key={b.id} className="details-container color-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <h3>{b.title}</h3>
-                  <p style={{ fontSize: "0.9rem", color: "gray" }}>Category: {b.category} | {b.read_time_minutes} min read</p>
+                  <p style={{ fontSize: "0.9rem", color: "gray" }}>Category: {b.category} | {b.read_time_minutes} min read | Sort: {b.sort_order || 0}</p>
                 </div>
                 <button onClick={() => handleDelete(b.id)} className="btn btn-color-2" style={{ color: "red", borderColor: "red" }}>Delete</button>
               </div>

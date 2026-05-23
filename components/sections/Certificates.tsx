@@ -1,10 +1,12 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import FadeInSection from "@/components/FadeInSection";
 
 export default async function Certificates() {
   const { data: certificates, error } = await supabase
     .from("certificates")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false })
     .limit(3);
 
@@ -13,7 +15,7 @@ export default async function Certificates() {
   }
 
   return (
-    <section id="certificate" className="fade-in-section">
+    <FadeInSection id="certificate">
       <p className="section__text__p1">My Achievements</p>
       <h2 className="title">Certificates</h2>
       <div className="experience-details-container">
@@ -44,11 +46,11 @@ export default async function Certificates() {
           )}
         </div>
         <div style={{ textAlign: "center", marginTop: "2rem" }}>
-          <a href="/certificates" className="btn btn-color-2 view-more" aria-label="View more certificates">
+          <Link href="/certificates" className="btn btn-color-2 view-more" aria-label="View more certificates">
             View more
-          </a>
+          </Link>
         </div>
       </div>
-    </section>
+    </FadeInSection>
   );
 }

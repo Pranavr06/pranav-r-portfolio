@@ -242,10 +242,10 @@ body.dark-theme .menu-links button {
 /* SECTIONS */
 section {
     padding-top: 4vh;
-    height: 96vh;
+    min-height: 96vh;
+    height: auto;
     margin: 0 10rem;
     box-sizing: border-box;
-    min-height: fit-content;
     position: relative;
 }
 
@@ -1444,8 +1444,8 @@ footer p {
 }
 
 .fade-in-section {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1; /* Permanently fixed so it never goes blank */
+    transform: none;
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     will-change: opacity, transform;
 }
@@ -1996,9 +1996,101 @@ body.dark-theme .featured-img {
 
 /* Catch-all for unstyled images (like in EVM post) to prevent overflow and massive scaling */
 .post-content img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
+    border-radius: 1rem;
+    margin: 2rem 0 1rem 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    object-fit: cover;
 }
+body.dark-theme .post-content img {
+    box-shadow: 0 4px 15px rgba(255,255,255,0.05);
+}
+
+/* Ensure markdown bolding and subheadings are highly visible */
+.post-content strong, .post-content b {
+    font-weight: 700;
+    color: var(--light-title);
+}
+body.dark-theme .post-content strong, body.dark-theme .post-content b {
+    color: var(--dark-title);
+}
+.post-content h3 {
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--light-title);
+}
+body.dark-theme .post-content h3 {
+    color: var(--dark-title);
+}
+
+/* Flex layout for paragraphs containing multiple adjacent images (for side-by-side display) */
+.post-content p:has(img:nth-of-type(2)) {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: stretch;
+    flex-wrap: wrap; /* ensures they stack on mobile screens instead of shrinking too much */
+}
+
+.post-content p:has(img:nth-of-type(2)) img {
+    flex: 1;
+    min-width: 250px;
+    margin: 1rem 0; /* symmetric margins for flex layout */
+    object-fit: cover;
+}
+
+/* Blockquote styling for Technical Stack boxes and callouts */
+.post-content blockquote {
+    background-color: #fafafa;
+    border: 1px solid #eee;
+    border-left: 4px solid #007bff;
+    padding: 1.5rem 2rem;
+    margin: 2.5rem 0;
+    border-radius: 0.25rem;
+}
+body.dark-theme .post-content blockquote {
+    background-color: #2a2a2a;
+    border-color: #444;
+    border-left-color: #3b82f6;
+}
+.post-content blockquote p {
+    margin-bottom: 1rem;
+}
+.post-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* Fix for arrow images embedded within project markdown content */
+.post-content img[src*="arrow"] {
+    width: 30px !important;
+    height: 30px !important;
+    position: absolute !important;
+    bottom: 2.5rem !important;
+    right: -5rem !important;
+    margin: 0 !important;
+    cursor: pointer;
+    box-shadow: none !important;
+    transition: transform 0.2s ease-in-out;
+}
+
+.post-content img[src*="arrow"]:hover {
+    transform: scale(1.1) !important;
+}
+
+@media screen and (max-width: 1200px) {
+    .post-content img[src*="arrow"] {
+        right: -2rem !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .post-content img[src*="arrow"] {
+        display: none !important;
+    }
+}
+
 .project-image-container img {
     width: 100%;
     max-width: 700px;
@@ -2011,14 +2103,42 @@ body.dark-theme .project-image-container img {
     box-shadow: 0 4px 10px rgba(255,255,255,0.1);
 }
 
-.post-content figcaption {
-    font-size: 0.9rem;
-    color: #666;
+/* Style for paragraphs that immediately follow an image (acting as captions) */
+.post-content p:has(img) + p {
+    text-align: center;
+    font-weight: 700;
+    color: #444;
+    font-size: 1.05rem;
     font-style: italic;
+    margin-top: -1rem; /* pull it closer to the image */
+    margin-bottom: 2.5rem;
+}
+body.dark-theme .post-content p:has(img) + p {
+    color: #ccc;
+}
+
+.post-content figcaption {
+    font-size: 1.05rem;
+    color: #444;
+    font-style: normal;
+    font-weight: 700;
     margin-top: 0.5rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
 }
 body.dark-theme .post-content figcaption {
-    color: #aaa;
+    color: #ccc;
+}
+
+.share-menu-btn {
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+}
+.share-menu-btn:hover {
+    background-color: rgba(0,0,0,0.2) !important;
+}
+body.dark-theme .share-menu-btn:hover {
+    background-color: rgba(255,255,255,0.25) !important;
 }
 
 /* NEW: Blog Banner with HTML/CSS Text Overlay */
@@ -2318,8 +2438,8 @@ body.dark-theme .contact-info-upper-container { background: #2d2d2d; border-colo
 footer { height: 26vh; margin: 0 1rem; }
 footer p { text-align: center; }
 
-.fade-in-section { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-.fade-in-section.visible { opacity: 1; transform: translateY(0); }
+
+
 
 .hidden { display: none; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
@@ -2620,3 +2740,182 @@ body.dark-theme .options-menu-custom button:hover, [data-theme="dark"] .options-
     bottom: auto;
     top: calc(100% + 5px);
 }
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.toast-notification {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--light-text);
+    color: var(--light-bg);
+    padding: 0.75rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 500;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease-out;
+}
+
+body.dark-theme .toast-notification {
+    background-color: var(--dark-text);
+    color: var(--dark-bg);
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translate(-50%, 20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+
+/* CUSTOM SEARCH AND SELECT */
+.search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.custom-search-input {
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border-radius: 2rem;
+    border: 1px solid rgb(163, 163, 163);
+    background: rgb(250, 250, 250);
+    color: var(--light-text);
+    font-family: inherit;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s ease;
+    width: 250px;
+}
+
+.custom-search-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.75rem;
+    color: rgb(163, 163, 163);
+    pointer-events: none;
+}
+
+body.dark-theme .custom-search-input {
+    background: #2d2d2d;
+    border-color: #555555;
+    color: var(--dark-text);
+}
+
+.custom-select-container {
+    position: relative;
+    width: 200px;
+}
+
+.custom-select-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    border: 1px solid rgb(163, 163, 163);
+    background: rgb(250, 250, 250);
+    color: var(--light-text);
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+body.dark-theme .custom-select-btn {
+    background: #2d2d2d;
+    border-color: #555555;
+    color: var(--dark-text);
+}
+
+.custom-select-dropdown {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    width: 100%;
+    background: var(--light-bg);
+    border: 1px solid rgb(163, 163, 163);
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+.custom-select-dropdown.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+body.dark-theme .custom-select-dropdown {
+    background: var(--dark-bg);
+    border-color: #555555;
+}
+
+.custom-select-option {
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    color: var(--light-text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background 0.1s ease;
+}
+
+.custom-select-option:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.custom-select-option.selected {
+    font-weight: 600;
+    background: rgba(0,123,255,0.1);
+    color: #007bff;
+}
+
+body.dark-theme .custom-select-option {
+    color: var(--dark-text);
+}
+
+body.dark-theme .custom-select-option:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+body.dark-theme .custom-select-option.selected {
+    background: rgba(88,166,255,0.15);
+    color: #58a6ff;
+}
+
+@media (max-width: 600px) {
+    .search-input-container, .custom-search-input {
+        width: 100%;
+    }
+    .custom-select-container {
+        width: 100%;
+    }
+}
+
+
+.status-1st-year { background-color: #8B4513; } /* Brown */
+.status-2nd-year { background-color: #dc3545; } /* Red */
+.status-3rd-year { background-color: #6f42c1; color: white; } /* Purple */
+.status-4th-year { background-color: #007bff; } /* Blue */

@@ -13,6 +13,7 @@ export default async function CertificatesPage() {
   const { data: certificates, error } = await supabase
     .from("certificates")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 
   if (error) {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { showToast } from "@/components/Toast";
 
 export default function CertificateList({ 
   initialCertificates, 
@@ -133,14 +134,14 @@ export default function CertificateList({
             </div>
             {mainMenuOpen && (
               <div className="options-menu options-menu-custom" style={{ position: "absolute", top: "2.5rem", right: "0", borderRadius: "0.5rem", zIndex: 10, display: "flex", flexDirection: "column", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", minWidth: "150px" }}>
-                <button onClick={() => { navigator.clipboard.writeText(window.location.href); setMainMenuOpen(false); }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Copy Link</button>
+                <button onClick={() => { navigator.clipboard.writeText(window.location.href); showToast("Link copied to clipboard"); setMainMenuOpen(false); }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Copy Link</button>
                 <button onClick={async () => { 
                   setMainMenuOpen(false); 
                   if (navigator.share) {
                     try { await navigator.share({ title: "My Certificates", url: window.location.href }); } catch (err) {}
                   } else {
                     navigator.clipboard.writeText(window.location.href);
-                    alert("Link copied!");
+                    showToast("Link copied to clipboard");
                   }
                 }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Share</button>
               </div>
@@ -173,14 +174,14 @@ export default function CertificateList({
                         </div>
                         {openMenuId === cert.id && (
                           <div className="options-menu options-menu-custom" style={{ position: "absolute", top: "2rem", right: "0", borderRadius: "0.5rem", zIndex: 10, display: "flex", flexDirection: "column", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", minWidth: "150px", textAlign: "left" }}>
-                            <button onClick={() => { navigator.clipboard.writeText(window.location.href); setOpenMenuId(null); }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Copy Link</button>
+                            <button onClick={() => { navigator.clipboard.writeText(window.location.href); showToast("Link copied to clipboard"); setOpenMenuId(null); }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Copy Link</button>
                             <button onClick={async () => { 
                               setOpenMenuId(null);
                               if (navigator.share) {
                                 try { await navigator.share({ title: cert.title, url: window.location.href }); } catch (err) {}
                               } else {
                                 navigator.clipboard.writeText(window.location.href);
-                                alert("Link copied!");
+                                showToast("Link copied to clipboard");
                               }
                             }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Share</button>
                             {cert.pdf_url && cert.pdf_url !== "#" && (

@@ -13,6 +13,7 @@ export default async function ProjectsPage() {
   const { data: projects, error } = await supabase
     .from("projects")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 
   if (error) {

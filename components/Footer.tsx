@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 export default function Footer() {
   const pathname = usePathname();
-  const isMinimal = pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin");
+  const isMinimal = pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/");
 
   const fullNavLinks = [
     { name: "About", href: "/#about" },
@@ -18,7 +18,11 @@ export default function Footer() {
     { name: "Admin", href: "/admin" },
   ];
 
-  const navLinks = isMinimal ? [{ name: "Home", href: "/" }] : fullNavLinks;
+  const navLinks = isMinimal 
+    ? (pathname.startsWith("/projects/") && pathname !== "/projects") || pathname.startsWith("/blogs/") || pathname.startsWith("/admin") || pathname.startsWith("/certificates/")
+      ? [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }] 
+      : [{ name: "Home", href: "/" }] 
+    : fullNavLinks;
 
   return (
     <footer>

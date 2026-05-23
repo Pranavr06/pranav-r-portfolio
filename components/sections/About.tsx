@@ -1,8 +1,9 @@
 import Link from "next/link";
+import FadeInSection from "@/components/FadeInSection";
 
 export default function About() {
   return (
-    <section id="about" className="fade-in-section">
+    <FadeInSection id="about">
       <p className="section__text__p1">Get to know more</p>
       <h1 className="title">About Me</h1>
       <div className="section-container">
@@ -50,9 +51,10 @@ export default function About() {
           src="/assets/arrow.webp"
           alt="Scroll down to experience section"
           className="icon arrow scroll-down"
+          style={{ width: "30px", height: "30px" }}
           title="Scroll down"
         />
       </Link>
-    </section>
+    </FadeInSection>
   );
 }

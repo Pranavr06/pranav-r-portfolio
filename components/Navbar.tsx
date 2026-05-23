@@ -6,6 +6,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import { showToast } from "@/components/Toast";
 
 export default function Navbar({ minimal = false }: { minimal?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,12 +52,11 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(prev => {
-      const newTheme = prev === "light" ? "dark" : "light";
-      localStorage.setItem("theme", newTheme);
-      document.body.classList.toggle("dark-theme", newTheme === "dark");
-      return newTheme;
-    });
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.body.classList.toggle("dark-theme", newTheme === "dark");
+    showToast(`Theme switched to ${newTheme === "light" ? "Light" : "Dark"}`);
   };
 
   const toggleThemeRef = React.useRef(toggleTheme);
@@ -78,8 +78,13 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
     { name: "Contact", href: "/#contact" },
   ];
 
-  const isMinimal = minimal || pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin");
-  const navLinks = isMinimal ? [{ name: "Home", href: "/" }] : fullNavLinks;
+  const isMinimal = minimal || pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/");
+  
+  const navLinks = isMinimal 
+    ? (pathname.startsWith("/projects/") && pathname !== "/projects") || pathname.startsWith("/blogs/") || pathname.startsWith("/admin") || pathname.startsWith("/certificates/")
+      ? [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }] 
+      : [{ name: "Home", href: "/" }] 
+    : fullNavLinks;
 
   return (
     <>
@@ -91,15 +96,13 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
           <ul className="nav-links">
             {navLinks.map((link) => (
               <li key={link.name}>
-                {link.href === "/" ? (
-                  <a href={link.href} aria-label={`Go to ${link.name} section`}>
-                    {link.name}
-                  </a>
-                ) : (
-                  <Link href={link.href} aria-label={`Go to ${link.name} section`} onClick={(e) => handleNavClick(e, link.href)}>
-                    {link.name}
-                  </Link>
-                )}
+                <a 
+                  href={link.href} 
+                  aria-label={`Go to ${link.name} section`} 
+                  onClick={link.href !== "/" ? (e) => handleNavClick(e as any, link.href) : undefined}
+                >
+                  {link.name}
+                </a>
               </li>
             ))}
             <li>
@@ -138,22 +141,13 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
             <ul>
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  {link.href === "/" ? (
-                    <a
-                      href={link.href}
-                      className="menu-item"
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      className="menu-item"
-                      onClick={(e) => handleNavClick(e, link.href)}
-                    >
-                      {link.name}
-                    </Link>
-                  )}
+                  <a
+                    href={link.href}
+                    className="menu-item"
+                    onClick={link.href !== "/" ? (e) => handleNavClick(e as any, link.href) : undefined}
+                  >
+                    {link.name}
+                  </a>
                 </li>
               ))}
               <li>

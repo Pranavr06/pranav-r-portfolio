@@ -1,12 +1,14 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import Image from "next/image";
+import FadeInSection from "@/components/FadeInSection";
 
 export default async function Projects() {
   // Fetch projects from Supabase
   const { data: projects, error } = await supabase
     .from("projects")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false })
     .limit(3);
 
@@ -15,7 +17,7 @@ export default async function Projects() {
   }
 
   return (
-    <section id="projects" className="fade-in-section">
+    <FadeInSection id="projects">
       <p className="section__text__p1">Browse My Recent</p>
       <h2 className="title">Projects</h2>
       <div className="experience-details-container">
@@ -71,6 +73,6 @@ export default async function Projects() {
           </a>
         </div>
       </div>
-    </section>
+    </FadeInSection>
   );
 }

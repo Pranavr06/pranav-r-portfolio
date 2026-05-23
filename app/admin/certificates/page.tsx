@@ -17,6 +17,7 @@ export default function ManageCertificates() {
   const [pdfUrl, setPdfUrl] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
+  const [sortOrder, setSortOrder] = useState("0");
 
   useEffect(() => {
     const checkUser = async () => {
@@ -29,7 +30,7 @@ export default function ManageCertificates() {
 
   const fetchCertificates = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("certificates").select("*").order("created_at", { ascending: false });
+    const { data, error } = await supabase.from("certificates").select("*").order("sort_order", { ascending: true }).order("created_at", { ascending: false });
     if (!error && data) setCertificates(data);
     setLoading(false);
   };
@@ -38,14 +39,14 @@ export default function ManageCertificates() {
     e.preventDefault();
     
     const { error } = await supabase.from("certificates").insert([{
-      title, date, issuer, pdf_url: pdfUrl, category, description
+      title, date, issuer, pdf_url: pdfUrl, category, description, sort_order: parseInt(sortOrder) || 0
     }]);
 
     if (error) {
       alert("Error adding certificate: " + error.message);
     } else {
       alert("Certificate added successfully!");
-      setTitle(""); setDate(""); setIssuer(""); setPdfUrl(""); setCategory(""); setDescription("");
+      setTitle(""); setDate(""); setIssuer(""); setPdfUrl(""); setCategory(""); setDescription(""); setSortOrder("0");
       fetchCertificates();
     }
   };
@@ -76,6 +77,7 @@ export default function ManageCertificates() {
             <input placeholder="Category (e.g. Paper Presentation)" value={category} onChange={(e) => setCategory(e.target.value)} required style={inputStyle} />
             <textarea placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} required style={{...inputStyle, minHeight: "80px"}} />
             <input placeholder="PDF URL (e.g. /assets/cert.pdf)" value={pdfUrl} onChange={(e) => setPdfUrl(e.target.value)} required style={inputStyle} />
+            <input type="number" placeholder="Sort Order (e.g. 1)" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
             <button type="submit" className="btn btn-color-1">Add Certificate</button>
           </form>
         </div>
@@ -87,7 +89,7 @@ export default function ManageCertificates() {
               <div key={c.id} className="details-container color-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <h3>{c.title}</h3>
-                  <p style={{ fontSize: "0.9rem", color: "gray" }}>Issuer: {c.issuer} | {c.date}</p>
+                  <p style={{ fontSize: "0.9rem", color: "gray" }}>Issuer: {c.issuer} | {c.date} | Sort: {c.sort_order || 0}</p>
                 </div>
                 <button onClick={() => handleDelete(c.id)} className="btn btn-color-2" style={{ color: "red", borderColor: "red" }}>Delete</button>
               </div>

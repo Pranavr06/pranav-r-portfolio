@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import FadeInObserver from "@/components/FadeInObserver";
+import ToastContainer from "@/components/Toast";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -47,10 +47,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <FadeInObserver />
         <Navbar />
         {children}
         <Footer />
+        <ToastContainer />
       </body>
     </html>
   );

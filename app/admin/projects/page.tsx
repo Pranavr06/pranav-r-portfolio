@@ -20,6 +20,7 @@ export default function ManageProjects() {
   const [repoUrl, setRepoUrl] = useState("");
   const [slug, setSlug] = useState("");
   const [content, setContent] = useState("");
+  const [sortOrder, setSortOrder] = useState("0");
 
   useEffect(() => {
     const checkUser = async () => {
@@ -32,7 +33,7 @@ export default function ManageProjects() {
 
   const fetchProjects = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("projects").select("*").order("created_at", { ascending: false });
+    const { data, error } = await supabase.from("projects").select("*").order("sort_order", { ascending: true }).order("created_at", { ascending: false });
     if (!error && data) setProjects(data);
     setLoading(false);
   };
@@ -42,14 +43,14 @@ export default function ManageProjects() {
     const techArray = techStack.split(",").map(t => t.trim());
     
     const { error } = await supabase.from("projects").insert([{
-      title, description, content, image_url: imageUrl, tech_stack: techArray, status, demo_url: demoUrl, repo_url: repoUrl, slug
+      title, description, content, image_url: imageUrl, tech_stack: techArray, status, demo_url: demoUrl, repo_url: repoUrl, slug, sort_order: parseInt(sortOrder) || 0
     }]);
 
     if (error) {
       alert("Error adding project: " + error.message);
     } else {
       alert("Project added successfully!");
-      setTitle(""); setDescription(""); setContent(""); setImageUrl(""); setTechStack(""); setDemoUrl(""); setRepoUrl(""); setSlug("");
+      setTitle(""); setDescription(""); setContent(""); setImageUrl(""); setTechStack(""); setDemoUrl(""); setRepoUrl(""); setSlug(""); setSortOrder("0");
       fetchProjects();
     }
   };
@@ -83,11 +84,16 @@ export default function ManageProjects() {
             <select value={status} onChange={(e) => setStatus(e.target.value)} style={inputStyle}>
               <option value="Completed">Completed</option>
               <option value="In Progress">In Progress</option>
+              <option value="Planned">Planned</option>
               <option value="Collection">Collection</option>
-              <option value="College">College</option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
             </select>
             <input placeholder="Demo URL (optional)" value={demoUrl} onChange={(e) => setDemoUrl(e.target.value)} style={inputStyle} />
             <input placeholder="Repo URL (optional)" value={repoUrl} onChange={(e) => setRepoUrl(e.target.value)} style={inputStyle} />
+            <input type="number" placeholder="Sort Order (e.g. 1)" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
             <button type="submit" className="btn btn-color-1">Add Project</button>
           </form>
         </div>
@@ -99,7 +105,51 @@ export default function ManageProjects() {
               <div key={p.id} className="details-container color-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <h3>{p.title}</h3>
-                  <p style={{ fontSize: "0.9rem", color: "gray" }}>Status: {p.status}</p>
+                  <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginTop: "0.5rem" }}>
+                    <p style={{ fontSize: "0.9rem", color: "gray", margin: 0 }}>Status: </p>
+                    <select 
+                      defaultValue={p.status} 
+                      onChange={async (e) => {
+                        const newStatus = e.target.value;
+                        const { error } = await supabase.from("projects").update({ status: newStatus }).eq("id", p.id);
+                        if (error) alert("Error: " + error.message);
+                        else {
+                          alert("Status updated to " + newStatus);
+                          fetchProjects();
+                        }
+                      }}
+                      style={{ padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
+                    >
+                      <option value="Completed" style={{color: "black"}}>Completed</option>
+                      <option value="In Progress" style={{color: "black"}}>In Progress</option>
+                      <option value="Planned" style={{color: "black"}}>Planned</option>
+                      <option value="Collection" style={{color: "black"}}>Collection</option>
+                      <option value="College" style={{color: "black"}}>College</option>
+                      <option value="1st Year" style={{color: "black"}}>1st Year</option>
+                      <option value="2nd Year" style={{color: "black"}}>2nd Year</option>
+                      <option value="3rd Year" style={{color: "black"}}>3rd Year</option>
+                      <option value="4th Year" style={{color: "black"}}>4th Year</option>
+                    </select>
+                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginLeft: "0.5rem" }}>
+                      <span style={{ fontSize: "0.9rem", color: "gray" }}>Sort:</span>
+                      <input 
+                        type="number" 
+                        defaultValue={p.sort_order || 0}
+                        onBlur={async (e) => {
+                          const newSort = parseInt(e.target.value) || 0;
+                          if (newSort !== (p.sort_order || 0)) {
+                            const { error } = await supabase.from("projects").update({ sort_order: newSort }).eq("id", p.id);
+                            if (error) alert("Error: " + error.message);
+                            else {
+                              alert("Sort order updated to " + newSort);
+                              fetchProjects();
+                            }
+                          }
+                        }}
+                        style={{ width: "60px", padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <button onClick={() => handleDelete(p.id)} className="btn btn-color-2" style={{ color: "red", borderColor: "red" }}>Delete</button>
               </div>

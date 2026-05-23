@@ -29,9 +29,9 @@ export default function Hero() {
           >
             Download CV
           </a>
-          <Link href="#contact" className="btn btn-color-2" aria-label="Go to contact information">
+          <a href="#contact" className="btn btn-color-2" aria-label="Go to contact information">
             Contact Info
-          </Link>
+          </a>
         </div>
         <div id="socials-container">
           <a
@@ -54,14 +54,15 @@ export default function Hero() {
           </a>
         </div>
       </div>
-      <Link href="#about" className="scroll-down-link" aria-label="Scroll to about section">
+      <a href="#about" className="scroll-down-link" aria-label="Scroll to about section">
         <img
           src="/assets/arrow.webp"
           alt="Scroll down to about section"
           className="icon arrow scroll-down bounce"
+          style={{ width: "30px", height: "30px" }}
           title="Scroll down"
         />
-      </Link>
+      </a>
     </section>
   );
 }
