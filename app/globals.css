@@ -1995,7 +1995,7 @@ body.dark-theme .featured-img {
 }
 
 /* Catch-all for unstyled images (like in EVM post) to prevent overflow and massive scaling */
-.post-content img {
+.post-content img:not(.team-img) {
     width: 100%;
     height: auto;
     border-radius: 1rem;
@@ -2003,7 +2003,7 @@ body.dark-theme .featured-img {
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     object-fit: cover;
 }
-body.dark-theme .post-content img {
+body.dark-theme .post-content img:not(.team-img) {
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
 }
 
@@ -3027,6 +3027,9 @@ body.dark-theme .team-card:hover {
     object-fit: cover;
     object-position: center top;
     border-bottom: 1px solid #f0f0f0;
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 
 body.dark-theme .team-img {
@@ -3078,8 +3081,8 @@ body.dark-theme .team-card.highlighted-card { border-color: #58a6ff; box-shadow:
 body.dark-theme .team-card.highlighted-card:hover { box-shadow: 0 8px 25px rgba(88, 166, 255, 0.25); }
 
 @media screen and (min-width: 768px) {
-    .team-card.highlighted-card { grid-column: 1 / -1; flex-direction: row; }
-    .highlighted-card .team-img { width: 300px; height: 100%; min-height: 100%; border-bottom: none; border-right: 1px solid #f0f0f0; }
+    .team-card.highlighted-card { grid-column: 1 / -1; flex-direction: row; align-items: stretch; }
+    .highlighted-card .team-img { width: 300px; height: auto; min-height: 100%; align-self: stretch; border-bottom: none; border-right: 1px solid #f0f0f0; }
     body.dark-theme .highlighted-card .team-img { border-right-color: #444; }
     .highlighted-card .team-info { justify-content: center; padding: 2rem; }
     .highlighted-card .team-name { font-size: 1.6rem; }
