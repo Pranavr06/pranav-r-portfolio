@@ -11,6 +11,28 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
   
+  // Special case for "College Projects" collection page
+  if (slug === 'college-projects') {
+    const { data: collegeProjects } = await supabase
+      .from('projects')
+      .select('*')
+      .in('status', ['1st year', '2nd year', '3rd year', '4th year', 'College', '1st Year', '2nd Year', '3rd Year', '4th Year'])
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    return (
+      <main>
+        <ProjectList 
+          initialProjects={collegeProjects || []} 
+          hideCollegeProjects={false} 
+          title="College Projects" 
+          subtitle="Browse My Academic" 
+        />
+        <Contact />
+      </main>
+    );
+  }
+
   const { data: project, error } = await supabase
     .from("projects")
     .select("*")
@@ -57,27 +79,40 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </div>
         </header>
 
-        <div className="author-info" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "2rem" }}>
-          {project.status && (
-            <span className={`status-badge status-${project.status.toLowerCase().replace(/\s+/g, '-')}`}>
-              {project.status}
-            </span>
-          )}
-          <span className="author-info-text">By Pranav R</span>
+        <div className="post-metadata" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", marginBottom: "2rem", flexWrap: "wrap" }}>
+          <span className="post-category">
+            {(() => {
+              const t = project.title;
+              const tech = project.tech_stack || [];
+              if (t.includes('AI') || t.includes('Machine') || t.includes('Prediction') || t.includes('Summarizer') || tech.includes('TensorFlow')) return 'AI / ML';
+              if (t.includes('Cyber') || t.includes('Phishing') || t.includes('Keylogger')) return 'Cybersecurity';
+              if (t.includes('MERN') || t.includes('Full-Stack') || t.includes('E-commerce') || t.includes('Notes') || tech.includes('MERN')) return 'Full-Stack Dev';
+              if (tech.includes('TinkerCAD') || t.includes('EVM') || t.includes('Arduino')) return '3D Modeling';
+              if (t.includes('Exam') || t.includes('Classroom') || t.includes('Management') || t.includes('Mentor')) return 'Web Development';
+              if (t.includes('Portfolio')) return 'Web Development';
+              return 'Development';
+            })()}
+          </span>
+          <span>Tech: {(project.tech_stack || []).join(', ')}</span>
+          <span className="post-author">By Pranav R</span>
           <ProjectShareMenu title={project.title} slug={project.slug} />
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "4rem" }}>
           {project.status && project.status.includes('Year') ? (
             <>
-              {project.repo_url && (
+              {project.repo_url ? (
                 <a href={project.repo_url} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: "#333", color: "white", borderRadius: "2rem", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: "700", border: "1px solid #333" }}>
                   View Source Code
                 </a>
+              ) : (
+                <button disabled className="btn" style={{ background: "#333", color: "white", borderRadius: "2rem", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: "700", border: "1px solid #333", cursor: "not-allowed", opacity: 0.6 }}>
+                  Source Code Unavailable
+                </button>
               )}
               {project.demo_url && (
                 <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: "white", color: "#333", borderRadius: "2rem", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: "700", border: "1px solid #ccc" }}>
-                  View Report
+                  {project.demo_url.includes('research-paper') ? 'Research Paper' : project.demo_url.includes('.pdf') ? 'View Report' : 'Live Demo'}
                 </a>
               )}
             </>
@@ -88,14 +123,18 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                   Live Demo
                 </a>
               ) : (project.status === 'In Progress' || project.status === 'Planned') ? (
-                <button disabled className="btn" style={{ background: "#666", color: "#ccc", borderRadius: "2rem", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: "700", border: "1px solid #666", cursor: "not-allowed", opacity: 0.7 }}>
+                <button disabled className="btn" style={{ background: "#333", color: "white", borderRadius: "2rem", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: "700", border: "1px solid #333", cursor: "not-allowed", opacity: 0.6 }}>
                   Live Demo (Coming Soon)
                 </button>
               ) : null}
-              {project.repo_url && (
+              {project.repo_url ? (
                 <a href={project.repo_url} target="_blank" rel="noopener noreferrer" className="btn" style={{ background: "white", color: "#333", borderRadius: "2rem", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: "700", border: "1px solid #ccc" }}>
                   Source Code
                 </a>
+              ) : (
+                <button disabled className="btn" style={{ background: "#333", color: "white", borderRadius: "2rem", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: "700", border: "1px solid #333", cursor: "not-allowed", opacity: 0.6 }}>
+                  Source Code Unavailable
+                </button>
               )}
             </>
           )}
@@ -119,10 +158,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             displayContent = displayContent.replace(/\r\n/g, '\n');
             
             // Aggressively clean up legacy hardcoded UI from the markdown
-            displayContent = displayContent.replace(/\[(?:Live Demo|GitHub Repo|Source Code|View on TinkerCAD|View Source Code|View Report)\]\(.*?\)\s*/gi, '');
+            displayContent = displayContent.replace(/\[(?:Live Demo|GitHub Repo|Source Code|View on TinkerCAD|View Source Code|View Report|View Research Paper)\]\(.*?\)\s*/gi, '');
             displayContent = displayContent.replace(/\[?(?:Live Demo \(Coming Soon\)|Updates Coming Soon)\]?\(?.*?\)?\s*\n+/gi, '');
             displayContent = displayContent.replace(/^\s*(?:Live Demo \(Coming Soon\)|Updates Coming Soon)\s*\n+/gim, '');
-            
+            displayContent = displayContent.replace(/^\s*Source Code Unavailable\s*\n+/gim, '');
+
             // Remove hardcoded Project Overview header
             displayContent = displayContent.replace(/\s*Project (?:Overview|Concept)\s*\n[-=]+\s*\n+/gi, '\n\n');
             displayContent = displayContent.replace(/\s*#+\s*Project (?:Overview|Concept)\s*\n+/gi, '\n\n');
@@ -168,25 +208,54 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             }
             displayContent = finalLines.join('\n');
 
-            // Format Note: section with an elegant hr and italicized text
-            displayContent = displayContent.replace(/\*\*Note:\*\*\s*(.*)/gi, '---\n\n###### Note: $1');
+            // Highlight specific exam discipline sentence
+            displayContent = displayContent.replace(/_This module ensures that the system is not just passive but actively enforces exam discipline._/gi, '<strong class="highlighted-note">This module ensures that the system is not just passive but actively enforces exam discipline.</strong>');
+
+            // Highlight specific RBAC note
+            displayContent = displayContent.replace(/_Note: Proper role-based access control \(RBAC\) is implemented to differentiate admin and teacher permissions._/gi, '<strong class="highlighted-note" style="display: block; margin-top: 1.5rem;">Note: Proper role-based access control (RBAC) is implemented to differentiate admin and teacher permissions.</strong>');
+
+            // Format standard Note: section (if any exist)
+            displayContent = displayContent.replace(/\*\*Note:\*\*\s*(.*)/gi, '---\n\n<strong class="highlighted-note" style="display: block; margin-top: 1.5rem;">Note: $1</strong>');
+
+            // Normalize Setext headings to ATX headings so regex boundary checks work
+            displayContent = displayContent.replace(/^([^\n]+)\r?\n-+\s*$/gm, '## $1');
+            displayContent = displayContent.replace(/^([^\n]+)\r?\n=+\s*$/gm, '# $1');
+
+            // Transform Mentor/Instructor into Report Box
+            displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+\*\*(?:Role|Designation):\*\*\s*([^\n]+)(?:\r?\n)+\*\*Institution:\*\*\s*([^\n]+)(?:(?:\r?\n)+\*\*Email:\*\*\s*([^\n]+))?/g, (match, alt, src, name, role, institution, email) => {
+              let emailHTML = '';
+              if (email) {
+                const emailMatch = email.match(/\[([^\]]+)\]\(([^)]+)\)/);
+                if (emailMatch) {
+                   emailHTML = `\n      <p class="instructor-email" style="margin-top: 1.5rem;"><strong>Email:</strong> <a href="${emailMatch[2]}">${emailMatch[1]}</a></p>`;
+                } else {
+                   emailHTML = `\n      <p class="instructor-email" style="margin-top: 1.5rem;"><strong>Email:</strong> ${email}</p>`;
+                }
+              }
+              return `\n<div class="report-box">\n  <div class="report-box-flex">\n    <img src="${src}" alt="${alt}" class="report-box-img" loading="lazy" />\n    <div>\n      <h3 class="report-box-title" style="font-size: 1.6rem; margin-bottom: 1.5rem;">${name}</h3>\n      <p class="report-box-role" style="margin-bottom: 1rem;"><strong>Designation:</strong> ${role}</p>\n      <p class="report-box-institution"><strong>Institution:</strong> ${institution}</p>${emailHTML}\n    </div>\n  </div>\n</div>\n`;
+            });
 
             // Transform Team & Contributions into HTML cards
             displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match, alt, src, name, role, details) => {
               const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
-              const isLead = cleanRole.toLowerCase().includes('lead') || cleanRole.toLowerCase().includes('former assistant professor');
+              const isOwner = name.toLowerCase().includes('pranav r');
+              const isLead = cleanRole.toLowerCase().includes('lead') || cleanRole.toLowerCase().includes('former assistant professor') || cleanRole.toLowerCase().includes('architect');
+              
+              let cardClass = '';
+              if (isOwner) cardClass = 'highlighted-card';
+              else if (isLead) cardClass = 'horizontal-card';
               
               let detailsHTML = '';
               const detailLines = details.split('\n').filter(l => l.trim() !== '');
               if (detailLines.length > 0) {
                 if (detailLines[0].trim().startsWith('*') || detailLines[0].trim().startsWith('-')) {
-                  detailsHTML = '<ul class="team-contributions-list team-contributions-margin">' + detailLines.map(l => `<li>${l.replace(/^[\*\-]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>`).join('') + '</ul>';
+                  detailsHTML = '<div class="team-details"><ul class="team-contributions-list team-contributions-margin" style="list-style-type: disc;">' + detailLines.map(l => `<li>${l.replace(/^[\*\-]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>`).join('') + '</ul></div>';
                 } else {
-                  detailsHTML = '<p class="team-contribution">' + detailLines.map(l => l.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')).join('<br/>') + '</p>';
+                  detailsHTML = '<div class="team-details"><p class="team-contribution">' + detailLines.map(l => l.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')).join('<br/>') + '</p></div>';
                 }
               }
               
-              return `%%%TEAM_CARD_START%%%\n<div class="team-card ${isLead ? 'highlighted-card' : ''}">\n  <img src="${src}" alt="${alt}" class="team-img" loading="lazy" />\n  <div class="team-info">\n    <h3 class="team-name">${name}</h3>\n    <span class="team-role">${cleanRole}</span>\n${detailsHTML}\n  </div>\n</div>\n%%%TEAM_CARD_END%%%\n`;
+              return `%%%TEAM_CARD_START%%%\n<div class="team-card ${cardClass}">\n  <img src="${src}" alt="${alt}" class="team-img" loading="lazy" />\n  <div class="team-info">\n    <h3 class="team-name">${name}</h3>\n    <span class="team-role">${cleanRole}</span>\n${detailsHTML}\n  </div>\n</div>\n%%%TEAM_CARD_END%%%\n`;
             });
             
             // Group contiguous cards into a single grid
@@ -201,7 +270,21 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 components={{
                   img: ({ node, ...props }) => (
                     <img {...props} />
-                  )
+                  ),
+                  a: ({ node, ...props }) => {
+                    const text = String(props.children);
+                    if (text.includes('Download')) {
+                      return (
+                        <span style={{ display: "block", textAlign: "center", margin: "2rem 0 3rem 0" }}>
+                          <a {...props} className="btn" style={{ background: "#333", color: "white", borderRadius: "2rem", padding: "0.8rem 2rem", fontSize: "1rem", fontWeight: "700", border: "1px solid #333", display: "inline-flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)" }}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            {props.children}
+                          </a>
+                        </span>
+                      );
+                    }
+                    return <a {...props} style={{ color: "#007bff", textDecoration: "none", fontWeight: 600 }} />;
+                  }
                 }}
               >
                 {displayContent}

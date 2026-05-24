@@ -1995,16 +1995,24 @@ body.dark-theme .featured-img {
 }
 
 /* Catch-all for unstyled images (like in EVM post) to prevent overflow and massive scaling */
-.post-content img:not(.team-img) {
+.post-content img:not(.team-img):not(.report-box-img):not(.instructor-img) {
     width: 100%;
     height: auto;
     border-radius: 1rem;
     margin: 2rem 0 1rem 0;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
     object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-body.dark-theme .post-content img:not(.team-img) {
+.post-content img:not(.team-img):not(.report-box-img):not(.instructor-img):hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+body.dark-theme .post-content img:not(.team-img):not(.report-box-img):not(.instructor-img) {
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+}
+body.dark-theme .post-content img:not(.team-img):not(.report-box-img):not(.instructor-img):hover {
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.6);
 }
 
 /* Ensure markdown bolding and subheadings are highly visible */
@@ -2644,6 +2652,60 @@ nav [data-tooltip]:focus-visible::before {
     }
 }
 
+/* =========================================
+   MENTOR / GUIDE CALLOUT BOX STYLES 
+========================================= */
+.report-box-flex {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.report-box-img, 
+.instructor-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #007bff;
+}
+
+.report-box-title, 
+.instructor-name {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.report-box-role, 
+.report-box-institution, 
+.instructor-text, 
+.instructor-email {
+    margin-bottom: 0.5rem;
+}
+
+.instructor-email a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.instructor-email a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+body.dark-theme .instructor-email a {
+    color: #58a6ff;
+}
+
+body.dark-theme .instructor-email a:hover {
+    color: #79b8ff;
+}
+
+.report-box-flex div p:last-child {
+    margin-bottom: 0;
+}
+
 /* Disclaimer Style */
 .blog-disclaimer {
     font-size: 0.9rem;
@@ -2676,6 +2738,7 @@ body.dark-theme .blog-disclaimer {
 body.dark-theme .report-box {
     background: #2c2c2c;
     border-color: #444;
+    border-left-color: #58a6ff;
 }
 body.dark-theme .report-box:hover {
     box-shadow: 0 6px 15px rgba(255, 255, 255, 0.05);
@@ -2690,6 +2753,7 @@ body.dark-theme .report-box:hover {
     align-items: center;
     justify-content: center;
 }
+
 .custom-tooltip-wrapper .custom-tooltip {
     visibility: hidden;
     background-color: #222;
@@ -2712,10 +2776,12 @@ body.dark-theme .report-box:hover {
     font-weight: normal;
     text-decoration: none !important;
 }
+
 body.dark-theme .custom-tooltip-wrapper .custom-tooltip, [data-theme="dark"] .custom-tooltip-wrapper .custom-tooltip {
     background-color: #fff;
     color: #000;
 }
+
 .custom-tooltip-wrapper:hover .custom-tooltip {
     visibility: visible;
     opacity: 1;
@@ -3081,11 +3147,19 @@ body.dark-theme .team-card.highlighted-card { border-color: #58a6ff; box-shadow:
 body.dark-theme .team-card.highlighted-card:hover { box-shadow: 0 8px 25px rgba(88, 166, 255, 0.25); }
 
 @media screen and (min-width: 768px) {
-    .team-card.highlighted-card { grid-column: 1 / -1; flex-direction: row; align-items: stretch; }
-    .highlighted-card .team-img { width: 300px; height: auto; min-height: 100%; align-self: stretch; border-bottom: none; border-right: 1px solid #f0f0f0; }
+    .team-card.highlighted-card, .team-card.horizontal-card { grid-column: 1 / -1; flex-direction: row; align-items: stretch; }
+    
+    .highlighted-card .team-img { width: 320px; height: 100%; object-fit: cover; align-self: stretch; border-bottom: none; border-right: 1px solid #f0f0f0; }
     body.dark-theme .highlighted-card .team-img { border-right-color: #444; }
-    .highlighted-card .team-info { justify-content: center; padding: 2rem; }
-    .highlighted-card .team-name { font-size: 1.6rem; }
+    .highlighted-card .team-info { justify-content: center; padding: 2.5rem; }
+    .highlighted-card .team-name { font-size: 2.2rem; margin-bottom: 1rem; }
+    .highlighted-card .team-role { font-size: 1.1rem; margin-bottom: 1.5rem; letter-spacing: 1px; }
+    .highlighted-card .team-details { font-size: 1.15rem; line-height: 1.8; }
+    .highlighted-card .team-details li { margin-bottom: 0.8rem; }
+    
+    .horizontal-card .team-img { width: 250px; height: 100%; object-fit: cover; align-self: stretch; border-bottom: none; border-right: 1px solid #f0f0f0; }
+    body.dark-theme .horizontal-card .team-img { border-right-color: #444; }
+    .horizontal-card .team-info { justify-content: center; padding: 1.5rem; }
 }
 
 @media screen and (max-width: 600px) {
@@ -3100,3 +3174,12 @@ body.dark-theme .team-card.highlighted-card:hover { box-shadow: 0 8px 25px rgba(
         padding: 1.25rem;
     }
 }
+
+/* Fix specific architecture image size */
+.post-content img[alt*="architecture mapping the flow"] { max-width: 600px !important; margin: 2rem auto !important; display: block; }
+
+
+/* Highlighted bold notes */
+.post-content .highlighted-note { font-weight: 800; color: black; font-size: 1.1rem; }
+body.dark-theme .post-content .highlighted-note { color: white; }
+

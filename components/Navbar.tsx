@@ -92,9 +92,11 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
   const isMinimal = minimal || pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/");
   
   const navLinks = isMinimal 
-    ? (pathname.startsWith("/projects/") && pathname !== "/projects") || pathname.startsWith("/blogs/") || pathname.startsWith("/admin") || pathname.startsWith("/certificates/")
-      ? [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }] 
-      : [{ name: "Home", href: "/" }] 
+    ? (pathname.startsWith("/projects/") && pathname !== "/projects" && pathname !== "/projects/college-projects")
+      ? [{ name: "Home", href: "/" }, { name: "College Projects", href: "/projects/college-projects" }] 
+      : pathname.startsWith("/projects/college-projects") || pathname.startsWith("/blogs/") || pathname.startsWith("/admin") || pathname.startsWith("/certificates/")
+        ? [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }] 
+        : [{ name: "Home", href: "/" }] 
     : fullNavLinks;
 
   return (

@@ -51,11 +51,11 @@ export default async function Projects() {
                   <div style={{ display: 'flex', gap: '0.5rem' }}>
                     {project.demo_url ? (
                       <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn">
-                        View
+                        {project.demo_url.includes('research-paper') ? 'Research Paper' : project.demo_url.includes('.pdf') ? 'View Report' : 'Live Demo'}
                       </a>
                     ) : (
                       <button className="btn btn-color-2 project-btn" disabled>
-                        View
+                        Live Demo
                       </button>
                     )}
                     {project.repo_url && (
