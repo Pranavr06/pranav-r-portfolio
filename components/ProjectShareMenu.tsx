@@ -1,9 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
+import { showToast } from '@/components/Toast';
 
 export default function ProjectShareMenu({ title, slug }: { title: string, slug: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -19,9 +19,8 @@ export default function ProjectShareMenu({ title, slug }: { title: string, slug:
   const handleCopyLink = () => {
     const url = `${window.location.origin}/projects/${slug}`;
     navigator.clipboard.writeText(url);
-    setShowToast(true);
+    showToast("Project link copied to clipboard");
     setIsOpen(false);
-    setTimeout(() => setShowToast(false), 3000);
   };
 
   const handleShare = async () => {
@@ -60,25 +59,6 @@ export default function ProjectShareMenu({ title, slug }: { title: string, slug:
           <button className="menu-option btn-copy-link" onClick={handleCopyLink}>Copy Link</button>
           <button className="menu-option btn-share" onClick={handleShare}>Share</button>
       </div>
-
-      {showToast && (
-        <div style={{
-          position: "fixed",
-          bottom: "2rem",
-          left: "50%",
-          transform: "translateX(-50%)",
-          background: "#333",
-          color: "white",
-          padding: "0.8rem 1.5rem",
-          borderRadius: "2rem",
-          zIndex: 1000,
-          fontSize: "0.95rem",
-          boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
-          fontWeight: "500"
-        }}>
-          Project link copied to clipboard
-        </div>
-      )}
     </div>
   );
 }

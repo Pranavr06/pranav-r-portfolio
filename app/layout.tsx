@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ToastContainer from "@/components/Toast";
+import Script from "next/script";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -46,7 +47,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <head>
+        <Script id="theme-script" strategy="beforeInteractive">
+          {`
+            try {
+              if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.body.classList.add('dark-theme');
+              }
+            } catch (e) {}
+          `}
+        </Script>
+      </head>
+      <body className={poppins.className} suppressHydrationWarning>
         <Navbar />
         {children}
         <Footer />

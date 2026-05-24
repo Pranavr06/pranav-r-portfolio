@@ -41,6 +41,14 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
       document.body.classList.add("dark-theme");
     }
 
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "theme" && e.newValue) {
+        setTheme(e.newValue);
+        document.body.classList.toggle("dark-theme", e.newValue === "dark");
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'l') {
         e.preventDefault();
@@ -48,7 +56,10 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
       }
     };
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('storage', handleStorageChange);
+    };
   }, []);
 
   const toggleTheme = () => {

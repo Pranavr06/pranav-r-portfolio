@@ -48,15 +48,22 @@ export default async function Projects() {
                   <Link href={`/projects/${project.slug}`} className="read-more-link" aria-label={`Read more about ${project.title}`}>
                     Read More &rarr;
                   </Link>
-                  {project.demo_url ? (
-                    <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn">
-                      View
-                    </a>
-                  ) : (
-                    <button className="btn btn-color-2 project-btn" disabled>
-                      View
-                    </button>
-                  )}
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {project.demo_url ? (
+                      <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn">
+                        View
+                      </a>
+                    ) : (
+                      <button className="btn btn-color-2 project-btn" disabled>
+                        View
+                      </button>
+                    )}
+                    {project.repo_url && (
+                      <a href={project.repo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn" aria-label={`Source Code for ${project.title}`}>
+                        Code
+                      </a>
+                    )}
+                  </div>
                 </div>
               </article>
             ))
