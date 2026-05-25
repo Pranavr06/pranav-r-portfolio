@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import Contact from "@/components/sections/Contact";
 import ProjectList from "@/components/ProjectList";
-import ProjectShareMenu from "@/components/ProjectShareMenu";
+import ShareMenu from "@/components/ShareMenu";
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -95,7 +95,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           </span>
           <span>Tech: {(project.tech_stack || []).join(', ')}</span>
           <span className="post-author">By Pranav R</span>
-          <ProjectShareMenu title={project.title} slug={project.slug} />
+          <ShareMenu title={project.title} slug={project.slug} type="projects" />
         </div>
 
         <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginBottom: "4rem" }}>
@@ -222,7 +222,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             displayContent = displayContent.replace(/^([^\n]+)\r?\n=+\s*$/gm, '# $1');
 
             // Transform Mentor/Instructor into Report Box
-            displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+\*\*(?:Role|Designation):\*\*\s*([^\n]+)(?:\r?\n)+\*\*Institution:\*\*\s*([^\n]+)(?:(?:\r?\n)+\*\*Email:\*\*\s*([^\n]+))?/g, (match, alt, src, name, role, institution, email) => {
+            displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+\*\*(?:Role|Designation):\*\*\s*([^\n]+)(?:\r?\n)+\*\*Institution:\*\*\s*([^\n]+)(?:(?:\r?\n)+\*\*Email:\*\*\s*([^\n]+))?/g, (match: any, alt: any, src: any, name: any, role: any, institution: any, email: any) => {
               let emailHTML = '';
               if (email) {
                 const emailMatch = email.match(/\[([^\]]+)\]\(([^)]+)\)/);
@@ -236,7 +236,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             });
 
             // Transform Team & Contributions into HTML cards
-            displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match, alt, src, name, role, details) => {
+            displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
               const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
               const isOwner = name.toLowerCase().includes('pranav r');
               const isLead = cleanRole.toLowerCase().includes('lead') || cleanRole.toLowerCase().includes('former assistant professor') || cleanRole.toLowerCase().includes('architect');
@@ -246,7 +246,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               else if (isLead) cardClass = 'horizontal-card';
               
               let detailsHTML = '';
-              const detailLines = details.split('\n').filter(l => l.trim() !== '');
+              const detailLines = (details as string).split('\n').filter((l: string) => l.trim() !== '');
               if (detailLines.length > 0) {
                 if (detailLines[0].trim().startsWith('*') || detailLines[0].trim().startsWith('-')) {
                   detailsHTML = '<div class="team-details"><ul class="team-contributions-list team-contributions-margin" style="list-style-type: disc;">' + detailLines.map(l => `<li>${l.replace(/^[\*\-]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>`).join('') + '</ul></div>';
@@ -259,7 +259,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             });
             
             // Group contiguous cards into a single grid
-            displayContent = displayContent.replace(/(?:%%%TEAM_CARD_START%%%[\s\S]*?%%%TEAM_CARD_END%%%\n*)+/g, (match) => {
+            displayContent = displayContent.replace(/(?:%%%TEAM_CARD_START%%%[\s\S]*?%%%TEAM_CARD_END%%%\n*)+/g, (match: any) => {
               const cleanCards = match.replace(/%%%TEAM_CARD_START%%%/g, '').replace(/%%%TEAM_CARD_END%%%/g, '');
               return `\n\n<div class="team-grid">\n${cleanCards}\n</div>\n\n`;
             });

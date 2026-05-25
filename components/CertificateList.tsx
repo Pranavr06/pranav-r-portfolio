@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { showToast } from "@/components/Toast";
+import ShareMenu from "@/components/ShareMenu";
 
 export default function CertificateList({ 
   initialCertificates, 
@@ -104,49 +105,41 @@ export default function CertificateList({
       <h1 className="title">{title} <span className="count-span">({initialCertificates.length})</span></h1>
       
       {!hideTabs && (
-        <div className="filter-container" style={{ textAlign: "center", marginBottom: "2rem", display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
-          <label htmlFor="certificate-filter" className="visually-hidden" style={{ display: "none" }}>Filter Certificates</label>
-          <select 
-            id="certificate-filter" 
-            value={filter} 
-            onChange={(e) => setFilter(e.target.value)}
-            style={{ padding: "0.5rem 1rem", borderRadius: "0.5rem", border: "1px solid #ccc", fontSize: "1rem", backgroundColor: "var(--bg-color)", color: "var(--text-color)", cursor: "pointer", appearance: "auto" }}
-          >
-            <option value="All">All</option>
-            <option value="course">Courses</option>
-            <option value="hackathon">Hackathons</option>
-            <option value="internship">Internships</option>
-            <option value="webinar-workshop">Webinars & Workshops</option>
-            <option value="govt-quiz">Government Quizzes</option>
-          </select>
-
-          <div className="menu-container page-menu" style={{ position: "relative" }} ref={(el) => { menuRefs.current['main'] = el; }}>
-            <div className="custom-tooltip-wrapper">
-              <button 
-                className="menu-btn main-menu-btn-custom" 
-                aria-label="More options" 
-                onClick={() => setMainMenuOpen(!mainMenuOpen)}
-                style={{ padding: "0.5rem 0.8rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", height: "100%", background: "none", border: "none" }}
+        <div className="filter-container">
+          {/* Custom Status Dropdown */}
+          <div className="custom-select-container" ref={(el) => { menuRefs.current['main'] = el; }}>
+            <button 
+              className="custom-select-btn"
+              onClick={() => setMainMenuOpen(!mainMenuOpen)}
+              aria-haspopup="listbox"
+              aria-expanded={mainMenuOpen}
+            >
+              {filter === "All" ? "All" : categoryMap[filter] || filter}
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <div className={`custom-select-dropdown ${mainMenuOpen ? 'open' : ''}`} role="listbox">
+              <button
+                className={`custom-select-option ${filter === "All" ? 'selected' : ''}`}
+                onClick={() => { setFilter("All"); setMainMenuOpen(false); }}
+                role="option"
+                aria-selected={filter === "All"}
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
+                All
               </button>
-              <span className="custom-tooltip">More options</span>
+              {allCategories.map((key) => (
+                <button
+                  key={key}
+                  className={`custom-select-option ${filter === key ? 'selected' : ''}`}
+                  onClick={() => { setFilter(key); setMainMenuOpen(false); }}
+                  role="option"
+                  aria-selected={filter === key}
+                >
+                  {categoryMap[key] || key}
+                </button>
+              ))}
             </div>
-            {mainMenuOpen && (
-              <div className="options-menu options-menu-custom" style={{ position: "absolute", top: "2.5rem", right: "0", borderRadius: "0.5rem", zIndex: 10, display: "flex", flexDirection: "column", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", minWidth: "150px" }}>
-                <button onClick={() => { navigator.clipboard.writeText(window.location.href); showToast("Link copied to clipboard"); setMainMenuOpen(false); }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Copy Link</button>
-                <button onClick={async () => { 
-                  setMainMenuOpen(false); 
-                  if (navigator.share) {
-                    try { await navigator.share({ title: "My Certificates", url: window.location.href }); } catch (err) {}
-                  } else {
-                    navigator.clipboard.writeText(window.location.href);
-                    showToast("Link copied to clipboard");
-                  }
-                }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Share</button>
-              </div>
-            )}
           </div>
+          <ShareMenu title="Pranav R's Certificates" type="page" />
         </div>
       )}
 
@@ -165,38 +158,12 @@ export default function CertificateList({
                   {categoryCerts.map((cert: any) => (
                     <article key={cert.id} className="details-container color-container visible" style={{ display: "flex", flexDirection: "column", position: "relative", textAlign: "center", padding: "2rem" }}>
                       
-                      <div className="menu-container" style={{ position: "absolute", top: "1rem", right: "1rem" }} ref={(el) => { menuRefs.current[cert.id] = el; }}>
-                        <div className="custom-tooltip-wrapper">
-                          <button className="menu-btn card-menu-btn" onClick={() => setOpenMenuId(openMenuId === cert.id ? null : cert.id)} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-color)" }}>
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="12" cy="5" r="1"/></svg>
-                          </button>
-                          <span className="custom-tooltip">More options</span>
-                        </div>
-                        {openMenuId === cert.id && (
-                          <div className="options-menu options-menu-custom" style={{ position: "absolute", top: "2rem", right: "0", borderRadius: "0.5rem", zIndex: 10, display: "flex", flexDirection: "column", boxShadow: "0 4px 6px rgba(0,0,0,0.1)", minWidth: "150px", textAlign: "left" }}>
-                            <button onClick={() => { navigator.clipboard.writeText(window.location.href); showToast("Link copied to clipboard"); setOpenMenuId(null); }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Copy Link</button>
-                            <button onClick={async () => { 
-                              setOpenMenuId(null);
-                              if (navigator.share) {
-                                try { await navigator.share({ title: cert.title, url: window.location.href }); } catch (err) {}
-                              } else {
-                                navigator.clipboard.writeText(window.location.href);
-                                showToast("Link copied to clipboard");
-                              }
-                            }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Share</button>
-                            {cert.pdf_url && cert.pdf_url !== "#" && (
-                              <button onClick={() => { 
-                                const link = document.createElement('a');
-                                link.href = cert.pdf_url;
-                                link.download = `${cert.title.replace(/\s+/g, '_')}_Certificate.pdf`;
-                                document.body.appendChild(link);
-                                link.click();
-                                document.body.removeChild(link);
-                                setOpenMenuId(null); 
-                              }} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", padding: "0.5rem 1rem" }}>Download PDF</button>
-                            )}
-                          </div>
-                        )}
+                      <div style={{ position: "absolute", top: "1rem", right: "1rem", zIndex: 5 }}>
+                        <ShareMenu 
+                          title={cert.title} 
+                          type="certificates" 
+                          downloadUrl={cert.pdf_url && cert.pdf_url !== "#" ? cert.pdf_url : undefined} 
+                        />
                       </div>
 
                       <div className="article-container" style={{ display: "flex", justifyContent: "center" }}>

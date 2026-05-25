@@ -3183,3 +3183,4 @@ body.dark-theme .team-card.highlighted-card:hover { box-shadow: 0 8px 25px rgba(
 .post-content .highlighted-note { font-weight: 800; color: black; font-size: 1.1rem; }
 body.dark-theme .post-content .highlighted-note { color: white; }
 
+html { scroll-behavior: smooth; }
