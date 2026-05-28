@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { showToast } from "@/components/Toast";
 import ShareMenu from "@/components/ShareMenu";
+import CertificateCard from "@/components/cards/CertificateCard";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default function CertificateList({ 
   initialCertificates, 
@@ -55,52 +57,7 @@ export default function CertificateList({
 
   return (
     <>
-      <style>{`
-        .custom-tag {
-            background-color: #e0e0e0;
-            color: #333;
-            padding: 0.35rem 0.85rem;
-            border-radius: 1.5rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        body.dark-theme .custom-tag, [data-theme="dark"] .custom-tag {
-            background-color: #3a3a3a;
-            color: #ddd;
-        }
-        .achievement-highlight-custom {
-            font-style: italic;
-            color: #007bff;
-            margin: 1rem 0;
-            font-weight: 700;
-        }
-        body.dark-theme .achievement-highlight-custom, [data-theme="dark"] .achievement-highlight-custom {
-            color: #339af0;
-        }
-        .category-title-custom {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #d3d3d3;
-            padding-bottom: 0.5rem;
-            color: black;
-            text-align: left;
-        }
-        body.dark-theme .category-title-custom, [data-theme="dark"] .category-title-custom {
-            color: #fff;
-            border-bottom: 1px solid #444;
-        }
-        .cert-section {
-            padding-top: 10vh;
-            padding-bottom: 10vh;
-        }
-        @media (max-width: 768px) {
-            .cert-section {
-                padding-top: 120px;
-            }
-        }
-      `}</style>
-      <section className="mobile-spacing cert-section">
+      <section className="mobile-spacing cert-section" style={{ position: "relative" }}>
       {subtitle && <p className="section__text__p1">{subtitle}</p>}
       <h1 className="title">{title} <span className="count-span">({initialCertificates.length})</span></h1>
       
@@ -156,50 +113,7 @@ export default function CertificateList({
                 </h2>
                 <div className="about-containers" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "2rem", maxWidth: "1200px", margin: "0 auto", marginBottom: "3rem" }}>
                   {categoryCerts.map((cert: any) => (
-                    <article key={cert.id} className="details-container color-container visible" style={{ display: "flex", flexDirection: "column", position: "relative", textAlign: "center", padding: "2rem" }}>
-                      
-                      <div style={{ position: "absolute", top: "1rem", right: "1rem", zIndex: 5 }}>
-                        <ShareMenu 
-                          title={cert.title} 
-                          type="certificates" 
-                          downloadUrl={cert.pdf_url && cert.pdf_url !== "#" ? cert.pdf_url : undefined} 
-                        />
-                      </div>
-
-                      <div className="article-container" style={{ display: "flex", justifyContent: "center" }}>
-                        <img src={cert.image_url || "/assets/ieee-logo.webp"} alt={`${cert.title} logo`} className="certificate-logo" loading="lazy" style={{ width: "80px", height: "80px", marginBottom: "1rem", objectFit: "contain" }} />
-                      </div>
-                      
-                      <h3 className="experience-sub-title project-title" style={{ fontSize: "1.3rem", fontWeight: "bold", marginBottom: "0.5rem" }}>{cert.title}</h3>
-                      <p className="certificate-date" style={{ fontSize: "0.95rem", color: "gray", marginBottom: "1rem" }}>
-                        {cert.date.includes("Completed") ? cert.date : `Completed: ${cert.date}`}
-                      </p>
-                      
-                      <p style={{ flexGrow: 1, marginBottom: "1.5rem", color: "var(--text-color-light)", fontSize: "1rem" }}>{cert.description}</p>
-                      
-                      {cert.skills && cert.skills.length > 0 && (
-                        <div className="skill-tags" style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1rem", justifyContent: "center" }}>
-                          {cert.skills.map((skill: string, index: number) => (
-                            <span key={index} className="custom-tag">{skill}</span>
-                          ))}
-                        </div>
-                      )}
-
-                      {cert.issuer && !cert.issuer.includes("Unknown") && (
-                        <p className="achievement-highlight-custom" style={{ fontSize: "0.95rem", marginTop: "1rem" }}>
-                          {cert.issuer.includes("Issued by") || cert.issuer.includes("Organized by") || cert.issuer.includes("Completed in") ? cert.issuer : `Issued by ${cert.issuer}`}
-                        </p>
-                      )}
-
-                      <div className="btn-container" style={{ marginTop: "auto", paddingTop: "1rem", display: "flex", justifyContent: "center" }}>
-                        {cert.pdf_url && cert.pdf_url !== "#" && (
-                          <a href={cert.pdf_url} className="btn btn-color-2" style={{ padding: "0.5rem 1.5rem", borderRadius: "2rem", textDecoration: "none" }} target="_blank" rel="noopener noreferrer" aria-label={`View ${cert.title} certificate`}>
-                            View
-                          </a>
-                        )}
-                      </div>
-
-                    </article>
+                    <CertificateCard key={cert.id} cert={cert} />
                   ))}
                 </div>
               </div>
@@ -212,6 +126,7 @@ export default function CertificateList({
           </div>
         )}
       </div>
+      <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
     </section>
     </>
   );

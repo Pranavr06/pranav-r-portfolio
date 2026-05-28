@@ -21,6 +21,7 @@ export default function ManageProjects() {
   const [slug, setSlug] = useState("");
   const [content, setContent] = useState("");
   const [sortOrder, setSortOrder] = useState("0");
+  const [displayOrder, setDisplayOrder] = useState("");
 
   useEffect(() => {
     const checkUser = async () => {
@@ -43,14 +44,14 @@ export default function ManageProjects() {
     const techArray = techStack.split(",").map(t => t.trim());
     
     const { error } = await supabase.from("projects").insert([{
-      title, description, content, image_url: imageUrl, tech_stack: techArray, status, demo_url: demoUrl, repo_url: repoUrl, slug, sort_order: parseInt(sortOrder) || 0
+      title, description, content, image_url: imageUrl, tech_stack: techArray, status, demo_url: demoUrl, repo_url: repoUrl, slug, sort_order: parseInt(sortOrder) || 0, display_order: displayOrder ? parseInt(displayOrder) : null
     }]);
 
     if (error) {
       alert("Error adding project: " + error.message);
     } else {
       alert("Project added successfully!");
-      setTitle(""); setDescription(""); setContent(""); setImageUrl(""); setTechStack(""); setDemoUrl(""); setRepoUrl(""); setSlug(""); setSortOrder("0");
+      setTitle(""); setDescription(""); setContent(""); setImageUrl(""); setTechStack(""); setDemoUrl(""); setRepoUrl(""); setSlug(""); setSortOrder("0"); setDisplayOrder("");
       fetchProjects();
     }
   };
@@ -94,6 +95,7 @@ export default function ManageProjects() {
             <input placeholder="Demo URL (optional)" value={demoUrl} onChange={(e) => setDemoUrl(e.target.value)} style={inputStyle} />
             <input placeholder="Repo URL (optional)" value={repoUrl} onChange={(e) => setRepoUrl(e.target.value)} style={inputStyle} />
             <input type="number" placeholder="Sort Order (e.g. 1)" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
+            <input type="number" placeholder="Display Order (Home)" value={displayOrder} onChange={(e) => setDisplayOrder(e.target.value)} style={inputStyle} />
             <button type="submit" className="btn btn-color-1">Add Project</button>
           </form>
         </div>
@@ -142,6 +144,27 @@ export default function ManageProjects() {
                             if (error) alert("Error: " + error.message);
                             else {
                               alert("Sort order updated to " + newSort);
+                              fetchProjects();
+                            }
+                          }
+                        }}
+                        style={{ width: "60px", padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
+                      />
+                    </div>
+                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginLeft: "0.5rem" }}>
+                      <span style={{ fontSize: "0.9rem", color: "gray" }}>Display:</span>
+                      <input 
+                        type="number" 
+                        placeholder="-"
+                        defaultValue={p.display_order ?? ""}
+                        onBlur={async (e) => {
+                          const val = e.target.value;
+                          const newOrder = val === "" ? null : parseInt(val);
+                          if (newOrder !== (p.display_order ?? null)) {
+                            const { error } = await supabase.from("projects").update({ display_order: newOrder }).eq("id", p.id);
+                            if (error) alert("Error: " + error.message);
+                            else {
+                              alert(newOrder === null ? "Removed from Homepage" : "Display order updated to " + newOrder);
                               fetchProjects();
                             }
                           }

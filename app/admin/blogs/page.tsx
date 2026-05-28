@@ -19,6 +19,7 @@ export default function ManageBlogs() {
   const [imageUrl, setImageUrl] = useState("");
   const [slug, setSlug] = useState("");
   const [sortOrder, setSortOrder] = useState("0");
+  const [displayOrder, setDisplayOrder] = useState("");
 
   useEffect(() => {
     const checkUser = async () => {
@@ -40,14 +41,14 @@ export default function ManageBlogs() {
     e.preventDefault();
     
     const { error } = await supabase.from("blogs").insert([{
-      title, excerpt, content, read_time_minutes: parseInt(readTime), category, image_url: imageUrl, slug, sort_order: parseInt(sortOrder) || 0
+      title, excerpt, content, read_time_minutes: parseInt(readTime), category, image_url: imageUrl, slug, sort_order: parseInt(sortOrder) || 0, display_order: displayOrder ? parseInt(displayOrder) : null
     }]);
 
     if (error) {
       alert("Error adding blog: " + error.message);
     } else {
       alert("Blog added successfully!");
-      setTitle(""); setExcerpt(""); setContent(""); setReadTime(""); setCategory(""); setImageUrl(""); setSlug(""); setSortOrder("0");
+      setTitle(""); setExcerpt(""); setContent(""); setReadTime(""); setCategory(""); setImageUrl(""); setSlug(""); setSortOrder("0"); setDisplayOrder("");
       fetchBlogs();
     }
   };
@@ -80,6 +81,7 @@ export default function ManageBlogs() {
             <textarea placeholder="Content (HTML or Text)" value={content} onChange={(e) => setContent(e.target.value)} required style={{...inputStyle, minHeight: "150px"}} />
             <input placeholder="Image URL (e.g. /assets/blog-1.webp)" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required style={inputStyle} />
             <input type="number" placeholder="Sort Order (e.g. 1)" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
+            <input type="number" placeholder="Display Order (Home)" value={displayOrder} onChange={(e) => setDisplayOrder(e.target.value)} style={inputStyle} />
             <button type="submit" className="btn btn-color-1">Add Blog Post</button>
           </form>
         </div>
@@ -90,8 +92,43 @@ export default function ManageBlogs() {
             {blogs.map((b) => (
               <div key={b.id} className="details-container color-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <h3>{b.title}</h3>
-                  <p style={{ fontSize: "0.9rem", color: "gray" }}>Category: {b.category} | {b.read_time_minutes} min read | Sort: {b.sort_order || 0}</p>
+                  <p style={{ fontSize: "0.9rem", color: "gray" }}>Category: {b.category} | {b.read_time_minutes} min read</p>
+                  <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginTop: "0.5rem" }}>
+                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                      <span style={{ fontSize: "0.9rem", color: "gray" }}>Sort:</span>
+                      <input 
+                        type="number" 
+                        defaultValue={b.sort_order || 0}
+                        onBlur={async (e) => {
+                          const newSort = parseInt(e.target.value) || 0;
+                          if (newSort !== (b.sort_order || 0)) {
+                            const { error } = await supabase.from("blogs").update({ sort_order: newSort }).eq("id", b.id);
+                            if (error) alert("Error: " + error.message);
+                            else { alert("Sort order updated"); fetchBlogs(); }
+                          }
+                        }}
+                        style={{ width: "60px", padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
+                      />
+                    </div>
+                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+                      <span style={{ fontSize: "0.9rem", color: "gray" }}>Display:</span>
+                      <input 
+                        type="number" 
+                        placeholder="-"
+                        defaultValue={b.display_order ?? ""}
+                        onBlur={async (e) => {
+                          const val = e.target.value;
+                          const newOrder = val === "" ? null : parseInt(val);
+                          if (newOrder !== (b.display_order ?? null)) {
+                            const { error } = await supabase.from("blogs").update({ display_order: newOrder }).eq("id", b.id);
+                            if (error) alert("Error: " + error.message);
+                            else { alert(newOrder === null ? "Removed from Homepage" : "Display order updated"); fetchBlogs(); }
+                          }
+                        }}
+                        style={{ width: "60px", padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <button onClick={() => handleDelete(b.id)} className="btn btn-color-2" style={{ color: "red", borderColor: "red" }}>Delete</button>
               </div>

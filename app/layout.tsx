@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ScrollRestoration from "@/components/ScrollRestoration";
+import { ToastProvider } from "@/components/ToastProvider";
 import ToastContainer from "@/components/Toast";
-import Script from "next/script";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -46,23 +47,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <Script id="theme-script" strategy="beforeInteractive">
-          {`
+    <html lang="en" data-scroll-behavior="smooth">
+      <head />
+      <body className={poppins.className} suppressHydrationWarning>
+        <script
+          id="theme-initializer"
+          dangerouslySetInnerHTML={{
+            __html: `
             try {
               if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.body.classList.add('dark-theme');
               }
             } catch (e) {}
-          `}
-        </Script>
-      </head>
-      <body className={poppins.className} suppressHydrationWarning>
-        <Navbar />
-        {children}
-        <Footer />
-        <ToastContainer />
+          `,
+          }}
+        />
+        <ToastProvider>
+          <ScrollRestoration />
+          <Navbar />
+          {children}
+          <Footer />
+          <ToastContainer />
+        </ToastProvider>
       </body>
     </html>
   );

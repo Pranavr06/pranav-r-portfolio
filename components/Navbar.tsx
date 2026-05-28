@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { showToast } from "@/components/Toast";
+import { getNavLinks } from "@/lib/navUtils";
 
 export default function Navbar({ minimal = false }: { minimal?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -89,15 +90,9 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
     { name: "Contact", href: "/#contact" },
   ];
 
-  const isMinimal = minimal || pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/");
+  const isMinimal = minimal || pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/") || pathname.startsWith("/blogs/") || pathname.startsWith("/certificates/");
   
-  const navLinks = isMinimal 
-    ? (pathname.startsWith("/projects/") && pathname !== "/projects" && pathname !== "/projects/college-projects")
-      ? [{ name: "Home", href: "/" }, { name: "College Projects", href: "/projects/college-projects" }] 
-      : pathname.startsWith("/projects/college-projects") || pathname.startsWith("/blogs/") || pathname.startsWith("/admin") || pathname.startsWith("/certificates/")
-        ? [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }] 
-        : [{ name: "Home", href: "/" }] 
-    : fullNavLinks;
+  const navLinks = getNavLinks(pathname, fullNavLinks);
 
   return (
     <>

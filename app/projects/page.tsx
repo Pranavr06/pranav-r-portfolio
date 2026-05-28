@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import ProjectList from "@/components/ProjectList";
-import Contact from "@/components/sections/Contact";
+import ContactCTA from "@/components/ContactCTA";
 
 export const metadata = {
   title: "Projects | Pranav R's Portfolio",
@@ -23,7 +23,9 @@ export default async function ProjectsPage() {
   return (
     <main>
       <ProjectList initialProjects={projects || []} />
-      <Contact />
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
+        <ContactCTA sourceType="project" purpose="Project Discussion" ctaText="Discuss these projects" />
+      </div>
     </main>
   );
 }

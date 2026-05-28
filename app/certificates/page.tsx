@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import Contact from "@/components/sections/Contact";
+import ContactCTA from "@/components/ContactCTA";
 import CertificateList from "@/components/CertificateList";
 
 export const metadata = {
@@ -23,7 +23,9 @@ export default async function CertificatesPage() {
   return (
     <main>
       <CertificateList initialCertificates={certificates || []} />
-      <Contact />
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
+        <ContactCTA sourceType="certificate" purpose="Certificate Inquiry" ctaText="Inquire about these certificates" />
+      </div>
     </main>
   );
 }

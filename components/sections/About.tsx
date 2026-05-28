@@ -1,5 +1,6 @@
 import Link from "next/link";
 import FadeInSection from "@/components/FadeInSection";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default function About() {
   return (
@@ -46,15 +47,7 @@ export default function About() {
           </div>
         </div>
       </div>
-      <Link href="#experience" className="scroll-down-link" aria-label="Scroll to experience section">
-        <img
-          src="/assets/arrow.webp"
-          alt="Scroll down to experience section"
-          className="icon arrow scroll-down"
-          style={{ width: "30px", height: "30px" }}
-          title="Scroll down"
-        />
-      </Link>
+      <ScrollArrow targetId="experience" altText="Scroll down to experience section" />
     </FadeInSection>
   );
 }

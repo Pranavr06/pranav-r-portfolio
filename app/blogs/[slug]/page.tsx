@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import GithubSlugger from "github-slugger";
-import Contact from "@/components/sections/Contact";
+import ContactCTA from "@/components/ContactCTA";
 import ShareMenu from "@/components/ShareMenu";
 import TableOfContents from "@/components/TableOfContents";
 import CodeBlock from "@/components/CodeBlock";
@@ -66,7 +66,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const filteredHeadings = headings.filter(h => !h.text.toLowerCase().includes('table of contents') && !h.text.toLowerCase().includes('contents'));
 
   // Sanitize rogue "Copy" text that was accidentally copy-pasted into the DB from ChatGPT code blocks
-  const cleanBlogContent = blog.content.replace(/\r?\nCopy\r?\n/g, '\n\n');
+  // Also escape HTML tags wrapped in bold asterisks (e.g. **<header>**) so rehypeRaw doesn't hide them
+  const cleanBlogContent = blog.content
+    .replace(/\r?\nCopy\r?\n/g, '\n\n')
+    .replace(/\*\*\<([a-zA-Z0-9]+)\>\*\*/g, '**&lt;$1&gt;**');
 
   // 2. Split content to place the new TOC where the old one was
   let beforeContent = "";
@@ -138,7 +141,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </Link>
         </div>
       </section>
-      <Contact />
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
+        <ContactCTA sourceType="blog" sourceSlug={blog.slug} purpose="Blog Discussion" ctaText={`Discuss "${blog.title}"`} />
+      </div>
     </main>
   );
 }

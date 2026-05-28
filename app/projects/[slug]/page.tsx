@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
-import Contact from "@/components/sections/Contact";
+import ContactCTA from "@/components/ContactCTA";
 import ProjectList from "@/components/ProjectList";
 import ShareMenu from "@/components/ShareMenu";
 
@@ -28,7 +28,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           title="College Projects" 
           subtitle="Browse My Academic" 
         />
-        <Contact />
+        <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
+          <ContactCTA sourceType="project" sourceSlug="college-projects" purpose="Project Discussion" ctaText="Discuss these projects" />
+        </div>
       </main>
     );
   }
@@ -294,7 +296,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </div>
 
       </section>
-      <Contact />
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
+        <ContactCTA sourceType="project" sourceSlug={project.slug} purpose="Project Discussion" ctaText={`Discuss "${project.title}"`} />
+      </div>
     </main>
   );
 }

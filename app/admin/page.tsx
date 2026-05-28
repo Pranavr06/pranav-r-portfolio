@@ -75,6 +75,14 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        <div className="details-container color-container">
+          <h2 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Testimonials</h2>
+          <p style={{ marginBottom: "1rem" }}>Review, approve, and manage public testimonials.</p>
+          <div className="btn-container">
+            <Link href="/admin/testimonials" className="btn btn-color-1">Manage Testimonials</Link>
+          </div>
+        </div>
+
       </div>
     </div>
   );

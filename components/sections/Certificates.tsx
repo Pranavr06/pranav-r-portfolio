@@ -1,17 +1,19 @@
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import FadeInSection from "@/components/FadeInSection";
+import CertificateCard from "@/components/cards/CertificateCard";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default async function Certificates() {
   const { data: certificates, error } = await supabase
     .from("certificates")
     .select("*")
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: false })
+    .not("display_order", "is", null)
+    .order("display_order", { ascending: true })
     .limit(3);
 
   if (error) {
-    console.error("Error fetching certificates:", error);
+    console.error("Error fetching certificates:", error?.message || error?.details || JSON.stringify(error) || "Unknown error");
   }
 
   return (
@@ -19,27 +21,10 @@ export default async function Certificates() {
       <p className="section__text__p1">My Achievements</p>
       <h2 className="title">Certificates</h2>
       <div className="experience-details-container">
-        <div className="about-containers">
+        <div className="about-containers" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "2rem", maxWidth: "1200px", margin: "0 auto", marginBottom: "3rem" }}>
           {certificates && certificates.length > 0 ? (
             certificates.map((cert: any) => (
-              <article key={cert.id} className="details-container color-container">
-                <div className="article-container">
-                  {/* Default logic, you can add an image_url to certificates if needed */}
-                  <img src="/assets/ieee-logo.webp" alt="Certificate logo" className="certificate-logo" loading="lazy" />
-                </div>
-                <h3 className="experience-sub-title project-title">{cert.title}</h3>
-                <p className="certificate-date">Completed: {cert.date}</p>
-                <p>{cert.description}</p>
-                <div className="skill-tags">
-                  <span className="tag">{cert.category}</span>
-                </div>
-                <p className="achievement-highlight">Organized by {cert.issuer}</p>
-                <div className="project-card-footer">
-                  <a href={cert.pdf_url} className="btn btn-color-2 project-btn" target="_blank" rel="noopener noreferrer">
-                    Certificate
-                  </a>
-                </div>
-              </article>
+              <CertificateCard key={cert.id} cert={cert} />
             ))
           ) : (
             <p style={{ textAlign: "center", width: "100%", gridColumn: "1 / -1" }}>No certificates available yet.</p>
@@ -51,6 +36,7 @@ export default async function Certificates() {
           </Link>
         </div>
       </div>
+      <ScrollArrow targetId="projects" altText="Scroll down to projects section" />
     </FadeInSection>
   );
 }

@@ -41,10 +41,30 @@ CREATE TABLE blogs (
 CREATE TABLE contacts (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
   name TEXT NOT NULL,
   email TEXT NOT NULL,
-  message TEXT NOT NULL
+  message TEXT NOT NULL,
+  purpose TEXT,
+  company TEXT,
+  linkedin_url TEXT,
+  github_url TEXT,
+  source_page TEXT,
+  source_type TEXT,
+  source_slug TEXT,
+  is_read BOOLEAN DEFAULT false,
+  is_archived BOOLEAN DEFAULT false,
+  is_starred BOOLEAN DEFAULT false,
+  ip_hash TEXT
 );
+
+-- Create indexes for admin performance
+CREATE INDEX idx_contacts_read ON contacts(is_read);
+CREATE INDEX idx_contacts_archived ON contacts(is_archived);
+CREATE INDEX idx_contacts_starred ON contacts(is_starred);
+CREATE INDEX idx_contacts_created_at ON contacts(created_at DESC);
+CREATE INDEX idx_contacts_source_type ON contacts(source_type);
+CREATE INDEX idx_contacts_purpose ON contacts(purpose);
 
 -- Set up Row Level Security (RLS)
 -- Allow public read access to projects, certificates, and blogs

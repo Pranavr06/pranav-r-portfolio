@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getNavLinks } from "@/lib/navUtils";
 
 export default function Footer() {
   const pathname = usePathname();
-  const isMinimal = pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/");
+  const isMinimal = pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/") || pathname.startsWith("/blogs/") || pathname.startsWith("/certificates/");
 
   const fullNavLinks = [
     { name: "About", href: "/#about" },
@@ -18,13 +19,7 @@ export default function Footer() {
     { name: "Admin", href: "/admin" },
   ];
 
-  const navLinks = isMinimal 
-    ? (pathname.startsWith("/projects/") && pathname !== "/projects" && pathname !== "/projects/college-projects")
-      ? [{ name: "Home", href: "/" }, { name: "College Projects", href: "/projects/college-projects" }] 
-      : pathname.startsWith("/projects/college-projects") || pathname.startsWith("/blogs/") || pathname.startsWith("/admin") || pathname.startsWith("/certificates/")
-        ? [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }] 
-        : [{ name: "Home", href: "/" }] 
-    : fullNavLinks;
+  const navLinks = getNavLinks(pathname, fullNavLinks);
 
   return (
     <footer>

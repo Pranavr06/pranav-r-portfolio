@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import BlogList from "@/components/BlogList";
-import Contact from "@/components/sections/Contact";
+import ContactCTA from "@/components/ContactCTA";
 
 export const metadata = {
   title: "Tech Articles & Guides | Pranav R's Blog",
@@ -23,7 +23,9 @@ export default async function BlogsPage() {
   return (
     <main>
       <BlogList initialBlogs={blogs || []} />
-      <Contact />
+      <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
+        <ContactCTA sourceType="blog" purpose="Blog Discussion" ctaText="Discuss these articles" />
+      </div>
     </main>
   );
 }

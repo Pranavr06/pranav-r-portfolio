@@ -2,17 +2,19 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import Image from "next/image";
 import FadeInSection from "@/components/FadeInSection";
+import BlogCard from "@/components/cards/BlogCard";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default async function Blog() {
   const { data: blogs, error } = await supabase
     .from("blogs")
     .select("*")
-    .order("sort_order", { ascending: true })
-    .order("created_at", { ascending: false })
+    .not("display_order", "is", null)
+    .order("display_order", { ascending: true })
     .limit(3);
 
   if (error) {
-    console.error("Error fetching blogs:", error);
+    console.error("Error fetching blogs:", error?.message || error?.details || JSON.stringify(error) || "Unknown error");
   }
 
   return (
@@ -22,27 +24,7 @@ export default async function Blog() {
       <div className="blog-grid-container">
         {blogs && blogs.length > 0 ? (
           blogs.map((blog: any) => (
-            <article key={blog.id} className="blog-card">
-              <div className="blog-card-header">
-                <img src={blog.image_url} alt={blog.title} className="blog-img" loading="lazy" />
-                <h2 className="blog-title">{blog.title}</h2>
-              </div>
-              <div className="blog-content">
-                <div className="blog-metadata">
-                  <span className="blog-category">{blog.category}</span>
-                  <span>
-                    {blog.read_time_minutes} min read &bull;{" "}
-                    <span className="blog-date">{new Date(blog.created_at).toLocaleDateString()}</span>
-                  </span>
-                </div>
-                <p className="blog-excerpt">{blog.excerpt}</p>
-                <div className="blog-footer">
-                  <Link href={`/blogs/${blog.slug}`} className="blog-link" aria-label={`Read more about ${blog.title}`}>
-                    Read More &rarr;
-                  </Link>
-                </div>
-              </div>
-            </article>
+            <BlogCard key={blog.id} blog={blog} />
           ))
         ) : (
           <p style={{ textAlign: "center", width: "100%", gridColumn: "1 / -1" }}>No blog posts found.</p>
@@ -53,6 +35,7 @@ export default async function Blog() {
             View more
           </Link>
       </div>
+      <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
     </FadeInSection>
   );
 }

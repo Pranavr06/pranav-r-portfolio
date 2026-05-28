@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import ScrollArrow from "@/components/ScrollArrow";
+import TypingEffect from "@/components/TypingEffect";
 
 export default function Hero() {
   return (
@@ -17,7 +19,7 @@ export default function Hero() {
           <strong>PRANAV R</strong>
         </div>
         <p className="section__text__p2">
-          <span className="typing">Tech Innovator</span>
+          <TypingEffect />
         </p>
         <div className="btn-container">
           <a
@@ -54,15 +56,7 @@ export default function Hero() {
           </a>
         </div>
       </div>
-      <a href="#about" className="scroll-down-link" aria-label="Scroll to about section">
-        <img
-          src="/assets/arrow.webp"
-          alt="Scroll down to about section"
-          className="icon arrow scroll-down bounce"
-          style={{ width: "30px", height: "30px" }}
-          title="Scroll down"
-        />
-      </a>
+      <ScrollArrow targetId="about" altText="Scroll down to about section" />
     </section>
   );
 }
