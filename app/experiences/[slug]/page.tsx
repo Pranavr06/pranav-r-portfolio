@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import ScrollArrow from "@/components/ScrollArrow";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -47,16 +47,13 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
 
   return (
     <main id="main-content">
-      <article id="blog-post">
+      <section id="blog-post" className="mobile-spacing" style={{ paddingTop: "10vh", paddingBottom: "10vh", minHeight: "100vh" }}>
         <div className="blog-banner">
           {experience.image_url && (
-            <Image 
+            <img 
               src={experience.image_url} 
               alt={`${experience.title} Banner`} 
               className="banner-img" 
-              width={1200} 
-              height={400} 
-              priority 
             />
           )}
           <h1 className="banner-title">{experience.title}</h1>
@@ -240,7 +237,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
         )}
 
         <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
-      </article>
+      </section>
 
       <section id="contact" className="mobile-spacing" style={{ paddingTop: "4rem", paddingBottom: "4rem", minHeight: "80vh", height: "auto", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative" }}>
         <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem", width: "100%" }}>

@@ -33,7 +33,7 @@ body.dark-theme .title {
 }
 
 html {
-    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 p {
@@ -131,9 +131,7 @@ body.dark-theme .theme-toggle:hover {
 /* HAMBURGER MENU */
 #hamburger-nav {
     display: none;
-    position: absolute; /* or relative, depending on parent */
-    top: 0;
-    left: 0;
+    position: relative; /* relative pushes content down */
     width: 100%;
     z-index: 999; /* stay above profile pic */
 }
@@ -1106,7 +1104,7 @@ body.dark-theme .author-info .author-title {
 
 .blog-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 2rem;
     max-width: 1200px;
     margin: 2rem auto 0 auto;
@@ -1122,6 +1120,8 @@ body.dark-theme .author-info .author-title {
     position: relative;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease-in-out;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 body.dark-theme .blog-card {
@@ -1552,7 +1552,7 @@ footer p {
 /* TOAST NOTIFICATION */
 .toast-notification {
     position: fixed;
-    bottom: 2rem;
+    bottom: 5rem;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     background-color: rgba(30, 30, 30, 0.95);
@@ -1816,7 +1816,7 @@ body.dark-theme .menu-option:hover {
     min-height: auto;
   }
   section {
-    margin: 0 5%;
+    margin: 0 1rem;
   }
   .section__pic-container {
     width: 275px;
@@ -1870,7 +1870,8 @@ body.dark-theme .menu-option:hover {
     height: auto;
   }
   #profile {
-    height: 83vh;
+    height: auto;
+    min-height: 83vh;
     margin-bottom: 0;
   }
   article {
@@ -1981,6 +1982,13 @@ body.dark-theme .menu-option:hover {
 
   .scroll-down-link, .scroll-up-link {
     display: none; /* Strictly hide on small screens */
+  }
+
+  .post-content {
+    font-size: 1rem;
+  }
+  .post-content blockquote {
+    padding: 1rem;
   }
 }
 /* INDIVIDUAL BLOG POST SPECIFIC */
@@ -2235,6 +2243,10 @@ body.dark-theme .share-menu-btn:hover {
     text-align: center;
     align-items: center;
 }
+.post-content-container {
+    min-width: 0;
+    width: 100%;
+}
 body.dark-theme .post-metadata {
     color: #aaa;
 }
@@ -2250,6 +2262,9 @@ body.dark-theme .post-author {
     width: 100%; /* Ensure it takes full available width within its parent */
     line-height: 1.8;
     font-size: 1.1rem;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
 }
 .post-content h2 {
     font-size: 2rem;
@@ -2338,15 +2353,19 @@ body.dark-theme .toc-container a { color: #58a6ff; }
 .code-block-container {
     position: relative;
     margin-bottom: 1.5rem;
+    max-width: 100%;
 }
 .post-content pre {
     border-radius: 0.5rem;
     overflow-x: auto;
     margin-bottom: 0; /* Moved to container */
     position: relative; /* Make this the positioning context for the button */
+    max-width: 100%;
 }
 .post-content code {
     border-radius: 0.3rem;
+    word-break: break-word;
+    white-space: pre-wrap;
 }
 /* Styles for code inside a <pre> block */
 .post-content pre code {
@@ -2354,6 +2373,9 @@ body.dark-theme .toc-container a { color: #58a6ff; }
     padding: 1rem; /* Padding is now on the code element */
     font-family: 'Courier New', monospace;
     font-size: 0.95rem;
+    white-space: pre;
+    word-break: normal;
+    overflow-wrap: normal;
 }
 body:not(.dark-theme) .post-content pre code {
     background-color: #f6f8fa; /* Apply light grey background only in light mode */
@@ -2644,7 +2666,7 @@ body.dark-theme .menu-option:hover {
 /* TOAST NOTIFICATION */
 .toast-notification {
     position: fixed;
-    bottom: 2rem;
+    bottom: 5rem;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     background-color: rgba(30, 30, 30, 0.95);
@@ -2907,7 +2929,7 @@ body.dark-theme .options-menu-custom button:hover, [data-theme="dark"] .options-
 
 .toast-notification {
     position: fixed;
-    bottom: 2rem;
+    bottom: 5rem;
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--light-text);
@@ -3062,11 +3084,15 @@ body.dark-theme .custom-select-option.selected {
 }
 
 @media (max-width: 600px) {
+    .scroll-down-link, .scroll-up-link {
+        display: none !important;
+    }
     .search-input-container, .custom-search-input {
         width: 100%;
     }
     .custom-select-container {
-        width: 100%;
+        flex: 1;
+        max-width: calc(100% - 3rem);
     }
 }
 
@@ -3252,6 +3278,15 @@ body.dark-theme .team-card.highlighted-card:hover { box-shadow: 0 8px 25px rgba(
     }
     .team-info {
         padding: 1.25rem;
+    }
+    .image-grid {
+        flex-direction: column !important;
+    }
+    .image-grid .project-image-container {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        min-width: 100% !important;
     }
 }
 
@@ -3727,4 +3762,3 @@ select.premium-input:focus {
 body.dark-theme select.premium-input:focus {
     background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 15 12 9 18 15'%3E%3C/polyline%3E%3C/svg%3E");
 }
-

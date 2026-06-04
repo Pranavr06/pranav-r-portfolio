@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { showToast } from "@/components/Toast";
 
 export default function ExperienceCard({ experience }: { experience: any }) {
@@ -123,7 +122,7 @@ export default function ExperienceCard({ experience }: { experience: any }) {
       
       {experience.image_url && (
         <figure>
-            <Image src={experience.image_url} alt={experience.title} className="project-img" width={400} height={250} />
+            <img src={experience.image_url} alt={experience.title} className="project-img" loading="lazy" />
             <figcaption>
               {experience.title.includes("MY Bharat") ? (
                 <h3 className="experience-sub-title project-title" style={{ transform: "translateY(15px)", lineHeight: "1.2" }}>

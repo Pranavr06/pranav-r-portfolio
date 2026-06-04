@@ -112,12 +112,27 @@ export default function ScrollRestoration() {
       let lastHeight = 0;
       const MAX_CHECKS = 30; // 3 seconds maximum timeout duration
       
+      let aborted = false;
+      const abortScroll = () => { aborted = true; };
+      // If the user manually tries to scroll while we are aggressively restoring, yield control to them instantly.
+      window.addEventListener("wheel", abortScroll, { once: true, passive: true });
+      window.addEventListener("touchstart", abortScroll, { once: true, passive: true });
+
       const checkAndScroll = () => {
+        if (aborted) {
+          isNavigatingRef.current = false;
+          window.removeEventListener("wheel", abortScroll);
+          window.removeEventListener("touchstart", abortScroll);
+          return;
+        }
+
         const currentHeight = document.documentElement.scrollHeight;
         
         // 4. Infinite Layout Stabilization Wait Prevention (Max timeout fallback)
         if ((currentHeight === lastHeight && currentHeight >= targetY) || checkCount > MAX_CHECKS) {
           window.scrollTo({ top: targetY, left: 0, behavior: "instant" });
+          window.removeEventListener("wheel", abortScroll);
+          window.removeEventListener("touchstart", abortScroll);
           setTimeout(() => { isNavigatingRef.current = false; }, 100);
         } else {
           lastHeight = currentHeight;

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { showToast } from "@/components/Toast";
 
 interface CollectionCardProps {
@@ -80,7 +79,7 @@ export default function CollectionCard({ title, description, image, tags, href }
           <div className="status-tag status-collection">Collection</div>
       </div>
       <figure>
-          <Image src={image} alt={title} className="project-img" width={400} height={250} />
+          <img src={image} alt={title} className="project-img" loading="lazy" />
           <figcaption><h2 className="experience-sub-title project-title">{title}</h2></figcaption>
       </figure>
       <p style={{ textAlign: 'center' }}>{description}</p>

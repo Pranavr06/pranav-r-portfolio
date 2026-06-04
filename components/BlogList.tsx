@@ -41,7 +41,7 @@ export default function BlogList({ initialBlogs }: { initialBlogs: any[] }) {
       <p className="section__text__p1">My Insights & Articles</p>
       <h1 className="title">Pranav R's Blog</h1>
       
-      <div className="filter-container">
+      <div className="filter-container" style={{ flexWrap: "nowrap" }}>
         <div className="custom-select-container" ref={filterRef}>
           <button 
             className="custom-select-btn"

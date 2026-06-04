@@ -44,7 +44,7 @@ export default function ProfessionalJourneyList({ initialExperiences }: { initia
 
   return (
     <>
-      <div className="filter-container" style={{ justifyContent: "center", marginBottom: "2rem", gap: "1rem" }}>
+      <div className="filter-container" style={{ justifyContent: "center", marginBottom: "2rem", gap: "1rem", flexWrap: "nowrap" }}>
         <div className="custom-select-container" ref={filterRef}>
           <button 
             className="custom-select-btn"

@@ -45,7 +45,7 @@ export default function CertificateCard({ cert }: { cert: any }) {
         </p>
       )}
 
-      <div className="btn-container" style={{ width: "100%", marginTop: "auto", paddingTop: "0.8rem", display: "flex", justifyContent: (cert.experience_url || cert.project_url) ? "space-between" : "center", alignItems: "center" }}>
+      <div className="btn-container" style={{ width: "100%", marginTop: "auto", paddingTop: "0.8rem", display: "flex", justifyContent: (cert.experience_url || cert.project_url) ? "space-between" : "center", alignItems: "center", flexWrap: "wrap", gap: "0.8rem" }}>
         
         {cert.experience_url ? (
           <Link href={cert.experience_url} className="read-more-link" style={{ fontSize: "0.95rem" }}>

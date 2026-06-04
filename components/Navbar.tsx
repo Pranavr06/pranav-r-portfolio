@@ -31,6 +31,8 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
     }
   };
 
+  const hamburgerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     // Check initial theme from localStorage or system preference
     const savedTheme = localStorage.getItem("theme");
@@ -57,9 +59,18 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
       }
     };
     window.addEventListener('keydown', handleKeyDown);
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (hamburgerRef.current && !hamburgerRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('storage', handleStorageChange);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -129,7 +140,7 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
         </div>
       </nav>
 
-      <nav id="hamburger-nav">
+      <nav id="hamburger-nav" ref={hamburgerRef}>
         <a href="/" className="logo-link" aria-label="Go to homepage">
           <img src="/assets/logo.svg" alt="Pranav R logo" className="logo" />
         </a>
@@ -167,7 +178,7 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
                   }}
                   aria-label="Toggle theme"
                 >
-                  {theme === "light" ? "🌙 Dark Mode" : "🌞 Light Mode"}
+                  {theme === "light" ? "🌙" : "🌞"}
                 </button>
               </li>
             </ul>
