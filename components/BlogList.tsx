@@ -37,7 +37,7 @@ export default function BlogList({ initialBlogs }: { initialBlogs: any[] }) {
   });
 
   return (
-    <section id="blogs" className="mobile-spacing" style={{ position: "relative", paddingTop: "10vh", minHeight: "100vh", height: "auto" }}>
+    <section id="blogs" className="mobile-spacing" style={{ position: "relative", paddingTop: "2rem", marginTop: 0, minHeight: "100vh", height: "auto" }}>
       <p className="section__text__p1">My Insights & Articles</p>
       <h1 className="title">Pranav R's Blog</h1>
       

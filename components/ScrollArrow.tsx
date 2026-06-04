@@ -33,14 +33,15 @@ export default function ScrollArrow({ direction = 'down', targetId, altText, inv
 
   return (
     <a href={href} onClick={handleClick} aria-label={altText || defaultAlt} className={linkClass}>
-      <img 
-        src={src} 
-        alt={altText || defaultAlt} 
-        className={className} 
-        loading="lazy" 
-        style={{ width: "30px", height: "30px", cursor: "pointer" }} 
-        title={altText || defaultAlt}
-      />
+      <span data-tooltip={altText || defaultAlt} style={{ display: 'inline-flex' }}>
+        <img 
+          src={src} 
+          alt={altText || defaultAlt} 
+          className={className} 
+          loading="lazy" 
+          style={{ width: "30px", height: "30px", cursor: "pointer" }} 
+        />
+      </span>
     </a>
   );
 }

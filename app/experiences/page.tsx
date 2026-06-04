@@ -1,6 +1,7 @@
 import CollectionCard from "@/components/cards/CollectionCard";
 import ScrollArrow from "@/components/ScrollArrow";
 import Contact from "@/components/sections/Contact";
+import ContactCTA from "@/components/ContactCTA";
 import { Metadata } from "next";
 import { supabase } from "@/lib/supabase";
 
@@ -24,7 +25,7 @@ export default async function ExperiencesHubPage() {
 
   return (
     <main id="main-content">
-      <section id="experience" className="mobile-spacing fade-in-section">
+      <section id="experience" className="mobile-spacing fade-in-section" style={{ paddingTop: "2rem", marginTop: 0 }}>
         <p className="section__text__p1">My Portfolio</p>
         <h1 className="title">Experiences Hub</h1>
         

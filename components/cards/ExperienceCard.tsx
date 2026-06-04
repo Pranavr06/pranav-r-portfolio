@@ -124,7 +124,15 @@ export default function ExperienceCard({ experience }: { experience: any }) {
       {experience.image_url && (
         <figure>
             <Image src={experience.image_url} alt={experience.title} className="project-img" width={400} height={250} />
-            <figcaption><h3 className="experience-sub-title project-title">{experience.title}</h3></figcaption>
+            <figcaption>
+              {experience.title.includes("MY Bharat") ? (
+                <h3 className="experience-sub-title project-title" style={{ transform: "translateY(15px)", lineHeight: "1.2" }}>
+                  MY Bharat Budget Quest<br/>2026 – Final Round
+                </h3>
+              ) : (
+                <h3 className="experience-sub-title project-title">{experience.title}</h3>
+              )}
+            </figcaption>
         </figure>
       )}
       

@@ -57,7 +57,7 @@ export default function CertificateList({
 
   return (
     <>
-      <section className="mobile-spacing cert-section" style={{ position: "relative" }}>
+      <section className="mobile-spacing cert-section" style={{ position: "relative", paddingTop: "2rem", marginTop: 0 }}>
       {subtitle && <p className="section__text__p1">{subtitle}</p>}
       <h1 className="title">{title} <span className="count-span">({initialCertificates.length})</span></h1>
       

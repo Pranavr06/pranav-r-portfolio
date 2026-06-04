@@ -22,7 +22,7 @@ export default async function ProjectsPage() {
 
   return (
     <main>
-      <ProjectList initialProjects={projects || []} />
+      <ProjectList initialProjects={projects || []} title="My Projects" />
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
         <ContactCTA sourceType="project" purpose="Project Discussion" ctaText="Discuss these projects" />
       </div>

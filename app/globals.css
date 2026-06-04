@@ -261,12 +261,16 @@ section {
     flex-direction: row; /* Row for desktop */
     gap: 5rem;
     height: 80vh;
-    padding: 15vh 2rem 5vh;
+    padding: 4vh 2rem 5vh;
     text-align: left;
     flex-wrap: wrap;
     position: relative;
     z-index: 1; /* Lower than hamburger nav */
-    margin-top: 1rem; /* Add spacing to push below nav */
+}
+
+/* Pull the scroll arrow up closer to the hero content */
+#profile .scroll-down-link {
+    bottom: 20vh;
 }
 
 
@@ -297,7 +301,7 @@ section {
         align-items: center;
         text-align: center;
         height: auto;
-        padding-top: 20vh;
+        padding-top: 6vh;
     }
 
     #profile .section__pic-container {
@@ -776,6 +780,7 @@ body.dark-theme .tag {
     font-style: italic;
     color: #007bff;
     margin: 1rem 0;
+    font-weight: 700;
 }
 
 body.dark-theme .achievement-highlight {
@@ -987,6 +992,7 @@ body.dark-theme .tech-tag {
 #testimonials {
     padding: 4vh 0;
     height: fit-content;
+    min-height: auto;
     text-align: center;
 }
 
@@ -1094,7 +1100,7 @@ body.dark-theme .author-info .author-title {
 /* BLOG */
 #blog {
     padding: 4vh 0;
-    min-height: 100vh;
+    min-height: auto;
     text-align: center;
 }
 
@@ -1807,6 +1813,7 @@ body.dark-theme .menu-option:hover {
   section,
   .section-container {
     height: fit-content;
+    min-height: auto;
   }
   section {
     margin: 0 5%;
@@ -1984,6 +1991,10 @@ body.dark-theme .menu-option:hover {
     flex-direction: column;
     padding: 4rem 0;
 }
+
+#blog-post .scroll-down-link {
+    right: 5rem;
+}
 .featured-img {
     width: 100%;
     max-width: 700px; /* Constrained to prevent overwhelmingly large images */
@@ -2130,16 +2141,17 @@ body.dark-theme .project-image-container img {
 }
 
 /* Style for paragraphs that immediately follow an image (acting as captions) */
-.post-content p:has(img) + p {
+.post-content p:has(img) + p,
+.post-content .md-p:has(img) + .md-p {
     text-align: center;
     font-weight: 700;
     color: #444;
     font-size: 1.05rem;
     font-style: italic;
-    margin-top: -1rem; /* pull it closer to the image */
     margin-bottom: 2.5rem;
 }
-body.dark-theme .post-content p:has(img) + p {
+body.dark-theme .post-content p:has(img) + p,
+body.dark-theme .post-content .md-p:has(img) + .md-p {
     color: #ccc;
 }
 
@@ -2148,7 +2160,7 @@ body.dark-theme .post-content p:has(img) + p {
     color: #444;
     font-style: normal;
     font-weight: 700;
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
     margin-bottom: 2.5rem;
     text-align: center;
 }
@@ -2300,7 +2312,8 @@ body.dark-theme .toc-title {
 }
 .toc-container a:hover { text-decoration: underline; }
 body.dark-theme .toc-container a { color: #58a6ff; }
-.post-content p {
+.post-content p,
+.post-content .md-p {
     margin-bottom: 1.5rem;
 }
 
@@ -2345,6 +2358,24 @@ body.dark-theme .toc-container a { color: #58a6ff; }
 body:not(.dark-theme) .post-content pre code {
     background-color: #f6f8fa; /* Apply light grey background only in light mode */
     color: #24292e; /* Use a dark, near-black for code text in light mode */
+    border: 1px solid #e1e4e8;
+}
+body.dark-theme .post-content pre code {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border: 1px solid #333;
+}
+
+/* Accordion Toggle responsive styles */
+.code-accordion-toggle {
+    background-color: #f5f5f7;
+    border: 1px solid #e5e5ea;
+    color: #000;
+}
+body.dark-theme .code-accordion-toggle {
+    background-color: #252526;
+    border: 1px solid #333;
+    color: #d4d4d4;
 }
 .copy-code-btn {
     position: absolute;
@@ -2458,9 +2489,31 @@ body.dark-theme #form-status.error {
     color: #f5c6cb;
     border-color: #843534;
 }
-
 .contact-info-upper-container { display: flex; justify-content: center; border-radius: 2rem; border: 1px solid rgb(163, 163, 163); background: rgb(250, 250, 250); margin: 2rem auto; padding: 0.5rem; }
 body.dark-theme .contact-info-upper-container { background: #2d2d2d; border-color: #555; }
+
+.contact-cta-section { text-align: center; margin: 4rem auto; max-width: 600px; }
+.contact-cta-subtitle { color: var(--light-text); font-size: 1rem; margin-bottom: 0.5rem; font-weight: 500; }
+body.dark-theme .contact-cta-subtitle { color: var(--dark-text); }
+.contact-cta-title { font-size: 2.8rem; font-weight: 800; margin-bottom: 2rem; color: var(--light-title); letter-spacing: -1px; }
+body.dark-theme .contact-cta-title { color: var(--dark-title); }
+.contact-cta-card { background: var(--light-bg); border-radius: 1rem; border: 1px solid rgba(0,0,0,0.1); padding: 2.5rem 2rem; margin-bottom: 2.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+body.dark-theme .contact-cta-card { background: #2d2d2d; border-color: #555; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.contact-cta-card-title { font-size: 1.4rem; font-weight: 700; color: var(--light-title); margin-bottom: 1.5rem; }
+body.dark-theme .contact-cta-card-title { color: var(--dark-title); }
+.contact-cta-btn { background: #333; color: white; padding: 0.9rem 2.2rem; border-radius: 2rem; font-size: 1.05rem; font-weight: 600; display: inline-block; text-decoration: none; transition: transform 0.2s ease, background 0.2s ease; }
+body.dark-theme .contact-cta-btn { background: #eee; color: #111; }
+.contact-cta-btn:hover { transform: translateY(-2px); }
+
+.contact-cta-links { display: inline-flex; align-items: center; justify-content: center; gap: 2rem; padding: 0.8rem 2.5rem; border-radius: 2rem; border: 1px solid rgba(0,0,0,0.1); background: var(--light-bg); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+body.dark-theme .contact-cta-links { background: #2d2d2d; border-color: #555; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.contact-cta-link { display: flex; align-items: center; gap: 0.6rem; color: var(--light-title); text-decoration: none; font-weight: 500; font-size: 1.05rem; }
+body.dark-theme .contact-cta-link { color: var(--dark-title); }
+.contact-cta-icon { fill: #444; }
+body.dark-theme .contact-cta-icon { fill: #ddd; }
+.contact-cta-icon-inner { fill: #fff; }
+body.dark-theme .contact-cta-icon-inner { fill: #2d2d2d; }
+
 .contact-info-container { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 1rem; }
 .contact-info-container p { font-size: larger; }
 .contact-icon { cursor: default; }

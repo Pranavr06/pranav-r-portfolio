@@ -26,7 +26,7 @@ export default async function TechnicalExpertisePage() {
 
   return (
     <main id="main-content">
-      <section id="expertise-section" className="mobile-spacing fade-in-section">
+      <section id="expertise-section" className="mobile-spacing fade-in-section" style={{ paddingTop: "2rem", marginTop: 0 }}>
         <p className="section__text__p1">Technologies I use to build scalable and secure applications</p>
         <h1 className="title mb-2">Technical Expertise</h1>
         

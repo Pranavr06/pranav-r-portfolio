@@ -69,16 +69,8 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
       className="toc-container" 
       role="navigation"
       aria-label="Table of Contents"
-      style={{
-        backgroundColor: "#f9f9f9",
-        border: "1px solid #e0e0e0",
-        borderRadius: "0.5rem",
-        padding: "1.5rem",
-        marginBottom: "2rem",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
-      }}
     >
-      <h2 style={{ margin: "0 0 1rem 0", fontSize: "1.5rem", color: "#000" }}>Table of Contents</h2>
+      <h2 className="toc-title">Contents</h2>
       <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.75rem" }}>
         {headings.map((heading) => (
           <li 

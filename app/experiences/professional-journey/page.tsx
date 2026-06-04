@@ -1,7 +1,8 @@
 import { supabase } from "@/lib/supabase";
-import ExperienceCard from "@/components/cards/ExperienceCard";
 import ScrollArrow from "@/components/ScrollArrow";
+import Contact from "@/components/sections/Contact";
 import { Metadata } from "next";
+import ProfessionalJourneyList from "@/components/ProfessionalJourneyList";
 
 export const metadata: Metadata = {
   title: "Professional Journey | Pranav R",
@@ -24,26 +25,17 @@ export default async function ProfessionalJourneyPage() {
 
   return (
     <main id="main-content">
-      <section id="experience" className="mobile-spacing fade-in-section">
+      <section id="experience" className="mobile-spacing fade-in-section" style={{ paddingTop: "2rem", marginTop: 0 }}>
         <p className="section__text__p1">My Milestones</p>
         <h1 className="title">Professional Journey</h1>
         
-        <div className="project-details-container mt-3">
-          <div className="project-grid">
-            {experiences && experiences.length > 0 ? (
-              experiences.map((exp: any) => (
-                <ExperienceCard key={exp.id} experience={exp} />
-              ))
-            ) : (
-              <p style={{ textAlign: "center", width: "100%", gridColumn: "1 / -1" }}>
-                Professional journey details coming soon!
-              </p>
-            )}
-          </div>
-        </div>
+        <ProfessionalJourneyList initialExperiences={experiences || []} />
+
         
         <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
       </section>
+
+      <Contact />
     </main>
   );
 }

@@ -2,10 +2,13 @@
 
 import { useState, useRef, useEffect } from "react";
 
-interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {}
+interface CodeBlockProps extends React.HTMLAttributes<HTMLPreElement> {
+  isAccordion?: boolean;
+}
 
-export default function CodeBlock({ children, ...props }: CodeBlockProps) {
+export default function CodeBlock({ children, isAccordion = false, ...props }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
@@ -27,8 +30,17 @@ export default function CodeBlock({ children, ...props }: CodeBlockProps) {
     }
   };
 
-  return (
-    <pre ref={preRef} {...props}>
+  const codeContent = (
+    <pre 
+      ref={preRef} 
+      {...props} 
+      style={isAccordion ? { 
+        marginTop: 0, 
+        borderTopLeftRadius: 0, 
+        borderTopRightRadius: 0,
+        borderTop: 'none'
+      } : { ...props.style, position: 'relative' }}
+    >
       <button 
         className={`copy-code-btn ${copied ? 'copied' : ''}`} 
         onClick={handleCopy}
@@ -38,5 +50,42 @@ export default function CodeBlock({ children, ...props }: CodeBlockProps) {
       </button>
       {children}
     </pre>
+  );
+
+  if (!isAccordion) {
+    return codeContent;
+  }
+
+  return (
+    <div className="code-accordion-container" style={{ marginBottom: "1.5rem" }}>
+      <button 
+        className="code-accordion-toggle" 
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+          padding: '1rem 1.5rem',
+          borderRadius: isOpen ? '0.75rem 0.75rem 0 0' : '0.75rem',
+          cursor: 'pointer',
+          fontWeight: '700',
+          fontSize: '1.05rem',
+          transition: 'all 0.2s ease',
+          outline: 'none',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.02)'
+        }}
+      >
+        <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          {isOpen ? "👇" : "👉"} {isOpen ? "Hide Full Code" : "View Full Code"}
+        </span>
+        <span style={{ fontSize: '1.4rem', fontWeight: 'bold', lineHeight: 1 }}>
+          {isOpen ? "−" : "+"}
+        </span>
+      </button>
+
+      {isOpen && codeContent}
+    </div>
   );
 }

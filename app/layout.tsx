@@ -1,3 +1,4 @@
+import Script from "next/script";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import Navbar from "@/components/Navbar";
@@ -50,8 +51,9 @@ export default function RootLayout({
     <html lang="en" data-scroll-behavior="smooth">
       <head />
       <body className={poppins.className} suppressHydrationWarning>
-        <script
+        <Script
           id="theme-initializer"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             try {

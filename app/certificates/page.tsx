@@ -22,7 +22,7 @@ export default async function CertificatesPage() {
 
   return (
     <main>
-      <CertificateList initialCertificates={certificates || []} />
+      <CertificateList initialCertificates={certificates || []} title="My Certificates" subtitle="Browse" />
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "0 2rem" }}>
         <ContactCTA sourceType="certificate" purpose="Certificate Inquiry" ctaText="Inquire about these certificates" />
       </div>

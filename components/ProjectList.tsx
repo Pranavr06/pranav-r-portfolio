@@ -115,7 +115,7 @@ export default function ProjectList({
       ];
 
   return (
-    <section className="mobile-spacing" style={{ paddingTop: "10vh", minHeight: "100vh", height: "auto" }}>
+    <section className="mobile-spacing" style={{ paddingTop: "2rem", marginTop: 0, minHeight: "100vh", height: "auto" }}>
       {subtitle && <p className="section__text__p1">{subtitle}</p>}
       <h1 className="title">{title} <span className="count-span">({initialProjects.length})</span></h1>
       
