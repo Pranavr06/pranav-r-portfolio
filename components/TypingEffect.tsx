@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 
 export default function TypingEffect({ words = ["STUDENT", "TECH ENTHUSIAST", "WEB DEVELOPER"] }: { words?: string[] }) {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [currentText, setCurrentText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(150);
+  const [currentText, setCurrentText] = useState(words[0] || "");
+  const [isDeleting, setIsDeleting] = useState(true);
+  const [typingSpeed, setTypingSpeed] = useState(2000);
 
   useEffect(() => {
     const handleTyping = () => {

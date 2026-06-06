@@ -184,6 +184,7 @@ export default function TestimonialForm({ isAdminMode = false }: { isAdminMode?:
       const method = isAdminMode ? "POST" : (isEdit ? "PUT" : "POST");
       
       const { data: { session } } = await supabase.auth.getSession();
+      const userAvatar = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
 
       const payload = isAdminMode ? {
         action: editId ? 'update' : 'create',
@@ -192,7 +193,7 @@ export default function TestimonialForm({ isAdminMode = false }: { isAdminMode?:
       } : {
         ...formData,
         email: user.email,
-        avatar_url: user.user_metadata?.avatar_url || "",
+        avatar_url: formData.avatar_url || userAvatar || "",
         provider: user.app_metadata?.provider || "unknown",
         user_id: user.id,
         token: turnstileToken,
@@ -298,7 +299,11 @@ export default function TestimonialForm({ isAdminMode = false }: { isAdminMode?:
           {user && (
              <div className="identity-card">
                <div className="identity-card-header">
-                 <img src={user.user_metadata?.avatar_url || "/assets/default-avatar.webp"} alt="Avatar" className="identity-card-avatar" />
+                 <img 
+                   src={user.user_metadata?.avatar_url || user.user_metadata?.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.user_metadata?.full_name || user.email?.split('@')[0] || 'User')}&background=random`} 
+                   alt="Avatar" 
+                   className="identity-card-avatar" 
+                 />
                  <div className="identity-card-info">
                    <span className="identity-card-email">{user.email}</span>
                    <span className="identity-card-status">

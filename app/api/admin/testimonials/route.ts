@@ -39,6 +39,7 @@ export async function GET(req: Request) {
     const { data, error } = await supabase
       .from("testimonials")
       .select("*")
+      .or('is_archived.is.null,is_archived.eq.false')
       .order("created_at", { ascending: false });
 
     if (error) throw error;

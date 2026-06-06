@@ -7,10 +7,13 @@ export default function Hero() {
   return (
     <section id="profile">
       <div className="section__pic-container">
-        <img
+        <Image
           src="/assets/profile-pic.webp"
           alt="Profile photo of Pranav R, aspiring engineer and tech innovator"
-          loading="lazy"
+          width={400}
+          height={400}
+          priority
+          style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
         />
       </div>
       <div className="section__text">

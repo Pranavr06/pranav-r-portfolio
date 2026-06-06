@@ -216,7 +216,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             });
 
             // Transform Team & Contributions into HTML cards
-            displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
+            displayContent = displayContent.replace(/(?:^|\n\n)!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
               const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
               const isOwner = name.toLowerCase().includes('pranav r');
               const isLead = cleanRole.toLowerCase().includes('lead') || cleanRole.toLowerCase().includes('former assistant professor') || cleanRole.toLowerCase().includes('architect');

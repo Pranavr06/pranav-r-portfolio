@@ -16,6 +16,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     const { data: collegeProjects } = await supabase
       .from('projects')
       .select('*')
+      .or('is_archived.is.null,is_archived.eq.false')
+      .neq("status", "Draft")
       .in('status', ['1st year', '2nd year', '3rd year', '4th year', 'College', '1st Year', '2nd Year', '3rd Year', '4th Year'])
       .order('sort_order', { ascending: true })
       .order('created_at', { ascending: false });
@@ -238,7 +240,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             });
 
             // Transform Team & Contributions into HTML cards
-            displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
+            displayContent = displayContent.replace(/(?:^|\n\n)!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
               const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
               const isOwner = name.toLowerCase().includes('pranav r');
               const isLead = cleanRole.toLowerCase().includes('lead') || cleanRole.toLowerCase().includes('former assistant professor') || cleanRole.toLowerCase().includes('architect');

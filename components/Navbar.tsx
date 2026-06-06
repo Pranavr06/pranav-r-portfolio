@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { showToast } from "@/components/Toast";
 import { getNavLinks } from "@/lib/navUtils";
+import { Moon, Sun } from "lucide-react";
 
 export default function Navbar({ minimal = false }: { minimal?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -105,6 +106,8 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
   
   const navLinks = getNavLinks(pathname, fullNavLinks);
 
+  if (pathname?.startsWith('/admin')) return null;
+
   return (
     <>
       <nav id="desktop-nav">
@@ -130,8 +133,9 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
                   className="theme-toggle"
                   onClick={toggleTheme}
                   aria-label="Toggle light or dark theme"
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
                 >
-                  {theme === "light" ? "🌙" : "🌞"}
+                  {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
                 </button>
                 <span className="custom-tooltip">Switch to {theme === "light" ? "Dark" : "Light"} Mode (Ctrl + Alt + L)</span>
               </div>
@@ -177,8 +181,9 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
                     setMenuOpen(false);
                   }}
                   aria-label="Toggle theme"
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
                 >
-                  {theme === "light" ? "🌙" : "🌞"}
+                  {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
                 </button>
               </li>
             </ul>

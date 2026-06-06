@@ -11,6 +11,8 @@ export default async function CollegeProjectsPage() {
   const { data: collegeProjects } = await supabase
     .from('projects')
     .select('*')
+    .or('is_archived.is.null,is_archived.eq.false')
+    .neq("status", "Draft")
     .in('status', ['1st year', '2nd year', '3rd year', '4th year', 'College', '1st Year', '2nd Year', '3rd Year', '4th Year'])
     .order('sort_order', { ascending: true })
     .order('created_at', { ascending: false });

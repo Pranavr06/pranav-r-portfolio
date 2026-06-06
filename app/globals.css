@@ -1444,6 +1444,12 @@ body.dark-theme .contact-info-upper-container {
 footer {
     height: 26vh;
     margin: 0 1rem;
+    position: relative;
+}
+
+footer .scroll-up-link {
+    right: 2rem;
+    bottom: 18rem;
 }
 
 footer p {
@@ -2074,6 +2080,16 @@ body.dark-theme .post-content h3 {
     min-width: 250px;
     margin: 1rem 0; /* symmetric margins for flex layout */
     object-fit: cover;
+    border-radius: 16px; /* Soft rounded corners */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06); /* Premium soft shadow */
+    background-color: #f8f9fa; /* Light subtle background for transparent images */
+    border: 1px solid #f0f0f0;
+}
+
+body.dark-theme .post-content p:has(img:nth-of-type(2)) img {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
 }
 
 /* Blockquote styling for Technical Stack boxes and callouts */

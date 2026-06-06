@@ -10,6 +10,8 @@ export default async function Projects() {
   const { data: projects, error } = await supabase
     .from("projects")
     .select("*")
+    .or('is_archived.is.null,is_archived.eq.false')
+    .neq("status", "Draft")
     .not("display_order", "is", null)
     .order("display_order", { ascending: true })
     .limit(3);

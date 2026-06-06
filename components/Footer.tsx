@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getNavLinks } from "@/lib/navUtils";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -20,6 +21,8 @@ export default function Footer() {
   ];
 
   const navLinks = getNavLinks(pathname, fullNavLinks);
+
+  if (pathname?.startsWith('/admin')) return null;
 
   return (
     <footer>
@@ -43,6 +46,9 @@ export default function Footer() {
         </Link>{" "}
         - All rights reserved.
       </p>
+      {!pathname?.startsWith('/admin') && (
+        <ScrollArrow direction="up" targetId="top" altText="Back to top" />
+      )}
     </footer>
   );
 }

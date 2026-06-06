@@ -3,12 +3,20 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Plus, Trash2, Edit2, ExternalLink, Image as ImageIcon, Info } from "lucide-react";
+import AdminDrawer from "@/components/AdminDrawer";
+import Tooltip from "@/components/admin/Tooltip";
+import { useToast } from "@/components/ToastProvider";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function ManageBlogs() {
   const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [deleteItem, setDeleteItem] = useState<string | null>(null);
   const router = useRouter();
+  const { addToast } = useToast();
 
   // Form state
   const [title, setTitle] = useState("");
@@ -18,129 +26,284 @@ export default function ManageBlogs() {
   const [category, setCategory] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [slug, setSlug] = useState("");
+  const [status, setStatus] = useState("Published");
   const [sortOrder, setSortOrder] = useState("0");
   const [displayOrder, setDisplayOrder] = useState("");
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) router.push("/admin/login");
-      else fetchBlogs();
-    };
-    checkUser();
+    fetchBlogs();
   }, [router]);
 
   const fetchBlogs = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("blogs").select("*").order("sort_order", { ascending: true }).order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("blogs")
+      .select("*")
+      .or('is_archived.is.null,is_archived.eq.false')
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false });
+      
     if (!error && data) setBlogs(data);
     setLoading(false);
   };
 
-  const handleAddBlog = async (e: React.FormEvent) => {
+  const openDrawerForNew = () => {
+    setEditingId(null);
+    setTitle(""); setExcerpt(""); setContent(""); setImageUrl(""); 
+    setReadTime(""); setCategory(""); setSlug(""); setStatus("Published");
+    setSortOrder("0"); setDisplayOrder("");
+    setDrawerOpen(true);
+  };
+
+  const openDrawerForEdit = (blog: any) => {
+    setEditingId(blog.id);
+    setTitle(blog.title || "");
+    setExcerpt(blog.excerpt || "");
+    setContent(blog.content || "");
+    setImageUrl(blog.image_url || "");
+    setReadTime((blog.read_time_minutes || 0).toString());
+    setCategory(blog.category || "");
+    setSlug(blog.slug || "");
+    setStatus(blog.status || "Published");
+    setSortOrder((blog.sort_order || 0).toString());
+    setDisplayOrder(blog.display_order !== null ? blog.display_order.toString() : "");
+    setDrawerOpen(true);
+  };
+
+  const handleSaveBlog = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const { error } = await supabase.from("blogs").insert([{
-      title, excerpt, content, read_time_minutes: parseInt(readTime), category, image_url: imageUrl, slug, sort_order: parseInt(sortOrder) || 0, display_order: displayOrder ? parseInt(displayOrder) : null
-    }]);
+    const blogData = {
+      title, excerpt, content, read_time_minutes: parseInt(readTime), category, image_url: imageUrl, slug, status, sort_order: parseInt(sortOrder) || 0, display_order: displayOrder ? parseInt(displayOrder) : null
+    };
+
+    let error;
+
+    if (editingId) {
+      const res = await supabase.from("blogs").update(blogData).eq("id", editingId);
+      error = res.error;
+    } else {
+      const res = await supabase.from("blogs").insert([{ ...blogData, is_archived: false }]);
+      error = res.error;
+    }
 
     if (error) {
-      alert("Error adding blog: " + error.message);
+      addToast("Error saving blog: " + error.message, "error");
     } else {
-      alert("Blog added successfully!");
-      setTitle(""); setExcerpt(""); setContent(""); setReadTime(""); setCategory(""); setImageUrl(""); setSlug(""); setSortOrder("0"); setDisplayOrder("");
+      addToast(`Blog post ${editingId ? "updated" : "added"} successfully!`, "success");
+      setDrawerOpen(false);
       fetchBlogs();
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this blog post?")) {
-      await supabase.from("blogs").delete().eq("id", id);
-      fetchBlogs();
-    }
+  const handleSoftDelete = (id: string) => {
+    setDeleteItem(id);
   };
 
-  if (loading) return <div style={{ textAlign: "center", marginTop: "20vh" }}>Loading...</div>;
+  const confirmDelete = async () => {
+    if (!deleteItem) return;
+    await supabase.from("blogs").update({ is_archived: true }).eq("id", deleteItem);
+    fetchBlogs();
+    addToast("Blog moved to trash", "success");
+    setDeleteItem(null);
+  };
+
+  if (loading) return <div style={{ padding: "2rem" }}>Loading blogs...</div>;
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
-        <h1 className="title" style={{ fontSize: "2rem" }}>Manage Blogs</h1>
-        <Link href="/admin" className="btn btn-color-2">Back to Dashboard</Link>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
-        <div className="details-container color-container" style={{ padding: "2rem", height: "fit-content" }}>
-          <h2 style={{ marginBottom: "1rem" }}>Add New Blog Post</h2>
-          <form onSubmit={handleAddBlog} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required style={inputStyle} />
-            <input placeholder="Slug (e.g. my-blog-post)" value={slug} onChange={(e) => setSlug(e.target.value)} required style={inputStyle} />
-            <input placeholder="Category (e.g. Tech)" value={category} onChange={(e) => setCategory(e.target.value)} required style={inputStyle} />
-            <input placeholder="Read Time (minutes)" type="number" value={readTime} onChange={(e) => setReadTime(e.target.value)} required style={inputStyle} />
-            <textarea placeholder="Excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} required style={{...inputStyle, minHeight: "60px"}} />
-            <textarea placeholder="Content (HTML or Text)" value={content} onChange={(e) => setContent(e.target.value)} required style={{...inputStyle, minHeight: "150px"}} />
-            <input placeholder="Image URL (e.g. /assets/blog-1.webp)" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required style={inputStyle} />
-            <input type="number" placeholder="Sort Order (e.g. 1)" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
-            <input type="number" placeholder="Display Order (Home)" value={displayOrder} onChange={(e) => setDisplayOrder(e.target.value)} style={inputStyle} />
-            <button type="submit" className="btn btn-color-1">Add Blog Post</button>
-          </form>
-        </div>
-
+    <div>
+      <div className="admin-page-header">
         <div>
-          <h2 style={{ marginBottom: "1rem" }}>Existing Blog Posts</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {blogs.map((b) => (
-              <div key={b.id} className="details-container color-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <p style={{ fontSize: "0.9rem", color: "gray" }}>Category: {b.category} | {b.read_time_minutes} min read</p>
-                  <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginTop: "0.5rem" }}>
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                      <span style={{ fontSize: "0.9rem", color: "gray" }}>Sort:</span>
-                      <input 
-                        type="number" 
-                        defaultValue={b.sort_order || 0}
-                        onBlur={async (e) => {
-                          const newSort = parseInt(e.target.value) || 0;
-                          if (newSort !== (b.sort_order || 0)) {
-                            const { error } = await supabase.from("blogs").update({ sort_order: newSort }).eq("id", b.id);
-                            if (error) alert("Error: " + error.message);
-                            else { alert("Sort order updated"); fetchBlogs(); }
-                          }
-                        }}
-                        style={{ width: "60px", padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
-                      />
-                    </div>
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                      <span style={{ fontSize: "0.9rem", color: "gray" }}>Display:</span>
-                      <input 
-                        type="number" 
-                        placeholder="-"
-                        defaultValue={b.display_order ?? ""}
-                        onBlur={async (e) => {
-                          const val = e.target.value;
-                          const newOrder = val === "" ? null : parseInt(val);
-                          if (newOrder !== (b.display_order ?? null)) {
-                            const { error } = await supabase.from("blogs").update({ display_order: newOrder }).eq("id", b.id);
-                            if (error) alert("Error: " + error.message);
-                            else { alert(newOrder === null ? "Removed from Homepage" : "Display order updated"); fetchBlogs(); }
-                          }
-                        }}
-                        style={{ width: "60px", padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <button onClick={() => handleDelete(b.id)} className="btn btn-color-2" style={{ color: "red", borderColor: "red" }}>Delete</button>
-              </div>
-            ))}
-            {blogs.length === 0 && <p>No blog posts found. Add one!</p>}
-          </div>
+          <h1 className="admin-page-title">Blogs</h1>
+          <p style={{ color: "var(--admin-text-muted)", fontSize: "0.95rem", marginTop: "0.25rem" }}>
+            Manage your blog posts and articles.
+          </p>
         </div>
+        <button onClick={openDrawerForNew} className="admin-btn admin-btn-primary">
+          <Plus size={16} style={{ marginRight: "0.5rem" }} />
+          Add Post
+        </button>
       </div>
+
+      <div className="admin-table-container">
+        <div className="admin-table-header" style={{ gridTemplateColumns: "3fr 1fr 1fr 1.5fr" }}>
+          <div>Post Title</div>
+          <div>Category</div>
+          <div>Display</div>
+          <div style={{ textAlign: "right" }}>Actions</div>
+        </div>
+        
+        {blogs.length === 0 ? (
+          <div style={{ padding: "2rem", textAlign: "center", color: "var(--admin-text-muted)" }}>No active blogs found.</div>
+        ) : (
+          blogs.map((b) => (
+            <div key={b.id} className="admin-table-row" style={{ gridTemplateColumns: "3fr 1fr 1fr 1.5fr" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <div style={{ 
+                  width: "48px", height: "48px", borderRadius: "8px", 
+                  backgroundColor: "var(--admin-border)", 
+                  backgroundImage: `url(${b.image_url})`, 
+                  backgroundSize: "cover", backgroundPosition: "center",
+                  flexShrink: 0
+                }} />
+                <div>
+                  <div style={{ fontWeight: 500 }}>{b.title}</div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)" }}>/{b.slug}</div>
+                </div>
+              </div>
+              
+              <div>
+                <span className={`admin-badge ${b.status === "Draft" ? "draft" : "published"}`} style={{ backgroundColor: b.status === "Draft" ? "rgba(107, 114, 128, 0.1)" : "rgba(59, 130, 246, 0.1)", color: b.status === "Draft" ? "var(--admin-text-main)" : "#3b82f6" }}>
+                  {b.status || "Published"}
+                </span>
+                <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)", marginTop: "0.25rem" }}>{b.category}</div>
+              </div>
+              
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <Tooltip content="Sort Order">
+                  <input 
+                    type="number" 
+                    min="0"
+                    defaultValue={b.sort_order || 0}
+                    onBlur={async (e) => {
+                      const newSort = parseInt(e.target.value) || 0;
+                      if (newSort !== (b.sort_order || 0)) {
+                        await supabase.from("blogs").update({ sort_order: Math.max(0, newSort) }).eq("id", b.id);
+                        fetchBlogs();
+                      }
+                    }}
+                    style={{ width: "45px", padding: "0.2rem 0.4rem", borderRadius: "4px", border: "1px solid var(--admin-border)", background: "transparent", color: "inherit", fontSize: "0.85rem" }}
+                  />
+                </Tooltip>
+                <Tooltip content="Home Display Order">
+                  <input 
+                    type="number" 
+                    min="0"
+                    placeholder="-"
+                    defaultValue={b.display_order ?? ""}
+                    onBlur={async (e) => {
+                      const val = e.target.value;
+                      const newDisplay = val === "" ? null : parseInt(val);
+                      if (newDisplay !== b.display_order) {
+                        await supabase.from("blogs").update({ display_order: newDisplay !== null ? Math.max(0, newDisplay) : null }).eq("id", b.id);
+                        fetchBlogs();
+                      }
+                    }}
+                    style={{ width: "45px", padding: "0.2rem 0.4rem", borderRadius: "4px", border: "1px solid var(--admin-border)", background: "transparent", color: "inherit", fontSize: "0.85rem" }}
+                  />
+                </Tooltip>
+              </div>
+
+              <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+                <Tooltip content="View Live Post">
+                  <a href={`/blog/${b.slug}`} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-secondary" style={{ padding: "0.4rem" }}>
+                    <ExternalLink size={16} />
+                  </a>
+                </Tooltip>
+                <Tooltip content="Edit Blog">
+                  <button onClick={() => openDrawerForEdit(b)} className="admin-btn admin-btn-secondary" style={{ padding: "0.4rem" }}>
+                    <Edit2 size={16} />
+                  </button>
+                </Tooltip>
+                <Tooltip content="Move to Trash" position="top-right">
+                  <button onClick={() => handleSoftDelete(b.id)} className="admin-btn admin-btn-danger" style={{ padding: "0.4rem" }}>
+                    <Trash2 size={16} />
+                  </button>
+                </Tooltip>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      <AdminDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} title={editingId ? "Edit Blog Post" : "New Blog Post"}>
+        <form onSubmit={handleSaveBlog} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Post Title</label>
+            <input placeholder="E.g. My Awesome Tech Article" value={title} onChange={(e) => setTitle(e.target.value)} required style={inputStyle} />
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>URL Slug</label>
+              <input placeholder="e.g. awesome-article" value={slug} onChange={(e) => setSlug(e.target.value)} required style={inputStyle} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Category</label>
+              <input placeholder="E.g. Tech, Cybersecurity" value={category} onChange={(e) => setCategory(e.target.value)} required style={inputStyle} />
+            </div>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Short Excerpt</label>
+            <textarea placeholder="Brief summary of the post..." value={excerpt} onChange={(e) => setExcerpt(e.target.value)} required style={{...inputStyle, minHeight: "80px", resize: "vertical"}} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Full Content (Markdown or HTML)</label>
+            <textarea placeholder="Detailed post content..." value={content} onChange={(e) => setContent(e.target.value)} required style={{...inputStyle, minHeight: "200px", resize: "vertical", fontFamily: "monospace"}} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Cover Image</label>
+            {imageUrl && (
+              <div style={{ marginBottom: "0.5rem", borderRadius: "8px", overflow: "hidden", border: "1px solid var(--admin-border)", position: "relative", width: "100%", aspectRatio: "16/9" }}>
+                <img src={imageUrl} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+            )}
+            <input placeholder="/assets/blog-image.webp" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required style={inputStyle} />
+          </div>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Read Time (Mins)</label>
+              <input type="number" min="0" value={readTime} onChange={(e) => setReadTime(e.target.value)} required style={inputStyle} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                Global Sort
+                <Tooltip content="Determines order across all pages. Lower numbers appear first.">
+                  <Info size={14} style={{ color: "var(--admin-text-muted)", cursor: "help" }} />
+                </Tooltip>
+              </label>
+              <input type="number" min="0" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Status</label>
+              <select value={status} onChange={(e) => setStatus(e.target.value)} style={inputStyle}>
+                <option value="Published">Published</option>
+                <option value="Draft">Draft</option>
+              </select>
+            </div>
+          </div>
+
+          <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
+            <button type="button" onClick={() => setDrawerOpen(false)} className="admin-btn admin-btn-secondary">Cancel</button>
+            <button type="submit" className="admin-btn admin-btn-primary">{editingId ? "Save Changes" : "Create Post"}</button>
+          </div>
+        </form>
+      </AdminDrawer>
+
+      <ConfirmModal 
+        isOpen={!!deleteItem}
+        onClose={() => setDeleteItem(null)}
+        onConfirm={confirmDelete}
+        title="Move to Trash"
+        message="Are you sure you want to move this blog to the trash?"
+        confirmText="Move to Trash"
+        isDestructive={true}
+      />
     </div>
   );
 }
 
 const inputStyle = {
-  width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #ccc", background: "transparent", color: "inherit"
+  width: "100%", 
+  padding: "0.6rem 0.8rem", 
+  borderRadius: "6px", 
+  border: "1px solid var(--admin-border)", 
+  background: "var(--admin-bg)", 
+  color: "inherit",
+  fontSize: "0.9rem"
 };

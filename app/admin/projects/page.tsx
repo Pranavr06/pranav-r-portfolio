@@ -3,12 +3,20 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Plus, Trash2, Edit2, ExternalLink, Info } from "lucide-react";
+import AdminDrawer from "@/components/AdminDrawer";
+import Tooltip from "@/components/admin/Tooltip";
+import { useToast } from "@/components/ToastProvider";
+import ConfirmModal from "@/components/ConfirmModal";
 
 export default function ManageProjects() {
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [deleteItem, setDeleteItem] = useState<string | null>(null);
   const router = useRouter();
+  const { addToast } = useToast();
 
   // Form state
   const [title, setTitle] = useState("");
@@ -24,167 +32,303 @@ export default function ManageProjects() {
   const [displayOrder, setDisplayOrder] = useState("");
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) router.push("/admin/login");
-      else fetchProjects();
-    };
-    checkUser();
+    fetchProjects();
   }, [router]);
 
   const fetchProjects = async () => {
     setLoading(true);
-    const { data, error } = await supabase.from("projects").select("*").order("sort_order", { ascending: true }).order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .or('is_archived.is.null,is_archived.eq.false')
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: false });
+      
     if (!error && data) setProjects(data);
     setLoading(false);
   };
 
-  const handleAddProject = async (e: React.FormEvent) => {
+  const openDrawerForNew = () => {
+    setEditingId(null);
+    setTitle(""); setDescription(""); setContent(""); setImageUrl(""); 
+    setTechStack(""); setDemoUrl(""); setRepoUrl(""); setSlug(""); 
+    setSortOrder("0"); setDisplayOrder(""); setStatus("Completed");
+    setDrawerOpen(true);
+  };
+
+  const openDrawerForEdit = (project: any) => {
+    setEditingId(project.id);
+    setTitle(project.title || "");
+    setDescription(project.description || "");
+    setContent(project.content || "");
+    setImageUrl(project.image_url || "");
+    setTechStack(project.tech_stack ? project.tech_stack.join(", ") : "");
+    setStatus(project.status || "Completed");
+    setDemoUrl(project.demo_url || "");
+    setRepoUrl(project.repo_url || "");
+    setSlug(project.slug || "");
+    setSortOrder((project.sort_order || 0).toString());
+    setDisplayOrder(project.display_order !== null ? project.display_order.toString() : "");
+    setDrawerOpen(true);
+  };
+
+  const handleSaveProject = async (e: React.FormEvent) => {
     e.preventDefault();
-    const techArray = techStack.split(",").map(t => t.trim());
+    const techArray = techStack.split(",").map(t => t.trim()).filter(Boolean);
     
-    const { error } = await supabase.from("projects").insert([{
-      title, description, content, image_url: imageUrl, tech_stack: techArray, status, demo_url: demoUrl, repo_url: repoUrl, slug, sort_order: parseInt(sortOrder) || 0, display_order: displayOrder ? parseInt(displayOrder) : null
-    }]);
+    const projectData = {
+      title, description, content, image_url: imageUrl, 
+      tech_stack: techArray, status, demo_url: demoUrl, repo_url: repoUrl, 
+      slug, sort_order: parseInt(sortOrder) || 0, 
+      display_order: displayOrder ? parseInt(displayOrder) : null
+    };
+
+    let error;
+
+    if (editingId) {
+      const res = await supabase.from("projects").update(projectData).eq("id", editingId);
+      error = res.error;
+    } else {
+      const res = await supabase.from("projects").insert([{ ...projectData, is_archived: false }]);
+      error = res.error;
+    }
 
     if (error) {
-      alert("Error adding project: " + error.message);
+      addToast("Error saving project: " + error.message, "error");
     } else {
-      alert("Project added successfully!");
-      setTitle(""); setDescription(""); setContent(""); setImageUrl(""); setTechStack(""); setDemoUrl(""); setRepoUrl(""); setSlug(""); setSortOrder("0"); setDisplayOrder("");
+      addToast(`Project ${editingId ? "updated" : "added"} successfully!`, "success");
+      setDrawerOpen(false);
       fetchProjects();
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this project?")) {
-      await supabase.from("projects").delete().eq("id", id);
-      fetchProjects();
-    }
+  const handleSoftDelete = (id: string) => {
+    setDeleteItem(id);
   };
 
-  if (loading) return <div style={{ textAlign: "center", marginTop: "20vh" }}>Loading...</div>;
+  const confirmDelete = async () => {
+    if (!deleteItem) return;
+    await supabase.from("projects").update({ is_archived: true }).eq("id", deleteItem);
+    fetchProjects();
+    addToast("Project moved to trash", "success");
+    setDeleteItem(null);
+  };
+
+  if (loading) return <div style={{ padding: "2rem" }}>Loading projects...</div>;
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
-        <h1 className="title" style={{ fontSize: "2rem" }}>Manage Projects</h1>
-        <Link href="/admin" className="btn btn-color-2">Back to Dashboard</Link>
+    <div>
+      <div className="admin-page-header">
+        <div>
+          <h1 className="admin-page-title">Projects</h1>
+          <p style={{ color: "var(--admin-text-muted)", fontSize: "0.95rem", marginTop: "0.25rem" }}>
+            Manage your portfolio projects.
+          </p>
+        </div>
+        <button onClick={openDrawerForNew} className="admin-btn admin-btn-primary">
+          <Plus size={16} style={{ marginRight: "0.5rem" }} />
+          Add Project
+        </button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "2rem" }}>
-        <div className="details-container color-container" style={{ padding: "2rem", height: "fit-content" }}>
-          <h2 style={{ marginBottom: "1rem" }}>Add New Project</h2>
-          <form onSubmit={handleAddProject} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            <input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} required style={inputStyle} />
-            <input placeholder="Slug (e.g. my-project)" value={slug} onChange={(e) => setSlug(e.target.value)} required style={inputStyle} />
-            <textarea placeholder="Description (short summary)" value={description} onChange={(e) => setDescription(e.target.value)} required style={{...inputStyle, minHeight: "60px"}} />
-            <textarea placeholder="Content (Markdown)" value={content} onChange={(e) => setContent(e.target.value)} style={{...inputStyle, minHeight: "150px"}} />
-            <input placeholder="Image URL (e.g. /assets/proj.webp)" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required style={inputStyle} />
-            <input placeholder="Tech Stack (comma separated)" value={techStack} onChange={(e) => setTechStack(e.target.value)} required style={inputStyle} />
-            <select value={status} onChange={(e) => setStatus(e.target.value)} style={inputStyle}>
-              <option value="Completed">Completed</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Planned">Planned</option>
-              <option value="Collection">Collection</option>
-              <option value="1st Year">1st Year</option>
-              <option value="2nd Year">2nd Year</option>
-              <option value="3rd Year">3rd Year</option>
-              <option value="4th Year">4th Year</option>
-            </select>
-            <input placeholder="Demo URL (optional)" value={demoUrl} onChange={(e) => setDemoUrl(e.target.value)} style={inputStyle} />
-            <input placeholder="Repo URL (optional)" value={repoUrl} onChange={(e) => setRepoUrl(e.target.value)} style={inputStyle} />
-            <input type="number" placeholder="Sort Order (e.g. 1)" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
-            <input type="number" placeholder="Display Order (Home)" value={displayOrder} onChange={(e) => setDisplayOrder(e.target.value)} style={inputStyle} />
-            <button type="submit" className="btn btn-color-1">Add Project</button>
-          </form>
+      <div className="admin-table-container">
+        <div className="admin-table-header" style={{ gridTemplateColumns: "3fr 1fr 1fr 1.5fr" }}>
+          <div>Project</div>
+          <div>Status</div>
+          <div>Display</div>
+          <div style={{ textAlign: "right" }}>Actions</div>
         </div>
-
-        <div>
-          <h2 style={{ marginBottom: "1rem" }}>Existing Projects</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-            {projects.map((p) => (
-              <div key={p.id} className="details-container color-container" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        
+        {projects.length === 0 ? (
+          <div style={{ padding: "2rem", textAlign: "center", color: "var(--admin-text-muted)" }}>No active projects found.</div>
+        ) : (
+          projects.map((p) => (
+            <div key={p.id} className="admin-table-row" style={{ gridTemplateColumns: "3fr 1fr 1fr 1.5fr" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                <div style={{ 
+                  width: "48px", height: "48px", borderRadius: "8px", 
+                  backgroundColor: "var(--admin-border)", 
+                  backgroundImage: `url(${p.image_url})`, 
+                  backgroundSize: "cover", backgroundPosition: "center",
+                  flexShrink: 0
+                }} />
                 <div>
-                  <h3>{p.title}</h3>
-                  <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginTop: "0.5rem" }}>
-                    <p style={{ fontSize: "0.9rem", color: "gray", margin: 0 }}>Status: </p>
-                    <select 
-                      defaultValue={p.status} 
-                      onChange={async (e) => {
-                        const newStatus = e.target.value;
-                        const { error } = await supabase.from("projects").update({ status: newStatus }).eq("id", p.id);
-                        if (error) alert("Error: " + error.message);
-                        else {
-                          alert("Status updated to " + newStatus);
-                          fetchProjects();
-                        }
-                      }}
-                      style={{ padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
-                    >
-                      <option value="Completed" style={{color: "black"}}>Completed</option>
-                      <option value="In Progress" style={{color: "black"}}>In Progress</option>
-                      <option value="Planned" style={{color: "black"}}>Planned</option>
-                      <option value="Collection" style={{color: "black"}}>Collection</option>
-                      <option value="College" style={{color: "black"}}>College</option>
-                      <option value="1st Year" style={{color: "black"}}>1st Year</option>
-                      <option value="2nd Year" style={{color: "black"}}>2nd Year</option>
-                      <option value="3rd Year" style={{color: "black"}}>3rd Year</option>
-                      <option value="4th Year" style={{color: "black"}}>4th Year</option>
-                    </select>
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginLeft: "0.5rem" }}>
-                      <span style={{ fontSize: "0.9rem", color: "gray" }}>Sort:</span>
-                      <input 
-                        type="number" 
-                        defaultValue={p.sort_order || 0}
-                        onBlur={async (e) => {
-                          const newSort = parseInt(e.target.value) || 0;
-                          if (newSort !== (p.sort_order || 0)) {
-                            const { error } = await supabase.from("projects").update({ sort_order: newSort }).eq("id", p.id);
-                            if (error) alert("Error: " + error.message);
-                            else {
-                              alert("Sort order updated to " + newSort);
-                              fetchProjects();
-                            }
-                          }
-                        }}
-                        style={{ width: "60px", padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
-                      />
-                    </div>
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginLeft: "0.5rem" }}>
-                      <span style={{ fontSize: "0.9rem", color: "gray" }}>Display:</span>
-                      <input 
-                        type="number" 
-                        placeholder="-"
-                        defaultValue={p.display_order ?? ""}
-                        onBlur={async (e) => {
-                          const val = e.target.value;
-                          const newOrder = val === "" ? null : parseInt(val);
-                          if (newOrder !== (p.display_order ?? null)) {
-                            const { error } = await supabase.from("projects").update({ display_order: newOrder }).eq("id", p.id);
-                            if (error) alert("Error: " + error.message);
-                            else {
-                              alert(newOrder === null ? "Removed from Homepage" : "Display order updated to " + newOrder);
-                              fetchProjects();
-                            }
-                          }
-                        }}
-                        style={{ width: "60px", padding: "0.2rem", borderRadius: "0.2rem", background: "rgba(255,255,255,0.1)", color: "inherit", border: "1px solid #ccc" }}
-                      />
-                    </div>
+                  <div style={{ fontWeight: 500 }}>{p.title}</div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)", display: "flex", gap: "0.5rem" }}>
+                    <span>/{p.slug}</span>
                   </div>
                 </div>
-                <button onClick={() => handleDelete(p.id)} className="btn btn-color-2" style={{ color: "red", borderColor: "red" }}>Delete</button>
               </div>
-            ))}
-            {projects.length === 0 && <p>No projects found. Add one!</p>}
-          </div>
-        </div>
+              
+              <div>
+                <span className={`admin-badge ${p.status === 'Completed' ? 'published' : p.status === 'Draft' ? 'draft' : 'neutral'}`}>
+                  {p.status}
+                </span>
+              </div>
+              
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <Tooltip content="Sort Order">
+                  <input 
+                    type="number" 
+                    min="0"
+                    defaultValue={p.sort_order || 0}
+                    onBlur={async (e) => {
+                      const newSort = parseInt(e.target.value) || 0;
+                      if (newSort !== (p.sort_order || 0)) {
+                        await supabase.from("projects").update({ sort_order: Math.max(0, newSort) }).eq("id", p.id);
+                        fetchProjects();
+                        addToast("Sort order updated", "success");
+                      }
+                    }}
+                    style={{ width: "45px", padding: "0.2rem 0.4rem", borderRadius: "4px", border: "1px solid var(--admin-border)", background: "transparent", color: "inherit", fontSize: "0.85rem" }}
+                  />
+                </Tooltip>
+                <Tooltip content="Home Display Order">
+                  <input 
+                    type="number" 
+                    min="0"
+                    placeholder="-"
+                    defaultValue={p.display_order ?? ""}
+                    onBlur={async (e) => {
+                      const val = e.target.value;
+                      const newDisplay = val === "" ? null : parseInt(val);
+                      if (newDisplay !== p.display_order) {
+                        await supabase.from("projects").update({ display_order: newDisplay !== null ? Math.max(0, newDisplay) : null }).eq("id", p.id);
+                        fetchProjects();
+                        addToast("Display order updated", "success");
+                      }
+                    }}
+                    style={{ width: "45px", padding: "0.2rem 0.4rem", borderRadius: "4px", border: "1px solid var(--admin-border)", background: "transparent", color: "inherit", fontSize: "0.85rem" }}
+                  />
+                </Tooltip>
+              </div>
+
+              <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+                <Tooltip content="View Live Project">
+                  <a href={`/projects/${p.slug}`} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-icon" aria-label="View project">
+                    <ExternalLink size={16} />
+                  </a>
+                </Tooltip>
+                <Tooltip content="Edit Project">
+                  <button onClick={() => openDrawerForEdit(p)} className="admin-btn admin-btn-icon" aria-label="Edit project">
+                    <Edit2 size={16} />
+                  </button>
+                </Tooltip>
+                <Tooltip content="Move to Trash" position="top-right">
+                  <button onClick={() => handleSoftDelete(p.id)} className="admin-btn admin-btn-icon" style={{ color: "var(--admin-danger)" }} aria-label="Delete project">
+                    <Trash2 size={16} />
+                  </button>
+                </Tooltip>
+              </div>
+            </div>
+          ))
+        )}
       </div>
+
+      <AdminDrawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} title={editingId ? "Edit Project" : "New Project"}>
+        <form onSubmit={handleSaveProject} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Project Title</label>
+            <input placeholder="E.g. E-Commerce Platform" value={title} onChange={(e) => setTitle(e.target.value)} required style={inputStyle} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>URL Slug</label>
+            <input placeholder="e.g. e-commerce-platform" value={slug} onChange={(e) => setSlug(e.target.value)} required style={inputStyle} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Short Description</label>
+            <textarea placeholder="Brief summary of the project..." value={description} onChange={(e) => setDescription(e.target.value)} required style={{...inputStyle, minHeight: "80px", resize: "vertical"}} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Full Content (Markdown)</label>
+            <textarea placeholder="Detailed project breakdown, challenges, solutions..." value={content} onChange={(e) => setContent(e.target.value)} style={{...inputStyle, minHeight: "200px", resize: "vertical", fontFamily: "monospace"}} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Cover Image</label>
+            
+            {imageUrl && (
+              <div style={{ marginBottom: "0.5rem", borderRadius: "8px", overflow: "hidden", border: "1px solid var(--admin-border)", position: "relative", width: "100%", aspectRatio: "16/9" }}>
+                <img src={imageUrl} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+            )}
+            
+            <input placeholder="/assets/project-image.webp" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} style={inputStyle} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Tech Stack</label>
+            <input placeholder="React, Node.js, PostgreSQL (comma separated)" value={techStack} onChange={(e) => setTechStack(e.target.value)} required style={inputStyle} />
+          </div>
+          
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Status</label>
+              <select value={status} onChange={(e) => setStatus(e.target.value)} style={inputStyle}>
+                <option value="Completed">Completed (Published)</option>
+                <option value="Draft">Draft (Hidden)</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Planned">Planned</option>
+              </select>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                Global Sort Order
+                <Tooltip content="Lower numbers appear first">
+                  <Info size={14} style={{ color: "var(--admin-text-muted)", cursor: "help" }} />
+                </Tooltip>
+              </label>
+              <input type="number" min="0" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} style={inputStyle} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                Home Display
+                <Tooltip content="Leave blank to hide from Homepage. Enter number to show.">
+                  <Info size={14} style={{ color: "var(--admin-text-muted)", cursor: "help" }} />
+                </Tooltip>
+              </label>
+              <input type="number" min="0" placeholder="-" value={displayOrder} onChange={(e) => setDisplayOrder(e.target.value)} style={inputStyle} />
+            </div>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Links</label>
+            <div style={{ display: "flex", gap: "0.5rem" }}>
+              <input placeholder="Demo URL" value={demoUrl} onChange={(e) => setDemoUrl(e.target.value)} style={{...inputStyle, flex: 1}} />
+              <input placeholder="GitHub Repo URL" value={repoUrl} onChange={(e) => setRepoUrl(e.target.value)} style={{...inputStyle, flex: 1}} />
+            </div>
+          </div>
+
+          <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
+            <button type="button" onClick={() => setDrawerOpen(false)} className="admin-btn admin-btn-secondary">Cancel</button>
+            <button type="submit" className="admin-btn admin-btn-primary">{editingId ? "Save Changes" : "Create Project"}</button>
+          </div>
+        </form>
+      </AdminDrawer>
+
+      <ConfirmModal 
+        isOpen={!!deleteItem}
+        onClose={() => setDeleteItem(null)}
+        onConfirm={confirmDelete}
+        title="Move to Trash"
+        message="Are you sure you want to move this project to the trash?"
+        confirmText="Move to Trash"
+        isDestructive={true}
+      />
     </div>
   );
 }
 
 const inputStyle = {
-  width: "100%", padding: "0.5rem", borderRadius: "0.5rem", border: "1px solid #ccc", background: "transparent", color: "inherit"
+  width: "100%", 
+  padding: "0.6rem 0.8rem", 
+  borderRadius: "6px", 
+  border: "1px solid var(--admin-border)", 
+  background: "var(--admin-bg)", 
+  color: "var(--admin-text-main)",
+  fontSize: "0.9rem"
 };

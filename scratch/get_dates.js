@@ -1,1 +1,0 @@
-fetch('https://pranavr.netlify.app/blogs').then(r=>r.text()).then(t=>{const m=[...t.matchAll(/<h2 class="blog-title">(.*?)<\/h2>[\s\S]*?<span class="blog-date">(.*?)<\/span>/g)]; console.log(m.map(x=>x[1]+' : '+x[2]).join('\n'))})

@@ -120,87 +120,94 @@ export default function AdminContacts() {
   }
 
   return (
-    <div style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto", minHeight: "80vh" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>
-        <h1 className="title" style={{ fontSize: "2rem" }}>Contact Inbox</h1>
-        <Link href="/admin" className="btn btn-color-2">Back to Dashboard</Link>
+    <div>
+      <div className="admin-page-header">
+        <div>
+          <h1 className="admin-page-title">Messages</h1>
+          <p style={{ color: "var(--admin-text-muted)", fontSize: "0.95rem", marginTop: "0.25rem" }}>
+            Manage contact form submissions.
+          </p>
+        </div>
       </div>
 
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "2rem" }}>
-        <button onClick={() => setFilter("inbox")} className={`btn ${filter === "inbox" ? "btn-color-1" : "btn-color-2"}`}>Inbox</button>
-        <button onClick={() => setFilter("starred")} className={`btn ${filter === "starred" ? "btn-color-1" : "btn-color-2"}`}>Starred</button>
-        <button onClick={() => setFilter("archived")} className={`btn ${filter === "archived" ? "btn-color-1" : "btn-color-2"}`}>Archived</button>
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.5rem" }}>
+        <button onClick={() => setFilter("inbox")} className={`admin-btn ${filter === "inbox" ? "admin-btn-primary" : "admin-btn-secondary"}`}>Inbox</button>
+        <button onClick={() => setFilter("starred")} className={`admin-btn ${filter === "starred" ? "admin-btn-primary" : "admin-btn-secondary"}`}>Starred</button>
+        <button onClick={() => setFilter("archived")} className={`admin-btn ${filter === "archived" ? "admin-btn-primary" : "admin-btn-secondary"}`}>Archived</button>
       </div>
 
-      <div style={{ overflowX: "auto" }}>
+      <div className="admin-table-container" style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "800px" }}>
           <thead>
-            <tr style={{ background: "rgba(0,0,0,0.05)", textAlign: "left" }}>
-              <th style={{ padding: "1rem", borderBottom: "1px solid #ccc", width: "50px" }}></th>
-              <th style={{ padding: "1rem", borderBottom: "1px solid #ccc", width: "25%" }}>Sender</th>
-              <th style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>Message</th>
-              <th style={{ padding: "1rem", borderBottom: "1px solid #ccc", width: "15%" }}>Date</th>
-              <th style={{ padding: "1rem", borderBottom: "1px solid #ccc", width: "15%" }}>Actions</th>
+            <tr style={{ background: "var(--admin-card-hover)", textAlign: "left" }}>
+              <th style={{ padding: "1rem", borderBottom: "1px solid var(--admin-border)", width: "50px" }}></th>
+              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", width: "25%", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Sender</th>
+              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Message</th>
+              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", width: "15%", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Date</th>
+              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", width: "15%", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredContacts.map(c => (
-              <tr key={c.id} style={{ borderBottom: "1px solid #eee", background: c.is_read ? "transparent" : "rgba(10, 102, 194, 0.05)", fontWeight: c.is_read ? "normal" : "600" }}>
-                <td style={{ padding: "1rem", textAlign: "center" }}>
+              <tr key={c.id} style={{ borderBottom: "1px solid var(--admin-border)", background: c.is_read ? "transparent" : "var(--admin-card-hover)", transition: "background-color 0.2s ease" }}>
+                <td style={{ padding: "1.5rem", textAlign: "center" }}>
                   <button 
                     onClick={() => handleAction(c.id, 'update', { is_starred: !c.is_starred })}
-                    style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: c.is_starred ? "#fbbc04" : "#ccc" }}
+                    style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.2rem", color: c.is_starred ? "#fbbc04" : "var(--admin-text-muted)" }}
                     title={c.is_starred ? "Unstar" : "Star"}
                   >
                     ★
                   </button>
                 </td>
-                <td style={{ padding: "1rem" }}>
-                  <div>{c.name}</div>
-                  <div style={{ fontSize: "0.85rem", color: "gray", fontWeight: "normal" }}>
+                <td style={{ padding: "1.5rem" }}>
+                  <div style={{ fontWeight: c.is_read ? 500 : 600, color: "var(--admin-text-main)" }}>{c.name}</div>
+                  <div style={{ fontSize: "0.85rem", color: "var(--admin-text-muted)", fontWeight: "normal" }}>
                     <a href={`mailto:${c.email}`} style={{ color: "inherit", textDecoration: "none" }}>{c.email}</a>
                   </div>
-                  {c.company && <div style={{ fontSize: "0.8rem", color: "gray", fontWeight: "normal" }}>🏢 {c.company}</div>}
+                  {c.company && <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)", fontWeight: "normal" }}>🏢 {c.company}</div>}
                   <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.2rem", fontWeight: "normal" }}>
-                    {c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", color: "#0a66c2" }}>LinkedIn</a>}
-                    {c.github_url && <a href={c.github_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", color: "#333" }}>GitHub</a>}
+                    {c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", color: "#3b82f6", textDecoration: "none", fontWeight: 500 }}>LinkedIn</a>}
+                    {c.github_url && <a href={c.github_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.8rem", color: "var(--admin-text-main)", textDecoration: "none", fontWeight: 500 }}>GitHub</a>}
                   </div>
                 </td>
-                <td style={{ padding: "1rem" }}>
+                <td style={{ padding: "1.5rem" }}>
                   <div style={{ marginBottom: "0.5rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", fontWeight: "normal" }}>
-                    <span style={{ fontSize: "0.75rem", background: "rgba(0,0,0,0.1)", padding: "0.1rem 0.4rem", borderRadius: "0.2rem" }}>{c.purpose}</span>
+                    <span className="admin-badge neutral" style={{ backgroundColor: "var(--admin-card-hover)", color: "var(--admin-text-main)" }}>{c.purpose}</span>
                     {c.source_type && c.source_type !== "general" && (
-                      <span style={{ fontSize: "0.75rem", background: "rgba(10,102,194,0.1)", color: "#0a66c2", padding: "0.1rem 0.4rem", borderRadius: "0.2rem" }}>
+                      <span className="admin-badge neutral" style={{ backgroundColor: "rgba(59, 130, 246, 0.1)", color: "#3b82f6" }}>
                         From {c.source_type}: {c.source_slug || "Page"}
                       </span>
                     )}
                   </div>
-                  <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.5, wordBreak: "break-word" }}>{c.message}</p>
+                  <p style={{ margin: 0, fontSize: "0.95rem", lineHeight: 1.5, wordBreak: "break-word", color: "var(--admin-text-main)", fontWeight: c.is_read ? "normal" : 500 }}>{c.message}</p>
                 </td>
-                <td style={{ padding: "1rem", fontSize: "0.85rem", color: "gray", fontWeight: "normal" }}>
+                <td style={{ padding: "1.5rem", fontSize: "0.85rem", color: "var(--admin-text-muted)", fontWeight: "normal" }}>
                   {new Date(c.created_at).toLocaleDateString()}
                   <br />
                   {new Date(c.created_at).toLocaleTimeString()}
                 </td>
-                <td style={{ padding: "1rem", fontWeight: "normal" }}>
+                <td style={{ padding: "1.5rem", fontWeight: "normal" }}>
                   <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     <button 
                       onClick={() => handleAction(c.id, 'update', { is_read: !c.is_read })}
-                      style={{ padding: "0.3rem", fontSize: "0.8rem", background: "transparent", border: "1px solid #ccc", borderRadius: "0.2rem", cursor: "pointer", color: "inherit" }}
+                      className="admin-btn admin-btn-secondary"
+                      style={{ padding: "0.4rem", fontSize: "0.8rem", width: "100%" }}
                     >
                       Mark {c.is_read ? "Unread" : "Read"}
                     </button>
                     {c.is_archived ? (
                       <button 
                         onClick={() => handleAction(c.id, 'update', { is_archived: false })}
-                        style={{ padding: "0.3rem", fontSize: "0.8rem", background: "#fbbc04", border: "none", color: "#333", borderRadius: "0.2rem", cursor: "pointer" }}
+                        className="admin-btn admin-btn-secondary"
+                        style={{ padding: "0.4rem", fontSize: "0.8rem", color: "#f59e0b", borderColor: "#f59e0b", width: "100%" }}
                       >
                         Unarchive
                       </button>
                     ) : (
                       <button 
                         onClick={() => handleAction(c.id, 'update', { is_archived: true, is_read: true })}
-                        style={{ padding: "0.3rem", fontSize: "0.8rem", background: "#f1f3f4", border: "none", color: "#333", borderRadius: "0.2rem", cursor: "pointer" }}
+                        className="admin-btn admin-btn-danger"
+                        style={{ padding: "0.4rem", fontSize: "0.8rem", width: "100%" }}
                       >
                         Archive
                       </button>
@@ -211,7 +218,7 @@ export default function AdminContacts() {
             ))}
             {filteredContacts.length === 0 && (
               <tr>
-                <td colSpan={5} style={{ padding: "3rem", textAlign: "center", color: "gray" }}>
+                <td colSpan={5} style={{ padding: "3rem", textAlign: "center", color: "var(--admin-text-muted)" }}>
                   No messages found in {filter}.
                 </td>
               </tr>
