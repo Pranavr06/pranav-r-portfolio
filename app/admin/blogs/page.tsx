@@ -205,7 +205,7 @@ export default function ManageBlogs() {
                     <Edit2 size={16} />
                   </button>
                 </Tooltip>
-                <Tooltip content="Move to Trash" position="top-right">
+                <Tooltip content="Move to Trash" position="top">
                   <button onClick={() => handleSoftDelete(b.id)} className="admin-btn admin-btn-danger" style={{ padding: "0.4rem" }}>
                     <Trash2 size={16} />
                   </button>

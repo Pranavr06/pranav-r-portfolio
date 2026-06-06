@@ -214,7 +214,7 @@ export default function ManageProjects() {
                     <Edit2 size={16} />
                   </button>
                 </Tooltip>
-                <Tooltip content="Move to Trash" position="top-right">
+                <Tooltip content="Move to Trash" position="top">
                   <button onClick={() => handleSoftDelete(p.id)} className="admin-btn admin-btn-icon" style={{ color: "var(--admin-danger)" }} aria-label="Delete project">
                     <Trash2 size={16} />
                   </button>

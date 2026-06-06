@@ -210,7 +210,7 @@ export default function ManageExperienceHubs() {
                     <Edit2 size={16} />
                   </button>
                 </Tooltip>
-                <Tooltip content="Move to Trash" position="top-right">
+                <Tooltip content="Move to Trash" position="top">
                   <button onClick={() => handleSoftDelete(hub.id)} className="admin-btn admin-btn-icon" style={{ color: "var(--admin-danger)" }} aria-label="Delete hub">
                     <Trash2 size={16} />
                   </button>
