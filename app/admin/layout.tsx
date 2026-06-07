@@ -43,9 +43,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session && !isLoginPage) {
-        router.push("/admin/login");
+        window.location.href = "/admin/login";
       } else if (session && isLoginPage) {
-        router.push("/admin");
+        window.location.href = "/admin";
       } else {
         setUser(session?.user || null);
         setLoading(false);
@@ -73,7 +73,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/admin/login");
+    window.location.href = "/admin/login";
   };
 
   const toggleTheme = () => {

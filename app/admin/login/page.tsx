@@ -87,7 +87,7 @@ export default function Login() {
       } else {
         localStorage.removeItem("loginAttempts");
         localStorage.removeItem("lockoutUntil");
-        router.push("/admin");
+        window.location.href = "/admin";
       }
     }
     setLoading(false);
