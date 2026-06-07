@@ -127,7 +127,7 @@ export default function AnalyticsDashboard() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "2rem", marginBottom: "2rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem", marginBottom: "2rem" }}>
         {/* Section Engagement */}
         <div className="admin-card" style={{ padding: "1.5rem" }}>
           <h2 style={{ fontSize: "1.2rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
@@ -176,9 +176,9 @@ export default function AnalyticsDashboard() {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", gap: "2rem" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem" }}>
         {/* Top Pages */}
-        <div className="admin-card" style={{ padding: "1.5rem" }}>
+        <div className="admin-card" style={{ padding: "1.5rem", overflowX: "auto" }}>
           <h2 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>Top Visited Pages</h2>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
@@ -190,7 +190,7 @@ export default function AnalyticsDashboard() {
             <tbody>
               {data.topPages.map((page: any, i: number) => (
                 <tr key={i} style={{ borderBottom: "1px solid var(--admin-border-light)" }}>
-                  <td style={{ padding: "1rem 0", fontSize: "0.95rem" }}>{page.path}</td>
+                  <td style={{ padding: "1rem 0", fontSize: "0.95rem", wordBreak: "break-all", paddingRight: "1rem" }}>{page.path}</td>
                   <td style={{ padding: "1rem 0", textAlign: "right", fontWeight: 600 }}>{page.views}</td>
                 </tr>
               ))}
@@ -202,7 +202,7 @@ export default function AnalyticsDashboard() {
         </div>
 
         {/* Clicks & Events */}
-        <div className="admin-card" style={{ padding: "1.5rem" }}>
+        <div className="admin-card" style={{ padding: "1.5rem", overflowX: "auto" }}>
           <h2 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>Engagement Events</h2>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead>
