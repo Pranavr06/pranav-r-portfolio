@@ -1641,8 +1641,9 @@ nav [data-tooltip]:focus-visible::before {
 }
 
 @media (hover: none), screen and (max-width: 600px) {
-    [data-tooltip]::before {
-        display: none;
+    [data-tooltip]::before,
+    .custom-tooltip-wrapper .custom-tooltip {
+        display: none !important;
     }
 }
 
@@ -2765,8 +2766,9 @@ nav [data-tooltip]:focus-visible::before {
 }
 
 @media (hover: none), screen and (max-width: 600px) {
-    [data-tooltip]::before {
-        display: none;
+    [data-tooltip]::before,
+    .custom-tooltip-wrapper .custom-tooltip {
+        display: none !important;
     }
 }
 
