@@ -93,30 +93,6 @@ export default function Login() {
     setLoading(false);
   };
 
-  const handlePasskeyAuth = async () => {
-    setError("");
-    setMessage("");
-    setLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPasskey();
-      
-      if (error) {
-        setError(`Passkey login failed: ${error.message}`);
-      } else if (data?.user) {
-        router.push("/admin");
-      }
-    } catch (err: any) {
-      if (err.message && err.message.includes("timed out or was not allowed")) {
-        setError("Authentication cancelled or no valid passkey was found on this device.");
-      } else {
-        setError(`Passkey login failed: ${err.message || "Unknown error"}`);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <>
       <style>{`
@@ -214,27 +190,6 @@ export default function Login() {
           <button type="submit" className="btn btn-color-1" style={{ width: "100%", padding: "1rem", fontSize: "1rem", marginTop: "0.5rem" }} disabled={loading}>
             {loading ? "Processing..." : (isResetMode ? "Send Reset Link" : "Sign In with Password")}
           </button>
-
-          {!isResetMode && (
-            <>
-              <div style={{ display: "flex", alignItems: "center", margin: "0.5rem 0" }}>
-                <div style={{ flex: 1, height: "1px", background: "var(--admin-border, #ccc)" }}></div>
-                <span style={{ padding: "0 10px", color: "var(--text-color-light)", fontSize: "0.9rem" }}>or</span>
-                <div style={{ flex: 1, height: "1px", background: "var(--admin-border, #ccc)" }}></div>
-              </div>
-
-              <button 
-                type="button" 
-                onClick={handlePasskeyAuth}
-                className="btn btn-color-2" 
-                style={{ width: "100%", padding: "1rem", fontSize: "1rem", display: "flex", justifyContent: "center", alignItems: "center", gap: "0.5rem" }} 
-                disabled={loading}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
-                Sign In with Passkey (Biometric)
-              </button>
-            </>
-          )}
 
           {isResetMode && (
             <button 

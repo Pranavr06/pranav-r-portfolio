@@ -32,7 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [user, setUser] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
-  const [isRegisteringPasskey, setIsRegisteringPasskey] = useState(false);
+
   const { addToast } = useToast();
 
   // Exclude login page from the dashboard layout
@@ -73,22 +73,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push("/admin/login");
-  };
-
-  const handleRegisterPasskey = async () => {
-    setIsRegisteringPasskey(true);
-    try {
-      const { data, error } = await supabase.auth.passkey.startRegistration();
-      if (error) {
-        addToast("Passkey setup failed: " + error.message, "error");
-      } else {
-        addToast("Passkey successfully registered! You can now use your biometrics to log in.", "success");
-      }
-    } catch (err: any) {
-      addToast("Error setting up passkey: " + (err.message || "Unknown error"), "error");
-    } finally {
-      setIsRegisteringPasskey(false);
-    }
   };
 
   const toggleTheme = () => {
@@ -151,15 +135,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           ))}
         </nav>
           <div style={{ padding: "1rem", borderTop: "1px solid var(--admin-border)" }}>
-            <button 
-              onClick={handleRegisterPasskey} 
-              className="admin-nav-item" 
-              style={{ width: "100%", background: "none", border: "none", cursor: "pointer", color: "var(--admin-text-main)", marginBottom: "0.5rem" }}
-              disabled={isRegisteringPasskey}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "1rem" }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
-              {isRegisteringPasskey ? "Setting Up..." : "Setup Passkey"}
-            </button>
+
             <button onClick={handleLogout} className="admin-nav-item" style={{ width: "100%", background: "none", border: "none", cursor: "pointer", color: "#ef4444" }}>
               <LogOut size={18} />
               Logout

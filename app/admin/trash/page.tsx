@@ -59,25 +59,6 @@ function AuthConfirmModal({
     }
   };
 
-  const handlePasskeyVerify = async () => {
-    setError("");
-    setLoading(true);
-    try {
-      const { error: passkeyError } = await supabase.auth.signInWithPasskey();
-      if (passkeyError) throw passkeyError;
-      onConfirm();
-      onClose();
-    } catch (err: any) {
-      if (err.message && err.message.includes("timed out or was not allowed")) {
-        setError("Authentication cancelled or no valid passkey was found on this device.");
-      } else {
-        setError("Passkey verification failed: " + err.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0, 0, 0, 0.5)", backdropFilter: "blur(4px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem", animation: "fadeIn 0.2s ease" }}>
       <div style={{ background: "var(--admin-card-bg)", borderRadius: "12px", width: "100%", maxWidth: "450px", border: "1px solid var(--admin-border)", overflow: "hidden" }}>
@@ -113,15 +94,6 @@ function AuthConfirmModal({
             </button>
           </form>
 
-          <div style={{ display: "flex", alignItems: "center", margin: "1rem 0" }}>
-            <div style={{ flex: 1, height: "1px", background: "var(--admin-border)" }}></div>
-            <span style={{ padding: "0 10px", color: "var(--admin-text-muted)", fontSize: "0.85rem" }}>OR</span>
-            <div style={{ flex: 1, height: "1px", background: "var(--admin-border)" }}></div>
-          </div>
-
-          <button onClick={handlePasskeyVerify} type="button" disabled={loading} className="admin-btn admin-btn-secondary" style={{ width: "100%", padding: "0.75rem", justifyContent: "center", fontSize: "0.95rem" }}>
-            Verify with Passkey (Biometric)
-          </button>
         </div>
       </div>
     </div>
