@@ -1815,7 +1815,7 @@ body.dark-theme .menu-option:hover {
     display: block;
   }
   .scroll-down-link, .scroll-up-link {
-    right: -2rem; /* Consistent spacing with other pages */
+    right: 2rem; /* Consistent spacing with other pages */
   }
   section,
   .section-container {
@@ -2480,7 +2480,7 @@ body.dark-theme .btn-color-2:hover { background: #ffffff; color: #000000; }
     display: inline-block;
     position: absolute;
     bottom: 2.5rem;
-    right: -5rem;
+    right: 2rem;
 }
 .arrow { width: 30px; height: 30px; }
 
@@ -2585,7 +2585,7 @@ footer p { text-align: center; }
     display: inline-block;
     position: absolute;
     bottom: 2.5rem;
-    right: -5rem;
+    right: 2rem;
 }
 
 .arrow {
