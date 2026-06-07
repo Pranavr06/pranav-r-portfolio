@@ -247,45 +247,45 @@ export default function AdminTestimonials() {
                   </div>
                 </td>
                 <td style={{ padding: "1.5rem" }}>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", maxWidth: "250px" }}>
-                    <button 
-                      onClick={() => handleAction(t.id, 'update', { is_approved: !t.is_approved })}
-                      className={`admin-btn ${t.is_approved ? 'admin-btn-secondary' : 'admin-btn-primary'}`}
-                      style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
-                    >
-                      {t.is_approved ? "Unapprove" : "Approve"}
-                    </button>
-                    <button 
-                      onClick={() => handleAction(t.id, 'update', { is_verified: !t.is_verified })}
-                      className="admin-btn admin-btn-secondary"
-                      style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
-                    >
-                      {t.is_verified ? "Unverify LI" : "Verify LinkedIn"}
-                    </button>
-                    {t.github_url && (
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
                       <button 
-                        onClick={() => handleAction(t.id, 'update', { is_github_verified: !t.is_github_verified })}
+                        onClick={() => handleAction(t.id, 'update', { is_approved: !t.is_approved })}
+                        className={`admin-btn ${t.is_approved ? 'admin-btn-secondary' : 'admin-btn-primary'}`}
+                        style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
+                      >
+                        {t.is_approved ? "Unapprove" : "Approve"}
+                      </button>
+                      <button 
+                        onClick={() => handleAction(t.id, 'update', { is_verified: !t.is_verified })}
                         className="admin-btn admin-btn-secondary"
                         style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
                       >
-                        {t.is_github_verified ? "Unverify GH" : "Verify GitHub"}
+                        {t.is_verified ? "Unverify LinkedIn" : "Verify LinkedIn"}
                       </button>
-                    )}
-                    <button 
-                      onClick={() => openDrawerForEdit(t)}
-                      className="admin-btn admin-btn-secondary"
-                      style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
-                    >
-                      Edit
-                    </button>
-                    <button 
-                      onClick={() => setDeleteItem(t.id)}
-                      className="admin-btn admin-btn-danger"
-                      style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
-                    >
-                      Delete
-                    </button>
-                  </div>
+                      {t.github_url && (
+                        <button 
+                          onClick={() => handleAction(t.id, 'update', { is_github_verified: !t.is_github_verified })}
+                          className="admin-btn admin-btn-secondary"
+                          style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
+                        >
+                          {t.is_github_verified ? "Unverify GitHub" : "Verify GitHub"}
+                        </button>
+                      )}
+                      <button 
+                        onClick={() => openDrawerForEdit(t)}
+                        className="admin-btn admin-btn-secondary"
+                        style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => setDeleteItem(t.id)}
+                        className="admin-btn admin-btn-danger"
+                        style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                 </td>
               </tr>
             ))}
