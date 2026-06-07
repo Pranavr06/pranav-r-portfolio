@@ -115,7 +115,10 @@ export default function AdminTestimonials() {
       }
 
       fetchTestimonials();
-      addToast(action === 'delete' ? "Testimonial deleted" : "Testimonial updated", "success");
+      let toastMsg = "Testimonial updated";
+      if (action === 'delete') toastMsg = "Testimonial permanently deleted";
+      else if (updates && updates.is_archived) toastMsg = "Testimonial moved to trash";
+      addToast(toastMsg, "success");
     } catch (err: any) {
       addToast(err.message, "error");
     }
@@ -378,12 +381,12 @@ export default function AdminTestimonials() {
         isOpen={!!deleteItem}
         onClose={() => setDeleteItem(null)}
         onConfirm={() => {
-          if (deleteItem) handleAction(deleteItem, 'delete');
+          if (deleteItem) handleAction(deleteItem, 'update', { is_archived: true });
           setDeleteItem(null);
         }}
-        title="Permanently Delete Testimonial"
-        message="Are you sure you want to permanently delete this testimonial? This action cannot be undone."
-        confirmText="Permanently Delete"
+        title="Move Testimonial to Trash"
+        message="Are you sure you want to move this testimonial to the trash? You can restore it later from the Trash page."
+        confirmText="Move to Trash"
         isDestructive={true}
       />
     </div>
