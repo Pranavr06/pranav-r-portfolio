@@ -179,6 +179,7 @@ export default function ProjectList({
           )}
         </div>
       </div>
+      <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
     </section>
   );
 }

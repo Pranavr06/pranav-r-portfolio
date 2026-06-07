@@ -126,6 +126,7 @@ export default function CertificateList({
           </div>
         )}
       </div>
+      <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
     </section>
     </>
   );

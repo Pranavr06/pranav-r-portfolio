@@ -81,6 +81,7 @@ export default function BlogList({ initialBlogs }: { initialBlogs: any[] }) {
           <p style={{ textAlign: "center", width: "100%", gridColumn: "1 / -1" }}>No blog posts found.</p>
         )}
       </div>
+      <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
     </section>
   );
 }

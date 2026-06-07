@@ -23,7 +23,7 @@ export default function ContactCTA({ sourceType, sourceSlug = "", purpose = "", 
   const contactUrl = `/contact?${queryParams.toString()}`;
 
   return (
-    <div className="contact-cta-section">
+    <div id="contact" className="contact-cta-section">
       <p className="contact-cta-subtitle">Get in Touch</p>
       <h2 className="contact-cta-title">Contact Me</h2>
       
