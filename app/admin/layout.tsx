@@ -41,22 +41,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     const checkAuth = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) console.error("Session error:", error);
-        
-        if (!session && !isLoginPage) {
-          window.location.href = "/admin/login";
-        } else if (session && isLoginPage) {
-          window.location.href = "/admin";
-        } else {
-          setUser(session?.user || null);
-          setLoading(false);
-        }
-      } catch (e) {
-        console.error("Auth Exception:", e);
-        if (!isLoginPage) window.location.href = "/admin/login";
-        else setLoading(false);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session && !isLoginPage) {
+        window.location.href = "/admin/login";
+      } else if (session && isLoginPage) {
+        window.location.href = "/admin";
+      } else {
+        setUser(session?.user || null);
+        setLoading(false);
       }
     };
     
