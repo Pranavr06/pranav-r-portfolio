@@ -58,7 +58,7 @@ export default async function TestimonialsPage() {
           <ContactCTA sourceType="general" purpose="Testimonials Inquiry" ctaText="Let's build something together" />
         </div>
 
-        <ScrollArrow direction="up" targetId="top" altText="Scroll to top of page" />
+
       </section>
     </main>
   );

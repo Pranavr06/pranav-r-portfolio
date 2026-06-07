@@ -244,7 +244,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
           <ContactCTA sourceType="project" sourceSlug={slug} />
         </div>
         
-        <ScrollArrow direction="up" targetId="top" altText="Scroll to top of page" />
+
       </section>
     </main>
   );
