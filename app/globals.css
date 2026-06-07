@@ -470,8 +470,8 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     bottom: 2.5rem;
 }
 
-.scroll-down-link { right: -5rem; }
-.scroll-up-link { right: -5rem; }
+.scroll-down-link { right: 2rem; }
+.scroll-up-link { right: 2rem; }
 
 .arrow {
     width: 30px;
@@ -1449,7 +1449,6 @@ footer {
 }
 
 footer .scroll-up-link {
-    right: -5rem;
     bottom: 18rem;
 }
 
@@ -2545,7 +2544,7 @@ body.dark-theme .contact-cta-card-title { color: var(--dark-title); }
 body.dark-theme .contact-cta-btn { background: #eee; color: #111; }
 .contact-cta-btn:hover { transform: translateY(-2px); }
 
-.contact-cta-links { display: inline-flex; align-items: center; justify-content: center; gap: 2rem; padding: 0.8rem 2.5rem; border-radius: 2rem; border: 1px solid rgba(0,0,0,0.1); background: var(--light-bg); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+.contact-cta-links { display: inline-flex; align-items: center; justify-content: center; gap: 2rem; padding: 0.8rem 2.5rem; border-radius: 2rem; border: 1px solid rgba(0,0,0,0.1); background: var(--light-bg); box-shadow: 0 2px 8px rgba(0,0,0,0.02); width: fit-content; margin: 0 auto; }
 body.dark-theme .contact-cta-links { background: #2d2d2d; border-color: #555; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
 .contact-cta-link { display: flex; align-items: center; gap: 0.6rem; color: var(--light-title); text-decoration: none; font-weight: 500; font-size: 1.05rem; }
 body.dark-theme .contact-cta-link { color: var(--dark-title); }
