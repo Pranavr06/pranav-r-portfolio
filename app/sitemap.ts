@@ -10,6 +10,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/projects',
     '/blogs',
     '/certificates',
+    '/experiences',
+    '/experiences/professional-journey',
+    '/experiences/technical-expertise',
+    '/testimonials',
     '/contact',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
@@ -45,7 +49,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }));
 
-    return [...staticRoutes, ...blogRoutes, ...projectRoutes];
+    // Dynamic Experience Routes
+    const { data: experiences } = await supabase
+      .from('experiences')
+      .select('read_more_url, created_at')
+      .not('read_more_url', 'is', null);
+
+    const experienceRoutes = (experiences || [])
+      .filter((exp) => exp.read_more_url && exp.read_more_url.startsWith('/experiences/'))
+      .map((exp) => ({
+        url: `${baseUrl}${exp.read_more_url}`,
+        lastModified: exp.created_at ? new Date(exp.created_at).toISOString() : new Date().toISOString(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+      }));
+
+    return [...staticRoutes, ...blogRoutes, ...projectRoutes, ...experienceRoutes];
   } catch (error) {
     console.error('Error generating sitemap:', error);
     return staticRoutes;
