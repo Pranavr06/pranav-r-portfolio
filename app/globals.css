@@ -470,7 +470,7 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     bottom: 2.5rem;
 }
 
-.scroll-down-link { right: 2rem; }
+.scroll-down-link { right: -7rem; }
 .scroll-up-link { right: 2rem; }
 
 .arrow {
@@ -2476,12 +2476,7 @@ body.dark-theme .btn-color-1:hover { background: #ffffff; color: #000000; }
 body.dark-theme .btn-color-2 { border: 1px solid #ffffff; background: none; color: white; }
 body.dark-theme .btn-color-2:hover { background: #ffffff; color: #000000; }
 .icon { cursor: pointer; height: 2rem; }
-.scroll-down-link, .scroll-up-link {
-    display: inline-block;
-    position: absolute;
-    bottom: 2.5rem;
-    right: 2rem;
-}
+
 .arrow { width: 30px; height: 30px; }
 
 #contact { display: flex; justify-content: center; flex-direction: column; min-height: 70vh; position: relative; }
@@ -2581,12 +2576,7 @@ footer p { text-align: center; }
 .hidden { display: none; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
 
-.scroll-down-link, .scroll-up-link {
-    display: inline-block;
-    position: absolute;
-    bottom: 2.5rem;
-    right: 2rem;
-}
+
 
 .arrow {
     width: 30px;
