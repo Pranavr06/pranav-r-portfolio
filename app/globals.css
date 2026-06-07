@@ -3546,9 +3546,13 @@ body.dark-theme .identity-card-avatar {
     font-size: 0.95rem;
     color: var(--light-title);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     display: block;
+}
+@media (max-width: 480px) {
+    .identity-card-email {
+        white-space: normal;
+        word-break: break-all;
+    }
 }
 body.dark-theme .identity-card-email {
     color: var(--dark-title);
