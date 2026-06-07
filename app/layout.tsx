@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Script from "next/script";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
@@ -66,7 +67,9 @@ export default function RootLayout({
           }}
         />
         <ToastProvider>
-          <AnalyticsProvider />
+          <Suspense fallback={null}>
+            <AnalyticsProvider />
+          </Suspense>
           <ScrollRestoration />
           <Navbar />
           {children}
