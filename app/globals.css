@@ -3537,11 +3537,14 @@ body.dark-theme .identity-card-avatar {
 .identity-card-info {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 .identity-card-email {
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--light-title);
+    word-break: break-all;
+    overflow-wrap: anywhere;
 }
 body.dark-theme .identity-card-email {
     color: var(--dark-title);
