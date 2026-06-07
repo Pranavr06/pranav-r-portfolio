@@ -6,11 +6,11 @@ export function middleware(request: NextRequest) {
   // Create a strict CSP that gives an A+ on SecurityHeaders
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https:;
+    script-src 'self' 'nonce-${nonce}' 'unsafe-eval' https:;
     style-src 'self' 'unsafe-inline' https:;
     img-src 'self' blob: data: https:;
     font-src 'self' data: https:;
-    connect-src 'self' https:;
+    connect-src 'self' https: wss:;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
