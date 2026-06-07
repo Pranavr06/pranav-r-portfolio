@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { showToast } from "@/components/Toast";
 import ProjectCard from "@/components/cards/ProjectCard";
-import ScrollArrow from "@/components/ScrollArrow";
 
 export default function ProjectList({ 
   initialProjects, 
@@ -179,9 +178,6 @@ export default function ProjectList({
           )}
         </div>
       </div>
-      
-      {/* Scroll Down chevron like in original projects.html */}
-      <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
     </section>
   );
 }

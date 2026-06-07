@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import ShareMenu from "./ShareMenu";
 import BlogCard from "./cards/BlogCard";
-import ScrollArrow from "@/components/ScrollArrow";
 
 export default function BlogList({ initialBlogs }: { initialBlogs: any[] }) {
   const [filter, setFilter] = useState("latest");
@@ -81,7 +80,6 @@ export default function BlogList({ initialBlogs }: { initialBlogs: any[] }) {
           <p style={{ textAlign: "center", width: "100%", gridColumn: "1 / -1" }}>No blog posts found.</p>
         )}
       </div>
-      <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
     </section>
   );
 }
