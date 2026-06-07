@@ -5,6 +5,7 @@ import Link from "next/link";
 import { showToast } from "@/components/Toast";
 import ShareMenu from "@/components/ShareMenu";
 import CertificateCard from "@/components/cards/CertificateCard";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default function CertificateList({ 
   initialCertificates, 

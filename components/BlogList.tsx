@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import ShareMenu from "./ShareMenu";
 import BlogCard from "./cards/BlogCard";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default function BlogList({ initialBlogs }: { initialBlogs: any[] }) {
   const [filter, setFilter] = useState("latest");

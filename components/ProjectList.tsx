@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { showToast } from "@/components/Toast";
 import ProjectCard from "@/components/cards/ProjectCard";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default function ProjectList({ 
   initialProjects, 
