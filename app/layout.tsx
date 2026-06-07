@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import ScrollRestoration from "@/components/ScrollRestoration";
 import { ToastProvider } from "@/components/ToastProvider";
 import ToastContainer from "@/components/Toast";
+import AnalyticsProvider from "@/components/AnalyticsProvider";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -65,6 +66,7 @@ export default function RootLayout({
           }}
         />
         <ToastProvider>
+          <AnalyticsProvider />
           <ScrollRestoration />
           <Navbar />
           {children}

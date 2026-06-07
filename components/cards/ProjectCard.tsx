@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { showToast } from "@/components/Toast";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ProjectCard({ project }: { project: any }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -95,7 +96,7 @@ export default function ProjectCard({ project }: { project: any }) {
             </Link>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               {project.demo_url ? (
-                <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn" aria-label={`View ${project.title}`}>
+                <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn" aria-label={`View ${project.title}`} onClick={() => trackEvent("click_live_demo", project.title)}>
                   {project.demo_url.includes('research-paper') ? 'Research Paper' : project.demo_url.includes('.pdf') ? 'View Report' : 'Live Demo'}
                 </a>
               ) : (
@@ -104,7 +105,7 @@ export default function ProjectCard({ project }: { project: any }) {
                 </button>
               )}
               {project.repo_url && (
-                <a href={project.repo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn" aria-label={`Source Code for ${project.title}`}>
+                <a href={project.repo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn" aria-label={`Source Code for ${project.title}`} onClick={() => trackEvent("click_github", project.title)}>
                   Code
                 </a>
               )}

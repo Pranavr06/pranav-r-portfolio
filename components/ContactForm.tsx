@@ -6,6 +6,7 @@ import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { useToast } from "./ToastProvider";
 import FormInput from "./ui/FormInput";
 import { isValidEmail, isValidUrl } from "@/lib/validation";
+import { trackEvent } from "@/lib/analytics";
 
 const PURPOSE_OPTIONS = [
   "Internship Opportunity",
@@ -124,6 +125,7 @@ export default function ContactForm() {
       }
 
       addToast("Message sent successfully.", "success");
+      trackEvent("form_submit", formData.purpose);
       setFormData({
         name: "", email: "", message: "", purpose: defaultPurpose, company: "", linkedin_url: "", github_url: "", bot_field: ""
       });

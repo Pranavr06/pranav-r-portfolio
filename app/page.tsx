@@ -6,18 +6,19 @@ import Projects from "@/components/sections/Projects";
 import Testimonials from "@/components/sections/Testimonials";
 import Blog from "@/components/sections/Blog";
 import Contact from "@/components/sections/Contact";
+import SectionTracker from "@/components/SectionTracker";
 
 export default function Home() {
   return (
     <main>
-      <Hero />
-      <About />
-      <Experience />
-      <Certificates />
-      <Projects />
-      <Testimonials />
-      <Blog />
-      <Contact />
+      <SectionTracker sectionId="hero"><Hero /></SectionTracker>
+      <SectionTracker sectionId="about"><About /></SectionTracker>
+      <SectionTracker sectionId="experience"><Experience /></SectionTracker>
+      <SectionTracker sectionId="certificates"><Certificates /></SectionTracker>
+      <SectionTracker sectionId="projects"><Projects /></SectionTracker>
+      <SectionTracker sectionId="testimonials"><Testimonials /></SectionTracker>
+      <SectionTracker sectionId="blog"><Blog /></SectionTracker>
+      <SectionTracker sectionId="contact"><Contact /></SectionTracker>
     </main>
   );
 }
