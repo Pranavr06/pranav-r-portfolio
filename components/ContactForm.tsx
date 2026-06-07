@@ -220,7 +220,7 @@ export default function ContactForm() {
             <span>LinkedIn</span>
           </a>
           <a
-            href="https://github.com/pranav-r-06"
+            href="https://github.com/Pranavr06"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-social-link"

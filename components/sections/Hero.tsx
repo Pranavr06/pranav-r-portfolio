@@ -54,7 +54,7 @@ export default function Hero() {
             <img src="/assets/linkedin.webp" alt="LinkedIn profile icon" className="icon social-link" loading="lazy" />
           </a>
           <a
-            href="https://github.com/PranavR06"
+            href="https://github.com/Pranavr06"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Visit Pranav R's GitHub profile"
