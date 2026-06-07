@@ -1447,7 +1447,10 @@ footer {
     position: relative;
 }
 
-
+footer .scroll-up-link {
+    right: -5rem;
+    bottom: 18rem;
+}
 
 footer p {
     text-align: center;
