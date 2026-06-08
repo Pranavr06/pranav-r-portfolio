@@ -481,7 +481,7 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
 
 footer .scroll-up-link {
     right: 4rem !important;
-    bottom: 5rem !important;
+    bottom: 10rem !important;
 }
 
 .scroll-down-link img, .scroll-up-link img {
