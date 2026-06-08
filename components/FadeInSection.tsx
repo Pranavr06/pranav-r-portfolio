@@ -5,11 +5,13 @@ import { useEffect, useRef, useState } from "react";
 export default function FadeInSection({ 
   children, 
   id, 
-  className = "" 
+  className = "",
+  style
 }: { 
   children: React.ReactNode, 
   id?: string, 
-  className?: string 
+  className?: string,
+  style?: React.CSSProperties
 }) {
   const [isVisible, setVisible] = useState(false);
   const domRef = useRef<HTMLElement>(null);
@@ -46,6 +48,7 @@ export default function FadeInSection({
       id={id} 
       ref={domRef} 
       className={`fade-in-section ${isVisible ? 'visible' : ''} ${className}`}
+      style={style}
     >
       {children}
     </section>
