@@ -475,9 +475,13 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
 }
 
 #blog-post .scroll-up-link,
-#blog-post .scroll-down-link,
+#blog-post .scroll-down-link {
+    right: 5rem !important;
+}
+
 footer .scroll-up-link {
-    right: 2rem !important;
+    right: 4rem !important;
+    bottom: 5rem !important;
 }
 
 .scroll-down-link img, .scroll-up-link img {
