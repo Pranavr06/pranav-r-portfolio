@@ -466,12 +466,18 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
 
 .scroll-down-link, .scroll-up-link {
     display: inline-block;
-    position: absolute;
-    bottom: 2.5rem;
+    position: absolute !important;
+    bottom: 2.5rem !important;
+    right: -5rem !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    transition: transform 0.2s ease-in-out;
 }
 
-.scroll-down-link { right: -7rem; }
-.scroll-up-link { right: 2rem; }
+.scroll-down-link img, .scroll-up-link img {
+    width: 30px !important;
+    height: 30px !important;
+}
 
 .arrow {
     width: 30px;
