@@ -55,11 +55,13 @@ This project is deployed on Netlify and uses Supabase for backend services inclu
 
 ## Author
 
-Pranav R
+**Pranav R**
 
-Portfolio: https://pranavr.netlify.app/
+Information Science Engineering Student | Full-Stack Developer
 
-GitHub: https://github.com/PranavR06
+This project serves as both my personal portfolio and a practical demonstration of modern web development, backend architecture, authentication, analytics, and content management systems.
 
-```
-```
+* Portfolio: https://pranavr.netlify.app
+* GitHub: https://github.com/PranavR06
+* LinkedIn: https://www.linkedin.com/in/pranavr06/
+
