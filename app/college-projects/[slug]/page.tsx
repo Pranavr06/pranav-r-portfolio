@@ -216,7 +216,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             });
 
             // Transform Team & Contributions into HTML cards
-            displayContent = displayContent.replace(/(?:^|\n\n)!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
+            displayContent = displayContent.replace(/(?:^|\n)!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+#{2,3}\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
               const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
               
               // Apply highlighted-card style to all team members as requested by user
