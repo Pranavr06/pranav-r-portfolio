@@ -484,7 +484,7 @@ footer .scroll-up-link {
     bottom: 20rem !important;
 }
 
-.scroll-down-link .arrow, .scroll-up-link .arrow {
+.scroll-down-link img, .scroll-up-link img {
     width: 30px !important;
     height: 30px !important;
 }

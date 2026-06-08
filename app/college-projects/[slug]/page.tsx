@@ -201,6 +201,49 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             displayContent = displayContent.replace(/^([^\n]+)\r?\n-+\s*$/gm, '## $1');
             displayContent = displayContent.replace(/^([^\n]+)\r?\n=+\s*$/gm, '# $1');
 
+            // Transform Mentor/Instructor into Report Box
+            displayContent = displayContent.replace(/!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+\*\*(?:Role|Designation):\*\*\s*([^\n]+)(?:\r?\n)+\*\*Institution:\*\*\s*([^\n]+)(?:(?:\r?\n)+\*\*Email:\*\*\s*([^\n]+))?/g, (match: any, alt: any, src: any, name: any, role: any, institution: any, email: any) => {
+              let emailHTML = '';
+              if (email) {
+                const emailMatch = email.match(/\[([^\]]+)\]\(([^)]+)\)/);
+                if (emailMatch) {
+                   emailHTML = `\n      <p class="instructor-email" style="margin-top: 1.5rem;"><strong>Email:</strong> <a href="${emailMatch[2]}">${emailMatch[1]}</a></p>`;
+                } else {
+                   emailHTML = `\n      <p class="instructor-email" style="margin-top: 1.5rem;"><strong>Email:</strong> ${email}</p>`;
+                }
+              }
+              return `\n<div class="report-box">\n  <div class="report-box-flex">\n    <img src="${src}" alt="${alt}" class="report-box-img" loading="lazy" />\n    <div>\n      <h3 class="report-box-title" style="font-size: 1.6rem; margin-bottom: 1.5rem;">${name}</h3>\n      <p class="report-box-role" style="margin-bottom: 1rem;"><strong>Designation:</strong> ${role}</p>\n      <p class="report-box-institution"><strong>Institution:</strong> ${institution}</p>${emailHTML}\n    </div>\n  </div>\n</div>\n`;
+            });
+
+            // Transform Team & Contributions into HTML cards
+            displayContent = displayContent.replace(/(?:^|\n\n)!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
+              const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
+              const isOwner = name.toLowerCase().includes('pranav r');
+              const isLead = cleanRole.toLowerCase().includes('lead') || cleanRole.toLowerCase().includes('former assistant professor') || cleanRole.toLowerCase().includes('architect');
+              
+              let cardClass = '';
+              if (isOwner) cardClass = 'highlighted-card';
+              else if (isLead) cardClass = 'horizontal-card';
+              
+              let detailsHTML = '';
+              const detailLines = (details as string).split('\n').filter((l: string) => l.trim() !== '');
+              if (detailLines.length > 0) {
+                if (detailLines[0].trim().startsWith('*') || detailLines[0].trim().startsWith('-')) {
+                  detailsHTML = '<div class="team-details"><ul class="team-contributions-list team-contributions-margin" style="list-style-type: disc;">' + detailLines.map(l => `<li>${l.replace(/^[\*\-]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>`).join('') + '</ul></div>';
+                } else {
+                  detailsHTML = '<div class="team-details"><p class="team-contribution">' + detailLines.map(l => l.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')).join('<br/>') + '</p></div>';
+                }
+              }
+              
+              return `%%%TEAM_CARD_START%%%\n<div class="team-card ${cardClass}">\n  <img src="${src}" alt="${alt}" class="team-img" loading="lazy" />\n  <div class="team-info">\n    <h3 class="team-name">${name}</h3>\n    <span class="team-role">${cleanRole}</span>\n${detailsHTML}\n  </div>\n</div>\n%%%TEAM_CARD_END%%%\n`;
+            });
+            
+            // Group contiguous cards into a single grid
+            displayContent = displayContent.replace(/(?:%%%TEAM_CARD_START%%%[\s\S]*?%%%TEAM_CARD_END%%%\n*)+/g, (match: any) => {
+              const cleanCards = match.replace(/%%%TEAM_CARD_START%%%/g, '').replace(/%%%TEAM_CARD_END%%%/g, '');
+              return `\n\n<div class="team-grid">\n${cleanCards}\n</div>\n\n`;
+            });
+
             return (
               <ReactMarkdown
                 rehypePlugins={[rehypeRaw]}
