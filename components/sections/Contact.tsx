@@ -8,7 +8,6 @@ export default function Contact({ hideArrow = false }: { hideArrow?: boolean }) 
   return (
     <FadeInSection id="contact" style={{ position: 'relative' }}>
       <ContactCTA sourceType="general" />
-      {!hideArrow && <ScrollArrow direction="up" targetId="top" />}
     </FadeInSection>
   );
 }
