@@ -48,7 +48,7 @@ export default function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Visit Pranav R's LinkedIn profile"
-            title="LinkedIn"
+            data-tooltip="LinkedIn"
             onClick={() => trackEvent("click_linkedin", "hero")}
           >
             <img src="/assets/linkedin.webp" alt="LinkedIn profile icon" className="icon social-link" loading="lazy" />
@@ -58,7 +58,7 @@ export default function Hero() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Visit Pranav R's GitHub profile"
-            title="GitHub"
+            data-tooltip="GitHub"
             onClick={() => trackEvent("click_github", "hero")}
           >
             <img src="/assets/github.webp" alt="GitHub profile icon" className="icon social-link" loading="lazy" />
