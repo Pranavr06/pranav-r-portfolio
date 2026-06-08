@@ -218,12 +218,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             // Transform Team & Contributions into HTML cards
             displayContent = displayContent.replace(/(?:^|\n\n)!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
               const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
-              const isOwner = name.toLowerCase().includes('pranav r');
-              const isLead = cleanRole.toLowerCase().includes('lead') || cleanRole.toLowerCase().includes('former assistant professor') || cleanRole.toLowerCase().includes('architect');
               
-              let cardClass = '';
-              if (isOwner) cardClass = 'highlighted-card';
-              else if (isLead) cardClass = 'horizontal-card';
+              // Apply highlighted-card style to all team members as requested by user
+              let cardClass = 'highlighted-card';
               
               let detailsHTML = '';
               const detailLines = (details as string).split('\n').filter((l: string) => l.trim() !== '');
