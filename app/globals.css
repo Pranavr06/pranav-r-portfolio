@@ -2955,6 +2955,12 @@ body.dark-theme .options-menu-custom button:hover, [data-theme="dark"] .options-
     top: calc(100% + 5px);
 }
 
+.custom-tooltip-wrapper.tooltip-left-align .custom-tooltip {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
 .filter-container {
     display: flex;
     justify-content: center;

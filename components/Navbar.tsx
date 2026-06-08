@@ -128,7 +128,7 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
               </li>
             ))}
             <li>
-              <div className="custom-tooltip-wrapper tooltip-bottom">
+              <div className="custom-tooltip-wrapper tooltip-bottom tooltip-left-align">
                 <button
                   className="theme-toggle"
                   onClick={toggleTheme}
