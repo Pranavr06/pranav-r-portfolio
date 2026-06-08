@@ -268,7 +268,7 @@ section {
 
 /* Pull the scroll arrow up closer to the hero content */
 #profile .scroll-down-link {
-    bottom: 20vh;
+    bottom: 20vh !important;
 }
 
 
