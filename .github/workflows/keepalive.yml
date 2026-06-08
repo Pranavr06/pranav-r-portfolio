@@ -1,0 +1,37 @@
+name: Keep Supabase Database Alive
+
+on:
+  schedule:
+    # Run every 5 days at midnight UTC
+    - cron: '0 0 */5 * *'
+  workflow_dispatch: # Allows you to manually trigger it from the GitHub Actions tab
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase Database
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_KEY" ]; then
+            echo "Error: Supabase secrets are not set in GitHub repository settings!"
+            echo "Please go to Settings -> Secrets and variables -> Actions and add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY."
+            exit 1
+          fi
+          
+          echo "Pinging Supabase database to prevent inactivity pause..."
+          
+          # We make a simple HTTP GET request to the testimonials table via the Supabase REST API.
+          # This registers as direct database activity and resets the 7-day inactivity timer on the free tier.
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$SUPABASE_URL/rest/v1/testimonials?select=id&limit=1" \
+            -H "apikey: $SUPABASE_KEY" \
+            -H "Authorization: Bearer $SUPABASE_KEY")
+            
+          if [ "$RESPONSE" -eq 200 ]; then
+            echo "Successfully pinged Supabase! (Status: $RESPONSE)"
+          else
+            echo "Failed to ping Supabase. HTTP Status: $RESPONSE"
+            exit 1
+          fi
