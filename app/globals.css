@@ -2047,13 +2047,16 @@ body.dark-theme .featured-img {
 
 /* Catch-all for unstyled images (like in EVM post) to prevent overflow and massive scaling */
 .post-content img:not(.team-img):not(.report-box-img):not(.instructor-img) {
-    width: 100%;
+    max-width: 100%;
+    width: auto;
+    max-height: 600px;
     height: auto;
     border-radius: 1rem;
-    margin: 2rem 0 1rem 0;
+    margin: 2rem auto 1rem auto;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
 }
 .post-content img:not(.team-img):not(.report-box-img):not(.instructor-img):hover {
     transform: scale(1.02);
@@ -2787,6 +2790,14 @@ nav [data-tooltip]:focus-visible::before {
     align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
+}
+
+@media screen and (max-width: 767px) {
+    .report-box-flex {
+        flex-direction: column;
+        text-align: center;
+        justify-content: center;
+    }
 }
 
 .report-box-img, 
