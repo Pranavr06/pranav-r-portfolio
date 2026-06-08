@@ -468,10 +468,16 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     display: inline-block;
     position: absolute !important;
     bottom: 2.5rem !important;
-    right: 2rem !important;
+    right: -5rem !important;
     margin: 0 !important;
     box-shadow: none !important;
     transition: transform 0.2s ease-in-out;
+}
+
+#blog-post .scroll-up-link,
+#blog-post .scroll-down-link,
+footer .scroll-up-link {
+    right: 2rem !important;
 }
 
 .scroll-down-link img, .scroll-up-link img {
@@ -1820,12 +1826,13 @@ body.dark-theme .menu-option:hover {
   .section-container {
     display: block;
   }
-  .scroll-down-link, .scroll-up-link {
-    right: 2rem; /* Consistent spacing with other pages */
-  }
+    .scroll-down-link, .scroll-up-link {
+      right: 2rem !important; /* Consistent spacing with other pages */
+    }
   section,
   .section-container {
     height: fit-content;
+    padding-bottom: 4rem;
     min-height: auto;
   }
   section {
