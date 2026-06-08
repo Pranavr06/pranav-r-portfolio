@@ -202,7 +202,7 @@ export default function ContactForm() {
         
         <div style={{ display: "flex", gap: "1rem", marginTop: "2rem", flexWrap: "wrap" }}>
           <a
-            href="mailto:pranavkundapura18@gmail.com?subject=Professional%20Inquiry"
+            href="mailto:pranavkundapura18@gmail.com?subject=Portfolio%20Inquiry%20-%20Connecting%20with%20Pranav%20R&body=Hi%20Pranav,%0D%0A%0D%0AI%20recently%20came%20across%20your%20portfolio%20and%20was%20impressed%20by%20your%20work.%20I%20would%20love%20to%20connect%20and%20discuss%20potential%20opportunities.%0D%0A%0D%0ABest%20regards,%0D%0A[Your%20Name]"
             target="_blank"
             rel="noopener noreferrer"
             className="contact-social-link"

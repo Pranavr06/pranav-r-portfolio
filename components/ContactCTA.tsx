@@ -35,7 +35,7 @@ export default function ContactCTA({ sourceType, sourceSlug = "", purpose = "", 
       </div>
 
       <div className="contact-cta-links">
-        <a href="mailto:pranav.r.contact@gmail.com" className="contact-cta-link">
+        <a href="mailto:pranavkundapura18@gmail.com?subject=Portfolio%20Inquiry%20-%20Connecting%20with%20Pranav%20R&body=Hi%20Pranav,%0D%0A%0D%0AI%20recently%20came%20across%20your%20portfolio%20and%20was%20impressed%20by%20your%20work.%20I%20would%20love%20to%20connect%20and%20discuss%20potential%20opportunities.%0D%0A%0D%0ABest%20regards,%0D%0A[Your%20Name]" className="contact-cta-link">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" className="contact-cta-icon">
             <circle cx="12" cy="12" r="12" />
             <path d="M6 9l6 4 6-4v6a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9z" className="contact-cta-icon-inner"/>
