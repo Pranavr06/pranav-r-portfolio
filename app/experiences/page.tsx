@@ -47,7 +47,7 @@ export default async function ExperiencesHubPage() {
         <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
       </section>
       
-      <Contact />
+      <Contact hideArrow={true} />
     </main>
   );
 }

@@ -25,7 +25,7 @@ export default async function CollegeProjectsPage() {
         title="College Projects" 
         subtitle="Browse My Academic" 
       />
-      <Contact />
+      <Contact hideArrow={true} />
     </main>
   );
 }
