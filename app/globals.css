@@ -468,7 +468,7 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     display: inline-block;
     position: absolute !important;
     bottom: 2.5rem !important;
-    right: -5rem !important;
+    right: 2rem !important;
     margin: 0 !important;
     box-shadow: none !important;
     transition: transform 0.2s ease-in-out;
