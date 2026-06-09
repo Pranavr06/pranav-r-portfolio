@@ -113,6 +113,7 @@ export default function ManageExperiences() {
     if (error) {
       addToast("Error saving experience: " + error.message, "error");
     } else {
+      await supabase.from("activity_logs").insert([{ type: "experience", action: editingId ? "updated" : "published", title: title }]);
       addToast(`Experience ${editingId ? "updated" : "added"} successfully!`, "success");
       setDrawerOpen(false);
       fetchExperiences();

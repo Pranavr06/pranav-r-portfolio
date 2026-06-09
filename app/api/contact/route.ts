@@ -84,6 +84,17 @@ export async function POST(req: Request) {
 
     if (insertError) throw insertError;
 
+    // Log Activity
+    const { error: logError } = await supabase.from("activity_logs").insert([{
+      type: "message",
+      action: "received",
+      title: `New Inquiry from ${cleanName}`
+    }]);
+
+    if (logError) {
+      console.error("Failed to log activity:", logError);
+    }
+
     return NextResponse.json({ success: true, message: "Message sent successfully." });
     
   } catch (error) {

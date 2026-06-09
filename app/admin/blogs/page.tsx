@@ -90,6 +90,7 @@ export default function ManageBlogs() {
     if (error) {
       addToast("Error saving blog: " + error.message, "error");
     } else {
+      await supabase.from("activity_logs").insert([{ type: "blog", action: editingId ? "updated" : "published", title }]);
       addToast(`Blog post ${editingId ? "updated" : "added"} successfully!`, "success");
       setDrawerOpen(false);
       fetchBlogs();

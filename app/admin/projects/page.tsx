@@ -96,6 +96,7 @@ export default function ManageProjects() {
     if (error) {
       addToast("Error saving project: " + error.message, "error");
     } else {
+      await supabase.from("activity_logs").insert([{ type: "project", action: editingId ? "updated" : "published", title }]);
       addToast(`Project ${editingId ? "updated" : "added"} successfully!`, "success");
       setDrawerOpen(false);
       fetchProjects();
