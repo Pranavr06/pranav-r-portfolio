@@ -119,6 +119,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Failed to save testimonial. Please try again." }, { status: 500 });
     }
 
+    // 7. Log Activity
+    const { error: logError } = await supabase.from("activity_logs").insert([{
+      type: "testimonial",
+      action: "received",
+      title: `Testimonial from ${cleanName}`,
+    }]);
+
+    if (logError) {
+      console.error("Failed to log activity:", logError);
+      // We don't fail the request if logging fails
+    }
+
     return NextResponse.json({ success: true, message: "Testimonial submitted successfully and is pending review." });
 
   } catch (error) {
