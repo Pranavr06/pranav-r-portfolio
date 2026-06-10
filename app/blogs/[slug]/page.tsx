@@ -9,8 +9,39 @@ import ContactCTA from "@/components/ContactCTA";
 import ShareMenu from "@/components/ShareMenu";
 import TableOfContents from "@/components/TableOfContents";
 import CodeBlock from "@/components/CodeBlock";
+import { Metadata } from "next";
+import Script from "next/script";
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  
+  const { data: blog } = await supabase.from("blogs").select("*").eq("slug", slug).single();
+  if (!blog) return { title: 'Blog Not Found' };
+  
+  return {
+    title: `${blog.title} | Pranav R`,
+    description: blog.excerpt || blog.description || `Read ${blog.title} by Pranav R.`,
+    openGraph: {
+      title: `${blog.title} | Pranav R`,
+      description: blog.excerpt || blog.description || `Read ${blog.title} by Pranav R.`,
+      url: `https://pranavr.netlify.app/blogs/${slug}`,
+      images: blog.image_url ? [{ url: blog.image_url }] : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${blog.title} | Pranav R`,
+      description: blog.excerpt || blog.description || `Read ${blog.title} by Pranav R.`,
+      images: blog.image_url ? [blog.image_url] : [],
+    },
+    alternates: {
+      canonical: `https://pranavr.netlify.app/blogs/${slug}`,
+    }
+  };
+}
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -90,8 +121,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     afterContent = cleanBlogContent;
   }
 
+  const mdIndex = blog.content ? blog.content.indexOf('\n\n') : -1;
+  const blogContentMarkdown = mdIndex !== -1 ? blog.content.substring(mdIndex + 2) : blog.content || "";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": blog.title,
+    "image": [
+      blog.image_url ? blog.image_url : "https://pranavr.netlify.app/assets/pranavr-og-image.png"
+    ],
+    "datePublished": blog.created_at,
+    "dateModified": blog.updated_at || blog.created_at,
+    "author": [{
+        "@type": "Person",
+        "name": "Pranav R",
+        "url": "https://pranavr.netlify.app/"
+      }]
+  };
+
   return (
     <main>
+      <Script
+        id={`blog-schema-${blog.slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section id="blog-post" className="mobile-spacing" style={{ paddingTop: "10vh", paddingBottom: "10vh", minHeight: "100vh" }}>
         <header className="blog-banner" style={{ textAlign: "center", marginBottom: "3rem" }}>
           <img 
