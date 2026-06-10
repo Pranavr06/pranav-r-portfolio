@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import { supabase } from '@/lib/supabase';
 
+export const dynamic = 'force-dynamic'; // Ensures sitemap updates instantly when database changes
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://pranavr.netlify.app';
 
