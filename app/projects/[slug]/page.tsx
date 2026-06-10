@@ -6,8 +6,40 @@ import rehypeRaw from "rehype-raw";
 import ContactCTA from "@/components/ContactCTA";
 import ProjectList from "@/components/ProjectList";
 import ShareMenu from "@/components/ShareMenu";
+import { Metadata } from "next";
+import Script from "next/script";
 
 export const dynamic = 'force-dynamic';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  if (slug === 'college-projects') return { title: 'College Projects | Pranav R' };
+  
+  const { data: project } = await supabase.from("projects").select("*").eq("slug", slug).single();
+  if (!project) return { title: 'Project Not Found' };
+  
+  return {
+    title: `${project.title} | Pranav R`,
+    description: project.excerpt || project.description || `Read about ${project.title} by Pranav R.`,
+    openGraph: {
+      title: `${project.title} | Pranav R`,
+      description: project.excerpt || project.description || `Read about ${project.title} by Pranav R.`,
+      url: `https://pranavr.netlify.app/projects/${slug}`,
+      images: project.image_url ? [{ url: project.image_url }] : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | Pranav R`,
+      description: project.excerpt || project.description || `Read about ${project.title} by Pranav R.`,
+      images: project.image_url ? [project.image_url] : [],
+    },
+    alternates: {
+      canonical: `https://pranavr.netlify.app/projects/${slug}`,
+    }
+  };
+}
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -65,9 +97,30 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     const repoMatch = project.content.match(/\[.*?(?:GitHub|Source|TinkerCAD).*?\]\((.*?)\)/i);
     if (repoMatch && !project.repo_url) project.repo_url = repoMatch[1];
   }
+  
+  // Find where the real Markdown text begins (after properties)
+  const mdIndex = project.content ? project.content.indexOf('\n\n') : -1;
+  const projectContentMarkdown = mdIndex !== -1 ? project.content.substring(mdIndex + 2) : project.content || "";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": project.title,
+    "description": project.excerpt || project.description || `A project by Pranav R titled ${project.title}.`,
+    "applicationCategory": project.status && project.status.includes('College') ? "EducationalApplication" : "WebApplication",
+    "operatingSystem": "Desktop, Mobile",
+    "url": `https://pranavr.netlify.app/projects/${project.slug}`,
+    "author": { "@type": "Person", "name": "Pranav R", "url": "https://pranavr.netlify.app/" },
+    "image": project.image_url ? project.image_url : "https://pranavr.netlify.app/assets/pranavr-og-image.png"
+  };
 
   return (
     <main>
+      <Script
+        id={`project-schema-${project.slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section id="project-details" className="mobile-spacing" style={{ paddingTop: "10vh", paddingBottom: "10vh", minHeight: "100vh" }}>
         
         {/* We can use the same banner class from blogs or create a new one */}

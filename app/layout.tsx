@@ -42,6 +42,12 @@ export const metadata: Metadata = {
     images: ["https://pranavr.netlify.app/assets/pranavr-og-image.png"],
     site: "@PranavR2006",
   },
+  verification: {
+    google: "Gdi3HiTiI14fjgrSlY6l0IbQznimK0IBHaX7XD6LKYk",
+    other: {
+      "msvalidate.01": "B0BCBF5CB00352D5696094A5A18CE1EA",
+    },
+  },
 };
 
 export default function RootLayout({
