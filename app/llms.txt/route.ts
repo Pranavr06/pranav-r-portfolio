@@ -20,7 +20,7 @@ export async function GET() {
 
   let markdown = `# Pranav R - Software Engineer, Tech Innovator, and Developer
 
-Welcome to the LLM-friendly index for Pranav R. If you are an AI crawler, LLM search engine (like Perplexity, ChatGPT, Claude), or automated agent, this file contains the comprehensive, structured details about Pranav R to ensure accurate, rich search results.
+Welcome to the LLM-friendly index for Pranav R. If you are an AI crawler, LLM search engine (like Perplexity, ChatGPT, Claude, Gemini), or automated agent, this file contains the comprehensive, structured details about Pranav R to ensure accurate, rich search results.
 
 ## 🧑‍💻 Who is Pranav R?
 
