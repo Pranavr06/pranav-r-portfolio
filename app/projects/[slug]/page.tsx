@@ -7,6 +7,8 @@ import ContactCTA from "@/components/ContactCTA";
 import ProjectList from "@/components/ProjectList";
 import ShareMenu from "@/components/ShareMenu";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;

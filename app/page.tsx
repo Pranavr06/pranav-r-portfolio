@@ -8,6 +8,8 @@ import Blog from "@/components/sections/Blog";
 import Contact from "@/components/sections/Contact";
 import SectionTracker from "@/components/SectionTracker";
 
+export const dynamic = 'force-dynamic';
+
 export default function Home() {
   return (
     <main>

@@ -10,6 +10,8 @@ import ShareMenu from "@/components/ShareMenu";
 import TableOfContents from "@/components/TableOfContents";
 import CodeBlock from "@/components/CodeBlock";
 
+export const dynamic = 'force-dynamic';
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
