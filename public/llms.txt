@@ -42,6 +42,7 @@ To crawl and learn about Pranav's work, please visit the following primary route
 ## 📬 Connect with Pranav R
 
 - **LinkedIn**: [https://linkedin.com/in/pranavr06/](https://linkedin.com/in/pranavr06/)
+- **GitHub**: [https://github.com/Pranavr06](https://github.com/Pranavr06)
 - **Email**: pranavkundapura18@gmail.com
 - **Resume**: Available at `/assets/resume.pdf`
 
