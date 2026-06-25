@@ -2,7 +2,6 @@
   
 # 🚀 Pranav R Portfolio & Personal CMS
 
-![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)
 ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
@@ -40,44 +39,6 @@ A modern, highly scalable, and fully responsive **Personal Portfolio and Content
 
 ---
 
-## 🚀 Getting Started
-
-To get a local copy up and running, follow these simple steps.
-
-### Prerequisites
-
-Ensure you have **Node.js** (v18+) and **npm** installed on your machine. You will also need a Supabase account for the database.
-
-### Installation
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Pranavr06/pranav-r-portfolio.git
-   cd pranav-r-portfolio
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Set up Environment Variables:**
-   Create a `.env.local` file in the root directory and add your Supabase credentials:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-4. **Run the development server:**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open the app:**
-   Navigate to [http://localhost:3000](http://localhost:3000) in your browser to see the application running.
-
----
-
 ## 📁 Project Structure
 
 ```text
@@ -97,3 +58,6 @@ pranav-r-portfolio/
 - **LinkedIn:** [linkedin.com/in/pranavr06](https://linkedin.com/in/pranavr06/)
 - **GitHub:** [github.com/Pranavr06](https://github.com/Pranavr06)
 - **Portfolio:** [pranavr.netlify.app](https://pranavr.netlify.app)
+
+---
+*© Pranav R. All Rights Reserved.*
