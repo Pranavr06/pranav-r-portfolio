@@ -60,4 +60,10 @@ pranav-r-portfolio/
 - **Portfolio:** [pranavr.netlify.app](https://pranavr.netlify.app)
 
 ---
+
+## 🙏 Acknowledgements
+
+The initial UI/UX design and structure of this portfolio were inspired by an excellent [YouTube tutorial by JavaScript Mastery](https://www.youtube.com/watch?v=ldwlOzRvYOU). From that foundation, I heavily expanded the project by implementing a fully custom Next.js App Router architecture, a complete Supabase backend, a custom secure Admin CMS dashboard, dynamic SEO generation, and real-time activity logging.
+
+---
 *© Pranav R. All Rights Reserved.*
