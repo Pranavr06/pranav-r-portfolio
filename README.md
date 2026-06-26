@@ -7,9 +7,9 @@
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 ![Deployment](https://img.shields.io/badge/Deploy-Netlify-black?style=for-the-badge&logo=netlify)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 
 A modern, highly scalable, and fully responsive **Personal Portfolio and Content Management System (CMS)** built from the ground up. Designed to showcase projects, manage technical blogs, handle contact inquiries, and track analytics—all through a secure admin dashboard.
 
