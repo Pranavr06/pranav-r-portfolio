@@ -2,11 +2,14 @@
   
 # 🚀 Pranav R Portfolio & Personal CMS
 
-![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)
-![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
-![Supabase](https://img.shields.io/badge/Supabase-DB-3ECF8E?logo=supabase&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+![Deployment](https://img.shields.io/badge/Deploy-Netlify-black?style=for-the-badge&logo=netlify)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
 A modern, highly scalable, and fully responsive **Personal Portfolio and Content Management System (CMS)** built from the ground up. Designed to showcase projects, manage technical blogs, handle contact inquiries, and track analytics—all through a secure admin dashboard.
 
