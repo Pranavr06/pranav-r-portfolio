@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { checkIsAdmin } from "@/lib/admin";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -20,9 +21,7 @@ async function verifyAdmin(req: Request) {
   
   if (error || !user || !user.email) return null;
 
-  const adminEmails = ["pranavkundapura06@gmail.com", "pranavkundapura18@gmail.com"];
-  
-  if (adminEmails.includes(user.email)) {
+  if (checkIsAdmin(user.email)) {
     return user;
   }
   

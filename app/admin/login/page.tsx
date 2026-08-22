@@ -63,8 +63,17 @@ export default function Login() {
     }
 
     setLoading(true);
+    
+    const { checkIsAdmin } = await import("@/lib/admin");
+    const isAdminEmail = checkIsAdmin(email);
 
     if (isResetMode) {
+      if (!isAdminEmail) {
+        setError("Unauthorized: This account does not have admin privileges.");
+        setLoading(false);
+        return;
+      }
+      
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/admin/update-password`,
       });
@@ -79,8 +88,7 @@ export default function Login() {
         password,
       });
       
-      const adminEmails = ["pranavkundapura06@gmail.com", "pranavkundapura18@gmail.com"];
-      const isAdmin = data?.user?.email && adminEmails.includes(data.user.email);
+      const isAdmin = checkIsAdmin(data?.user?.email);
 
       if (error) {
         const attempts = parseInt(localStorage.getItem("loginAttempts") || "0") + 1;
