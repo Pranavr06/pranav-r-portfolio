@@ -19,9 +19,9 @@ async function verifyAdmin(req: Request) {
 
   const { data: { user }, error } = await userClient.auth.getUser();
   
-  if (error || !user || !user.email) return null;
+  if (error || !user || !user.id) return null;
 
-  if (checkIsAdmin(user.email)) {
+  if (await checkIsAdmin(supabase, user.id)) {
     return user;
   }
   

@@ -64,8 +64,8 @@ export default function Login() {
 
     setLoading(true);
     
-    const { checkIsAdmin } = await import("@/lib/admin");
-    const isAdminEmail = checkIsAdmin(email);
+    const { checkIsAdmin, checkIsAdminByEmail } = await import("@/lib/admin");
+    const isAdminEmail = await checkIsAdminByEmail(supabase, email);
 
     if (isResetMode) {
       if (!isAdminEmail) {
@@ -88,7 +88,7 @@ export default function Login() {
         password,
       });
       
-      const isAdmin = checkIsAdmin(data?.user?.email);
+      const isAdmin = await checkIsAdmin(supabase, data?.user?.id);
 
       if (error) {
         const attempts = parseInt(localStorage.getItem("loginAttempts") || "0") + 1;

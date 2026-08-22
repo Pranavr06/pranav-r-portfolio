@@ -1,13 +1,51 @@
+import { SupabaseClient } from "@supabase/supabase-js";
+
 /**
- * Checks if a given email belongs to an administrator.
- * Uses the NEXT_PUBLIC_ADMIN_EMAILS environment variable (comma-separated list).
- * Fallback to ADMIN_EMAIL for backward compatibility.
+ * Checks if a given user is an administrator by querying the profiles table.
  */
-export const checkIsAdmin = (email: string | undefined | null): boolean => {
+export const checkIsAdmin = async (supabase: SupabaseClient, userId: string | undefined | null): Promise<boolean> => {
+  if (!userId) return false;
+  
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", userId)
+      .single();
+      
+    if (error) {
+      console.error("Error checking admin status:", error);
+      return false;
+    }
+    
+    return data?.is_admin === true;
+  } catch (err) {
+    console.error("Error in checkIsAdmin:", err);
+    return false;
+  }
+};
+
+/**
+ * Checks if a given user is an administrator by email (useful for password resets).
+ */
+export const checkIsAdminByEmail = async (supabase: SupabaseClient, email: string | undefined | null): Promise<boolean> => {
   if (!email) return false;
   
-  const envEmails = process.env.NEXT_PUBLIC_ADMIN_EMAILS || process.env.ADMIN_EMAIL || "pranavkundapura06@gmail.com,pranavkundapura18@gmail.com";
-  
-  const adminEmails = envEmails.split(",").map(e => e.trim().toLowerCase());
-  return adminEmails.includes(email.toLowerCase());
+  try {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .ilike("email", email)
+      .single();
+      
+    if (error) {
+      console.error("Error checking admin status by email:", error);
+      return false;
+    }
+    
+    return data?.is_admin === true;
+  } catch (err) {
+    console.error("Error in checkIsAdminByEmail:", err);
+    return false;
+  }
 };

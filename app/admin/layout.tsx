@@ -44,7 +44,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       const { data: { session } } = await supabase.auth.getSession();
       
       const { checkIsAdmin } = await import("@/lib/admin");
-      const isAdmin = checkIsAdmin(session?.user?.email);
+      const isAdmin = await checkIsAdmin(supabase, session?.user?.id);
 
       if (!session && !isLoginPage) {
         window.location.href = "/admin/login";
