@@ -17,6 +17,13 @@ export default function Login() {
   const router = useRouter();
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("error") === "unauthorized") {
+      setError("Unauthorized access. You have been logged out.");
+    }
+  }, []);
+
+  useEffect(() => {
     const storedLockout = localStorage.getItem("lockoutUntil");
     if (storedLockout && Date.now() < parseInt(storedLockout)) {
       setLockoutTime(parseInt(storedLockout));
@@ -67,11 +74,14 @@ export default function Login() {
         setMessage("Success! Password reset link has been sent to your email.");
       }
     } else {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       
+      const adminEmails = ["pranavkundapura06@gmail.com", "pranavkundapura18@gmail.com"];
+      const isAdmin = data?.user?.email && adminEmails.includes(data.user.email);
+
       if (error) {
         const attempts = parseInt(localStorage.getItem("loginAttempts") || "0") + 1;
         if (attempts >= 5) {
@@ -84,6 +94,9 @@ export default function Login() {
           localStorage.setItem("loginAttempts", attempts.toString());
           setError(`Invalid email or password. Attempt ${attempts} of 5.`);
         }
+      } else if (!isAdmin) {
+        await supabase.auth.signOut();
+        setError("Unauthorized: This account does not have admin privileges.");
       } else {
         localStorage.removeItem("loginAttempts");
         localStorage.removeItem("lockoutUntil");

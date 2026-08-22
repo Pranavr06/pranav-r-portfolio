@@ -42,9 +42,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      
+      const adminEmails = ["pranavkundapura06@gmail.com", "pranavkundapura18@gmail.com"];
+      const isAdmin = session?.user?.email && adminEmails.includes(session.user.email);
+
       if (!session && !isLoginPage) {
         window.location.href = "/admin/login";
-      } else if (session && isLoginPage) {
+      } else if (session && !isAdmin && !isLoginPage) {
+        // If logged in but not admin, kick them out of dashboard
+        await supabase.auth.signOut();
+        window.location.href = "/admin/login?error=unauthorized";
+      } else if (session && isAdmin && isLoginPage) {
         window.location.href = "/admin";
       } else {
         setUser(session?.user || null);
