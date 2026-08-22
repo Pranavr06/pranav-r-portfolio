@@ -20,9 +20,9 @@ async function verifyAdmin(req: Request) {
   
   if (error || !user || !user.email) return null;
 
-  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminEmails = ["pranavkundapura06@gmail.com", "pranavkundapura18@gmail.com"];
   
-  if (user.email === adminEmail) {
+  if (adminEmails.includes(user.email)) {
     return user;
   }
   
