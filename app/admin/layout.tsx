@@ -36,8 +36,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const { addToast } = useToast();
 
-  // Exclude login page from the dashboard layout
-  const isLoginPage = pathname === "/admin/login";
+  // Exclude login and password reset pages from the dashboard layout
+  const isAuthPage = pathname === "/admin/login" || pathname === "/admin/update-password";
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -46,13 +46,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       const { checkIsAdmin } = await import("@/lib/admin");
       const isAdmin = await checkIsAdmin(supabase, session?.user?.id);
 
-      if (!session && !isLoginPage) {
+      if (!session && !isAuthPage) {
         window.location.href = "/admin/login";
-      } else if (session && !isAdmin && !isLoginPage) {
+      } else if (session && !isAdmin && !isAuthPage) {
         // If logged in but not admin, kick them out of dashboard
         await supabase.auth.signOut();
         window.location.href = "/admin/login?error=unauthorized";
-      } else if (session && isAdmin && isLoginPage) {
+      } else if (session && isAdmin && pathname === "/admin/login") {
         window.location.href = "/admin";
       } else {
         setUser(session?.user || null);
@@ -77,7 +77,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     });
 
     return () => subscription.unsubscribe();
-  }, [pathname, router, isLoginPage]);
+  }, [pathname, router, isAuthPage]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -91,7 +91,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     document.body.classList.toggle("dark-theme", newTheme === "dark");
   };
 
-  if (isLoginPage) {
+  if (isAuthPage) {
     return <>{children}</>;
   }
 
