@@ -59,9 +59,13 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       updated_at: new Date().toISOString()
     }).eq("id", id);
 
-    if (updateErr) throw updateErr;
+    if (updateErr) return NextResponse.json({ error: "Failed to update testimonial." }, { status: 500 });
+    
+    const { revalidatePath } = await import("next/cache");
+    revalidatePath("/");
+    revalidatePath("/testimonials");
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, message: "Testimonial updated. Waiting for admin approval." });
   } catch (err: any) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
@@ -90,6 +94,10 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     }).eq("id", id);
 
     if (deleteErr) throw deleteErr;
+    
+    const { revalidatePath } = await import("next/cache");
+    revalidatePath("/");
+    revalidatePath("/testimonials");
 
     return NextResponse.json({ success: true });
   } catch (err: any) {

@@ -63,6 +63,11 @@ export async function POST(req: Request) {
     if (action === 'delete') {
       const { error } = await supabase.from("testimonials").update({ is_archived: true, updated_at: new Date().toISOString() }).eq("id", id);
       if (error) throw error;
+      
+      const { revalidatePath } = await import("next/cache");
+      revalidatePath("/");
+      revalidatePath("/testimonials");
+      
       return NextResponse.json({ success: true });
     }
     
@@ -74,6 +79,11 @@ export async function POST(req: Request) {
         ip_hash: "admin",
       });
       if (error) throw error;
+      
+      const { revalidatePath } = await import("next/cache");
+      revalidatePath("/");
+      revalidatePath("/testimonials");
+      
       return NextResponse.json({ success: true });
     }
     
@@ -83,6 +93,11 @@ export async function POST(req: Request) {
         .update({ ...updates, updated_at: new Date().toISOString() })
         .eq("id", id);
       if (error) throw error;
+      
+      const { revalidatePath } = await import("next/cache");
+      revalidatePath("/");
+      revalidatePath("/testimonials");
+      
       return NextResponse.json({ success: true });
     }
 

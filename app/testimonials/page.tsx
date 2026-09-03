@@ -5,6 +5,8 @@ import ShareMenu from "@/components/ShareMenu";
 import ContactCTA from "@/components/ContactCTA";
 import ScrollArrow from "@/components/ScrollArrow";
 
+export const dynamic = 'force-dynamic';
+
 export default async function TestimonialsPage() {
   const { data: testimonials, error } = await supabase
     .from("testimonials")
