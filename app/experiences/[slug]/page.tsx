@@ -12,7 +12,7 @@ export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
-  const slug = resolvedParams.slug;
+  const slug = decodeURIComponent(resolvedParams.slug);
   const { data: experience } = await supabase
     .from("experiences")
     .select("title, description")
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ExperienceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const slug = resolvedParams.slug;
+  const slug = decodeURIComponent(resolvedParams.slug);
   const { data: experience, error } = await supabase
     .from("experiences")
     .select("*")
