@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { data: experience } = await supabase
     .from("experiences")
     .select("title, description")
-    .eq("read_more_url", `/experiences/${slug}`)
+    .eq("read_more_url", `/experiences/professional-journey/${slug}`)
     .maybeSingle();
 
   if (!experience) {
@@ -37,7 +37,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
   const { data: experience, error } = await supabase
     .from("experiences")
     .select("*")
-    .eq("read_more_url", `/experiences/${slug}`)
+    .eq("read_more_url", `/experiences/professional-journey/${slug}`)
     .maybeSingle();
 
   if (error || !experience) {
