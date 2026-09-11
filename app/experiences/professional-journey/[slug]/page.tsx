@@ -59,15 +59,24 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
           <h1 className="banner-title">{experience.title}</h1>
         </div>
         
-        <div className="post-metadata">
-          <span className="blog-category">Professional Experience</span>
+        <div className="post-metadata" style={{ display: "flex", justifyContent: "center", gap: "1rem", alignItems: "center", flexWrap: "wrap", marginBottom: "2rem" }}>
+          <span className="blog-category" style={{ margin: 0 }}>Professional Experience</span>
+          
           {experience.tags && Array.isArray(experience.tags) && (
-            <div className="tech-stack tech-stack-no-margin">
+            <div className="tech-stack tech-stack-no-margin" style={{ margin: 0 }}>
               {experience.tags.map((tag: string, idx: number) => (
                 <span key={idx} className="tech-tag">{tag}</span>
               ))}
             </div>
           )}
+          
+          {experience.certificate_url && experience.certificate_url !== "#" && (
+            <a href={experience.certificate_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2" style={{ padding: "0.2rem 1rem", fontSize: "0.85rem", borderRadius: "1rem" }}>
+              Certificate
+            </a>
+          )}
+          
+          <ShareMenu title={experience.title} type="page" downloadUrl={experience.certificate_url && experience.certificate_url !== "#" ? experience.certificate_url : undefined} />
         </div>
 
         {experience.content ? (
