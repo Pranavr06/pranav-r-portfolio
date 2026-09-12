@@ -284,12 +284,6 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             // Transform Team & Contributions into HTML cards
             displayContent = displayContent.replace(/(?:^|\n\n)!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
               const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
-              const isOwner = name.toLowerCase().includes('pranav r');
-              const isLead = cleanRole.toLowerCase().includes('lead') || cleanRole.toLowerCase().includes('former assistant professor') || cleanRole.toLowerCase().includes('architect');
-              
-              let cardClass = '';
-              if (isOwner) cardClass = 'highlighted-card';
-              else if (isLead) cardClass = 'horizontal-card';
               
               let detailsHTML = '';
               const detailLines = (details as string).split('\n').filter((l: string) => l.trim() !== '');
@@ -302,7 +296,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               }
               
               const cleanSrc = src && !src.startsWith('http') ? `/assets/${src.split('/').pop()}` : src;
-              return `%%%TEAM_CARD_START%%%\n<div class="team-card ${cardClass}">\n  <img src="${cleanSrc}" alt="${alt}" class="team-img" loading="lazy" />\n  <div class="team-info">\n    <h3 class="team-name">${name}</h3>\n    <span class="team-role">${cleanRole}</span>\n${detailsHTML}\n  </div>\n</div>\n%%%TEAM_CARD_END%%%\n`;
+              return `%%%TEAM_CARD_START%%%\n<div class="team-card">\n  <div class="team-img-wrapper"><img src="${cleanSrc}" alt="${alt}" class="team-img" loading="lazy" /></div>\n  <div class="team-info">\n    <h3 class="team-name">${name}</h3>\n    <span class="team-role">${cleanRole}</span>\n${detailsHTML}\n  </div>\n</div>\n%%%TEAM_CARD_END%%%\n`;
             });
             
             // Group contiguous cards into a single grid
