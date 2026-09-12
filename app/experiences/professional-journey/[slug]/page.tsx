@@ -49,7 +49,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
     notFound();
   }
 
-  const hasInlineCertificate = experience.content && experience.content.includes("View Certificate");
+  const hasInlineCertificate = experience.content && (experience.content.includes("View Certificate") || experience.content.includes("Download Certificate"));
 
   return (
     <main id="main-content">
@@ -179,17 +179,19 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                   );
                 },
                 a({ node, href, children, ...props }: any) {
-                  if (children?.toString() === "View Certificate") {
+                  const label = children?.toString();
+                  if (label === "View Certificate" || label === "Download Certificate") {
+                    const isDownload = label === "Download Certificate";
                     return (
-                      <div className="btn-container add-margin-bottom" style={{ display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'center', marginTop: '-1.5rem' }}>
-                        <a href={href} target="_blank" rel="noopener noreferrer" className="btn btn-color-2">
+                      <div className="btn-container add-margin-bottom" style={{ display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'center', marginTop: isDownload ? '0.75rem' : '-1.5rem', marginBottom: isDownload ? '2.5rem' : '1.5rem' }}>
+                        <a href={href} target="_blank" rel="noopener noreferrer" download={isDownload ? true : undefined} className="btn btn-color-2">
                           {children}
                         </a>
                         <ShareMenu 
                           title={`${experience.title} Certificate`} 
                           type="page" 
                           downloadUrl={href} 
-                          downloadName={`${experience.title}_Certificate.pdf`}
+                          downloadName={href?.split('/').pop() || `${experience.title}_Certificate.pdf`}
                         />
                       </div>
                     );
