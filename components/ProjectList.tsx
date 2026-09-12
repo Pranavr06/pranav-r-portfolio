@@ -114,10 +114,18 @@ export default function ProjectList({
         { value: "planned", label: "Planned" }
       ];
 
+  // Calculate the total number of real projects for the header (ignoring the filter tab, but excluding hidden college projects and the collection card itself)
+  const baseProjects = initialProjects.filter(project => {
+    const isCollegeProj = project.status === "College" || (project.status && project.status.includes("Year"));
+    if (hideCollegeProjects && isCollegeProj) return false;
+    return true;
+  });
+  const projectCount = baseProjects.length - (baseProjects.some(p => p.status === "Collection") ? 1 : 0);
+
   return (
     <section className="mobile-spacing" style={{ paddingTop: "2rem", marginTop: 0, minHeight: "100vh", height: "auto" }}>
       {subtitle && <p className="section__text__p1">{subtitle}</p>}
-      <h1 className="title">{title} <span className="count-span">({initialProjects.length})</span></h1>
+      <h1 className="title">{title} <span className="count-span">({projectCount})</span></h1>
       
       {!hideTabs && (
         <div className="filter-container">
