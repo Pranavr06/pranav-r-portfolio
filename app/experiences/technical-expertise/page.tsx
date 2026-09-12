@@ -18,6 +18,7 @@ export default async function TechnicalExpertisePage() {
     .select("*")
     .eq("category", "technical_expertise")
     .eq("is_published", true)
+    .or("is_archived.is.null,is_archived.eq.false")
     .order("display_order", { ascending: true });
 
   if (error) {

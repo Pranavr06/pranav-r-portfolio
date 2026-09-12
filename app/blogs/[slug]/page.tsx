@@ -18,7 +18,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
   
-  const { data: blog } = await supabase.from("blogs").select("*").eq("slug", slug).single();
+  const { data: blog } = await supabase.from("blogs").select("*")
+    .eq("slug", slug)
+    .or("is_archived.is.null,is_archived.eq.false")
+    .or("status.is.null,status.eq.Published")
+    .single();
   if (!blog) return { title: 'Blog Not Found' };
   
   return {
@@ -51,6 +55,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     .from("blogs")
     .select("*")
     .eq("slug", slug)
+    .or("is_archived.is.null,is_archived.eq.false")
+    .or("status.is.null,status.eq.Published")
     .single();
 
   if (error || !blog) {

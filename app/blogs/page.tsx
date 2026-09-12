@@ -13,6 +13,8 @@ export default async function BlogsPage() {
   const { data: blogs, error } = await supabase
     .from("blogs")
     .select("*")
+    .or("is_archived.is.null,is_archived.eq.false")
+    .or("status.is.null,status.eq.Published")
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 

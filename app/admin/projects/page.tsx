@@ -272,6 +272,7 @@ export default function ManageProjects() {
               <select value={status} onChange={(e) => setStatus(e.target.value)} style={inputStyle}>
                 <option value="Completed">Completed (Published)</option>
                 <option value="Draft">Draft (Hidden)</option>
+                <option value="Unpublished">Unpublished (Hidden)</option>
                 <option value="In Progress">In Progress</option>
                 <option value="Planned">Planned</option>
               </select>

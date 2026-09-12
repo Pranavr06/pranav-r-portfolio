@@ -275,6 +275,7 @@ export default function ManageBlogs() {
               <select value={status} onChange={(e) => setStatus(e.target.value)} style={inputStyle}>
                 <option value="Published">Published</option>
                 <option value="Draft">Draft</option>
+                <option value="Unpublished">Unpublished</option>
               </select>
             </div>
           </div>

@@ -15,7 +15,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
   
-  const { data: project } = await supabase.from("projects").select("*").eq("slug", slug).single();
+  const { data: project } = await supabase.from("projects").select("*")
+    .eq("slug", slug)
+    .or("is_archived.is.null,is_archived.eq.false")
+    .not("status", "in", '("Draft","Unpublished")')
+    .single();
   if (!project) return { title: 'Project Not Found' };
   
   return {
@@ -50,6 +54,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     .from("projects")
     .select("*")
     .eq("slug", slug)
+    .or("is_archived.is.null,is_archived.eq.false")
+    .not("status", "in", '("Draft","Unpublished")')
     .single();
 
   if (error || !project) {

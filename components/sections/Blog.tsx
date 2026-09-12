@@ -9,6 +9,8 @@ export default async function Blog() {
   const { data: blogs, error } = await supabase
     .from("blogs")
     .select("*")
+    .or("is_archived.is.null,is_archived.eq.false")
+    .or("status.is.null,status.eq.Published")
     .not("display_order", "is", null)
     .order("display_order", { ascending: true })
     .limit(3);

@@ -11,7 +11,7 @@ export default async function Projects() {
     .from("projects")
     .select("*")
     .or('is_archived.is.null,is_archived.eq.false')
-    .neq("status", "Draft")
+    .not("status", "in", '("Draft","Unpublished")')
     .not("display_order", "is", null)
     .order("display_order", { ascending: true })
     .limit(3);

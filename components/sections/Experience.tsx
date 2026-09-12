@@ -7,6 +7,7 @@ export default async function Experience() {
   const { data: hubs, error } = await supabase
     .from("experience_hubs")
     .select("*")
+    .or("is_archived.is.null,is_archived.eq.false")
     .eq("is_published", true)
     .order("display_order", { ascending: true });
 

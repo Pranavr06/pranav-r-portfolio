@@ -16,7 +16,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const slug = resolvedParams.slug;
   if (slug === 'college-projects') return { title: 'College Projects | Pranav R' };
   
-  const { data: project } = await supabase.from("projects").select("*").eq("slug", slug).single();
+  const { data: project } = await supabase.from("projects").select("*")
+    .eq("slug", slug)
+    .or("is_archived.is.null,is_archived.eq.false")
+    .not("status", "in", '("Draft","Unpublished")')
+    .single();
   if (!project) return { title: 'Project Not Found' };
   
   return {
@@ -51,7 +55,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       .from('projects')
       .select('*')
       .or('is_archived.is.null,is_archived.eq.false')
-      .neq("status", "Draft")
+      .not("status", "in", '("Draft","Unpublished")')
       .in('status', ['1st year', '2nd year', '3rd year', '4th year', 'College', '1st Year', '2nd Year', '3rd Year', '4th Year'])
       .order('sort_order', { ascending: true })
       .order('created_at', { ascending: false });
@@ -75,6 +79,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     .from("projects")
     .select("*")
     .eq("slug", slug)
+    .or("is_archived.is.null,is_archived.eq.false")
+    .not("status", "in", '("Draft","Unpublished")')
     .single();
 
   if (error || !project) {

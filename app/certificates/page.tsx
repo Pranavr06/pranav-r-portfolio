@@ -13,6 +13,8 @@ export default async function CertificatesPage() {
   const { data: certificates, error } = await supabase
     .from("certificates")
     .select("*")
+    .or("is_archived.is.null,is_archived.eq.false")
+    .or("status.is.null,status.eq.Published")
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
 

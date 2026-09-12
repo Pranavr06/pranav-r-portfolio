@@ -17,6 +17,7 @@ export default async function ProfessionalJourneyPage() {
     .select("*")
     .eq("category", "professional_journey")
     .eq("is_published", true)
+    .or("is_archived.is.null,is_archived.eq.false")
     .order("display_order", { ascending: true });
 
   if (error) {

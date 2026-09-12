@@ -17,6 +17,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     .from("experiences")
     .select("title, description")
     .eq("read_more_url", `/experiences/professional-journey/${slug}`)
+    .eq("is_published", true)
+    .or("is_archived.is.null,is_archived.eq.false")
     .maybeSingle();
 
   if (!experience) {
@@ -38,6 +40,8 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
     .from("experiences")
     .select("*")
     .eq("read_more_url", `/experiences/professional-journey/${slug}`)
+    .eq("is_published", true)
+    .or("is_archived.is.null,is_archived.eq.false")
     .maybeSingle();
 
   if (error || !experience) {
