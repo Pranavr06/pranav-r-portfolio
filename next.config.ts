@@ -10,8 +10,18 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/college-projects/:slug*',
-        destination: '/projects/:slug*',
+        destination: '/projects/college-projects/:slug*',
         permanent: true,
+      },
+      {
+        source: '/projects/assets/:path*',
+        destination: '/assets/:path*',
+        permanent: false,
+      },
+      {
+        source: '/projects/college-projects/assets/:path*',
+        destination: '/assets/:path*',
+        permanent: false,
       }
     ];
   },

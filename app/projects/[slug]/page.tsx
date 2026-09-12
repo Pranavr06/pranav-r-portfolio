@@ -198,6 +198,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             // Normalize Windows CRLF newlines to standard LF
             displayContent = displayContent.replace(/\r\n/g, '\n');
             
+            // Unconditionally normalize any relative or malformed asset paths to /assets/
+            displayContent = displayContent.replace(/\.\.\/*assets\//g, '/assets/');
+            displayContent = displayContent.replace(/\/projects\/*assets\//g, '/assets/');
+            
             // Aggressively clean up legacy hardcoded UI from the markdown
             displayContent = displayContent.replace(/\[(?:Live Demo|GitHub Repo|Source Code|View on TinkerCAD|View Source Code|View Report|View Research Paper)\]\(.*?\)\s*/gi, '');
             displayContent = displayContent.replace(/\[?(?:Live Demo \(Coming Soon\)|Updates Coming Soon)\]?\(?.*?\)?\s*\n+/gi, '');
@@ -273,7 +277,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                    emailHTML = `\n      <p class="instructor-email" style="margin-top: 1.5rem;"><strong>Email:</strong> ${email}</p>`;
                 }
               }
-              return `\n<div class="report-box">\n  <div class="report-box-flex">\n    <img src="${src}" alt="${alt}" class="report-box-img" loading="lazy" />\n    <div>\n      <h3 class="report-box-title" style="font-size: 1.6rem; margin-bottom: 1.5rem;">${name}</h3>\n      <p class="report-box-role" style="margin-bottom: 1rem;"><strong>Designation:</strong> ${role}</p>\n      <p class="report-box-institution"><strong>Institution:</strong> ${institution}</p>${emailHTML}\n    </div>\n  </div>\n</div>\n`;
+              const cleanSrc = src && !src.startsWith('http') ? `/assets/${src.split('/').pop()}` : src;
+              return `\n<div class="report-box">\n  <div class="report-box-flex">\n    <img src="${cleanSrc}" alt="${alt}" class="report-box-img" loading="lazy" />\n    <div>\n      <h3 class="report-box-title" style="font-size: 1.6rem; margin-bottom: 1.5rem;">${name}</h3>\n      <p class="report-box-role" style="margin-bottom: 1rem;"><strong>Designation:</strong> ${role}</p>\n      <p class="report-box-institution"><strong>Institution:</strong> ${institution}</p>${emailHTML}\n    </div>\n  </div>\n</div>\n`;
             });
 
             // Transform Team & Contributions into HTML cards
@@ -296,7 +301,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 }
               }
               
-              return `%%%TEAM_CARD_START%%%\n<div class="team-card ${cardClass}">\n  <img src="${src}" alt="${alt}" class="team-img" loading="lazy" />\n  <div class="team-info">\n    <h3 class="team-name">${name}</h3>\n    <span class="team-role">${cleanRole}</span>\n${detailsHTML}\n  </div>\n</div>\n%%%TEAM_CARD_END%%%\n`;
+              const cleanSrc = src && !src.startsWith('http') ? `/assets/${src.split('/').pop()}` : src;
+              return `%%%TEAM_CARD_START%%%\n<div class="team-card ${cardClass}">\n  <img src="${cleanSrc}" alt="${alt}" class="team-img" loading="lazy" />\n  <div class="team-info">\n    <h3 class="team-name">${name}</h3>\n    <span class="team-role">${cleanRole}</span>\n${detailsHTML}\n  </div>\n</div>\n%%%TEAM_CARD_END%%%\n`;
             });
             
             // Group contiguous cards into a single grid
@@ -309,9 +315,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               <ReactMarkdown
                 rehypePlugins={[rehypeRaw]}
                 components={{
-                  img: ({ node, ...props }) => (
-                    <img {...props} />
-                  ),
+                  img: ({ node, src, ...props }: any) => {
+                    const cleanSrc = src && !src.startsWith('http') ? `/assets/${src.split('/').pop()}` : src;
+                    return <img src={cleanSrc} {...props} loading="lazy" />;
+                  },
                   a: ({ node, ...props }) => {
                     const text = String(props.children);
                     if (text.includes('Download')) {
