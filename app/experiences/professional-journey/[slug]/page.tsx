@@ -49,6 +49,8 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
     notFound();
   }
 
+  const hasInlineCertificate = experience.content && experience.content.includes("View Certificate");
+
   return (
     <main id="main-content">
       <section id="blog-post" className="mobile-spacing" style={{ paddingTop: "10vh", paddingBottom: "10vh", minHeight: "100vh" }}>
@@ -74,13 +76,15 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
             </div>
           )}
           
-          {experience.certificate_url && experience.certificate_url !== "#" && (
+          {!hasInlineCertificate && experience.certificate_url && experience.certificate_url !== "#" && (
             <a href={experience.certificate_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2" style={{ padding: "0.2rem 1rem", fontSize: "0.85rem", borderRadius: "1rem" }}>
               Certificate
             </a>
           )}
           
-          <ShareMenu title={experience.title} type="page" downloadUrl={experience.certificate_url && experience.certificate_url !== "#" ? experience.certificate_url : undefined} />
+          {!hasInlineCertificate && (
+            <ShareMenu title={experience.title} type="page" downloadUrl={experience.certificate_url && experience.certificate_url !== "#" ? experience.certificate_url : undefined} />
+          )}
         </div>
 
         {experience.content ? (
