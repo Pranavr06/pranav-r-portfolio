@@ -282,28 +282,55 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             });
 
             // Transform Team & Contributions into HTML cards
-            displayContent = displayContent.replace(/(?:^|\n\n)!\[([^\]]+)\]\(([^)]+)\)(?:\r?\n)+###\s+([^\n]+)(?:\r?\n)+([^\n]+)(?:\r?\n)+([\s\S]*?)(?=\r?\n!\[|\r?\n#+\s|$)/g, (match: any, alt: any, src: any, name: any, role: any, details: any) => {
-              const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '');
+            const teamHeaderRegex = /##\s*Team\s*(?:&|and)\s*Contributions/i;
+            const teamMatch = displayContent.match(teamHeaderRegex);
+            if (teamMatch && teamMatch.index !== undefined) {
+              const startIndex = teamMatch.index + teamMatch[0].length;
+              const rest = displayContent.slice(startIndex);
+              const nextHeaderRegex = /\n\s*##\s+[^\n]+/g;
+              const nextMatch = nextHeaderRegex.exec(rest);
+              const endIndex = nextMatch ? startIndex + nextMatch.index : displayContent.length;
               
-              let detailsHTML = '';
-              const detailLines = (details as string).split('\n').filter((l: string) => l.trim() !== '');
-              if (detailLines.length > 0) {
-                if (detailLines[0].trim().startsWith('*') || detailLines[0].trim().startsWith('-')) {
-                  detailsHTML = '<div class="team-details"><ul class="team-contributions-list team-contributions-margin" style="list-style-type: disc;">' + detailLines.map(l => `<li>${l.replace(/^[\*\-]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>`).join('') + '</ul></div>';
+              const teamContent = displayContent.slice(startIndex, endIndex);
+              const memberChunks = teamContent.split(/(?=\n\s*!\[)/);
+              
+              let cards: string[] = [];
+              let nonCardText: string[] = [];
+              
+              for (const chunk of memberChunks) {
+                const trimmed = chunk.trim();
+                if (!trimmed) continue;
+                
+                const memberRegex = /^!\[([^\]]+)\]\(([^)]+)\)[\s\r\n]+###\s+([^\n]+)[\s\r\n]+([^\n]+)[\s\r\n]*([\s\S]*)$/;
+                const m = trimmed.match(memberRegex);
+                if (m) {
+                  const [, alt, src, name, role, details] = m;
+                  const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '').trim();
+                  const cleanSrc = src && !src.startsWith('http') ? `/assets/${src.split('/').pop()}` : src;
+                  
+                  let detailsHTML = '';
+                  const detailLines = (details || '').split('\n').map((l: string) => l.trim()).filter((l: string) => l !== '');
+                  if (detailLines.length > 0) {
+                    if (detailLines[0].startsWith('*') || detailLines[0].startsWith('-')) {
+                      detailsHTML = '<div class="team-details"><ul class="team-contributions-list team-contributions-margin" style="list-style-type: disc;">' + detailLines.map((l: string) => `<li>${l.replace(/^[\*\-]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>`).join('') + '</ul></div>';
+                    } else {
+                      detailsHTML = '<div class="team-details"><p class="team-contribution">' + detailLines.map((l: string) => l.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')).join('<br/>') + '</p></div>';
+                    }
+                  }
+                  
+                  cards.push(
+                    `<div class="team-card">\n  <div class="team-img-wrapper"><img src="${cleanSrc}" alt="${alt}" class="team-img" loading="lazy" /></div>\n  <div class="team-info">\n    <h3 class="team-name">${name.trim()}</h3>\n    <span class="team-role">${cleanRole}</span>\n    ${detailsHTML}\n  </div>\n</div>`
+                  );
                 } else {
-                  detailsHTML = '<div class="team-details"><p class="team-contribution">' + detailLines.map(l => l.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')).join('<br/>') + '</p></div>';
+                  nonCardText.push(chunk);
                 }
               }
               
-              const cleanSrc = src && !src.startsWith('http') ? `/assets/${src.split('/').pop()}` : src;
-              return `%%%TEAM_CARD_START%%%\n<div class="team-card">\n  <div class="team-img-wrapper"><img src="${cleanSrc}" alt="${alt}" class="team-img" loading="lazy" /></div>\n  <div class="team-info">\n    <h3 class="team-name">${name}</h3>\n    <span class="team-role">${cleanRole}</span>\n${detailsHTML}\n  </div>\n</div>\n%%%TEAM_CARD_END%%%\n`;
-            });
-            
-            // Group contiguous cards into a single grid
-            displayContent = displayContent.replace(/(?:%%%TEAM_CARD_START%%%[\s\S]*?%%%TEAM_CARD_END%%%\n*)+/g, (match: any) => {
-              const cleanCards = match.replace(/%%%TEAM_CARD_START%%%/g, '').replace(/%%%TEAM_CARD_END%%%/g, '');
-              return `\n\n<div class="team-grid">\n${cleanCards}\n</div>\n\n`;
-            });
+              if (cards.length > 0) {
+                const gridHTML = '\n\n<div class="team-grid">\n' + cards.join('\n') + '\n</div>\n\n' + nonCardText.join('\n');
+                displayContent = displayContent.slice(0, startIndex) + gridHTML + displayContent.slice(endIndex);
+              }
+            }
 
             return (
               <ReactMarkdown
