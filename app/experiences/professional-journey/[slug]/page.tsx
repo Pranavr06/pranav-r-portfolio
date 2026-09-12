@@ -129,7 +129,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                       </div>
                     );
                   }
-                  const isCertImage = alt?.toLowerCase().includes("internship certificate");
+                  const isCertImage = alt?.toLowerCase().includes("certificate");
                   const isLunchPic = alt?.includes("home-style Indian lunch");
                   const isFormalPic = alt?.includes("MY BHARAT BUDGET QUEST photo area");
                   const isGroupPic = alt?.includes("glowing steps of the structure");
