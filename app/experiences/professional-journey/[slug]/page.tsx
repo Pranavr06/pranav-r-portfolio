@@ -183,16 +183,18 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                   if (label === "View Certificate" || label === "Download Certificate") {
                     const isDownload = label === "Download Certificate";
                     return (
-                      <div className="btn-container add-margin-bottom" style={{ display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'center', marginTop: isDownload ? '0.75rem' : '-1.5rem', marginBottom: isDownload ? '2.5rem' : '1.5rem' }}>
+                      <div className="btn-container add-margin-bottom" style={{ display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'center', marginTop: isDownload ? '0.75rem' : '-1.5rem', marginBottom: isDownload ? '2.5rem' : '1.5rem', width: '100%' }}>
                         <a href={href} target="_blank" rel="noopener noreferrer" download={isDownload ? true : undefined} className="btn btn-color-2">
                           {children}
                         </a>
-                        <ShareMenu 
-                          title={`${experience.title} Certificate`} 
-                          type="page" 
-                          downloadUrl={href} 
-                          downloadName={href?.split('/').pop() || `${experience.title}_Certificate.pdf`}
-                        />
+                        {!isDownload && (
+                          <ShareMenu 
+                            title={`${experience.title} Certificate`} 
+                            type="page" 
+                            downloadUrl={href} 
+                            downloadName={href?.split('/').pop() || `${experience.title}_Certificate.pdf`}
+                          />
+                        )}
                       </div>
                     );
                   }
