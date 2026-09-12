@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: `${project.title} | Pranav R`,
       description: project.excerpt || project.description || `Read about ${project.title} by Pranav R.`,
-      url: `https://pranavr.netlify.app/projects/${slug}`,
+      url: `https://pranavr.netlify.app/projects/college-projects/${slug}`,
       images: project.image_url ? [{ url: project.image_url }] : [],
       type: "article",
     },
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       images: project.image_url ? [project.image_url] : [],
     },
     alternates: {
-      canonical: `https://pranavr.netlify.app/projects/${slug}`,
+      canonical: `https://pranavr.netlify.app/projects/college-projects/${slug}`,
     }
   };
 }

@@ -22,13 +22,18 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
     return [{ name: "Home", href: "/" }];
   }
 
-  // 2. Individual Project Pages
-  if (pathname.startsWith("/projects/") && pathname !== "/projects") {
+// 3. College Projects Main Page
+  if (pathname === "/projects/college-projects") {
     return [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }];
   }
 
-  // 3. College Projects Main Page
-  if (pathname === "/projects/college-projects") {
+  // 4. Individual College Project Pages
+  if (pathname.startsWith("/projects/college-projects/") && pathname !== "/projects/college-projects") {
+    return [{ name: "Home", href: "/" }, { name: "College Projects", href: "/projects/college-projects" }];
+  }
+
+  // 2. Individual Project Pages
+  if (pathname.startsWith("/projects/") && pathname !== "/projects") {
     return [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }];
   }
 
@@ -67,3 +72,4 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
   // Default fallback for minimal layout
   return [{ name: "Home", href: "/" }];
 }
+

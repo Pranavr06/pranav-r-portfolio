@@ -206,7 +206,7 @@ export default function ManageProjects() {
 
               <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
                 <Tooltip content="View Live Project">
-                  <a href={`/projects/${p.slug}`} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-icon" aria-label="View project">
+                  <a href={`/projects/${p.status !== "Collection" && (p.status === "College" || (p.status && p.status.includes("Year"))) ? 'college-projects/' : ''}${p.slug}`} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-icon" aria-label="View project">
                     <ExternalLink size={16} />
                   </a>
                 </Tooltip>
