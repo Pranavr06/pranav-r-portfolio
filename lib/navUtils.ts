@@ -7,12 +7,10 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
     pathname === "/projects" || 
     pathname === "/blogs" || 
     pathname === "/testimonials" ||
-    pathname === "/college-projects" ||
     pathname.startsWith("/admin") || 
     pathname.startsWith("/projects/") || 
     pathname.startsWith("/blogs/") || 
     pathname.startsWith("/certificates/") ||
-    pathname.startsWith("/college-projects/") ||
     pathname.startsWith("/experiences");
 
   if (!isMinimal) {
@@ -30,13 +28,8 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
   }
 
   // 3. College Projects Main Page
-  if (pathname === "/college-projects") {
+  if (pathname === "/projects/college-projects") {
     return [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }];
-  }
-
-  // 4. Individual College Project Pages
-  if (pathname.startsWith("/college-projects/") && pathname !== "/college-projects") {
-    return [{ name: "Home", href: "/" }, { name: "College Projects", href: "/college-projects" }];
   }
 
   // Blogs logic

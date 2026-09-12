@@ -24,15 +24,15 @@ export default function ProjectCard({ project }: { project: any }) {
   
   const handleCopyLink = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const url = `${window.location.origin}/${isCollegeProj || project.slug === 'college-projects' ? 'college-projects' : 'projects'}/${project.slug}`;
+    const url = `${window.location.origin}/projects/${project.slug}`;
     navigator.clipboard.writeText(url);
-    showToast("Link copied to clipboard");
     setIsMenuOpen(false);
+    showToast("Link copied to clipboard");
   };
 
   const handleShare = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const url = `${window.location.origin}/${isCollegeProj || project.slug === 'college-projects' ? 'college-projects' : 'projects'}/${project.slug}`;
+    const url = `${window.location.origin}/projects/${project.slug}`;
     if (navigator.share) {
       try {
         await navigator.share({
@@ -86,12 +86,12 @@ export default function ProjectCard({ project }: { project: any }) {
       </div>
       <div className="project-card-footer">
         {project.status === "Collection" ? (
-          <Link href={`/${project.slug === 'college-projects' ? 'college-projects' : 'projects/' + project.slug}`} className="read-more-link" aria-label={`View ${project.title} Collection`}>
+          <Link href={`/projects/${project.slug}`} className="read-more-link" aria-label={`View ${project.title} Collection`}>
             View Collection &rarr;
           </Link>
         ) : (
           <>
-            <Link href={`/${isCollegeProj ? 'college-projects' : 'projects'}/${project.slug}`} className="read-more-link" aria-label={`Read more about ${project.title}`}>
+            <Link href={`/projects/${project.slug}`} className="read-more-link" aria-label={`Read more about ${project.title}`}>
               Read More &rarr;
             </Link>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
