@@ -114,13 +114,9 @@ export default function ProjectList({
         { value: "planned", label: "Planned" }
       ];
 
-  // Calculate the total number of real projects for the header (ignoring the filter tab, but excluding hidden college projects and the collection card itself)
-  const baseProjects = initialProjects.filter(project => {
-    const isCollegeProj = project.status === "College" || (project.status && project.status.includes("Year"));
-    if (hideCollegeProjects && isCollegeProj) return false;
-    return true;
-  });
-  const projectCount = baseProjects.length - (baseProjects.some(p => p.status === "Collection") ? 1 : 0);
+  // Calculate the total number of real projects across the entire portfolio for the header 
+  // (includes all nested college projects, but excludes the "Collection" folder card itself)
+  const projectCount = initialProjects.filter(p => p.status !== "Collection").length;
 
   return (
     <section className="mobile-spacing" style={{ paddingTop: "2rem", marginTop: 0, minHeight: "100vh", height: "auto" }}>
