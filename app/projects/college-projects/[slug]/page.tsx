@@ -318,8 +318,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                     }
                   }
                   
+                  const isOwner = name.toLowerCase().includes('pranav r');
+                  const cardClass = isOwner ? 'team-card owner-card' : 'team-card';
+
                   cards.push(
-                    `<div class="team-card">\n  <div class="team-img-wrapper"><img src="${cleanSrc}" alt="${alt}" class="team-img" loading="lazy" /></div>\n  <div class="team-info">\n    <h3 class="team-name">${name.trim()}</h3>\n    <span class="team-role">${cleanRole}</span>\n    ${detailsHTML}\n  </div>\n</div>`
+                    `<div class="${cardClass}">\n  <div class="team-img-wrapper"><img src="${cleanSrc}" alt="${alt}" class="team-img" loading="lazy" /></div>\n  <div class="team-info">\n    <h3 class="team-name">${name.trim()}</h3>\n    <span class="team-role">${cleanRole}</span>\n    ${detailsHTML}\n  </div>\n</div>`
                   );
                 } else {
                   nonCardText.push(chunk);
