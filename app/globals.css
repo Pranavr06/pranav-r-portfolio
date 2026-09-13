@@ -535,6 +535,22 @@ body.dark-theme .details-container {
     border-color: #555555;
 }
 
+.clickable-about-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    cursor: pointer;
+}
+
+.clickable-about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border-color: #0070f3;
+}
+
+body.dark-theme .clickable-about-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    border-color: #58a6ff;
+}
+
 .section-container {
     gap: 4rem;
     height: 80%;
@@ -1811,7 +1827,7 @@ body.dark-theme .menu-option:hover {
     margin-bottom: 6rem;
   }
   .about-containers {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1849,7 +1865,8 @@ body.dark-theme .menu-option:hover {
   }
   .about-containers {
     margin-top: 0;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
   }
 
   /* Experience section responsiveness */
