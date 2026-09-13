@@ -162,10 +162,8 @@ export default async function CertificateDetailPage({ params }: { params: Promis
 
         {/* Certificate Card Container */}
         <article 
-          className="details-container color-container" 
+          className="details-container color-container cert-detail-card" 
           style={{ 
-            padding: "2.5rem 2rem", 
-            borderRadius: "1.5rem", 
             position: "relative",
             marginBottom: "3rem",
             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)"
@@ -264,29 +262,47 @@ export default async function CertificateDetailPage({ params }: { params: Promis
           {/* Document Viewer / Preview */}
           {cert.pdf_url && cert.pdf_url !== "#" && (
             <div style={{ marginTop: "1rem", width: "100%" }}>
-              <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.1)", paddingTop: "1.5rem", marginBottom: "1rem", textAlign: "center" }}>
-                <span style={{ fontSize: "0.9rem", textTransform: "uppercase", letterSpacing: "1px", color: "var(--text-color-light)" }}>
+              <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.1)", paddingTop: "1.5rem", marginBottom: "1.25rem", textAlign: "center" }}>
+                <span style={{ fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1.5px", color: "var(--text-color-light)", fontWeight: 600 }}>
                   Certificate Preview
                 </span>
               </div>
 
-              {isImage ? (
-                <div style={{ textAlign: "center", overflow: "hidden", borderRadius: "12px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+              <div className="cert-preview-container">
+                {isImage ? (
                   <img 
                     src={cert.pdf_url} 
                     alt={cert.title} 
-                    style={{ width: "100%", maxHeight: "700px", objectFit: "contain", background: "#111" }} 
+                    className="cert-image-preview" 
                   />
-                </div>
-              ) : (
-                <div style={{ width: "100%", height: "650px", borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255, 255, 255, 0.1)", background: "#1a1a1a" }}>
+                ) : (
                   <iframe 
-                    src={`${cert.pdf_url}#toolbar=0`} 
-                    style={{ width: "100%", height: "100%", border: "none" }} 
-                    title={`${cert.title} PDF Document`}
+                    src={`${cert.pdf_url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} 
+                    className="cert-preview-iframe" 
+                    title={`${cert.title} Document`}
                   />
-                </div>
-              )}
+                )}
+              </div>
+
+              <div className="cert-preview-actions">
+                <a 
+                  href={cert.pdf_url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="btn btn-color-2"
+                  style={{ padding: "0.5rem 1.4rem", fontSize: "0.9rem", borderRadius: "2rem", textDecoration: "none" }}
+                >
+                  View Full Screen ↗
+                </a>
+                <a 
+                  href={cert.pdf_url} 
+                  download={`${canonicalSlug}.pdf`}
+                  className="btn btn-color-1"
+                  style={{ padding: "0.5rem 1.4rem", fontSize: "0.9rem", borderRadius: "2rem", textDecoration: "none" }}
+                >
+                  Download PDF
+                </a>
+              </div>
             </div>
           )}
         </article>

@@ -3932,3 +3932,65 @@ body.dark-theme select.premium-input:focus {
 .scroll-up-link [data-tooltip]:focus-visible::before {
     transform: translateX(0) translateY(-10px);
 }
+
+/* Certificate Detail Page Responsive Preview Styles */
+.cert-detail-card {
+    padding: 2.5rem 2rem;
+    border-radius: 1.5rem;
+    position: relative;
+    margin-bottom: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.cert-preview-container {
+    width: 100%;
+    aspect-ratio: 1.414 / 1;
+    max-height: 700px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #181818;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.cert-preview-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    background: #181818;
+}
+
+.cert-image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #181818;
+}
+
+.cert-preview-actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .cert-detail-card {
+        padding: 1.5rem 0.85rem !important;
+        border-radius: 1rem !important;
+    }
+
+    .cert-preview-container {
+        aspect-ratio: 1.414 / 1 !important;
+        height: auto !important;
+        min-height: 220px;
+        max-height: 340px;
+        border-radius: 8px !important;
+    }
+}
