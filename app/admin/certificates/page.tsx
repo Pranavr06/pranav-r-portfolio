@@ -10,9 +10,18 @@ import { useToast } from "@/components/ToastProvider";
 import ConfirmModal from "@/components/ConfirmModal";
 import { slugify } from "@/lib/slug";
 
+const CERT_CATEGORIES = [
+  { value: "course", label: "Courses" },
+  { value: "hackathon", label: "Hackathons" },
+  { value: "internship", label: "Internships" },
+  { value: "webinar-workshop", label: "Webinars & Workshops" },
+  { value: "govt-quiz", label: "Government Quizzes" },
+];
+
 export default function ManageCertificates() {
   const [certificates, setCertificates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterCategory, setFilterCategory] = useState("All");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteItem, setDeleteItem] = useState<string | null>(null);
@@ -25,7 +34,7 @@ export default function ManageCertificates() {
   const [date, setDate] = useState("");
   const [issuer, setIssuer] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("course");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("Published");
   const [sortOrder, setSortOrder] = useState("0");
@@ -51,7 +60,7 @@ export default function ManageCertificates() {
   const openDrawerForNew = () => {
     setEditingId(null);
     setTitle(""); setSlug(""); setDate(""); setIssuer(""); setPdfUrl(""); 
-    setCategory(""); setDescription(""); setStatus("Published");
+    setCategory("course"); setDescription(""); setStatus("Published");
     setSortOrder("0"); setDisplayOrder("");
     setDrawerOpen(true);
   };
@@ -156,6 +165,10 @@ export default function ManageCertificates() {
 
   if (loading) return <div style={{ padding: "2rem" }}>Loading certificates...</div>;
 
+  const displayedCertificates = certificates.filter(
+    (c) => filterCategory === "All" || c.category === filterCategory
+  );
+
   return (
     <div>
       <div className="admin-page-header">
@@ -165,10 +178,28 @@ export default function ManageCertificates() {
             Manage your achievements and certifications.
           </p>
         </div>
-        <button onClick={openDrawerForNew} className="admin-btn admin-btn-primary">
-          <Plus size={16} style={{ marginRight: "0.5rem" }} />
-          Add Certificate
-        </button>
+        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", flexWrap: "wrap" }}>
+          <select
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            style={{ ...inputStyle, width: "auto", minWidth: "180px", cursor: "pointer" }}
+            aria-label="Filter certificates by category"
+          >
+            <option value="All">All Categories ({certificates.length})</option>
+            {CERT_CATEGORIES.map((cat) => {
+              const count = certificates.filter(c => c.category === cat.value).length;
+              return (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label} ({count})
+                </option>
+              );
+            })}
+          </select>
+          <button onClick={openDrawerForNew} className="admin-btn admin-btn-primary">
+            <Plus size={16} style={{ marginRight: "0.5rem" }} />
+            Add Certificate
+          </button>
+        </div>
       </div>
 
       <div className="admin-table-container">
@@ -179,10 +210,12 @@ export default function ManageCertificates() {
           <div style={{ textAlign: "right" }}>Actions</div>
         </div>
         
-        {certificates.length === 0 ? (
-          <div style={{ padding: "2rem", textAlign: "center", color: "var(--admin-text-muted)" }}>No active certificates found.</div>
+        {displayedCertificates.length === 0 ? (
+          <div style={{ padding: "2rem", textAlign: "center", color: "var(--admin-text-muted)" }}>
+            {certificates.length === 0 ? "No active certificates found." : "No certificates found in this category."}
+          </div>
         ) : (
-          certificates.map((c) => (
+          displayedCertificates.map((c) => (
             <div key={c.id} className="admin-table-row" style={{ gridTemplateColumns: "3fr 1fr 1fr 1.5fr" }}>
               <div>
                 <div style={{ fontWeight: 500 }}>
@@ -190,7 +223,7 @@ export default function ManageCertificates() {
                   {c.status === "Draft" && <span style={{ marginLeft: "0.5rem", fontSize: "0.75rem", padding: "0.1rem 0.4rem", borderRadius: "10px", backgroundColor: "rgba(107, 114, 128, 0.1)", color: "var(--admin-text-main)", fontWeight: 400 }}>Draft</span>}
                 </div>
                 <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)" }}>
-                  /{c.slug || slugify(c.title)} • {c.category} • {c.date}
+                  /{c.slug || slugify(c.title)} • {CERT_CATEGORIES.find(cat => cat.value === c.category)?.label || c.category} • {c.date}
                 </div>
               </div>
               
@@ -308,7 +341,22 @@ export default function ManageCertificates() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Category</label>
-            <input placeholder="e.g. Cloud Computing, Paper Presentation" value={category} onChange={(e) => setCategory(e.target.value)} required style={inputStyle} />
+            <select 
+              value={category} 
+              onChange={(e) => setCategory(e.target.value)} 
+              required 
+              style={{ ...inputStyle, cursor: "pointer" }}
+            >
+              <option value="" disabled>Select a category</option>
+              {CERT_CATEGORIES.map((cat) => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
+              {category && !CERT_CATEGORIES.some(c => c.value === category) && (
+                <option value={category}>{category}</option>
+              )}
+            </select>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
