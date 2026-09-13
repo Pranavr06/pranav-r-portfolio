@@ -6,7 +6,8 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync:certs": "node scripts/sync-certificate-slugs.mjs"
   },
   "dependencies": {
     "@marsidev/react-turnstile": "^1.5.2",

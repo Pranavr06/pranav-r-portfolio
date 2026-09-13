@@ -1,14 +1,21 @@
 import React from 'react';
 import ShareMenu from "@/components/ShareMenu";
 import Link from 'next/link';
+import { slugify } from "@/lib/slug";
 
 export default function CertificateCard({ cert }: { cert: any }) {
+  const certSlug = cert.slug || slugify(cert.title);
+
   return (
-    <article className="details-container color-container visible" style={{ display: "flex", flexDirection: "column", position: "relative", textAlign: "center", padding: "1.5rem" }}>
-      
+    <article 
+      id={certSlug}
+      className="details-container color-container visible" 
+      style={{ display: "flex", flexDirection: "column", position: "relative", textAlign: "center", padding: "1.5rem" }}
+    >
       <div style={{ position: "absolute", top: "1rem", right: "1rem", zIndex: 5 }}>
         <ShareMenu 
           title={cert.title} 
+          slug={certSlug}
           type="certificates" 
           downloadUrl={cert.pdf_url && cert.pdf_url !== "#" ? cert.pdf_url : undefined} 
         />
@@ -18,7 +25,11 @@ export default function CertificateCard({ cert }: { cert: any }) {
         <img src={cert.image_url || "/assets/ieee-logo.webp"} alt={`${cert.title} logo`} className="certificate-logo" loading="lazy" style={{ width: "70px", height: "70px", marginBottom: "0.5rem", objectFit: "contain" }} />
       </div>
       
-      <h3 className="experience-sub-title project-title" style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.3rem" }}>{cert.title}</h3>
+      <h3 className="experience-sub-title project-title" style={{ fontSize: "1.2rem", fontWeight: "bold", marginBottom: "0.3rem" }}>
+        <Link href={`/certificates/${certSlug}`} style={{ color: "inherit", textDecoration: "none" }}>
+          {cert.title}
+        </Link>
+      </h3>
       <p className="certificate-date" style={{ fontSize: "0.9rem", color: "gray", marginBottom: "0.5rem" }}>
         {cert.date.includes("Completed") ? cert.date : `Completed: ${cert.date}`}
       </p>

@@ -8,6 +8,7 @@ import AdminDrawer from "@/components/AdminDrawer";
 import Tooltip from "@/components/admin/Tooltip";
 import { useToast } from "@/components/ToastProvider";
 import ConfirmModal from "@/components/ConfirmModal";
+import { slugify } from "@/lib/slug";
 
 export default function ManageCertificates() {
   const [certificates, setCertificates] = useState<any[]>([]);
@@ -20,6 +21,7 @@ export default function ManageCertificates() {
 
   // Form state
   const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [date, setDate] = useState("");
   const [issuer, setIssuer] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
@@ -48,7 +50,7 @@ export default function ManageCertificates() {
 
   const openDrawerForNew = () => {
     setEditingId(null);
-    setTitle(""); setDate(""); setIssuer(""); setPdfUrl(""); 
+    setTitle(""); setSlug(""); setDate(""); setIssuer(""); setPdfUrl(""); 
     setCategory(""); setDescription(""); setStatus("Published");
     setSortOrder("0"); setDisplayOrder("");
     setDrawerOpen(true);
@@ -57,6 +59,7 @@ export default function ManageCertificates() {
   const openDrawerForEdit = (cert: any) => {
     setEditingId(cert.id);
     setTitle(cert.title || "");
+    setSlug(cert.slug || slugify(cert.title || ""));
     setDate(cert.date || "");
     setIssuer(cert.issuer || "");
     setPdfUrl(cert.pdf_url || "");
@@ -95,8 +98,18 @@ export default function ManageCertificates() {
   const handleSaveCertificate = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const certData = {
-      title, date, issuer, pdf_url: pdfUrl, category, description, status, sort_order: parseInt(sortOrder) || 0, display_order: displayOrder ? parseInt(displayOrder) : null
+    const computedSlug = slug.trim() || slugify(title);
+    const certData: any = {
+      title, 
+      slug: computedSlug,
+      date, 
+      issuer, 
+      pdf_url: pdfUrl, 
+      category, 
+      description, 
+      status, 
+      sort_order: parseInt(sortOrder) || 0, 
+      display_order: displayOrder ? parseInt(displayOrder) : null
     };
 
     let error;
@@ -104,9 +117,20 @@ export default function ManageCertificates() {
     if (editingId) {
       const res = await supabase.from("certificates").update(certData).eq("id", editingId);
       error = res.error;
+      // If slug column does not exist yet in DB schema, fallback gracefully
+      if (error && error.message?.includes("'slug'")) {
+        delete certData.slug;
+        const retryRes = await supabase.from("certificates").update(certData).eq("id", editingId);
+        error = retryRes.error;
+      }
     } else {
       const res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
       error = res.error;
+      if (error && error.message?.includes("'slug'")) {
+        delete certData.slug;
+        const retryRes = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
+        error = retryRes.error;
+      }
     }
 
     if (error) {
@@ -165,7 +189,9 @@ export default function ManageCertificates() {
                   {c.title}
                   {c.status === "Draft" && <span style={{ marginLeft: "0.5rem", fontSize: "0.75rem", padding: "0.1rem 0.4rem", borderRadius: "10px", backgroundColor: "rgba(107, 114, 128, 0.1)", color: "var(--admin-text-main)", fontWeight: 400 }}>Draft</span>}
                 </div>
-                <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)" }}>{c.category} • {c.date}</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)" }}>
+                  /{c.slug || slugify(c.title)} • {c.category} • {c.date}
+                </div>
               </div>
               
               <div>
@@ -210,10 +236,15 @@ export default function ManageCertificates() {
               </div>
 
               <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
+                <Tooltip content="View Certificate Page">
+                  <a href={`/certificates/${c.slug || slugify(c.title)}`} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-secondary" style={{ padding: "0.4rem" }}>
+                    <ExternalLink size={16} />
+                  </a>
+                </Tooltip>
                 {c.pdf_url && (
-                  <Tooltip content="View Credential">
-                    <a href={c.pdf_url} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-secondary" style={{ padding: "0.4rem" }}>
-                      <ExternalLink size={16} />
+                  <Tooltip content="View Credential File">
+                    <a href={c.pdf_url} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn-secondary" style={{ padding: "0.4rem", fontSize: "0.75rem" }}>
+                      PDF
                     </a>
                   </Tooltip>
                 )}
@@ -238,7 +269,30 @@ export default function ManageCertificates() {
           
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Certificate Title</label>
-            <input placeholder="E.g. AWS Certified Solutions Architect" value={title} onChange={(e) => setTitle(e.target.value)} required style={inputStyle} />
+            <input 
+              placeholder="E.g. AWS Certified Solutions Architect" 
+              value={title} 
+              onChange={(e) => {
+                setTitle(e.target.value);
+                if (!editingId) setSlug(slugify(e.target.value));
+              }} 
+              required 
+              style={inputStyle} 
+            />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>URL Slug (ID)</label>
+            <input 
+              placeholder="e.g. gyan-vigyan-quiz-certification" 
+              value={slug} 
+              onChange={(e) => setSlug(e.target.value)} 
+              required 
+              style={inputStyle} 
+            />
+            <span style={{ fontSize: "0.75rem", color: "var(--admin-text-muted)" }}>
+              Link: /certificates/{slug || slugify(title) || 'certificate-title'}
+            </span>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>

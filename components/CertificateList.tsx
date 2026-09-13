@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import { showToast } from "@/components/Toast";
 import ShareMenu from "@/components/ShareMenu";
 import CertificateCard from "@/components/cards/CertificateCard";
 import ScrollArrow from "@/components/ScrollArrow";
@@ -35,6 +33,28 @@ export default function CertificateList({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [mainMenuOpen, openMenuId]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        setTimeout(() => {
+          setFilter("All");
+          const targetEl = document.getElementById(hash);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            targetEl.style.transition = "box-shadow 0.4s ease, border-color 0.4s ease";
+            targetEl.style.boxShadow = "0 0 25px rgba(0, 112, 243, 0.7)";
+            targetEl.style.borderColor = "#0070f3";
+            setTimeout(() => {
+              targetEl.style.boxShadow = "";
+              targetEl.style.borderColor = "";
+            }, 3000);
+          }
+        }, 300);
+      }
+    }
+  }, []);
 
   const displayedCertificates = initialCertificates.filter(cert => {
     if (filter === "All") return true;
