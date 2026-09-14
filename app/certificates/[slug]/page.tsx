@@ -116,7 +116,7 @@ export default async function CertificateDetailPage({ params }: { params: Promis
   };
 
   return (
-    <main style={{ minHeight: "100vh", paddingTop: "5rem", paddingBottom: "5rem" }}>
+    <main className="cert-detail-page-main">
       <Script
         id={`certificate-schema-${canonicalSlug}`}
         type="application/ld+json"
@@ -125,32 +125,10 @@ export default async function CertificateDetailPage({ params }: { params: Promis
 
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 1.5rem" }}>
         
-        {/* Navigation Breadcrumb */}
-        <div style={{ marginBottom: "1.5rem" }}>
-          <Link 
-            href="/certificates" 
-            style={{ 
-              display: "inline-flex", 
-              alignItems: "center", 
-              gap: "0.5rem", 
-              color: "var(--text-color, #fff)", 
-              textDecoration: "none", 
-              fontWeight: 500,
-              fontSize: "0.95rem",
-              padding: "0.4rem 0.8rem",
-              borderRadius: "6px",
-              background: "rgba(255, 255, 255, 0.05)",
-              border: "1px solid rgba(255, 255, 255, 0.1)"
-            }}
-          >
-            <span>&larr;</span> View all certificates
-          </Link>
-        </div>
-
         {/* Certificate Title Outside Box */}
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+        <div className="cert-header-outside">
           <p className="section__text__p1">Certificate</p>
-          <h1 className="title" style={{ fontSize: "2.4rem", margin: "0.4rem 0 0 0", lineHeight: 1.25 }}>
+          <h1 className="title">
             {cert.title}
           </h1>
         </div>

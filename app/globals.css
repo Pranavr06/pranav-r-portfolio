@@ -3994,3 +3994,52 @@ body.dark-theme select.premium-input:focus {
         border-radius: 8px !important;
     }
 }
+
+/* Certificate Detail Page - tight clean spacing near navbar */
+.cert-detail-page-main {
+    min-height: 100vh;
+    padding-top: 0.5rem;
+    padding-bottom: 4rem;
+}
+
+body:has(.cert-detail-page-main) #desktop-nav {
+    height: 11vh;
+    min-height: 70px;
+}
+
+.cert-header-outside {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.cert-header-outside .section__text__p1 {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+}
+
+.cert-header-outside .title {
+    font-size: 2.4rem;
+    margin: 0;
+    line-height: 1.25;
+}
+
+@media (max-width: 768px) {
+    .cert-detail-page-main {
+        padding-top: 0.25rem !important;
+        padding-bottom: 2.5rem;
+    }
+
+    body:has(.cert-detail-page-main) #hamburger-nav {
+        margin-bottom: 0.25rem;
+    }
+
+    .cert-header-outside {
+        margin-top: 0.25rem !important;
+        margin-bottom: 1.25rem !important;
+    }
+
+    .cert-header-outside .title {
+        font-size: 1.75rem !important;
+    }
+}
