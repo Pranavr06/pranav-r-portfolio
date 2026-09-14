@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import ContactCTA from "@/components/ContactCTA";
 import ShareMenu from "@/components/ShareMenu";
-import CertificateCard from "@/components/cards/CertificateCard";
 import { slugify } from "@/lib/slug";
 import { Metadata } from "next";
 import Script from "next/script";
@@ -100,18 +99,6 @@ export default async function CertificateDetailPage({ params }: { params: Promis
     notFound();
   }
 
-  // Fetch related certificates from same category or others
-  const { data: relatedData } = await supabase
-    .from("certificates")
-    .select("*")
-    .neq("id", cert.id)
-    .or("is_archived.is.null,is_archived.eq.false")
-    .or("status.is.null,status.eq.Published")
-    .eq("category", cert.category)
-    .limit(3);
-
-  const relatedCertificates = relatedData && relatedData.length > 0 ? relatedData : [];
-
   const canonicalSlug = cert.slug || slugify(cert.title);
   const isImage = cert.pdf_url && (cert.pdf_url.endsWith(".webp") || cert.pdf_url.endsWith(".png") || cert.pdf_url.endsWith(".jpg") || cert.pdf_url.endsWith(".jpeg"));
 
@@ -139,7 +126,7 @@ export default async function CertificateDetailPage({ params }: { params: Promis
       <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "0 1.5rem" }}>
         
         {/* Navigation Breadcrumb */}
-        <div style={{ marginBottom: "2rem" }}>
+        <div style={{ marginBottom: "1.5rem" }}>
           <Link 
             href="/certificates" 
             style={{ 
@@ -156,8 +143,16 @@ export default async function CertificateDetailPage({ params }: { params: Promis
               border: "1px solid rgba(255, 255, 255, 0.1)"
             }}
           >
-            <span>&larr;</span> Back to all certificates
+            <span>&larr;</span> View all certificates
           </Link>
+        </div>
+
+        {/* Certificate Title Outside Box */}
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <p className="section__text__p1">Certificate</p>
+          <h1 className="title" style={{ fontSize: "2.4rem", margin: "0.4rem 0 0 0", lineHeight: 1.25 }}>
+            {cert.title}
+          </h1>
         </div>
 
         {/* Certificate Card Container */}
@@ -165,7 +160,7 @@ export default async function CertificateDetailPage({ params }: { params: Promis
           className="details-container color-container cert-detail-card" 
           style={{ 
             position: "relative",
-            marginBottom: "3rem",
+            marginBottom: "2.5rem",
             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)"
           }}
         >
@@ -180,8 +175,8 @@ export default async function CertificateDetailPage({ params }: { params: Promis
           </div>
 
           {/* Logo & Issuer */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", marginBottom: "1.5rem" }}>
-            <div style={{ width: "90px", height: "90px", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", marginBottom: "1.25rem" }}>
+            <div style={{ width: "90px", height: "90px", marginBottom: "0.8rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <img 
                 src={cert.image_url || "/assets/ieee-logo.webp"} 
                 alt={`${cert.title} logo`} 
@@ -189,16 +184,12 @@ export default async function CertificateDetailPage({ params }: { params: Promis
               />
             </div>
 
-            <h1 style={{ fontSize: "2rem", fontWeight: 700, margin: "0.5rem 0", lineHeight: 1.3 }}>
-              {cert.title}
-            </h1>
-
-            <p style={{ fontSize: "1rem", color: "var(--text-color-light, gray)", margin: "0.25rem 0" }}>
+            <p style={{ fontSize: "0.95rem", color: "var(--text-color-light, gray)", margin: "0.2rem 0" }}>
               {cert.date.includes("Completed") ? cert.date : `Completed: ${cert.date}`}
             </p>
 
             {cert.issuer && !cert.issuer.includes("Unknown") && (
-              <p className="achievement-highlight-custom" style={{ fontSize: "1rem", marginTop: "0.5rem" }}>
+              <p className="achievement-highlight-custom" style={{ fontSize: "0.95rem", marginTop: "0.35rem" }}>
                 {cert.issuer.includes("Issued by") || cert.issuer.includes("Organized by") || cert.issuer.includes("Completed in") 
                   ? cert.issuer 
                   : `Issued by ${cert.issuer}`}
@@ -208,7 +199,7 @@ export default async function CertificateDetailPage({ params }: { params: Promis
 
           {/* Tags */}
           {cert.skills && cert.skills.length > 0 && (
-            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "1.5rem" }}>
+            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "1.25rem" }}>
               {cert.skills.map((skill: string, idx: number) => (
                 <span key={idx} className="custom-tag" style={{ padding: "0.3rem 0.8rem", fontSize: "0.85rem" }}>
                   {skill}
@@ -219,45 +210,34 @@ export default async function CertificateDetailPage({ params }: { params: Promis
 
           {/* Description */}
           {cert.description && (
-            <p style={{ fontSize: "1.05rem", lineHeight: 1.7, textAlign: "center", maxWidth: "750px", margin: "0 auto 2rem auto", color: "var(--text-color-light)" }}>
+            <p style={{ fontSize: "1.02rem", lineHeight: 1.7, textAlign: "center", maxWidth: "750px", margin: "0 auto 1.5rem auto", color: "var(--text-color-light)" }}>
               {cert.description}
             </p>
           )}
 
-          {/* Action Buttons */}
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "2.5rem" }}>
-            {cert.pdf_url && cert.pdf_url !== "#" && (
-              <a 
-                href={cert.pdf_url} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="btn btn-color-2"
-                style={{ padding: "0.6rem 1.8rem", fontSize: "1rem", borderRadius: "2rem", textDecoration: "none" }}
-              >
-                Open Full Document ↗
-              </a>
-            )}
-
-            {cert.experience_url && (
-              <Link 
-                href={cert.experience_url} 
-                className="btn btn-color-1" 
-                style={{ padding: "0.6rem 1.8rem", fontSize: "1rem", borderRadius: "2rem", textDecoration: "none" }}
-              >
-                View Experience &rarr;
-              </Link>
-            )}
-
-            {cert.project_url && (
-              <Link 
-                href={cert.project_url} 
-                className="btn btn-color-1" 
-                style={{ padding: "0.6rem 1.8rem", fontSize: "1rem", borderRadius: "2rem", textDecoration: "none" }}
-              >
-                View Project &rarr;
-              </Link>
-            )}
-          </div>
+          {/* Linked Experience / Project Buttons (if available) */}
+          {(cert.experience_url || cert.project_url) && (
+            <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+              {cert.experience_url && (
+                <Link 
+                  href={cert.experience_url} 
+                  className="btn btn-color-1" 
+                  style={{ padding: "0.5rem 1.6rem", fontSize: "0.95rem", borderRadius: "2rem", textDecoration: "none" }}
+                >
+                  View Experience &rarr;
+                </Link>
+              )}
+              {cert.project_url && (
+                <Link 
+                  href={cert.project_url} 
+                  className="btn btn-color-1" 
+                  style={{ padding: "0.5rem 1.6rem", fontSize: "0.95rem", borderRadius: "2rem", textDecoration: "none" }}
+                >
+                  View Project &rarr;
+                </Link>
+              )}
+            </div>
+          )}
 
           {/* Document Viewer / Preview */}
           {cert.pdf_url && cert.pdf_url !== "#" && (
@@ -307,19 +287,24 @@ export default async function CertificateDetailPage({ params }: { params: Promis
           )}
         </article>
 
-        {/* Related Certificates Section */}
-        {relatedCertificates.length > 0 && (
-          <div style={{ marginTop: "4rem", marginBottom: "4rem" }}>
-            <h2 style={{ fontSize: "1.6rem", fontWeight: 700, marginBottom: "1.5rem", textAlign: "center" }}>
-              More in {cert.category ? cert.category.replace("-", " ").toUpperCase() : "Certificates"}
-            </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.5rem" }}>
-              {relatedCertificates.map((relCert: any) => (
-                <CertificateCard key={relCert.id} cert={relCert} />
-              ))}
-            </div>
-          </div>
-        )}
+        {/* View All Certificates Button */}
+        <div style={{ textAlign: "center", marginTop: "2rem", marginBottom: "3.5rem" }}>
+          <Link 
+            href="/certificates" 
+            className="btn btn-color-2"
+            style={{ 
+              padding: "0.8rem 2.2rem", 
+              fontSize: "1rem", 
+              borderRadius: "2rem", 
+              textDecoration: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.6rem"
+            }}
+          >
+            <span>&larr;</span> View All Certificates
+          </Link>
+        </div>
 
         {/* Contact CTA */}
         <div style={{ maxWidth: "800px", margin: "0 auto" }}>
