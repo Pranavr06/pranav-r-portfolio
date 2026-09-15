@@ -4,6 +4,31 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/experiences/my-bharat-budget',
+        destination: '/experiences/professional-journey/my-bharat-budget-quest-2026',
+        permanent: true,
+      },
+      {
+        source: '/college-projects/marketing-prediction-project',
+        destination: '/projects/college-projects/marketing-response-prediction',
+        permanent: true,
+      },
+      {
+        source: '/projects/college-projects/marketing-prediction-project',
+        destination: '/projects/college-projects/marketing-response-prediction',
+        permanent: true,
+      },
+      {
+        source: '/experiences/professional-journey/iict-summer-internship-in-ai-ml',
+        destination: '/experiences/professional-journey/IICT-Summer-Internship-in-AI-&-ML',
+        permanent: true,
+      },
+      {
+        source: '/experiences/professional-journey/iict-summer-internship',
+        destination: '/experiences/professional-journey/IICT-Summer-Internship-in-AI-&-ML',
+        permanent: true,
+      },
+      {
         source: '/college-projects',
         destination: '/projects/college-projects',
         permanent: true,

@@ -34,6 +34,8 @@ export default function ManageCertificates() {
   const [date, setDate] = useState("");
   const [issuer, setIssuer] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
+  const [experienceUrl, setExperienceUrl] = useState("");
+  const [projectUrl, setProjectUrl] = useState("");
   const [category, setCategory] = useState("course");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("Published");
@@ -60,6 +62,7 @@ export default function ManageCertificates() {
   const openDrawerForNew = () => {
     setEditingId(null);
     setTitle(""); setSlug(""); setDate(""); setIssuer(""); setPdfUrl(""); 
+    setExperienceUrl(""); setProjectUrl("");
     setCategory("course"); setDescription(""); setStatus("Published");
     setSortOrder("0"); setDisplayOrder("");
     setDrawerOpen(true);
@@ -72,6 +75,8 @@ export default function ManageCertificates() {
     setDate(cert.date || "");
     setIssuer(cert.issuer || "");
     setPdfUrl(cert.pdf_url || "");
+    setExperienceUrl(cert.experience_url || "");
+    setProjectUrl(cert.project_url || "");
     setCategory(cert.category || "");
     setDescription(cert.description || "");
     setStatus(cert.status || "Published");
@@ -114,6 +119,8 @@ export default function ManageCertificates() {
       date, 
       issuer, 
       pdf_url: pdfUrl, 
+      experience_url: experienceUrl.trim() || null,
+      project_url: projectUrl.trim() || null,
       category, 
       description, 
       status, 
@@ -373,6 +380,27 @@ export default function ManageCertificates() {
                 Upload
                 <input type="file" accept="application/pdf,image/*" onChange={handleFileUpload} style={{ display: "none" }} />
               </label>
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Linked Experience URL (Optional)</label>
+              <input 
+                placeholder="e.g. /experiences/professional-journey/..." 
+                value={experienceUrl} 
+                onChange={(e) => setExperienceUrl(e.target.value)} 
+                style={inputStyle} 
+              />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Linked Project URL (Optional)</label>
+              <input 
+                placeholder="e.g. /projects/college-projects/..." 
+                value={projectUrl} 
+                onChange={(e) => setProjectUrl(e.target.value)} 
+                style={inputStyle} 
+              />
             </div>
           </div>
           

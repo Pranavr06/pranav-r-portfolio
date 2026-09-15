@@ -2,9 +2,12 @@ import React from 'react';
 import ShareMenu from "@/components/ShareMenu";
 import Link from 'next/link';
 import { slugify } from "@/lib/slug";
+import { normalizeExperienceUrl, normalizeProjectUrl } from "@/lib/urls";
 
 export default function CertificateCard({ cert }: { cert: any }) {
   const certSlug = cert.slug || slugify(cert.title);
+  const experienceUrl = normalizeExperienceUrl(cert.experience_url);
+  const projectUrl = normalizeProjectUrl(cert.project_url);
 
   return (
     <article 
@@ -56,14 +59,14 @@ export default function CertificateCard({ cert }: { cert: any }) {
         </p>
       )}
 
-      <div className="btn-container" style={{ width: "100%", marginTop: "auto", paddingTop: "0.8rem", display: "flex", justifyContent: (cert.experience_url || cert.project_url) ? "space-between" : "center", alignItems: "center", flexWrap: "wrap", gap: "0.8rem" }}>
+      <div className="btn-container" style={{ width: "100%", marginTop: "auto", paddingTop: "0.8rem", display: "flex", justifyContent: (experienceUrl || projectUrl) ? "space-between" : "center", alignItems: "center", flexWrap: "wrap", gap: "0.8rem" }}>
         
-        {cert.experience_url ? (
-          <Link href={cert.experience_url} className="read-more-link" style={{ fontSize: "0.95rem" }}>
+        {experienceUrl ? (
+          <Link href={experienceUrl} className="read-more-link" style={{ fontSize: "0.95rem" }}>
             View Experience &rarr;
           </Link>
-        ) : cert.project_url ? (
-          <Link href={cert.project_url} className="read-more-link" style={{ fontSize: "0.95rem" }}>
+        ) : projectUrl ? (
+          <Link href={projectUrl} className="read-more-link" style={{ fontSize: "0.95rem" }}>
             View Project &rarr;
           </Link>
         ) : null}

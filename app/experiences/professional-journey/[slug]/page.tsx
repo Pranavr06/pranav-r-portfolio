@@ -8,18 +8,56 @@ import rehypeRaw from "rehype-raw";
 import ShareMenu from "@/components/ShareMenu";
 import CodeBlock from "@/components/CodeBlock";
 import ContactCTA from "@/components/ContactCTA";
+import { slugify } from "@/lib/slug";
 export const revalidate = 60;
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const resolvedParams = await params;
-  const slug = decodeURIComponent(resolvedParams.slug);
-  const { data: experience } = await supabase
+async function fetchExperience(rawSlug: string) {
+  const slug = decodeURIComponent(rawSlug);
+  
+  // 1. Direct match on read_more_url
+  const { data: directMatch } = await supabase
     .from("experiences")
-    .select("title, description")
+    .select("*")
     .eq("read_more_url", `/experiences/professional-journey/${slug}`)
     .eq("is_published", true)
     .or("is_archived.is.null,is_archived.eq.false")
     .maybeSingle();
+
+  if (directMatch) return directMatch;
+
+  // 2. Resilient fallback: search all professional_journey items
+  const { data: allExp } = await supabase
+    .from("experiences")
+    .select("*")
+    .eq("category", "professional_journey")
+    .eq("is_published", true)
+    .or("is_archived.is.null,is_archived.eq.false");
+
+  if (!allExp || allExp.length === 0) return null;
+
+  const normalizedInput = slug.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const slugifiedInput = slugify(slug);
+
+  return allExp.find((exp) => {
+    const lastPart = exp.read_more_url?.split("/").pop() || "";
+    const normalizedLastPart = lastPart.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const slugifiedLastPart = slugify(lastPart);
+    const slugifiedTitle = slugify(exp.title || "");
+    const normalizedTitle = (exp.title || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    return (
+      lastPart.toLowerCase() === slug.toLowerCase() ||
+      slugifiedLastPart === slugifiedInput ||
+      normalizedLastPart === normalizedInput ||
+      slugifiedTitle === slugifiedInput ||
+      normalizedTitle === normalizedInput
+    );
+  }) || null;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const experience = await fetchExperience(resolvedParams.slug);
 
   if (!experience) {
     return {
@@ -36,16 +74,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ExperienceDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const slug = decodeURIComponent(resolvedParams.slug);
-  const { data: experience, error } = await supabase
-    .from("experiences")
-    .select("*")
-    .eq("read_more_url", `/experiences/professional-journey/${slug}`)
-    .eq("is_published", true)
-    .or("is_archived.is.null,is_archived.eq.false")
-    .maybeSingle();
+  const experience = await fetchExperience(resolvedParams.slug);
 
-  if (error || !experience) {
-    console.error("Error fetching experience details:", error?.message);
+  if (!experience) {
     notFound();
   }
 

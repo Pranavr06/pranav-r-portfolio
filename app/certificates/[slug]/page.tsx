@@ -4,6 +4,7 @@ import Link from "next/link";
 import ContactCTA from "@/components/ContactCTA";
 import ShareMenu from "@/components/ShareMenu";
 import { slugify } from "@/lib/slug";
+import { normalizeExperienceUrl, normalizeProjectUrl } from "@/lib/urls";
 import { Metadata } from "next";
 import Script from "next/script";
 
@@ -194,28 +195,35 @@ export default async function CertificateDetailPage({ params }: { params: Promis
           )}
 
           {/* Linked Experience / Project Buttons (if available) */}
-          {(cert.experience_url || cert.project_url) && (
-            <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "1.5rem" }}>
-              {cert.experience_url && (
-                <Link 
-                  href={cert.experience_url} 
-                  className="btn btn-color-1" 
-                  style={{ padding: "0.5rem 1.6rem", fontSize: "0.95rem", borderRadius: "2rem", textDecoration: "none" }}
-                >
-                  View Experience &rarr;
-                </Link>
-              )}
-              {cert.project_url && (
-                <Link 
-                  href={cert.project_url} 
-                  className="btn btn-color-1" 
-                  style={{ padding: "0.5rem 1.6rem", fontSize: "0.95rem", borderRadius: "2rem", textDecoration: "none" }}
-                >
-                  View Project &rarr;
-                </Link>
-              )}
-            </div>
-          )}
+          {(() => {
+            const experienceUrl = normalizeExperienceUrl(cert.experience_url);
+            const projectUrl = normalizeProjectUrl(cert.project_url);
+
+            if (!experienceUrl && !projectUrl) return null;
+
+            return (
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+                {experienceUrl && (
+                  <Link 
+                    href={experienceUrl} 
+                    className="btn btn-color-1" 
+                    style={{ padding: "0.5rem 1.6rem", fontSize: "0.95rem", borderRadius: "2rem", textDecoration: "none" }}
+                  >
+                    View Experience &rarr;
+                  </Link>
+                )}
+                {projectUrl && (
+                  <Link 
+                    href={projectUrl} 
+                    className="btn btn-color-1" 
+                    style={{ padding: "0.5rem 1.6rem", fontSize: "0.95rem", borderRadius: "2rem", textDecoration: "none" }}
+                  >
+                    View Project &rarr;
+                  </Link>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Document Viewer / Preview */}
           {cert.pdf_url && cert.pdf_url !== "#" && (
