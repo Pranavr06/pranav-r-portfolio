@@ -1,3 +1,5 @@
+import { slugify } from "@/lib/slug";
+
 export interface CertificateImage {
   url: string;
   caption?: string;
@@ -23,10 +25,12 @@ export const STATIC_CERTIFICATE_GALLERIES: Record<string, CertificateImage[]> = 
 };
 
 export function getCertificateGallery(cert: any): CertificateImage[] {
+  let dbImages: CertificateImage[] = [];
+
   // 1. If certificate has gallery_images in DB
   if (cert?.gallery_images) {
     if (Array.isArray(cert.gallery_images)) {
-      return cert.gallery_images
+      dbImages = cert.gallery_images
         .map((item: any) => {
           if (typeof item === "string") return { url: item };
           return {
@@ -36,13 +40,11 @@ export function getCertificateGallery(cert: any): CertificateImage[] {
           };
         })
         .filter((item: CertificateImage) => Boolean(item.url));
-    }
-
-    if (typeof cert.gallery_images === "string") {
+    } else if (typeof cert.gallery_images === "string") {
       try {
         const parsed = JSON.parse(cert.gallery_images);
         if (Array.isArray(parsed)) {
-          return parsed
+          dbImages = parsed
             .map((item: any) => {
               if (typeof item === "string") return { url: item };
               return {
@@ -59,10 +61,21 @@ export function getCertificateGallery(cert: any): CertificateImage[] {
     }
   }
 
-  // 2. Static mapping fallback by canonical slug
-  const slug = cert?.slug;
-  if (slug && STATIC_CERTIFICATE_GALLERIES[slug]) {
-    return STATIC_CERTIFICATE_GALLERIES[slug];
+  // If DB has actual images, return them
+  if (dbImages.length > 0) {
+    return dbImages;
+  }
+
+  // 2. Static mapping fallback by canonical slug or slugified title
+  const candidates = [
+    cert?.slug,
+    cert?.title ? slugify(cert.title) : null,
+  ].filter(Boolean) as string[];
+
+  for (const candidate of candidates) {
+    if (STATIC_CERTIFICATE_GALLERIES[candidate]) {
+      return STATIC_CERTIFICATE_GALLERIES[candidate];
+    }
   }
 
   return [];
