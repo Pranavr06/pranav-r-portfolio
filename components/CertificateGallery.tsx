@@ -8,9 +8,11 @@ import { CertificateImage } from "@/lib/certificateGalleries";
 export default function CertificateGallery({
   images,
   title,
+  galleryTitle,
 }: {
   images: CertificateImage[];
   title?: string;
+  galleryTitle?: string;
 }) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -59,56 +61,18 @@ export default function CertificateGallery({
 
   if (!images || images.length === 0) return null;
 
+  const displayHeading = galleryTitle || (title ? "Event Photos & Highlights" : "Event Photos");
+
   return (
-    <div
-      className="details-container color-container cert-gallery-container"
-      style={{
-        padding: "2rem",
-        marginBottom: "2.5rem",
-        boxShadow: "0 10px 30px rgba(0, 0, 0, 0.15)",
-        width: "100%",
-        boxSizing: "border-box",
-      }}
-    >
+    <div className="details-container color-container cert-gallery-container">
       {/* Section Header */}
-      <div
-        style={{
-          textAlign: "center",
-          marginBottom: "1.75rem",
-          paddingBottom: "1rem",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-        }}
-      >
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            color: "var(--text-color-light, #888)",
-            marginBottom: "0.35rem",
-          }}
-        >
-          <Camera size={18} />
-          <span
-            style={{
-              fontSize: "0.85rem",
-              textTransform: "uppercase",
-              letterSpacing: "1.5px",
-              fontWeight: 600,
-            }}
-          >
-            Event & Achievement Photos ({images.length})
-          </span>
+      <div className="cert-gallery-header">
+        <div className="cert-gallery-subtitle">
+          <Camera size={17} />
+          <span>Event & Achievement Photos ({images.length})</span>
         </div>
-        <h2
-          style={{
-            fontSize: "1.35rem",
-            fontWeight: 600,
-            color: "var(--text-main, #fff)",
-            margin: "0.25rem 0 0 0",
-          }}
-        >
-          Moments & Presentation Highlights
+        <h2 className="cert-gallery-title">
+          {displayHeading}
         </h2>
       </div>
 
@@ -117,7 +81,7 @@ export default function CertificateGallery({
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "2rem",
+          gap: "1.75rem",
           width: "100%",
         }}
       >
@@ -126,42 +90,13 @@ export default function CertificateGallery({
             key={index}
             onClick={() => setSelectedIndex(index)}
             className="cert-gallery-card"
-            style={{
-              position: "relative",
-              borderRadius: "16px",
-              overflow: "hidden",
-              cursor: "pointer",
-              backgroundColor: "rgba(0, 0, 0, 0.25)",
-              border: "1px solid rgba(255, 255, 255, 0.12)",
-              boxShadow: "0 6px 20px rgba(0, 0, 0, 0.2)",
-              transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
-              width: "100%",
-            }}
           >
             {/* Image Wrapper */}
-            <div
-              style={{
-                width: "100%",
-                maxHeight: "560px",
-                overflow: "hidden",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "rgba(0, 0, 0, 0.3)",
-              }}
-            >
+            <div className="cert-gallery-img-wrapper">
               <img
                 src={img.url}
                 alt={img.alt || img.caption || `${title || "Certificate"} Photo ${index + 1}`}
                 loading="lazy"
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  maxHeight: "560px",
-                  objectFit: "contain",
-                  display: "block",
-                  transition: "transform 0.35s ease",
-                }}
                 className="cert-gallery-img"
               />
             </div>
@@ -175,55 +110,16 @@ export default function CertificateGallery({
               }}
               aria-label="Enlarge photo in full screen"
               title="Click to view full screen"
-              style={{
-                position: "absolute",
-                top: "0.85rem",
-                right: "0.85rem",
-                backgroundColor: "rgba(0, 0, 0, 0.7)",
-                backdropFilter: "blur(6px)",
-                WebkitBackdropFilter: "blur(6px)",
-                borderRadius: "50%",
-                width: "38px",
-                height: "38px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#fff",
-                border: "1px solid rgba(255, 255, 255, 0.25)",
-                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.5)",
-                cursor: "pointer",
-                transition: "transform 0.2s ease, background-color 0.2s ease",
-                zIndex: 2,
-              }}
+              className="cert-gallery-expand-btn"
             >
               <Maximize2 size={18} />
             </button>
 
-            {/* Caption Bar */}
+            {/* Theme-Sensitive Caption Bar */}
             {img.caption && (
-              <div
-                style={{
-                  padding: "0.9rem 1.25rem",
-                  background: "rgba(0, 0, 0, 0.8)",
-                  borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-                  color: "#f0f0f0",
-                  fontSize: "0.95rem",
-                  lineHeight: 1.5,
-                  textAlign: "left",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  gap: "1rem",
-                }}
-              >
+              <div className="cert-gallery-caption-bar">
                 <span>{img.caption}</span>
-                <span
-                  style={{
-                    fontSize: "0.8rem",
-                    color: "rgba(255, 255, 255, 0.6)",
-                    whiteSpace: "nowrap",
-                  }}
-                >
+                <span className="cert-gallery-counter">
                   Photo {index + 1} of {images.length}
                 </span>
               </div>
@@ -232,7 +128,7 @@ export default function CertificateGallery({
         ))}
       </div>
 
-      {/* Fullscreen Lightbox Modal (rendered via Portal to document.body to prevent clipping) */}
+      {/* Fullscreen Lightbox Modal (rendered via Portal directly to body) */}
       {mounted &&
         selectedIndex !== null &&
         createPortal(
@@ -263,7 +159,7 @@ export default function CertificateGallery({
               onClick={(e) => e.stopPropagation()}
               style={{
                 width: "100%",
-                maxWidth: "1200px",
+                maxWidth: "1100px",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -311,7 +207,7 @@ export default function CertificateGallery({
               style={{
                 flex: 1,
                 width: "100%",
-                maxWidth: "1200px",
+                maxWidth: "1100px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
