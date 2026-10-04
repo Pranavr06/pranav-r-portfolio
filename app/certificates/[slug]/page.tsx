@@ -239,13 +239,17 @@ export default async function CertificateDetailPage({ params }: { params: Promis
               canonicalSlug={canonicalSlug}
             />
           )}
-
-          {/* Event Photos & Image Gallery */}
-          <CertificateGallery 
-            images={galleryImages} 
-            title={cert.title} 
-          />
         </article>
+
+        {/* Separate Section: Event Photos & Image Gallery */}
+        {galleryImages && galleryImages.length > 0 && (
+          <section className="cert-gallery-section" style={{ width: "100%", margin: "0 auto 2.5rem auto" }}>
+            <CertificateGallery 
+              images={galleryImages} 
+              title={cert.title} 
+            />
+          </section>
+        )}
 
         {/* View All Certificates Button */}
         <div style={{ textAlign: "center", marginTop: "2rem", marginBottom: "3.5rem" }}>
