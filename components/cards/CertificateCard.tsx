@@ -3,11 +3,13 @@ import ShareMenu from "@/components/ShareMenu";
 import Link from 'next/link';
 import { slugify } from "@/lib/slug";
 import { normalizeExperienceUrl, normalizeProjectUrl } from "@/lib/urls";
+import { getCertificateGallery } from "@/lib/certificateGalleries";
 
 export default function CertificateCard({ cert }: { cert: any }) {
   const certSlug = cert.slug || slugify(cert.title);
   const experienceUrl = normalizeExperienceUrl(cert.experience_url);
   const projectUrl = normalizeProjectUrl(cert.project_url);
+  const galleryImages = getCertificateGallery(cert);
 
   return (
     <article 
@@ -39,6 +41,27 @@ export default function CertificateCard({ cert }: { cert: any }) {
       
       <p style={{ flexGrow: 1, marginBottom: "0.8rem", color: "var(--text-color-light)", fontSize: "0.95rem" }}>{cert.description}</p>
       
+      {galleryImages.length > 0 && (
+        <div style={{ marginBottom: "0.6rem" }}>
+          <span 
+            className="custom-tag" 
+            style={{ 
+              display: "inline-flex", 
+              alignItems: "center", 
+              gap: "0.35rem", 
+              fontSize: "0.8rem", 
+              padding: "0.2rem 0.65rem",
+              background: "rgba(0, 112, 243, 0.08)",
+              color: "var(--accent-color, #0070f3)",
+              border: "1px solid rgba(0, 112, 243, 0.25)",
+              borderRadius: "1rem"
+            }}
+          >
+            📷 {galleryImages.length} Event Photos
+          </span>
+        </div>
+      )}
+
       {cert.skills && cert.skills.length > 0 && (
         <div className="skill-tags" style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.8rem", justifyContent: "center" }}>
           {cert.skills.map((skill: string, index: number) => (

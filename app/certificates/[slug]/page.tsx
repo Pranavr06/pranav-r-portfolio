@@ -5,6 +5,8 @@ import ContactCTA from "@/components/ContactCTA";
 import ShareMenu from "@/components/ShareMenu";
 import { slugify } from "@/lib/slug";
 import { normalizeExperienceUrl, normalizeProjectUrl } from "@/lib/urls";
+import CertificateGallery from "@/components/CertificateGallery";
+import { getCertificateGallery } from "@/lib/certificateGalleries";
 import { Metadata } from "next";
 import Script from "next/script";
 
@@ -115,6 +117,8 @@ export default async function CertificateDetailPage({ params }: { params: Promis
     },
     "url": `https://pranavr.netlify.app/certificates/${canonicalSlug}`
   };
+
+  const galleryImages = getCertificateGallery(cert);
 
   return (
     <main className="cert-detail-page-main">
@@ -271,6 +275,12 @@ export default async function CertificateDetailPage({ params }: { params: Promis
               </div>
             </div>
           )}
+
+          {/* Event Photos & Image Gallery */}
+          <CertificateGallery 
+            images={galleryImages} 
+            title={cert.title} 
+          />
         </article>
 
         {/* View All Certificates Button */}

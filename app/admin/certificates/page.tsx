@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Edit2, ExternalLink, Info } from "lucide-react";
+import { Plus, Trash2, Edit2, ExternalLink, Info, Camera, Upload } from "lucide-react";
 import AdminDrawer from "@/components/AdminDrawer";
 import Tooltip from "@/components/admin/Tooltip";
 import { useToast } from "@/components/ToastProvider";
 import ConfirmModal from "@/components/ConfirmModal";
 import { slugify } from "@/lib/slug";
+import { STATIC_CERTIFICATE_GALLERIES } from "@/lib/certificateGalleries";
 
 const CERT_CATEGORIES = [
   { value: "course", label: "Courses" },
@@ -36,6 +37,9 @@ export default function ManageCertificates() {
   const [pdfUrl, setPdfUrl] = useState("");
   const [experienceUrl, setExperienceUrl] = useState("");
   const [projectUrl, setProjectUrl] = useState("");
+  const [galleryImages, setGalleryImages] = useState<Array<{ url: string; caption?: string }>>([]);
+  const [newImageUrl, setNewImageUrl] = useState("");
+  const [newImageCaption, setNewImageCaption] = useState("");
   const [category, setCategory] = useState("course");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("Published");
@@ -63,6 +67,7 @@ export default function ManageCertificates() {
     setEditingId(null);
     setTitle(""); setSlug(""); setDate(""); setIssuer(""); setPdfUrl(""); 
     setExperienceUrl(""); setProjectUrl("");
+    setGalleryImages([]); setNewImageUrl(""); setNewImageCaption("");
     setCategory("course"); setDescription(""); setStatus("Published");
     setSortOrder("0"); setDisplayOrder("");
     setDrawerOpen(true);
@@ -82,7 +87,85 @@ export default function ManageCertificates() {
     setStatus(cert.status || "Published");
     setSortOrder((cert.sort_order || 0).toString());
     setDisplayOrder(cert.display_order !== null ? cert.display_order.toString() : "");
+
+    // Load gallery images
+    let initialGallery: Array<{ url: string; caption?: string }> = [];
+    if (cert.gallery_images) {
+      if (Array.isArray(cert.gallery_images)) {
+        initialGallery = cert.gallery_images
+          .map((item: any) =>
+            typeof item === "string" ? { url: item, caption: "" } : { url: item?.url || "", caption: item?.caption || "" }
+          )
+          .filter((item: any) => Boolean(item.url));
+      } else if (typeof cert.gallery_images === "string") {
+        try {
+          const parsed = JSON.parse(cert.gallery_images);
+          if (Array.isArray(parsed)) {
+            initialGallery = parsed
+              .map((item: any) =>
+                typeof item === "string" ? { url: item, caption: "" } : { url: item?.url || "", caption: item?.caption || "" }
+              )
+              .filter((item: any) => Boolean(item.url));
+          }
+        } catch {
+          // ignore
+        }
+      }
+    } else if (cert.slug && STATIC_CERTIFICATE_GALLERIES[cert.slug]) {
+      initialGallery = STATIC_CERTIFICATE_GALLERIES[cert.slug].map((i) => ({
+        url: i.url,
+        caption: i.caption || "",
+      }));
+    }
+    setGalleryImages(initialGallery);
+    setNewImageUrl("");
+    setNewImageCaption("");
     setDrawerOpen(true);
+  };
+
+  const handleAddGalleryImage = () => {
+    if (!newImageUrl.trim()) return;
+    setGalleryImages((prev) => [
+      ...prev,
+      { url: newImageUrl.trim(), caption: newImageCaption.trim() },
+    ]);
+    setNewImageUrl("");
+    setNewImageCaption("");
+  };
+
+  const handleRemoveGalleryImage = (index: number) => {
+    setGalleryImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleGalleryCaptionChange = (index: number, caption: string) => {
+    setGalleryImages((prev) =>
+      prev.map((img, i) => (i === index ? { ...img, caption } : img))
+    );
+  };
+
+  const handleGalleryFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `gallery_${Math.random().toString(36).substring(2, 10)}_${Date.now()}.${fileExt}`;
+    const filePath = `certificates/gallery/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('portfolio-media')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      addToast("Upload failed: Make sure 'portfolio-media' bucket exists and is public.", "error");
+      console.error(uploadError);
+    } else {
+      const { data: { publicUrl } } = supabase.storage
+        .from('portfolio-media')
+        .getPublicUrl(filePath);
+      
+      setGalleryImages((prev) => [...prev, { url: publicUrl, caption: "" }]);
+      addToast("Photo added to gallery!", "success");
+    }
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,6 +202,7 @@ export default function ManageCertificates() {
       date, 
       issuer, 
       pdf_url: pdfUrl, 
+      gallery_images: galleryImages,
       experience_url: experienceUrl.trim() || null,
       project_url: projectUrl.trim() || null,
       category, 
@@ -131,8 +215,14 @@ export default function ManageCertificates() {
     let error;
 
     if (editingId) {
-      const res = await supabase.from("certificates").update(certData).eq("id", editingId);
+      let res = await supabase.from("certificates").update(certData).eq("id", editingId);
       error = res.error;
+      // If gallery_images column does not exist yet in DB schema, fallback gracefully
+      if (error && error.message?.includes("'gallery_images'")) {
+        delete certData.gallery_images;
+        res = await supabase.from("certificates").update(certData).eq("id", editingId);
+        error = res.error;
+      }
       // If slug column does not exist yet in DB schema, fallback gracefully
       if (error && error.message?.includes("'slug'")) {
         delete certData.slug;
@@ -140,8 +230,13 @@ export default function ManageCertificates() {
         error = retryRes.error;
       }
     } else {
-      const res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
+      let res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
       error = res.error;
+      if (error && error.message?.includes("'gallery_images'")) {
+        delete certData.gallery_images;
+        res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
+        error = res.error;
+      }
       if (error && error.message?.includes("'slug'")) {
         delete certData.slug;
         const retryRes = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
@@ -401,6 +496,70 @@ export default function ManageCertificates() {
                 onChange={(e) => setProjectUrl(e.target.value)} 
                 style={inputStyle} 
               />
+            </div>
+          </div>
+
+          {/* Gallery Images Management */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", borderTop: "1px solid var(--admin-border)", paddingTop: "1rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 600, color: "var(--admin-text-main)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <Camera size={16} /> Event Photos / Image Gallery ({galleryImages.length})
+              </label>
+              <label className="admin-btn admin-btn-secondary" style={{ cursor: "pointer", fontSize: "0.8rem", padding: "0.3rem 0.75rem", display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                <Upload size={14} />
+                Upload Photo
+                <input type="file" accept="image/*" onChange={handleGalleryFileUpload} style={{ display: "none" }} />
+              </label>
+            </div>
+
+            {/* Existing images list */}
+            {galleryImages.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                {galleryImages.map((img, idx) => (
+                  <div key={idx} style={{ display: "flex", gap: "0.75rem", alignItems: "center", padding: "0.5rem", borderRadius: "8px", border: "1px solid var(--admin-border)", background: "rgba(255, 255, 255, 0.02)" }}>
+                    <img src={img.url} alt="Thumbnail" style={{ width: "45px", height: "45px", objectFit: "cover", borderRadius: "6px", flexShrink: 0 }} />
+                    <input 
+                      placeholder="Photo caption (e.g. Team presenting at hackathon)" 
+                      value={img.caption || ""} 
+                      onChange={(e) => handleGalleryCaptionChange(idx, e.target.value)} 
+                      style={{ ...inputStyle, flex: 1, fontSize: "0.82rem", padding: "0.35rem 0.6rem" }} 
+                    />
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveGalleryImage(idx)} 
+                      className="admin-btn admin-btn-danger" 
+                      style={{ padding: "0.35rem" }}
+                      title="Remove photo"
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Add image URL manually */}
+            <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+              <input 
+                placeholder="Or paste image URL (e.g. /assets/night-group-selfie.webp)" 
+                value={newImageUrl} 
+                onChange={(e) => setNewImageUrl(e.target.value)} 
+                style={{ ...inputStyle, flex: 2, fontSize: "0.82rem" }} 
+              />
+              <input 
+                placeholder="Caption (optional)" 
+                value={newImageCaption} 
+                onChange={(e) => setNewImageCaption(e.target.value)} 
+                style={{ ...inputStyle, flex: 2, fontSize: "0.82rem" }} 
+              />
+              <button 
+                type="button" 
+                onClick={handleAddGalleryImage} 
+                className="admin-btn admin-btn-secondary"
+                style={{ fontSize: "0.82rem", whiteSpace: "nowrap", padding: "0.45rem 0.9rem" }}
+              >
+                Add Photo
+              </button>
             </div>
           </div>
           

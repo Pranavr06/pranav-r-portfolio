@@ -4038,3 +4038,14 @@ body.dark-theme select.premium-input:focus {
         font-size: 1.75rem !important;
     }
 }
+
+/* Certificate Photo Gallery & Lightbox */
+.cert-gallery-card:hover {
+    transform: translateY(-4px) scale(1.01);
+    border-color: rgba(0, 112, 243, 0.45) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3) !important;
+}
+
+.cert-gallery-card:hover .cert-gallery-img {
+    transform: scale(1.05);
+}

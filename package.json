@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "sync:certs": "node scripts/sync-certificate-slugs.mjs"
+    "sync:certs": "node scripts/sync-certificate-slugs.mjs",
+    "sync:gallery": "node scripts/setup-certificate-gallery.mjs"
   },
   "dependencies": {
     "@marsidev/react-turnstile": "^1.5.2",
