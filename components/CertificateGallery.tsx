@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Camera, X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import { CertificateImage } from "@/lib/certificateGalleries";
@@ -16,6 +16,11 @@ export default function CertificateGallery({
 }) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
+
+  // Swipe handling
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const minSwipeDistance = 45;
 
   useEffect(() => {
     setMounted(true);
@@ -38,6 +43,30 @@ export default function CertificateGallery({
       prev === null ? null : (prev + 1) % images.length
     );
   }, [images.length]);
+
+  // Touch event handlers for mobile swipe
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchEndX.current = null;
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const distance = touchStartX.current - touchEndX.current;
+    if (distance > minSwipeDistance) {
+      // Swiped Left -> Next
+      handleNext();
+    } else if (distance < -minSwipeDistance) {
+      // Swiped Right -> Prev
+      handlePrev();
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   // Keyboard navigation & body scroll lock
   useEffect(() => {
@@ -148,7 +177,7 @@ export default function CertificateGallery({
               flexDirection: "column",
               justifyContent: "space-between",
               alignItems: "center",
-              padding: "1rem",
+              padding: "0.75rem 0.5rem 1rem 0.5rem",
               boxSizing: "border-box",
             }}
             role="dialog"
@@ -201,9 +230,12 @@ export default function CertificateGallery({
               </button>
             </div>
 
-            {/* Central Image View with Navigation Chevrons */}
+            {/* Central Image View with Swipe Touch Handlers */}
             <div
               onClick={(e) => e.stopPropagation()}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
               style={{
                 flex: 1,
                 width: "100%",
@@ -213,36 +245,20 @@ export default function CertificateGallery({
                 justifyContent: "center",
                 position: "relative",
                 minHeight: 0,
-                padding: "0.5rem",
+                padding: "0.25rem",
                 boxSizing: "border-box",
+                touchAction: "pan-y",
+                userSelect: "none",
+                WebkitUserSelect: "none",
               }}
             >
-              {/* Previous Button */}
+              {/* Previous Button (Desktop only - hidden on mobile) */}
               {images.length > 1 && (
                 <button
                   type="button"
                   onClick={handlePrev}
                   aria-label="Previous photo"
-                  style={{
-                    position: "absolute",
-                    left: "0.5rem",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    background: "rgba(255, 255, 255, 0.15)",
-                    border: "1px solid rgba(255, 255, 255, 0.25)",
-                    color: "#fff",
-                    borderRadius: "50%",
-                    width: "48px",
-                    height: "48px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    zIndex: 1000000,
-                    backdropFilter: "blur(6px)",
-                    WebkitBackdropFilter: "blur(6px)",
-                    transition: "background 0.2s ease, transform 0.2s ease",
-                  }}
+                  className="cert-lightbox-nav-btn cert-lightbox-nav-prev"
                 >
                   <ChevronLeft size={28} />
                 </button>
@@ -252,8 +268,9 @@ export default function CertificateGallery({
               <img
                 src={images[selectedIndex].url}
                 alt={images[selectedIndex].caption || "Full size enlarged photo"}
+                draggable={false}
                 style={{
-                  maxWidth: "92vw",
+                  maxWidth: "96vw",
                   maxHeight: "75vh",
                   width: "auto",
                   height: "auto",
@@ -261,61 +278,74 @@ export default function CertificateGallery({
                   borderRadius: "10px",
                   boxShadow: "0 12px 48px rgba(0, 0, 0, 0.8)",
                   display: "block",
+                  pointerEvents: "auto",
                 }}
               />
 
-              {/* Next Button */}
+              {/* Next Button (Desktop only - hidden on mobile) */}
               {images.length > 1 && (
                 <button
                   type="button"
                   onClick={handleNext}
                   aria-label="Next photo"
-                  style={{
-                    position: "absolute",
-                    right: "0.5rem",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    background: "rgba(255, 255, 255, 0.15)",
-                    border: "1px solid rgba(255, 255, 255, 0.25)",
-                    color: "#fff",
-                    borderRadius: "50%",
-                    width: "48px",
-                    height: "48px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    zIndex: 1000000,
-                    backdropFilter: "blur(6px)",
-                    WebkitBackdropFilter: "blur(6px)",
-                    transition: "background 0.2s ease, transform 0.2s ease",
-                  }}
+                  className="cert-lightbox-nav-btn cert-lightbox-nav-next"
                 >
                   <ChevronRight size={28} />
                 </button>
               )}
             </div>
 
-            {/* Bottom Caption Bar */}
+            {/* Bottom Caption Bar with Pagination Dots */}
             <div
               onClick={(e) => e.stopPropagation()}
               style={{
                 width: "100%",
                 maxWidth: "800px",
                 textAlign: "center",
-                padding: "0.5rem 1rem 1rem 1rem",
+                padding: "0.5rem 1rem 0.5rem 1rem",
                 color: "#fff",
                 zIndex: 1000000,
                 boxSizing: "border-box",
               }}
             >
+              {/* Dot Indicators */}
+              {images.length > 1 && (
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "6px",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginBottom: "0.6rem",
+                  }}
+                >
+                  {images.map((_, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        width: i === selectedIndex ? "18px" : "6px",
+                        height: "6px",
+                        borderRadius: "3px",
+                        backgroundColor:
+                          i === selectedIndex
+                            ? "#ffffff"
+                            : "rgba(255, 255, 255, 0.35)",
+                        transition: "all 0.25s ease",
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Caption */}
               {images[selectedIndex].caption && (
                 <p
                   style={{
-                    fontSize: "1.05rem",
+                    fontSize: "0.95rem",
                     fontWeight: 500,
                     margin: 0,
-                    lineHeight: 1.5,
+                    lineHeight: 1.45,
+                    color: "rgba(255, 255, 255, 0.95)",
                   }}
                 >
                   {images[selectedIndex].caption}
