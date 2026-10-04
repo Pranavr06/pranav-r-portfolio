@@ -6,6 +6,7 @@ import ShareMenu from "@/components/ShareMenu";
 import { slugify } from "@/lib/slug";
 import { normalizeExperienceUrl, normalizeProjectUrl } from "@/lib/urls";
 import CertificateGallery from "@/components/CertificateGallery";
+import CertificateDocumentViewer from "@/components/CertificateDocumentViewer";
 import { getCertificateGallery } from "@/lib/certificateGalleries";
 import { Metadata } from "next";
 import Script from "next/script";
@@ -231,49 +232,12 @@ export default async function CertificateDetailPage({ params }: { params: Promis
 
           {/* Document Viewer / Preview */}
           {cert.pdf_url && cert.pdf_url !== "#" && (
-            <div style={{ marginTop: "1rem", width: "100%" }}>
-              <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.1)", paddingTop: "1.5rem", marginBottom: "1.25rem", textAlign: "center" }}>
-                <span style={{ fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1.5px", color: "var(--text-color-light)", fontWeight: 600 }}>
-                  Certificate Preview
-                </span>
-              </div>
-
-              <div className="cert-preview-container">
-                {isImage ? (
-                  <img 
-                    src={cert.pdf_url} 
-                    alt={cert.title} 
-                    className="cert-image-preview" 
-                  />
-                ) : (
-                  <iframe 
-                    src={`${cert.pdf_url}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`} 
-                    className="cert-preview-iframe" 
-                    title={`${cert.title} Document`}
-                  />
-                )}
-              </div>
-
-              <div className="cert-preview-actions">
-                <a 
-                  href={cert.pdf_url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn btn-color-2"
-                  style={{ padding: "0.5rem 1.4rem", fontSize: "0.9rem", borderRadius: "2rem", textDecoration: "none" }}
-                >
-                  View Full Screen ↗
-                </a>
-                <a 
-                  href={cert.pdf_url} 
-                  download={`${canonicalSlug}.pdf`}
-                  className="btn btn-color-1"
-                  style={{ padding: "0.5rem 1.4rem", fontSize: "0.9rem", borderRadius: "2rem", textDecoration: "none" }}
-                >
-                  Download PDF
-                </a>
-              </div>
-            </div>
+            <CertificateDocumentViewer
+              fileUrl={cert.pdf_url}
+              title={cert.title}
+              isImage={isImage}
+              canonicalSlug={canonicalSlug}
+            />
           )}
 
           {/* Event Photos & Image Gallery */}
