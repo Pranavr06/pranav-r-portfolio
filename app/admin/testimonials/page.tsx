@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Upload, Info, ExternalLink, FolderOpen } from "lucide-react";
+import { Upload, Info, ExternalLink, FolderOpen, Check, Edit2, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ToastProvider";
 import AdminDrawer from "@/components/AdminDrawer";
 import ConfirmModal from "@/components/ConfirmModal";
@@ -231,13 +231,13 @@ export default function AdminTestimonials() {
       </div>
 
       <div className="admin-table-container" style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "900px" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "1050px" }}>
           <thead>
             <tr style={{ background: "var(--admin-card-hover)", textAlign: "left" }}>
               <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>User & Profile</th>
               <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Testimonial Message</th>
               <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Status & Ordering</th>
-              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Actions</th>
+              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600, minWidth: "260px" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -358,45 +358,92 @@ export default function AdminTestimonials() {
                 </td>
 
                 <td style={{ padding: "1.25rem 1.5rem", verticalAlign: "top" }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem" }}>
-                      <button 
-                        onClick={() => handleAction(t.id, 'update', { is_approved: !t.is_approved })}
-                        className={`admin-btn ${t.is_approved ? 'admin-btn-secondary' : 'admin-btn-primary'}`}
-                        style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
-                      >
-                        {t.is_approved ? "Unapprove" : "Approve"}
-                      </button>
-                      <button 
-                        onClick={() => handleAction(t.id, 'update', { is_verified: !t.is_verified })}
-                        className="admin-btn admin-btn-secondary"
-                        style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
-                      >
-                        {t.is_verified ? "Unverify In" : "Verify In"}
-                      </button>
-                      {t.github_url && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.55rem" }}>
+                    {/* Moderation / Verification Toggles */}
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", alignItems: "center" }}>
+                      <Tooltip content={t.is_approved ? "Currently approved. Click to unapprove." : "Currently pending. Click to approve."}>
                         <button 
-                          onClick={() => handleAction(t.id, 'update', { is_github_verified: !t.is_github_verified })}
-                          className="admin-btn admin-btn-secondary"
-                          style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
+                          onClick={() => handleAction(t.id, 'update', { is_approved: !t.is_approved })}
+                          className={`admin-btn ${t.is_approved ? 'admin-btn-secondary' : 'admin-btn-primary'}`}
+                          style={{
+                            padding: "0.3rem 0.65rem",
+                            fontSize: "0.78rem",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            color: t.is_approved ? "#10b981" : "#fff",
+                            borderColor: t.is_approved ? "rgba(16, 185, 129, 0.4)" : undefined,
+                            backgroundColor: t.is_approved ? "rgba(16, 185, 129, 0.08)" : undefined,
+                          }}
                         >
-                          {t.is_github_verified ? "Unverify GH" : "Verify GH"}
+                          <Check size={13} />
+                          {t.is_approved ? "Unapprove" : "Approve"}
                         </button>
+                      </Tooltip>
+
+                      <Tooltip content={t.is_verified ? "LinkedIn badge active. Click to unverify." : "Click to mark LinkedIn as verified."}>
+                        <button 
+                          onClick={() => handleAction(t.id, 'update', { is_verified: !t.is_verified })}
+                          className="admin-btn admin-btn-secondary"
+                          style={{
+                            padding: "0.3rem 0.65rem",
+                            fontSize: "0.78rem",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.35rem",
+                            color: t.is_verified ? "#3b82f6" : "var(--admin-text-muted)",
+                            borderColor: t.is_verified ? "rgba(59, 130, 246, 0.4)" : "var(--admin-border)",
+                            backgroundColor: t.is_verified ? "rgba(59, 130, 246, 0.08)" : "transparent",
+                          }}
+                        >
+                          {t.is_verified ? <Check size={13} /> : null}
+                          {t.is_verified ? "Unverify LinkedIn" : "Verify LinkedIn"}
+                        </button>
+                      </Tooltip>
+
+                      {t.github_url && (
+                        <Tooltip content={t.is_github_verified ? "GitHub badge active. Click to unverify." : "Click to mark GitHub as verified."}>
+                          <button 
+                            onClick={() => handleAction(t.id, 'update', { is_github_verified: !t.is_github_verified })}
+                            className="admin-btn admin-btn-secondary"
+                            style={{
+                              padding: "0.3rem 0.65rem",
+                              fontSize: "0.78rem",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "0.35rem",
+                              color: t.is_github_verified ? "var(--admin-text-main)" : "var(--admin-text-muted)",
+                              borderColor: t.is_github_verified ? "rgba(107, 114, 128, 0.4)" : "var(--admin-border)",
+                              backgroundColor: t.is_github_verified ? "rgba(107, 114, 128, 0.12)" : "transparent",
+                            }}
+                          >
+                            {t.is_github_verified ? <Check size={13} /> : null}
+                            {t.is_github_verified ? "Unverify GitHub" : "Verify GitHub"}
+                          </button>
+                        </Tooltip>
                       )}
+                    </div>
+
+                    {/* Manage actions: Edit and Delete */}
+                    <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
                       <button 
                         onClick={() => openDrawerForEdit(t)}
                         className="admin-btn admin-btn-secondary"
-                        style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
+                        style={{ padding: "0.3rem 0.65rem", fontSize: "0.78rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
                       >
+                        <Edit2 size={13} />
                         Edit
                       </button>
                       <button 
                         onClick={() => setDeleteItem(t.id)}
                         className="admin-btn admin-btn-danger"
-                        style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
+                        style={{ padding: "0.3rem 0.65rem", fontSize: "0.78rem", display: "inline-flex", alignItems: "center", gap: "0.35rem" }}
                       >
+                        <Trash2 size={13} />
                         Delete
                       </button>
                     </div>
+                  </div>
                 </td>
               </tr>
             ))}
