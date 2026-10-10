@@ -75,7 +75,7 @@ export async function POST(req: Request) {
       const { error } = await supabase.from("testimonials").insert({
         ...updates,
         user_id: adminUser.id,
-        provider: "admin",
+        provider: updates?.provider || "admin",
         ip_hash: "admin",
       });
       if (error) throw error;

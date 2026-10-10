@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Upload, Info, ExternalLink } from "lucide-react";
 import { useToast } from "@/components/ToastProvider";
 import AdminDrawer from "@/components/AdminDrawer";
 import ConfirmModal from "@/components/ConfirmModal";
+import Tooltip from "@/components/admin/Tooltip";
 
 export default function AdminTestimonials() {
   const [loading, setLoading] = useState(true);
@@ -23,6 +25,8 @@ export default function AdminTestimonials() {
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [provider, setProvider] = useState("admin");
   const [message, setMessage] = useState("");
   const [linkedinUrl, setLinkedinUrl] = useState("");
   const [githubUrl, setGithubUrl] = useState("");
@@ -32,6 +36,7 @@ export default function AdminTestimonials() {
   const [status, setStatus] = useState("Published");
   const [sortOrder, setSortOrder] = useState("0");
   const [displayOrder, setDisplayOrder] = useState("");
+  const [submittedAt, setSubmittedAt] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTestimonials();
@@ -71,10 +76,12 @@ export default function AdminTestimonials() {
   const openDrawerForNew = () => {
     setEditingId(null);
     setName(""); setRole(""); setEmail(""); setMessage(""); 
+    setAvatarUrl(""); setProvider("admin");
     setLinkedinUrl(""); setGithubUrl("");
     setIsApproved(true); setIsVerified(false); setIsGithubVerified(false);
     setStatus("Published");
     setSortOrder("0"); setDisplayOrder("");
+    setSubmittedAt(null);
     setDrawerOpen(true);
   };
 
@@ -83,6 +90,8 @@ export default function AdminTestimonials() {
     setName(t.name || "");
     setRole(t.role || "");
     setEmail(t.email || "");
+    setAvatarUrl(t.avatar_url || "");
+    setProvider(t.provider || "admin");
     setMessage(t.message || "");
     setLinkedinUrl(t.linkedin_url || "");
     setGithubUrl(t.github_url || "");
@@ -91,8 +100,34 @@ export default function AdminTestimonials() {
     setIsGithubVerified(t.is_github_verified || false);
     setStatus(t.status || "Published");
     setSortOrder((t.sort_order || 0).toString());
-    setDisplayOrder(t.display_order !== null ? t.display_order.toString() : "");
+    setDisplayOrder(t.display_order !== null && t.display_order !== undefined ? t.display_order.toString() : "");
+    setSubmittedAt(t.created_at || null);
     setDrawerOpen(true);
+  };
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `avatar_${Math.random().toString(36).substring(2, 12)}_${Date.now()}.${fileExt}`;
+    const filePath = `testimonials/avatars/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('portfolio-media')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      addToast("Avatar upload failed: Make sure 'portfolio-media' bucket exists and is public.", "error");
+      console.error(uploadError);
+    } else {
+      const { data: { publicUrl } } = supabase.storage
+        .from('portfolio-media')
+        .getPublicUrl(filePath);
+
+      setAvatarUrl(publicUrl);
+      addToast("Avatar image uploaded successfully!", "success");
+    }
   };
 
   const handleAction = async (id: string, action: 'update' | 'delete', updates?: any) => {
@@ -127,16 +162,26 @@ export default function AdminTestimonials() {
   const handleSaveTestimonial = async (e: React.FormEvent) => {
     e.preventDefault();
     const tData = {
-      name, role, email, message, linkedin_url: linkedinUrl, github_url: githubUrl, 
-      is_approved: isApproved, is_verified: isVerified, is_github_verified: isGithubVerified,
-      status, sort_order: parseInt(sortOrder) || 0, display_order: displayOrder ? parseInt(displayOrder) : null
+      name, 
+      role, 
+      email, 
+      avatar_url: avatarUrl.trim() || null,
+      provider: provider.trim() || "admin",
+      message, 
+      linkedin_url: linkedinUrl.trim() || null, 
+      github_url: githubUrl.trim() || null, 
+      is_approved: isApproved, 
+      is_verified: isVerified, 
+      is_github_verified: isGithubVerified,
+      status, 
+      sort_order: parseInt(sortOrder) || 0, 
+      display_order: displayOrder ? parseInt(displayOrder) : null
     };
 
     if (editingId) {
       await handleAction(editingId, 'update', tData);
       setDrawerOpen(false);
     } else {
-      // Create new testimonial directly via supabase (bypassing /api/admin/testimonials POST since it doesn't handle inserts)
       const { error } = await supabase.from("testimonials").insert([{ ...tData, ip_hash: "admin-manual-entry" }]);
       if (error) {
         addToast("Error adding testimonial: " + error.message, "error");
@@ -168,54 +213,105 @@ export default function AdminTestimonials() {
         <div>
           <h1 className="admin-page-title">Testimonials</h1>
           <p style={{ color: "var(--admin-text-muted)", fontSize: "0.95rem", marginTop: "0.25rem" }}>
-            Review and approve user testimonials.
+            Review, approve, and manage all testimonial submissions and client profiles.
           </p>
         </div>
         <button onClick={openDrawerForNew} className="admin-btn admin-btn-primary">Add Testimonial</button>
       </div>
 
       <div className="admin-table-container" style={{ overflowX: "auto" }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "800px" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "900px" }}>
           <thead>
             <tr style={{ background: "var(--admin-card-hover)", textAlign: "left" }}>
-              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>User</th>
-              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Message</th>
-              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Status</th>
+              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>User & Profile</th>
+              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Testimonial Message</th>
+              <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Status & Ordering</th>
               <th style={{ padding: "1rem 1.5rem", borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.85rem", fontWeight: 600 }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {testimonials.map((t) => (
               <tr key={t.id} style={{ borderBottom: "1px solid var(--admin-border)", transition: "background-color 0.2s ease" }}>
-                <td style={{ padding: "1.5rem" }}>
-                  <strong style={{ color: "var(--admin-text-main)" }}>{t.name}</strong>
-                  <br />
-                  <span style={{ fontSize: "0.85rem", color: "var(--admin-text-muted)" }}>{t.role}</span>
-                  <br />
-                  <span style={{ fontSize: "0.85rem", color: "var(--admin-text-muted)" }}>{t.email}</span>
-                  <div style={{ marginTop: "0.5rem", display: "flex", gap: "0.5rem" }}>
-                    {t.linkedin_url && <a href={t.linkedin_url} target="_blank" rel="noopener noreferrer" style={{ color: "#3b82f6", fontSize: "0.8rem", textDecoration: "none", fontWeight: 500 }}>LinkedIn</a>}
-                    {t.github_url && <a href={t.github_url} target="_blank" rel="noopener noreferrer" style={{ color: "var(--admin-text-main)", fontSize: "0.8rem", textDecoration: "none", fontWeight: 500 }}>GitHub</a>}
+                <td style={{ padding: "1.25rem 1.5rem", verticalAlign: "top" }}>
+                  <div style={{ display: "flex", gap: "0.85rem", alignItems: "flex-start" }}>
+                    {/* User Avatar */}
+                    {t.avatar_url ? (
+                      <img 
+                        src={t.avatar_url} 
+                        alt={t.name || "Avatar"} 
+                        style={{ width: "42px", height: "42px", borderRadius: "50%", objectFit: "cover", border: "1px solid var(--admin-border)", flexShrink: 0, backgroundColor: "rgba(255, 255, 255, 0.05)" }} 
+                      />
+                    ) : (
+                      <div style={{ width: "42px", height: "42px", borderRadius: "50%", backgroundColor: "var(--admin-card-hover)", border: "1px dashed var(--admin-border)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600, color: "var(--admin-text-main)", fontSize: "0.95rem", flexShrink: 0 }}>
+                        {t.name ? t.name.charAt(0).toUpperCase() : "?"}
+                      </div>
+                    )}
+                    <div>
+                      <strong style={{ color: "var(--admin-text-main)", fontSize: "0.95rem" }}>{t.name}</strong>
+                      <br />
+                      <span style={{ fontSize: "0.85rem", color: "var(--admin-text-muted)" }}>{t.role || "No role specified"}</span>
+                      <br />
+                      <span style={{ fontSize: "0.82rem", color: "var(--admin-text-muted)" }}>{t.email || "No email"}</span>
+                      
+                      <div style={{ marginTop: "0.45rem", display: "flex", gap: "0.4rem", alignItems: "center", flexWrap: "wrap" }}>
+                        {t.provider && (
+                          <span 
+                            className="admin-badge neutral" 
+                            style={{ 
+                              fontSize: "0.72rem", 
+                              padding: "0.15rem 0.45rem", 
+                              textTransform: "capitalize",
+                              backgroundColor: "var(--admin-card-hover)",
+                              color: "var(--admin-text-main)"
+                            }}
+                          >
+                            Auth: {t.provider}
+                          </span>
+                        )}
+                        {t.linkedin_url && (
+                          <a href={t.linkedin_url} target="_blank" rel="noopener noreferrer" style={{ color: "#3b82f6", fontSize: "0.8rem", textDecoration: "none", fontWeight: 500, display: "inline-flex", alignItems: "center", gap: "0.2rem" }}>
+                            LinkedIn <ExternalLink size={11} />
+                          </a>
+                        )}
+                        {t.github_url && (
+                          <a href={t.github_url} target="_blank" rel="noopener noreferrer" style={{ color: "var(--admin-text-main)", fontSize: "0.8rem", textDecoration: "none", fontWeight: 500, display: "inline-flex", alignItems: "center", gap: "0.2rem" }}>
+                            GitHub <ExternalLink size={11} />
+                          </a>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </td>
-                <td style={{ padding: "1.5rem", maxWidth: "300px" }}>
-                  <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.5, wordBreak: "break-word", color: "var(--admin-text-main)" }}>{t.message}</p>
-                  <p style={{ margin: 0, fontSize: "0.75rem", color: "var(--admin-text-muted)", marginTop: "0.5rem" }}>
-                    IP Hash: {t.ip_hash ? `${t.ip_hash.substring(0, 8)}...` : 'N/A'}
+
+                <td style={{ padding: "1.25rem 1.5rem", maxWidth: "340px", verticalAlign: "top" }}>
+                  <p style={{ margin: 0, fontSize: "0.9rem", lineHeight: 1.5, wordBreak: "break-word", color: "var(--admin-text-main)" }}>
+                    "{t.message}"
                   </p>
+                  <div style={{ margin: 0, fontSize: "0.75rem", color: "var(--admin-text-muted)", marginTop: "0.6rem", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
+                    {t.created_at && (
+                      <span>Submitted: {new Date(t.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}</span>
+                    )}
+                    <span>IP Hash: {t.ip_hash ? `${t.ip_hash.substring(0, 10)}...` : 'N/A'}</span>
+                  </div>
                 </td>
-                <td style={{ padding: "1.5rem" }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                    <span className={`admin-badge ${t.status === "Draft" ? "draft" : "published"}`} style={{ backgroundColor: t.status === "Draft" ? "rgba(107, 114, 128, 0.1)" : "rgba(59, 130, 246, 0.1)", color: t.status === "Draft" ? "var(--admin-text-main)" : "#3b82f6", alignSelf: "flex-start" }}>
-                      {t.status || "Published"}
-                    </span>
-                    <span className={`admin-badge ${t.is_approved ? 'published' : 'draft'}`} style={{ alignSelf: "flex-start" }}>
-                      {t.is_approved ? "Approved" : "Pending"}
-                    </span>
-                    {t.is_verified && <span className="admin-badge neutral" style={{ backgroundColor: "rgba(59, 130, 246, 0.1)", color: "#3b82f6", alignSelf: "flex-start" }}>Verified LinkedIn</span>}
-                    {t.is_github_verified && <span className="admin-badge neutral" style={{ backgroundColor: "rgba(107, 114, 128, 0.1)", color: "var(--admin-text-main)", alignSelf: "flex-start" }}>Verified GitHub</span>}
+
+                <td style={{ padding: "1.25rem 1.5rem", verticalAlign: "top" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "0.45rem" }}>
+                    <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                      <span className={`admin-badge ${t.status === "Draft" ? "draft" : "published"}`} style={{ backgroundColor: t.status === "Draft" ? "rgba(107, 114, 128, 0.1)" : "rgba(59, 130, 246, 0.1)", color: t.status === "Draft" ? "var(--admin-text-main)" : "#3b82f6" }}>
+                        {t.status || "Published"}
+                      </span>
+                      <span className={`admin-badge ${t.is_approved ? 'published' : 'draft'}`}>
+                        {t.is_approved ? "Approved" : "Pending"}
+                      </span>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                      {t.is_verified && <span className="admin-badge neutral" style={{ backgroundColor: "rgba(59, 130, 246, 0.1)", color: "#3b82f6", fontSize: "0.72rem" }}>Verified LinkedIn</span>}
+                      {t.is_github_verified && <span className="admin-badge neutral" style={{ backgroundColor: "rgba(107, 114, 128, 0.1)", color: "var(--admin-text-main)", fontSize: "0.72rem" }}>Verified GitHub</span>}
+                    </div>
                     
-                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.5rem" }}>
+                    <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.3rem" }}>
                       <span style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)" }}>Sort:</span>
                       <input 
                         type="number" 
@@ -227,7 +323,7 @@ export default function AdminTestimonials() {
                             handleAction(t.id, 'update', { sort_order: Math.max(0, newSort) });
                           }
                         }}
-                        style={{ width: "50px", padding: "0.2rem 0.4rem", borderRadius: "4px", border: "1px solid var(--admin-border)", background: "transparent", color: "inherit", fontSize: "0.85rem" }}
+                        style={{ width: "55px", padding: "0.2rem 0.4rem", borderRadius: "4px", border: "1px solid var(--admin-border)", background: "transparent", color: "inherit", fontSize: "0.85rem" }}
                       />
                     </div>
                     <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
@@ -244,13 +340,14 @@ export default function AdminTestimonials() {
                             handleAction(t.id, 'update', { display_order: newOrder });
                           }
                         }}
-                        style={{ width: "50px", padding: "0.2rem 0.4rem", borderRadius: "4px", border: "1px solid var(--admin-border)", background: "transparent", color: "inherit", fontSize: "0.85rem" }}
+                        style={{ width: "55px", padding: "0.2rem 0.4rem", borderRadius: "4px", border: "1px solid var(--admin-border)", background: "transparent", color: "inherit", fontSize: "0.85rem" }}
                       />
                     </div>
                   </div>
                 </td>
-                <td style={{ padding: "1.5rem" }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+
+                <td style={{ padding: "1.25rem 1.5rem", verticalAlign: "top" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem" }}>
                       <button 
                         onClick={() => handleAction(t.id, 'update', { is_approved: !t.is_approved })}
                         className={`admin-btn ${t.is_approved ? 'admin-btn-secondary' : 'admin-btn-primary'}`}
@@ -263,7 +360,7 @@ export default function AdminTestimonials() {
                         className="admin-btn admin-btn-secondary"
                         style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
                       >
-                        {t.is_verified ? "Unverify LinkedIn" : "Verify LinkedIn"}
+                        {t.is_verified ? "Unverify In" : "Verify In"}
                       </button>
                       {t.github_url && (
                         <button 
@@ -271,7 +368,7 @@ export default function AdminTestimonials() {
                           className="admin-btn admin-btn-secondary"
                           style={{ padding: "0.3rem 0.6rem", fontSize: "0.8rem" }}
                         >
-                          {t.is_github_verified ? "Unverify GitHub" : "Verify GitHub"}
+                          {t.is_github_verified ? "Unverify GH" : "Verify GH"}
                         </button>
                       )}
                       <button 
@@ -316,21 +413,67 @@ export default function AdminTestimonials() {
             </div>
           </div>
 
+          <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: "1rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Email</label>
+              <input type="email" placeholder="E.g. jane@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Auth Provider</label>
+              <select value={provider} onChange={(e) => setProvider(e.target.value)} style={{ ...inputStyle, cursor: "pointer" }}>
+                <option value="admin">Admin Manual</option>
+                <option value="google">Google</option>
+                <option value="github">GitHub</option>
+                <option value="linkedin">LinkedIn</option>
+                <option value="legacy">Legacy</option>
+              </select>
+            </div>
+          </div>
+
+          {/* User Avatar Field */}
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Email</label>
-            <input type="email" placeholder="E.g. jane@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required style={inputStyle} />
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+              Avatar / Profile Picture (avatar_url)
+              <Tooltip content="URL to user's photo or local path like /assets/client-1.webp. Upload directly via button.">
+                <Info size={14} style={{ color: "var(--admin-text-muted)", cursor: "help" }} />
+              </Tooltip>
+            </label>
+            <div style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>
+              {avatarUrl ? (
+                <img 
+                  src={avatarUrl} 
+                  alt="Avatar Preview" 
+                  style={{ width: "42px", height: "42px", borderRadius: "50%", objectFit: "cover", border: "1px solid var(--admin-border)", flexShrink: 0, backgroundColor: "rgba(255,255,255,0.05)" }} 
+                />
+              ) : (
+                <div style={{ width: "42px", height: "42px", borderRadius: "50%", border: "1px dashed var(--admin-border)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "0.75rem", color: "var(--admin-text-muted)", fontWeight: 600 }}>
+                  {name ? name.charAt(0).toUpperCase() : "?"}
+                </div>
+              )}
+              <input 
+                placeholder="e.g. /assets/client-1.webp or image URL" 
+                value={avatarUrl} 
+                onChange={(e) => setAvatarUrl(e.target.value)} 
+                style={{ ...inputStyle, flex: 1 }} 
+              />
+              <label className="admin-btn admin-btn-secondary" style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", whiteSpace: "nowrap" }}>
+                <Upload size={14} />
+                Upload Avatar
+                <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: "none" }} />
+              </label>
+            </div>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Message</label>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Testimonial Message</label>
             <textarea placeholder="Their actual testimonial..." value={message} onChange={(e) => setMessage(e.target.value)} required style={{...inputStyle, minHeight: "120px", resize: "vertical"}} />
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Links</label>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Social Profile Links</label>
             <div style={{ display: "flex", gap: "0.5rem" }}>
-              <input placeholder="LinkedIn URL" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} style={{...inputStyle, flex: 1}} />
-              <input placeholder="GitHub URL" value={githubUrl} onChange={(e) => setGithubUrl(e.target.value)} style={{...inputStyle, flex: 1}} />
+              <input placeholder="LinkedIn URL (e.g. https://www.linkedin.com/in/...)" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} style={{...inputStyle, flex: 1}} />
+              <input placeholder="GitHub URL (optional)" value={githubUrl} onChange={(e) => setGithubUrl(e.target.value)} style={{...inputStyle, flex: 1}} />
             </div>
           </div>
           
@@ -354,7 +497,7 @@ export default function AdminTestimonials() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Status & Verification</label>
-            <div style={{ display: "flex", gap: "1.5rem", marginTop: "0.25rem" }}>
+            <div style={{ display: "flex", gap: "1.5rem", marginTop: "0.25rem", flexWrap: "wrap" }}>
               <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.9rem", color: "var(--admin-text-main)", cursor: "pointer" }}>
                 <input type="checkbox" checked={isApproved} onChange={(e) => setIsApproved(e.target.checked)} style={{ width: "16px", height: "16px", cursor: "pointer" }} />
                 Approved
@@ -369,6 +512,12 @@ export default function AdminTestimonials() {
               </label>
             </div>
           </div>
+
+          {submittedAt && (
+            <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)", borderTop: "1px solid var(--admin-border)", paddingTop: "0.75rem" }}>
+              Submitted on: {new Date(submittedAt).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+            </div>
+          )}
 
           <div style={{ marginTop: "1rem", display: "flex", justifyContent: "flex-end", gap: "1rem" }}>
             <button type="button" onClick={() => setDrawerOpen(false)} className="admin-btn admin-btn-secondary">Cancel</button>
