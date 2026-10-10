@@ -247,6 +247,7 @@ export default async function CertificateDetailPage({ params }: { params: Promis
             <CertificateGallery 
               images={galleryImages} 
               title={cert.title} 
+              galleryTitle={cert.gallery_title}
             />
           </section>
         )}

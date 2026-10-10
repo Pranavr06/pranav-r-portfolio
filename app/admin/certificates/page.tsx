@@ -32,11 +32,13 @@ export default function ManageCertificates() {
   // Form state
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [date, setDate] = useState("");
   const [issuer, setIssuer] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
   const [experienceUrl, setExperienceUrl] = useState("");
   const [projectUrl, setProjectUrl] = useState("");
+  const [galleryTitle, setGalleryTitle] = useState("");
   const [galleryImages, setGalleryImages] = useState<Array<{ url: string; caption?: string }>>([]);
   const [newImageUrl, setNewImageUrl] = useState("");
   const [newImageCaption, setNewImageCaption] = useState("");
@@ -65,8 +67,8 @@ export default function ManageCertificates() {
 
   const openDrawerForNew = () => {
     setEditingId(null);
-    setTitle(""); setSlug(""); setDate(""); setIssuer(""); setPdfUrl(""); 
-    setExperienceUrl(""); setProjectUrl("");
+    setTitle(""); setSlug(""); setImageUrl(""); setDate(""); setIssuer(""); setPdfUrl(""); 
+    setExperienceUrl(""); setProjectUrl(""); setGalleryTitle("");
     setGalleryImages([]); setNewImageUrl(""); setNewImageCaption("");
     setCategory("course"); setDescription(""); setStatus("Published");
     setSortOrder("0"); setDisplayOrder("");
@@ -77,11 +79,13 @@ export default function ManageCertificates() {
     setEditingId(cert.id);
     setTitle(cert.title || "");
     setSlug(cert.slug || slugify(cert.title || ""));
+    setImageUrl(cert.image_url || "");
     setDate(cert.date || "");
     setIssuer(cert.issuer || "");
     setPdfUrl(cert.pdf_url || "");
     setExperienceUrl(cert.experience_url || "");
     setProjectUrl(cert.project_url || "");
+    setGalleryTitle(cert.gallery_title || "");
     setCategory(cert.category || "");
     setDescription(cert.description || "");
     setStatus(cert.status || "Published");
@@ -168,6 +172,31 @@ export default function ManageCertificates() {
     }
   };
 
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `logo_${Math.random().toString(36).substring(2, 12)}_${Date.now()}.${fileExt}`;
+    const filePath = `certificates/logos/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('portfolio-media')
+      .upload(filePath, file);
+
+    if (uploadError) {
+      addToast("Logo upload failed: Make sure 'portfolio-media' bucket exists and is public.", "error");
+      console.error(uploadError);
+    } else {
+      const { data: { publicUrl } } = supabase.storage
+        .from('portfolio-media')
+        .getPublicUrl(filePath);
+
+      setImageUrl(publicUrl);
+      addToast("Certificate logo uploaded!", "success");
+    }
+  };
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -199,9 +228,11 @@ export default function ManageCertificates() {
     const certData: any = {
       title, 
       slug: computedSlug,
+      image_url: imageUrl.trim() || null,
       date, 
       issuer, 
       pdf_url: pdfUrl, 
+      gallery_title: galleryTitle.trim() || null,
       gallery_images: galleryImages,
       experience_url: experienceUrl.trim() || null,
       project_url: projectUrl.trim() || null,
@@ -217,6 +248,12 @@ export default function ManageCertificates() {
     if (editingId) {
       let res = await supabase.from("certificates").update(certData).eq("id", editingId);
       error = res.error;
+      // If gallery_title column does not exist yet in DB schema, fallback gracefully
+      if (error && error.message?.includes("'gallery_title'")) {
+        delete certData.gallery_title;
+        res = await supabase.from("certificates").update(certData).eq("id", editingId);
+        error = res.error;
+      }
       // If gallery_images column does not exist yet in DB schema, fallback gracefully
       if (error && error.message?.includes("'gallery_images'")) {
         delete certData.gallery_images;
@@ -232,6 +269,11 @@ export default function ManageCertificates() {
     } else {
       let res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
       error = res.error;
+      if (error && error.message?.includes("'gallery_title'")) {
+        delete certData.gallery_title;
+        res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
+        error = res.error;
+      }
       if (error && error.message?.includes("'gallery_images'")) {
         delete certData.gallery_images;
         res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
@@ -319,13 +361,26 @@ export default function ManageCertificates() {
         ) : (
           displayedCertificates.map((c) => (
             <div key={c.id} className="admin-table-row" style={{ gridTemplateColumns: "3fr 1fr 1fr 1.5fr" }}>
-              <div>
-                <div style={{ fontWeight: 500 }}>
-                  {c.title}
-                  {c.status === "Draft" && <span style={{ marginLeft: "0.5rem", fontSize: "0.75rem", padding: "0.1rem 0.4rem", borderRadius: "10px", backgroundColor: "rgba(107, 114, 128, 0.1)", color: "var(--admin-text-main)", fontWeight: 400 }}>Draft</span>}
-                </div>
-                <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)" }}>
-                  /{c.slug || slugify(c.title)} • {CERT_CATEGORIES.find(cat => cat.value === c.category)?.label || c.category} • {c.date}
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                {c.image_url ? (
+                  <img 
+                    src={c.image_url} 
+                    alt="Logo" 
+                    style={{ width: "36px", height: "36px", objectFit: "contain", borderRadius: "6px", backgroundColor: "rgba(255, 255, 255, 0.05)", border: "1px solid var(--admin-border)", padding: "2px", flexShrink: 0 }} 
+                  />
+                ) : (
+                  <div style={{ width: "36px", height: "36px", borderRadius: "6px", backgroundColor: "rgba(255, 255, 255, 0.02)", border: "1px dashed var(--admin-border)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "0.65rem", color: "var(--admin-text-muted)" }}>
+                    —
+                  </div>
+                )}
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ fontWeight: 500 }}>
+                    {c.title}
+                    {c.status === "Draft" && <span style={{ marginLeft: "0.5rem", fontSize: "0.75rem", padding: "0.1rem 0.4rem", borderRadius: "10px", backgroundColor: "rgba(107, 114, 128, 0.1)", color: "var(--admin-text-main)", fontWeight: 400 }}>Draft</span>}
+                  </div>
+                  <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    /{c.slug || slugify(c.title)} • {CERT_CATEGORIES.find(cat => cat.value === c.category)?.label || c.category} • {c.date}
+                  </div>
                 </div>
               </div>
               
@@ -461,6 +516,38 @@ export default function ManageCertificates() {
             </select>
           </div>
 
+          {/* Certificate Logo */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+              Certificate Logo / Organization Icon
+              <Tooltip content="Organization thumbnail logo displayed on certificates page and detail card (image_url in database).">
+                <Info size={14} style={{ color: "var(--admin-text-muted)", cursor: "help" }} />
+              </Tooltip>
+            </label>
+            <div style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>
+              {imageUrl ? (
+                <div style={{ width: "42px", height: "42px", borderRadius: "8px", border: "1px solid var(--admin-border)", padding: "3px", backgroundColor: "rgba(255, 255, 255, 0.05)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <img src={imageUrl} alt="Logo preview" style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+                </div>
+              ) : (
+                <div style={{ width: "42px", height: "42px", borderRadius: "8px", border: "1px dashed var(--admin-border)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "0.65rem", color: "var(--admin-text-muted)", textAlign: "center" }}>
+                  No Logo
+                </div>
+              )}
+              <input 
+                placeholder="e.g. /assets/SIH-logo.webp (or upload)" 
+                value={imageUrl} 
+                onChange={(e) => setImageUrl(e.target.value)} 
+                style={{ ...inputStyle, flex: 1 }} 
+              />
+              <label className="admin-btn admin-btn-secondary" style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", whiteSpace: "nowrap" }}>
+                <Upload size={14} />
+                Upload Logo
+                <input type="file" accept="image/*" onChange={handleLogoUpload} style={{ display: "none" }} />
+              </label>
+            </div>
+          </div>
+
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Description</label>
             <textarea placeholder="Brief details about the certificate..." value={description} onChange={(e) => setDescription(e.target.value)} required style={{...inputStyle, minHeight: "80px", resize: "vertical"}} />
@@ -510,6 +597,22 @@ export default function ManageCertificates() {
                 Upload Photo
                 <input type="file" accept="image/*" onChange={handleGalleryFileUpload} style={{ display: "none" }} />
               </label>
+            </div>
+
+            {/* Custom Gallery Heading */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+              <label style={{ fontSize: "0.8rem", fontWeight: 500, color: "var(--admin-text-main)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                Gallery Section Heading (Optional)
+                <Tooltip content="Custom title to replace 'Event Photos & Highlights' on the certificate page">
+                  <Info size={14} style={{ color: "var(--admin-text-muted)", cursor: "help" }} />
+                </Tooltip>
+              </label>
+              <input 
+                placeholder="Default: Event Photos & Highlights (e.g. Ideathon Moments & Presentation)"
+                value={galleryTitle}
+                onChange={(e) => setGalleryTitle(e.target.value)}
+                style={{ ...inputStyle, fontSize: "0.85rem" }}
+              />
             </div>
 
             {/* Existing images list */}
