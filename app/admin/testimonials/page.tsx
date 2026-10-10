@@ -141,7 +141,7 @@ export default function AdminTestimonials() {
     }
   };
 
-  const handleAction = async (id: string, action: 'update' | 'delete', updates?: any) => {
+  const handleAction = async (id: string | null, action: 'update' | 'delete' | 'create', updates?: any) => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) return;
@@ -163,6 +163,7 @@ export default function AdminTestimonials() {
       fetchTestimonials();
       let toastMsg = "Testimonial updated";
       if (action === 'delete') toastMsg = "Testimonial permanently deleted";
+      else if (action === 'create') toastMsg = "Testimonial created successfully";
       else if (updates && updates.is_archived) toastMsg = "Testimonial moved to trash";
       addToast(toastMsg, "success");
     } catch (err: any) {
@@ -191,17 +192,10 @@ export default function AdminTestimonials() {
 
     if (editingId) {
       await handleAction(editingId, 'update', tData);
-      setDrawerOpen(false);
     } else {
-      const { error } = await supabase.from("testimonials").insert([{ ...tData, ip_hash: "admin-manual-entry" }]);
-      if (error) {
-        addToast("Error adding testimonial: " + error.message, "error");
-      } else {
-        addToast("Testimonial created", "success");
-        setDrawerOpen(false);
-        fetchTestimonials();
-      }
+      await handleAction(null, 'create', tData);
     }
+    setDrawerOpen(false);
   };
 
   if (loading) {

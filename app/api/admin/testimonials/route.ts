@@ -74,9 +74,9 @@ export async function POST(req: Request) {
     if (action === 'create') {
       const { error } = await supabase.from("testimonials").insert({
         ...updates,
-        user_id: adminUser.id,
+        user_id: updates?.user_id || adminUser.id,
         provider: updates?.provider || "admin",
-        ip_hash: "admin",
+        ip_hash: updates?.ip_hash || "admin-manual-entry",
       });
       if (error) throw error;
       
@@ -103,8 +103,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ error: "Invalid action" }, { status: 400 });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Admin API Error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json({ error: error?.message || "Internal server error" }, { status: 500 });
   }
 }
