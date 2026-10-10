@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Edit2, ExternalLink, Info, Camera, Upload } from "lucide-react";
+import { Plus, Trash2, Edit2, ExternalLink, Info, Camera, Upload, FolderOpen } from "lucide-react";
 import AdminDrawer from "@/components/AdminDrawer";
 import Tooltip from "@/components/admin/Tooltip";
 import { useToast } from "@/components/ToastProvider";
 import ConfirmModal from "@/components/ConfirmModal";
+import AssetPickerModal from "@/components/admin/AssetPickerModal";
 import { slugify } from "@/lib/slug";
 import { STATIC_CERTIFICATE_GALLERIES } from "@/lib/certificateGalleries";
 
@@ -28,6 +29,15 @@ export default function ManageCertificates() {
   const [deleteItem, setDeleteItem] = useState<string | null>(null);
   const router = useRouter();
   const { addToast } = useToast();
+
+  // Assets Picker State
+  const [assetPickerOpen, setAssetPickerOpen] = useState(false);
+  const [assetPickerTarget, setAssetPickerTarget] = useState<"logo" | "pdf" | "gallery">("logo");
+  const [assetList, setAssetList] = useState<{ logos: any[]; documents: any[]; images: any[] }>({
+    logos: [],
+    documents: [],
+    images: [],
+  });
 
   // Form state
   const [title, setTitle] = useState("");
@@ -50,7 +60,24 @@ export default function ManageCertificates() {
 
   useEffect(() => {
     fetchCertificates();
+    fetchAssets();
   }, [router]);
+
+  const fetchAssets = async () => {
+    try {
+      const res = await fetch("/api/admin/assets");
+      if (res.ok) {
+        const data = await res.json();
+        setAssetList({
+          logos: data.logos || [],
+          documents: data.documents || [],
+          images: data.images || [],
+        });
+      }
+    } catch (e) {
+      // ignore
+    }
+  };
 
   const fetchCertificates = async () => {
     setLoading(true);
@@ -535,11 +562,22 @@ export default function ManageCertificates() {
                 </div>
               )}
               <input 
-                placeholder="e.g. /assets/SIH-logo.webp (or upload)" 
+                list="asset-cert-logos"
+                placeholder="e.g. /assets/SIH-logo.webp (or pick/upload)" 
                 value={imageUrl} 
                 onChange={(e) => setImageUrl(e.target.value)} 
                 style={{ ...inputStyle, flex: 1 }} 
               />
+              <button
+                type="button"
+                onClick={() => { setAssetPickerTarget("logo"); setAssetPickerOpen(true); }}
+                className="admin-btn admin-btn-secondary"
+                style={{ display: "flex", alignItems: "center", gap: "0.4rem", whiteSpace: "nowrap" }}
+                title="Browse and pick from /public/assets"
+              >
+                <FolderOpen size={14} />
+                Assets
+              </button>
               <label className="admin-btn admin-btn-secondary" style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", whiteSpace: "nowrap" }}>
                 <Upload size={14} />
                 Upload Logo
@@ -556,9 +594,26 @@ export default function ManageCertificates() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>File/PDF URL</label>
             <div style={{ display: "flex", gap: "0.5rem" }}>
-              <input placeholder="File URL (or upload via button)" value={pdfUrl} onChange={(e) => setPdfUrl(e.target.value)} required style={{...inputStyle, flex: 1}} />
+              <input 
+                list="asset-cert-docs"
+                placeholder="File URL (e.g. /assets/AIC-certificate.pdf or upload)" 
+                value={pdfUrl} 
+                onChange={(e) => setPdfUrl(e.target.value)} 
+                required 
+                style={{...inputStyle, flex: 1}} 
+              />
+              <button
+                type="button"
+                onClick={() => { setAssetPickerTarget("pdf"); setAssetPickerOpen(true); }}
+                className="admin-btn admin-btn-secondary"
+                style={{ display: "flex", alignItems: "center", gap: "0.4rem", whiteSpace: "nowrap" }}
+                title="Browse and pick PDF/document from /public/assets"
+              >
+                <FolderOpen size={14} />
+                Assets
+              </button>
               <label className="admin-btn admin-btn-secondary" style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                <ExternalLink size={16} />
+                <Upload size={14} />
                 Upload
                 <input type="file" accept="application/pdf,image/*" onChange={handleFileUpload} style={{ display: "none" }} />
               </label>
@@ -642,13 +697,25 @@ export default function ManageCertificates() {
             )}
 
             {/* Add image URL manually */}
+            {/* Add image URL manually */}
             <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
               <input 
+                list="asset-cert-images"
                 placeholder="Or paste image URL (e.g. /assets/night-group-selfie.webp)" 
                 value={newImageUrl} 
                 onChange={(e) => setNewImageUrl(e.target.value)} 
                 style={{ ...inputStyle, flex: 2, fontSize: "0.82rem" }} 
               />
+              <button
+                type="button"
+                onClick={() => { setAssetPickerTarget("gallery"); setAssetPickerOpen(true); }}
+                className="admin-btn admin-btn-secondary"
+                style={{ display: "flex", alignItems: "center", gap: "0.3rem", fontSize: "0.82rem", padding: "0.45rem 0.65rem", whiteSpace: "nowrap" }}
+                title="Browse photos from /public/assets"
+              >
+                <FolderOpen size={13} />
+                Assets
+              </button>
               <input 
                 placeholder="Caption (optional)" 
                 value={newImageCaption} 
@@ -658,7 +725,7 @@ export default function ManageCertificates() {
               <button 
                 type="button" 
                 onClick={handleAddGalleryImage} 
-                className="admin-btn admin-btn-secondary"
+                className="admin-btn admin-btn-secondary" 
                 style={{ fontSize: "0.82rem", whiteSpace: "nowrap", padding: "0.45rem 0.9rem" }}
               >
                 Add Photo
@@ -701,6 +768,48 @@ export default function ManageCertificates() {
           </div>
         </form>
       </AdminDrawer>
+
+      {/* Datalists for instant browser autocompletion */}
+      <datalist id="asset-cert-logos">
+        {assetList.logos.map((a: any) => (
+          <option key={a.path} value={a.path}>{a.name}</option>
+        ))}
+      </datalist>
+      <datalist id="asset-cert-docs">
+        {assetList.documents.map((a: any) => (
+          <option key={a.path} value={a.path}>{a.name}</option>
+        ))}
+      </datalist>
+      <datalist id="asset-cert-images">
+        {assetList.images.map((a: any) => (
+          <option key={a.path} value={a.path}>{a.name}</option>
+        ))}
+      </datalist>
+
+      {/* Asset Picker Modal */}
+      <AssetPickerModal
+        isOpen={assetPickerOpen}
+        onClose={() => setAssetPickerOpen(false)}
+        defaultCategory={
+          assetPickerTarget === "logo" ? "logos" : assetPickerTarget === "pdf" ? "documents" : "images"
+        }
+        title={
+          assetPickerTarget === "logo"
+            ? "Select Certificate Logo / Organization Icon"
+            : assetPickerTarget === "pdf"
+            ? "Select Certificate PDF / Document"
+            : "Select Gallery Photo"
+        }
+        onSelect={(selectedPath) => {
+          if (assetPickerTarget === "logo") {
+            setImageUrl(selectedPath);
+          } else if (assetPickerTarget === "pdf") {
+            setPdfUrl(selectedPath);
+          } else if (assetPickerTarget === "gallery") {
+            setNewImageUrl(selectedPath);
+          }
+        }}
+      />
 
       <ConfirmModal 
         isOpen={!!deleteItem}

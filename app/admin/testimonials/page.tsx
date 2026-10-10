@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Upload, Info, ExternalLink } from "lucide-react";
+import { Upload, Info, ExternalLink, FolderOpen } from "lucide-react";
 import { useToast } from "@/components/ToastProvider";
 import AdminDrawer from "@/components/AdminDrawer";
 import ConfirmModal from "@/components/ConfirmModal";
 import Tooltip from "@/components/admin/Tooltip";
+import AssetPickerModal from "@/components/admin/AssetPickerModal";
 
 export default function AdminTestimonials() {
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,10 @@ export default function AdminTestimonials() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteItem, setDeleteItem] = useState<string | null>(null);
+
+  // Asset picker state
+  const [assetPickerOpen, setAssetPickerOpen] = useState(false);
+  const [assetImages, setAssetImages] = useState<any[]>([]);
 
   // Form state
   const [name, setName] = useState("");
@@ -40,6 +45,12 @@ export default function AdminTestimonials() {
 
   useEffect(() => {
     fetchTestimonials();
+    fetch("/api/admin/assets")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.images) setAssetImages(data.images);
+      })
+      .catch(() => {});
   }, []);
 
   const fetchTestimonials = async () => {
@@ -451,11 +462,22 @@ export default function AdminTestimonials() {
                 </div>
               )}
               <input 
+                list="asset-testimonial-avatars"
                 placeholder="e.g. /assets/client-1.webp or image URL" 
                 value={avatarUrl} 
                 onChange={(e) => setAvatarUrl(e.target.value)} 
                 style={{ ...inputStyle, flex: 1 }} 
               />
+              <button
+                type="button"
+                onClick={() => setAssetPickerOpen(true)}
+                className="admin-btn admin-btn-secondary"
+                style={{ display: "flex", alignItems: "center", gap: "0.4rem", whiteSpace: "nowrap" }}
+                title="Browse and pick from /public/assets"
+              >
+                <FolderOpen size={14} />
+                Assets
+              </button>
               <label className="admin-btn admin-btn-secondary" style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "0.4rem", whiteSpace: "nowrap" }}>
                 <Upload size={14} />
                 Upload Avatar
@@ -525,6 +547,22 @@ export default function AdminTestimonials() {
           </div>
         </form>
       </AdminDrawer>
+
+      {/* Datalist for testimonial avatars */}
+      <datalist id="asset-testimonial-avatars">
+        {assetImages.map((a: any) => (
+          <option key={a.path} value={a.path}>{a.name}</option>
+        ))}
+      </datalist>
+
+      {/* Asset Picker Modal */}
+      <AssetPickerModal
+        isOpen={assetPickerOpen}
+        onClose={() => setAssetPickerOpen(false)}
+        defaultCategory="images"
+        title="Select Avatar / Profile Picture"
+        onSelect={(path) => setAvatarUrl(path)}
+      />
 
       <ConfirmModal 
         isOpen={!!deleteItem}
