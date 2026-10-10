@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 export interface AssetInfo {
   name: string;
   path: string;
@@ -69,7 +72,7 @@ export async function GET() {
         },
       }
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error reading public assets:", err);
     return NextResponse.json({ error: "Failed to list assets" }, { status: 500 });
   }

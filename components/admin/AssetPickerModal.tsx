@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { X, Search, FileText, Image as ImageIcon, Film, Check, FolderOpen } from "lucide-react";
+import { X, Search, FileText, Film, FolderOpen } from "lucide-react";
 
 export interface AssetInfo {
   name: string;
@@ -31,13 +31,12 @@ export default function AssetPickerModal({
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<"all" | "logos" | "documents" | "images">(defaultCategory);
+  const [prevCategory, setPrevCategory] = useState(defaultCategory);
 
-  useEffect(() => {
-    if (isOpen) {
-      setCategory(defaultCategory);
-      setSearch("");
-    }
-  }, [isOpen, defaultCategory]);
+  if (defaultCategory !== prevCategory) {
+    setPrevCategory(defaultCategory);
+    setCategory(defaultCategory);
+  }
 
   useEffect(() => {
     if (!isOpen) return;
