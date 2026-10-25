@@ -8,6 +8,16 @@ export interface CertificateImage {
 
 // Fallback or default gallery images for certificates if not yet configured in DB
 export const STATIC_CERTIFICATE_GALLERIES: Record<string, CertificateImage[]> = {
+  "nexathon-2026-national-hackathon": [
+    {
+      url: "/assets/yojanasethu-platform-architecture.webp",
+      caption: "Four-Role Platform Architecture: Student, Mentor, Recruiter, and Placement Cell Workspaces",
+    },
+    {
+      url: "/assets/yojanasethu-placement-flowchart.webp",
+      caption: "Student-to-Placement Proof-Based Verification Flowchart",
+    },
+  ],
   "smart-india-hackathon-2026-internal-ideathon": [
     {
       url: "/assets/night-group-selfie.webp",
