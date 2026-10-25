@@ -80,7 +80,63 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
     notFound();
   }
 
-  const hasInlineCertificate = experience.content && (experience.content.includes("View Certificate") || experience.content.includes("Download Certificate"));
+  let displayContent = experience.content || "";
+
+  // Transform Team & Contributions into HTML cards
+  const teamHeaderRegex = /##\s*Team\s*(?:&|and)\s*Contributions/i;
+  const teamMatch = displayContent.match(teamHeaderRegex);
+  if (teamMatch && teamMatch.index !== undefined) {
+    const startIndex = teamMatch.index + teamMatch[0].length;
+    const rest = displayContent.slice(startIndex);
+    const nextHeaderRegex = /\n\s*##\s+[^\n]+/g;
+    const nextMatch = nextHeaderRegex.exec(rest);
+    const endIndex = nextMatch ? startIndex + nextMatch.index : displayContent.length;
+    
+    const teamContent = displayContent.slice(startIndex, endIndex);
+    const memberChunks = teamContent.split(/(?=\n\s*!\[)/);
+    
+    let cards: string[] = [];
+    let nonCardText: string[] = [];
+    
+    for (const chunk of memberChunks) {
+      const trimmed = chunk.trim();
+      if (!trimmed) continue;
+      
+      const memberRegex = /^!\[([^\]]+)\]\(([^)]+)\)[\s\r\n]+###\s+(?:👑\s*)?\*?\*?([^\n*]+)\*?\*?[\s\r\n]+([^\n]+)[\s\r\n]*([\s\S]*)$/;
+      const m = trimmed.match(memberRegex);
+      if (m) {
+        const [, alt, src, name, role, details] = m;
+        const cleanRole = role.replace(/^\*\*Role:\*\*\s*/i, '').replace(/^\*+|\*+$/g, '').trim();
+        const cleanSrc = src && !src.startsWith('http') ? `/assets/${src.split('/').pop()}` : src;
+        
+        let detailsHTML = '';
+        const detailLines = (details || '').split('\n').map((l: string) => l.trim()).filter((l: string) => l !== '');
+        if (detailLines.length > 0) {
+          if (detailLines[0].startsWith('*') || detailLines[0].startsWith('-')) {
+            detailsHTML = '<div class="team-details"><ul class="team-contributions-list team-contributions-margin" style="list-style-type: disc;">' + detailLines.map((l: string) => `<li>${l.replace(/^[\*\-]\s*/, '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</li>`).join('') + '</ul></div>';
+          } else {
+            detailsHTML = '<div class="team-details"><p class="team-contribution">' + detailLines.map((l: string) => l.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')).join('<br/>') + '</p></div>';
+          }
+        }
+        
+        const isOwner = name.toLowerCase().includes('pranav r');
+        const cardClass = isOwner ? 'team-card owner-card' : 'team-card';
+
+        cards.push(
+          `<div class="${cardClass}">\n  <div class="team-img-wrapper"><img src="${cleanSrc}" alt="${alt}" class="team-img" loading="lazy" /></div>\n  <div class="team-info">\n    <h3 class="team-name">${name.trim()}</h3>\n    <span class="team-role">${cleanRole}</span>\n    ${detailsHTML}\n  </div>\n</div>`
+        );
+      } else {
+        nonCardText.push(chunk);
+      }
+    }
+    
+    if (cards.length > 0) {
+      const gridHTML = '\n\n<div class="team-grid">\n' + cards.join('\n') + '\n</div>\n\n' + nonCardText.join('\n');
+      displayContent = displayContent.slice(0, startIndex) + gridHTML + displayContent.slice(endIndex);
+    }
+  }
+
+  const hasInlineCertificate = displayContent && (displayContent.includes("View Certificate") || displayContent.includes("Download Certificate"));
 
   return (
     <main id="main-content">
@@ -118,7 +174,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
           )}
         </div>
 
-        {experience.content ? (
+        {displayContent ? (
           <div className="post-content">
             <ReactMarkdown 
               rehypePlugins={[rehypeRaw]}
@@ -277,7 +333,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                 }
               }}
             >
-              {experience.content}
+              {displayContent}
             </ReactMarkdown>
           </div>
         ) : (
