@@ -32,6 +32,18 @@ export const STATIC_CERTIFICATE_GALLERIES: Record<string, CertificateImage[]> = 
       caption: "Internal Ideathon presentation and event session",
     },
   ],
+  "the-startup-chase-2-0-winners": [
+    {
+      url: "/assets/startup-ecosystem-meet.webp",
+      caption: "The Startup Chase 2.0 - Entrepreneurship Pitching & Challenge",
+    },
+  ],
+  "the-startup-chase-2-0": [
+    {
+      url: "/assets/startup-ecosystem-meet.webp",
+      caption: "The Startup Chase 2.0 - Entrepreneurship Pitching & Challenge",
+    },
+  ],
 };
 
 export function getCertificateGallery(cert: any): CertificateImage[] {
