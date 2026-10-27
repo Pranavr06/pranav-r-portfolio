@@ -250,33 +250,32 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                                      srcLower.includes("portrait");
 
                   const isSelfiePic = altLower.includes("memorable selfie") || srcLower.includes("selfie");
-                  const isCertImage = altLower.includes("certificate") || srcLower.includes("certificate");
 
-                  let imgMaxWidth = "580px";
-                  let imgMaxHeight = "450px";
+                  let imgMaxWidth = "100%";
+                  let imgMaxHeight = "540px";
 
                   if (isPortrait) {
-                    imgMaxWidth = srcLower.includes("tea") ? "320px" : "380px";
-                    imgMaxHeight = "480px";
+                    imgMaxWidth = srcLower.includes("tea") ? "420px" : "480px";
+                    imgMaxHeight = "580px";
                   } else if (isSelfiePic) {
-                    imgMaxWidth = "380px";
-                    imgMaxHeight = "480px";
-                  } else if (isCertImage) {
-                    imgMaxWidth = "540px";
-                    imgMaxHeight = "460px";
+                    imgMaxWidth = "480px";
+                    imgMaxHeight = "540px";
+                  } else {
+                    imgMaxWidth = "100%";
+                    imgMaxHeight = "540px";
                   }
 
                   const captionText = alt && alt.trim() !== "" ? alt.trim() : null;
 
                   return (
-                    <figure className="project-image-container no-margin" style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "1.5rem auto 2.5rem auto" }}>
+                    <figure className="project-image-container no-margin" style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "2rem auto 2.5rem auto" }}>
                       <img 
                         src={absoluteSrc} 
                         alt={captionText || "Event photo"} 
                         className="grid-img" 
                         loading="lazy" 
                         style={{ 
-                          width: "auto",
+                          width: "100%",
                           maxWidth: imgMaxWidth, 
                           maxHeight: imgMaxHeight, 
                           borderRadius: "1rem", 
@@ -289,13 +288,14 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                       {captionText && (
                         <figcaption style={{ 
                           marginTop: "0.85rem", 
-                          fontSize: "0.95rem", 
+                          fontSize: "1rem", 
                           fontWeight: 500, 
-                          color: "var(--light-title, #444)", 
+                          color: "var(--light-title, #333)", 
                           textAlign: "center", 
                           fontStyle: "italic", 
                           maxWidth: imgMaxWidth,
-                          lineHeight: 1.4
+                          lineHeight: 1.5,
+                          padding: "0 1rem"
                         }}>
                           {captionText}
                         </figcaption>
