@@ -15,6 +15,7 @@ import { STATIC_CERTIFICATE_GALLERIES } from "@/lib/certificateGalleries";
 const CERT_CATEGORIES = [
   { value: "course", label: "Courses" },
   { value: "hackathon", label: "Hackathons" },
+  { value: "competition", label: "Competitions & Challenges" },
   { value: "internship", label: "Internships" },
   { value: "webinar-workshop", label: "Webinars & Workshops" },
   { value: "govt-quiz", label: "Government Quizzes" },

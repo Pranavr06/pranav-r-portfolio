@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/experiences/professional-journey/nexathon-2026-yojanasethu',
+        destination: '/experiences/professional-journey/nexathon-2026',
+        permanent: true,
+      },
+      {
         source: '/experiences/my-bharat-budget',
         destination: '/experiences/professional-journey/my-bharat-budget-quest-2026',
         permanent: true,
