@@ -136,7 +136,8 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
     }
   }
 
-  const hasInlineCertificate = displayContent && (displayContent.includes("View Certificate") || displayContent.includes("Download Certificate"));
+  // Clean up legacy inline "View Certificate" / "View Official Certificate" links at the start of content
+  displayContent = displayContent.replace(/^\[View (?:Official )?Certificate\]\(.*?\)\s*\n*/i, '');
 
   return (
     <main id="main-content">
@@ -152,7 +153,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
           <h1 className="banner-title">{experience.title}</h1>
         </div>
         
-        <div className="post-metadata" style={{ display: "flex", justifyContent: "center", gap: "1rem", alignItems: "center", flexWrap: "wrap", marginBottom: "2rem" }}>
+        <div className="post-metadata" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", alignItems: "center", flexWrap: "wrap", marginBottom: "1rem" }}>
           <span className="blog-category" style={{ margin: 0 }}>Professional Experience</span>
           
           {experience.tags && Array.isArray(experience.tags) && (
@@ -162,16 +163,26 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
               ))}
             </div>
           )}
-          
-          {!hasInlineCertificate && experience.certificate_url && experience.certificate_url !== "#" && (
-            <a href={experience.certificate_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2" style={{ padding: "0.2rem 1rem", fontSize: "0.85rem", borderRadius: "1rem" }}>
+        </div>
+
+        <div className="experience-actions" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "0.75rem", marginBottom: "2.5rem" }}>
+          {experience.certificate_url && experience.certificate_url !== "#" && (
+            <a 
+              href={experience.certificate_url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="btn btn-color-2" 
+              style={{ padding: "0.35rem 1.4rem", fontSize: "0.9rem", borderRadius: "2rem", display: "inline-flex", alignItems: "center", textDecoration: "none", fontWeight: "600" }}
+            >
               Certificate
             </a>
           )}
           
-          {!hasInlineCertificate && (
-            <ShareMenu title={experience.title} type="page" downloadUrl={experience.certificate_url && experience.certificate_url !== "#" ? experience.certificate_url : undefined} />
-          )}
+          <ShareMenu 
+            title={experience.title} 
+            type="page" 
+            downloadUrl={experience.certificate_url && experience.certificate_url !== "#" ? experience.certificate_url : undefined} 
+          />
         </div>
 
         {displayContent ? (
