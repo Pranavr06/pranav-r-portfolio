@@ -3190,6 +3190,17 @@ body.dark-theme .project-overview-title {
     color: var(--dark-title);
 }
 
+/* Experience details action bar (Certificate button & Share menu) */
+.experience-actions {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    width: 100% !important;
+    margin: 1rem auto 2.5rem auto !important;
+    text-align: center !important;
+}
+
 /* STRICT OVERRIDE: Toast notifications must be completely opposite color of the theme */
 .toast-notification {
     background-color: #1a1a1a !important; /* Pitch black for Light Mode */

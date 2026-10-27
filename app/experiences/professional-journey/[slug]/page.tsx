@@ -9,7 +9,8 @@ import ShareMenu from "@/components/ShareMenu";
 import CodeBlock from "@/components/CodeBlock";
 import ContactCTA from "@/components/ContactCTA";
 import { slugify } from "@/lib/slug";
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 async function fetchExperience(rawSlug: string) {
   const slug = decodeURIComponent(rawSlug);
