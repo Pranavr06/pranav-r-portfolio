@@ -331,7 +331,16 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                       </div>
                     );
                   }
-                  return <a href={href} className="post-content-link" {...props}>{children}</a>;
+                  return (
+                    <a 
+                      href={href} 
+                      className="post-content-link" 
+                      style={{ color: "#0070f3", textDecoration: "underline", textUnderlineOffset: "3px", fontWeight: 600 }} 
+                      {...props}
+                    >
+                      {children}
+                    </a>
+                  );
                 },
                 h3({ node, children, ...props }: any) {
                   return <h3 className="experience-sub-title" style={{ marginTop: "1.5rem", marginBottom: "0.75rem" }} {...props}>{children}</h3>;

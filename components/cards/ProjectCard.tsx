@@ -95,15 +95,11 @@ export default function ProjectCard({ project }: { project: any }) {
               Read More &rarr;
             </Link>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
-              {project.demo_url ? (
+              {project.demo_url && project.demo_url.trim() !== "" && project.demo_url !== "#" ? (
                 <a href={project.demo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn" aria-label={`View ${project.title}`} onClick={() => trackEvent("click_live_demo", project.title)}>
                   {project.demo_url.includes('research-paper') ? 'Research Paper' : project.demo_url.includes('.pdf') ? 'View Report' : 'Live Demo'}
                 </a>
-              ) : (
-                <button className="btn btn-color-2 project-btn" disabled aria-label={`View ${project.title} (${project.status})`}>
-                  Live Demo
-                </button>
-              )}
+              ) : null}
               {project.repo_url && (
                 <a href={project.repo_url} target="_blank" rel="noopener noreferrer" className="btn btn-color-2 project-btn" aria-label={`Source Code for ${project.title}`} onClick={() => trackEvent("click_github", project.title)}>
                   Code

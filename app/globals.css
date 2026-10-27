@@ -2320,22 +2320,26 @@ body.dark-theme .post-author {
     word-break: break-word;
     min-width: 0;
 }
+.post-content blockquote a,
 .post-content a:not(.btn),
 .post-content-link {
     color: #0070f3 !important;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    font-weight: 600;
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
+    font-weight: 600 !important;
     transition: color 0.2s ease;
 }
+.post-content blockquote a:hover,
 .post-content a:not(.btn):hover,
 .post-content-link:hover {
     color: #0051b3 !important;
 }
+body.dark-theme .post-content blockquote a,
 body.dark-theme .post-content a:not(.btn),
 body.dark-theme .post-content-link {
     color: #58a6ff !important;
 }
+body.dark-theme .post-content blockquote a:hover,
 body.dark-theme .post-content a:not(.btn):hover,
 body.dark-theme .post-content-link:hover {
     color: #80bfff !important;
