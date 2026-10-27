@@ -39,7 +39,7 @@ export const STATIC_CERTIFICATE_GALLERIES: Record<string, CertificateImage[]> = 
     },
     {
       url: "/assets/posing-for-selfie-at-the-startup-chase-2026.webp",
-      caption: "Team Civic Sentinal Celebration Selfie – Winning Our Very First Event at The Startup Chase 2.0",
+      caption: "Team Civic Sentinal Celebration Selfie – Our First Time Participating in an Event of This Kind as a Team",
     },
   ],
   "the-startup-chase-2-0": [
@@ -49,7 +49,7 @@ export const STATIC_CERTIFICATE_GALLERIES: Record<string, CertificateImage[]> = 
     },
     {
       url: "/assets/posing-for-selfie-at-the-startup-chase-2026.webp",
-      caption: "Team Civic Sentinal Celebration Selfie – Winning Our Very First Event at The Startup Chase 2.0",
+      caption: "Team Civic Sentinal Celebration Selfie – Our First Time Participating in an Event of This Kind as a Team",
     },
   ],
 };
