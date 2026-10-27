@@ -216,21 +216,16 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                   );
                 },
                 img({ node, src, alt, className, ...props }: any) {
-                  // If it's a team member card image, render pure team-img without figure container or figcaption
+                  // Only team member card avatars inside .team-img-wrapper have class="team-img"
                   const isTeamImage = className?.includes("team-img") || 
-                                      node?.properties?.className?.includes("team-img") ||
-                                      alt?.toLowerCase().includes("pranav") || 
-                                      alt?.toLowerCase().includes("preethika") || 
-                                      alt?.toLowerCase().includes("prathwik") || 
-                                      alt?.toLowerCase().includes("prajwala");
+                                      node?.properties?.className?.includes("team-img");
 
                   if (isTeamImage) {
                     const cleanSrc = src && !src.startsWith("http") ? `/assets/${src.split('/').pop()}` : src;
                     return <img src={cleanSrc} alt={alt} className="team-img" loading="lazy" />;
                   }
 
-                  // Unconditionally map all local assets to the /assets/ root directory, 
-                  // regardless of how messed up the database path is (e.g., ../experiences/assets/...)
+                  // Unconditionally map all local assets to the /assets/ root directory
                   const absoluteSrc = src && !src.startsWith("http") ? `/assets/${src.split('/').pop()}` : src;
 
                   if (absoluteSrc?.endsWith(".mp4") || absoluteSrc?.endsWith(".webm")) {
@@ -238,65 +233,73 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                     return (
                       <div className="video-wrapper mt-0 mb-0" style={{ flex: 1, minWidth: "0", width: "100%", maxWidth: isCrowdVideo ? "800px" : "354px", margin: "0 auto" }}>
                         <video src={absoluteSrc} controls autoPlay loop muted playsInline width="100%" preload="metadata" style={{ display: "block", width: "100%", height: "auto", borderRadius: "1rem" }} />
-                        {alt && <figcaption>{alt}</figcaption>}
+                        {alt && <figcaption style={{ marginTop: "0.75rem", fontSize: "0.95rem", textAlign: "center", fontStyle: "italic" }}>{alt}</figcaption>}
                       </div>
                     );
                   }
-                  const isCertImage = alt?.toLowerCase().includes("certificate");
-                  const isLunchPic = alt?.includes("home-style Indian lunch");
-                  const isFormalPic = alt?.includes("MY BHARAT BUDGET QUEST photo area");
-                  const isGroupPic = alt?.includes("glowing steps of the structure");
-                  const isMonumentPic = alt?.includes("illuminated monument at night");
-                  const isByogiPic = alt?.includes("BYOGI wellness facility");
-                  const isGuestsPic = alt?.includes("esteemed guests");
-                  const isSelfiePic = alt?.includes("memorable selfie");
-                  const isMessagePic = alt?.includes("special message from the Hon'ble Prime Minister");
-                  const isMandaviyaPic = alt?.includes("Union Minister Dr. Mansukh Mandaviya");
-                  const isAuditoriumPic = alt?.includes("large indoor auditorium hosting");
-                  const isAnthemPic = alt?.includes("National Anthem");
-                  const isInnovationPic = alt?.includes("Innovation & Design Thinking");
-                  
-                  const isGridPic = alt?.includes("Stage program of NARI SHAKTI") || 
-                                    alt?.includes("fellow VBYLD'26 finalists") || 
-                                    alt?.includes("podium during the event") || 
-                                    alt?.includes("event title screen");
-                  
-                  let imgWidth = "100%";
-                  let imgMaxWidth = "100%";
-                  
-                  if (isInnovationPic) {
-                    imgWidth = "calc(100% - 50px)";
-                  } else if (isLunchPic || isFormalPic || isGroupPic) {
-                    imgMaxWidth = "350px";
-                  } else if (isMonumentPic || isByogiPic || isGuestsPic || isMessagePic || isMandaviyaPic || isAuditoriumPic || isAnthemPic) {
-                    imgMaxWidth = "600px";
+
+                  const srcLower = absoluteSrc.toLowerCase();
+                  const altLower = (alt || "").toLowerCase();
+
+                  // Identify portrait/tall photos that need restrained dimensions on desktop
+                  const isPortrait = srcLower.includes("tea") || 
+                                     srcLower.includes("carrom") || 
+                                     srcLower.includes("id-cards") || 
+                                     srcLower.includes("teamleader") ||
+                                     srcLower.includes("lunch-pic") ||
+                                     srcLower.includes("portrait");
+
+                  const isSelfiePic = altLower.includes("memorable selfie") || srcLower.includes("selfie");
+                  const isCertImage = altLower.includes("certificate") || srcLower.includes("certificate");
+
+                  let imgMaxWidth = "580px";
+                  let imgMaxHeight = "450px";
+
+                  if (isPortrait) {
+                    imgMaxWidth = srcLower.includes("tea") ? "320px" : "380px";
+                    imgMaxHeight = "480px";
                   } else if (isSelfiePic) {
-                    imgMaxWidth = "400px";
+                    imgMaxWidth = "380px";
+                    imgMaxHeight = "480px";
+                  } else if (isCertImage) {
+                    imgMaxWidth = "540px";
+                    imgMaxHeight = "460px";
                   }
 
-                  const isNexathonPic = alt?.toLowerCase().includes("nexathon") || 
-                                        alt?.toLowerCase().includes("neural forge") || 
-                                        alt?.toLowerCase().includes("carrom") || 
-                                        alt?.toLowerCase().includes("chai") || 
-                                        alt?.toLowerCase().includes("coding sprint");
-                  if (isNexathonPic) {
-                    imgMaxWidth = "650px";
-                  }
-
-                  let flexStyle: any = 1;
-                  let minWidthStyle = "0";
-                  
-                  if (isCertImage || isMandaviyaPic || isAuditoriumPic || isAnthemPic) {
-                    flexStyle = "0 0 100%";
-                  } else if (isGridPic) {
-                    flexStyle = "1 1 calc(50% - 1rem)";
-                    minWidthStyle = "250px";
-                  }
+                  const captionText = alt && alt.trim() !== "" ? alt.trim() : null;
 
                   return (
-                    <figure className="project-image-container no-margin" style={{ flex: flexStyle, minWidth: minWidthStyle, display: "flex", flexDirection: "column", alignItems: "center", width: "100%", margin: "0" }}>
-                      <img src={absoluteSrc} alt={alt} className="grid-img" loading="lazy" style={{ width: imgWidth, maxWidth: imgMaxWidth, borderRadius: "1rem", display: "block", objectFit: "cover", margin: "0 auto" }} />
-                      {alt && <figcaption>{alt}</figcaption>}
+                    <figure className="project-image-container no-margin" style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", margin: "1.5rem auto 2.5rem auto" }}>
+                      <img 
+                        src={absoluteSrc} 
+                        alt={captionText || "Event photo"} 
+                        className="grid-img" 
+                        loading="lazy" 
+                        style={{ 
+                          width: "auto",
+                          maxWidth: imgMaxWidth, 
+                          maxHeight: imgMaxHeight, 
+                          borderRadius: "1rem", 
+                          display: "block", 
+                          objectFit: "cover", 
+                          margin: "0 auto",
+                          boxShadow: "0 6px 20px rgba(0, 0, 0, 0.12)"
+                        }} 
+                      />
+                      {captionText && (
+                        <figcaption style={{ 
+                          marginTop: "0.85rem", 
+                          fontSize: "0.95rem", 
+                          fontWeight: 500, 
+                          color: "var(--light-title, #444)", 
+                          textAlign: "center", 
+                          fontStyle: "italic", 
+                          maxWidth: imgMaxWidth,
+                          lineHeight: 1.4
+                        }}>
+                          {captionText}
+                        </figcaption>
+                      )}
                     </figure>
                   );
                 },
