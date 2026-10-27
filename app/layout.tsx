@@ -17,6 +17,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://pranavr.netlify.app"),
   title: "Pranav R Portfolio",
   description: "Explore Pranav R's portfolio: tech innovation projects, skills, and certifications from NMAMIT NITTE. Connect for collaboration!",
   keywords: "Pranav R, tech innovator, software engineer, portfolio, NMAMIT NITTE, full-stack development, Python, cybersecurity, UI/UX, HTML, CSS, JavaScript",

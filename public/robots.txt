@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Allow: /llms.txt
 Disallow: /admin/
 Disallow: /api/
+
+Sitemap: https://pranavr.netlify.app/sitemap.xml

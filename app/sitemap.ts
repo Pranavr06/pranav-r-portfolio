@@ -25,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/experiences/technical-expertise',
     '/testimonials',
     '/contact',
+    '/llms.txt',
   ].map((route) => ({
     url: sanitizeSitemapUrl(`${baseUrl}${route}`),
     lastModified: new Date().toISOString(),
@@ -51,7 +52,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // 2. Dynamic Project Routes
     const { data: projects } = await supabase
       .from('projects')
-      .select('slug, created_at, category, status')
+      .select('slug, created_at, status')
       .or('is_archived.is.null,is_archived.eq.false')
       .neq('status', 'Draft');
 
@@ -69,7 +70,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       });
 
       // College project URL if categorized accordingly
-      if (project.category === 'College Projects' || project.category === 'college-projects') {
+      if (project.status?.includes('Year') || project.status === 'College Projects') {
         projectRoutes.push({
           url: sanitizeSitemapUrl(`${baseUrl}/projects/college-projects/${project.slug}`),
           lastModified: lastMod,
