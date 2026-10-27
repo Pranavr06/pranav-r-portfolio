@@ -215,7 +215,20 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                     </span>
                   );
                 },
-                img({ node, src, alt, ...props }: any) {
+                img({ node, src, alt, className, ...props }: any) {
+                  // If it's a team member card image, render pure team-img without figure container or figcaption
+                  const isTeamImage = className?.includes("team-img") || 
+                                      node?.properties?.className?.includes("team-img") ||
+                                      alt?.toLowerCase().includes("pranav") || 
+                                      alt?.toLowerCase().includes("preethika") || 
+                                      alt?.toLowerCase().includes("prathwik") || 
+                                      alt?.toLowerCase().includes("prajwala");
+
+                  if (isTeamImage) {
+                    const cleanSrc = src && !src.startsWith("http") ? `/assets/${src.split('/').pop()}` : src;
+                    return <img src={cleanSrc} alt={alt} className="team-img" loading="lazy" />;
+                  }
+
                   // Unconditionally map all local assets to the /assets/ root directory, 
                   // regardless of how messed up the database path is (e.g., ../experiences/assets/...)
                   const absoluteSrc = src && !src.startsWith("http") ? `/assets/${src.split('/').pop()}` : src;
