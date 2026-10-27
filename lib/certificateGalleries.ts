@@ -10,12 +10,12 @@ export interface CertificateImage {
 export const STATIC_CERTIFICATE_GALLERIES: Record<string, CertificateImage[]> = {
   "nexathon-2026-national-hackathon": [
     {
-      url: "/assets/yojanasethu-platform-architecture.webp",
-      caption: "Four-Role Platform Architecture: Student, Mentor, Recruiter, and Placement Cell Workspaces",
+      url: "/assets/nexathon-pic-with-leader-and-teammate.webp",
+      caption: "Midnight Refreshment Break with Preethika & Prajwala",
     },
     {
-      url: "/assets/yojanasethu-placement-flowchart.webp",
-      caption: "Student-to-Placement Proof-Based Verification Flowchart",
+      url: "/assets/nexathon-team.webp",
+      caption: "Team Neural Forge Squad at Nexathon 2026",
     },
   ],
   "smart-india-hackathon-2026-internal-ideathon": [
