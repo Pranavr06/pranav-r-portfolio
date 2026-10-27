@@ -62,10 +62,9 @@ export default function CertificateList({
   });
 
   const categoryMap: Record<string, string> = {
-    "competition": "Competitions & Challenges",
+    "course": "Courses",
     "hackathon": "Hackathons",
     "internship": "Internships",
-    "course": "Courses",
     "webinar-workshop": "Webinars & Workshops",
     "govt-quiz": "Government Quizzes",
     "academic": "Academic",
@@ -73,7 +72,7 @@ export default function CertificateList({
     "technical": "Technical"
   };
 
-  const allCategories = ["competition", "hackathon", "internship", "course", "webinar-workshop", "govt-quiz"];
+  const allCategories = ["course", "hackathon", "internship", "webinar-workshop", "govt-quiz"];
   const categoriesToRender = filter === "All" ? allCategories : [filter];
 
   return (
