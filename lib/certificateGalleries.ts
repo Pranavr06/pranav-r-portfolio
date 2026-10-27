@@ -34,14 +34,22 @@ export const STATIC_CERTIFICATE_GALLERIES: Record<string, CertificateImage[]> = 
   ],
   "the-startup-chase-2-0-winners": [
     {
-      url: "/assets/startup-ecosystem-meet.webp",
-      caption: "The Startup Chase 2.0 - Entrepreneurship Pitching & Challenge",
+      url: "/assets/the-startup-chase-2026-award-distribution.webp",
+      caption: "The Startup Chase 2.0 Award Distribution Ceremony – 1st Place Winners",
+    },
+    {
+      url: "/assets/posing-for-selfie-at-the-startup-chase-2026.webp",
+      caption: "Team Selfie at The Startup Chase 2.0",
     },
   ],
   "the-startup-chase-2-0": [
     {
-      url: "/assets/startup-ecosystem-meet.webp",
-      caption: "The Startup Chase 2.0 - Entrepreneurship Pitching & Challenge",
+      url: "/assets/the-startup-chase-2026-award-distribution.webp",
+      caption: "The Startup Chase 2.0 Award Distribution Ceremony – 1st Place Winners",
+    },
+    {
+      url: "/assets/posing-for-selfie-at-the-startup-chase-2026.webp",
+      caption: "Team Selfie at The Startup Chase 2.0",
     },
   ],
 };
