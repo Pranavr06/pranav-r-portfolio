@@ -81,6 +81,22 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
     notFound();
   }
 
+  // Resolve direct PDF url if certificate_url points to a /certificates/ page route
+  let certificatePdfUrl = experience.certificate_url;
+  if (certificatePdfUrl && !certificatePdfUrl.endsWith(".pdf") && !certificatePdfUrl.startsWith("http") && certificatePdfUrl !== "#") {
+    const certSlug = certificatePdfUrl.split("/").pop();
+    if (certSlug) {
+      const { data: certRow } = await supabase
+        .from("certificates")
+        .select("pdf_url")
+        .eq("slug", certSlug)
+        .maybeSingle();
+      if (certRow?.pdf_url) {
+        certificatePdfUrl = certRow.pdf_url;
+      }
+    }
+  }
+
   let displayContent = experience.content || "";
 
   // Transform Team & Contributions / Team Neural Forge into HTML cards
@@ -168,9 +184,9 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
         </div>
 
         <div className="experience-actions" style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "0.75rem", marginBottom: "2.5rem" }}>
-          {experience.certificate_url && experience.certificate_url !== "#" && (
+          {certificatePdfUrl && certificatePdfUrl !== "#" && (
             <a 
-              href={experience.certificate_url} 
+              href={certificatePdfUrl} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="btn btn-color-2" 
@@ -183,7 +199,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
           <ShareMenu 
             title={experience.title} 
             type="page" 
-            downloadUrl={experience.certificate_url && experience.certificate_url !== "#" ? experience.certificate_url : undefined} 
+            downloadUrl={certificatePdfUrl && certificatePdfUrl !== "#" ? certificatePdfUrl : undefined} 
           />
         </div>
 
