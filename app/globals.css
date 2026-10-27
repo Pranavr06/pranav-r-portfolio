@@ -2320,6 +2320,26 @@ body.dark-theme .post-author {
     word-break: break-word;
     min-width: 0;
 }
+.post-content a:not(.btn),
+.post-content-link {
+    color: #0070f3 !important;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+.post-content a:not(.btn):hover,
+.post-content-link:hover {
+    color: #0051b3 !important;
+}
+body.dark-theme .post-content a:not(.btn),
+body.dark-theme .post-content-link {
+    color: #58a6ff !important;
+}
+body.dark-theme .post-content a:not(.btn):hover,
+body.dark-theme .post-content-link:hover {
+    color: #80bfff !important;
+}
 .post-content h2 {
     font-size: 2rem;
     margin: 2rem 0 1rem 0;
