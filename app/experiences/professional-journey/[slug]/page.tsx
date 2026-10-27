@@ -242,27 +242,19 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                   const altLower = (alt || "").toLowerCase();
 
                   // Identify portrait/tall photos that need restrained dimensions on desktop
-                  const isPortrait = srcLower.includes("tea") || 
-                                     srcLower.includes("carrom") || 
-                                     srcLower.includes("id-cards") || 
-                                     srcLower.includes("teamleader") ||
-                                     srcLower.includes("lunch-pic") ||
-                                     srcLower.includes("portrait");
-
-                  const isSelfiePic = altLower.includes("memorable selfie") || srcLower.includes("selfie");
+                  // Note: Use boundary checking so 'tea' does not match 'team' or 'teammate'
+                  const isPortrait = /(-tea\b|_tea\b|\/tea\b|-carrom|-id-cards|-teamleader|lunch-pic|portrait)/i.test(srcLower) ||
+                                     /\b(portrait|badge|id card)\b/i.test(altLower);
 
                   let imgMaxWidth = "100%";
-                  let imgMaxHeight = "540px";
+                  let imgMaxHeight = "640px";
 
                   if (isPortrait) {
-                    imgMaxWidth = srcLower.includes("tea") ? "420px" : "480px";
-                    imgMaxHeight = "580px";
-                  } else if (isSelfiePic) {
                     imgMaxWidth = "480px";
-                    imgMaxHeight = "540px";
+                    imgMaxHeight = "600px";
                   } else {
                     imgMaxWidth = "100%";
-                    imgMaxHeight = "540px";
+                    imgMaxHeight = "640px";
                   }
 
                   const captionText = alt && alt.trim() !== "" ? alt.trim() : null;
