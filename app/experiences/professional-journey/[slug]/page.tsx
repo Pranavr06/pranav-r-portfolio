@@ -274,6 +274,15 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                     imgMaxWidth = "400px";
                   }
 
+                  const isNexathonPic = alt?.toLowerCase().includes("nexathon") || 
+                                        alt?.toLowerCase().includes("neural forge") || 
+                                        alt?.toLowerCase().includes("carrom") || 
+                                        alt?.toLowerCase().includes("chai") || 
+                                        alt?.toLowerCase().includes("coding sprint");
+                  if (isNexathonPic) {
+                    imgMaxWidth = "650px";
+                  }
+
                   let flexStyle: any = 1;
                   let minWidthStyle = "0";
                   
