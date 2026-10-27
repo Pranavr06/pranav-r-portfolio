@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import crypto from "crypto";
+import { getClientIp, hashIp, checkRateLimit, recordRateLimitAttempt } from "@/lib/rateLimiter";
 // @ts-ignore
 import { isProfane, clean } from "profanity-cleaner";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 const turnstileSecretKey = process.env.TURNSTILE_SECRET_KEY!;
+
+const CONTACT_RATE_LIMIT = {
+  keyPrefix: "contact_form",
+  maxAttempts: 5,
+  windowMs: 24 * 60 * 60 * 1000, // 24 hours
+  lockoutMs: 24 * 60 * 60 * 1000,
+};
 
 export async function POST(req: Request) {
   try {
@@ -48,12 +55,21 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Message contains inappropriate language." }, { status: 400 });
     }
 
-    // Generate IP Hash
-    const forwardedFor = req.headers.get("x-forwarded-for");
-    const ip = forwardedFor ? forwardedFor.split(",")[0] : "127.0.0.1";
-    const ip_hash = crypto.createHash("sha256").update(ip).digest("hex");
+    // Generate Trusted IP Hash (Netlify Edge IP -> SHA-256)
+    // Server-side rate limit cannot be reset by altering cookies or localStorage
+    const clientIp = getClientIp(req);
+    const ip_hash = hashIp(clientIp);
 
-    // Rate Limiting Check (max 5 per IP hash per day)
+    // Rate Limiting Check (max 5 per IP per 24 hours)
+    const rateCheck = await checkRateLimit(req, CONTACT_RATE_LIMIT);
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ 
+        error: rateCheck.error || "Submission limit reached (maximum 5 messages per 24 hours). Please try again later.",
+        retryAfterSeconds: rateCheck.retryAfterSeconds 
+      }, { status: 429 });
+    }
+
+    // Also double check direct submissions in contacts table for extra persistence
     const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const { count, error: countError } = await supabase
       .from("contacts")
@@ -64,7 +80,8 @@ export async function POST(req: Request) {
     if (countError) throw countError;
 
     if (count !== null && count >= 5) {
-      return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+      await recordRateLimitAttempt(req, CONTACT_RATE_LIMIT, { reason: "db_count_exceeded" });
+      return NextResponse.json({ error: "Rate limit exceeded (maximum 5 messages per 24 hours). Please try again later." }, { status: 429 });
     }
 
     // Insert into Supabase

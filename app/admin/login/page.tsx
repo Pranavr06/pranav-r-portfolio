@@ -24,27 +24,15 @@ export default function Login() {
   }, []);
 
   useEffect(() => {
-    const storedLockout = localStorage.getItem("lockoutUntil");
-    if (storedLockout && Date.now() < parseInt(storedLockout)) {
-      setLockoutTime(parseInt(storedLockout));
-    } else if (storedLockout) {
-      localStorage.removeItem("lockoutUntil");
-      localStorage.removeItem("loginAttempts");
-    }
-  }, []);
-
-  useEffect(() => {
     let interval: NodeJS.Timeout;
     if (lockoutTime && Date.now() < lockoutTime) {
       interval = setInterval(() => {
         if (Date.now() >= lockoutTime) {
           setLockoutTime(null);
-          localStorage.removeItem("lockoutUntil");
-          localStorage.removeItem("loginAttempts");
           setError("");
         } else {
-          // Force re-render to update the timer message
-          setLockoutTime(lockoutTime); 
+          // Force tick update
+          setLockoutTime((prev) => prev);
         }
       }, 1000);
     }
@@ -58,60 +46,52 @@ export default function Login() {
 
     if (lockoutTime && Date.now() < lockoutTime) {
       const remainingSeconds = Math.ceil((lockoutTime - Date.now()) / 1000);
-      setError(`Too many attempts. Please try again in ${remainingSeconds} seconds.`);
+      setError(`Too many attempts. Device locked by server for ${remainingSeconds} more second(s).`);
       return;
     }
 
     setLoading(true);
-    
-    const { checkIsAdmin, checkIsAdminByEmail } = await import("@/lib/admin");
-    const isAdminEmail = await checkIsAdminByEmail(supabase, email);
 
-    if (isResetMode) {
-      if (!isAdminEmail) {
-        setError("Unauthorized: This account does not have admin privileges.");
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+          action: isResetMode ? "reset" : "login"
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          const retrySeconds = data.retryAfterSeconds || 900;
+          const lockEnd = Date.now() + retrySeconds * 1000;
+          setLockoutTime(lockEnd);
+          setError(data.error || `Too many failed attempts. Device locked for ${Math.ceil(retrySeconds / 60)} minutes.`);
+        } else {
+          setError(data.error || "Authentication failed.");
+        }
         setLoading(false);
         return;
       }
-      
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/admin/update-password`,
-      });
-      if (error) {
-        setError(error.message);
-      } else {
-        setMessage("Success! Password reset link has been sent to your email.");
-      }
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      const isAdmin = await checkIsAdmin(supabase, data?.user?.id);
 
-      if (error) {
-        const attempts = parseInt(localStorage.getItem("loginAttempts") || "0") + 1;
-        if (attempts >= 5) {
-          const lockoutEnd = Date.now() + 2 * 60 * 1000; // 2 minutes cooldown
-          localStorage.setItem("lockoutUntil", lockoutEnd.toString());
-          localStorage.setItem("loginAttempts", "0");
-          setLockoutTime(lockoutEnd);
-          setError("Too many failed attempts. Device locked for 2 minutes.");
-        } else {
-          localStorage.setItem("loginAttempts", attempts.toString());
-          setError(`Invalid email or password. Attempt ${attempts} of 5.`);
-        }
-      } else if (!isAdmin) {
-        await supabase.auth.signOut();
-        setError("Unauthorized: This account does not have admin privileges.");
+      if (isResetMode) {
+        setMessage(data.message || "Password reset link sent to your email.");
       } else {
-        localStorage.removeItem("loginAttempts");
-        localStorage.removeItem("lockoutUntil");
+        // Authenticate client-side session with token returned by server
+        if (data.session) {
+          await supabase.auth.setSession(data.session);
+        }
         window.location.href = "/admin";
       }
+    } catch (err: any) {
+      setError(err?.message || "An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

@@ -1,13 +1,20 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import crypto from "crypto";
+import { getClientIp, hashIp, checkRateLimit, recordRateLimitAttempt } from "@/lib/rateLimiter";
 // @ts-ignore
 import { isProfane, clean } from "profanity-cleaner";
 import { isValidLinkedInUrl, isValidGithubUrl } from "@/lib/validators";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+const TESTIMONIAL_RATE_LIMIT = {
+  keyPrefix: "testimonial_submit",
+  maxAttempts: 3,
+  windowMs: 24 * 60 * 60 * 1000, // 24 hours
+  lockoutMs: 24 * 60 * 60 * 1000,
+};
 
 // Normalize string for duplicate detection (removes whitespace, punctuation, sets lowercase)
 const normalize = (str: string) => str.toLowerCase().replace(/[\W_]+/g, "");
@@ -45,11 +52,20 @@ export async function POST(req: Request) {
       }
     }
 
-    // 2. Hash IP for privacy & rate limiting
-    const ip = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
-    const ip_hash = crypto.createHash("sha256").update(ip).digest("hex");
+    // 2. Hash IP for privacy & rate limiting using Netlify Edge IP
+    // Server-side rate limit cannot be reset by altering cookies or localStorage
+    const clientIp = getClientIp(req);
+    const ip_hash = hashIp(clientIp);
 
     // 3. Rate Limiting (max 3 per 24 hours per IP)
+    const rateCheck = await checkRateLimit(req, TESTIMONIAL_RATE_LIMIT);
+    if (!rateCheck.allowed) {
+      return NextResponse.json({ 
+        error: rateCheck.error || "Rate limit exceeded. Maximum 3 submissions per day.",
+        retryAfterSeconds: rateCheck.retryAfterSeconds 
+      }, { status: 429 });
+    }
+
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const { count, error: countError } = await supabase
       .from("testimonials")
@@ -60,6 +76,7 @@ export async function POST(req: Request) {
     if (countError) {
       console.error("Rate limit check error:", countError);
     } else if (count !== null && count >= 3) {
+      await recordRateLimitAttempt(req, TESTIMONIAL_RATE_LIMIT, { reason: "db_count_exceeded" });
       return NextResponse.json({ error: "Rate limit exceeded. Maximum 3 submissions per day." }, { status: 429 });
     }
 

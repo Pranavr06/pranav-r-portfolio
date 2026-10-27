@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { checkIsAdmin } from "@/lib/admin";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 async function verifyAdmin(req: Request) {
@@ -13,7 +13,7 @@ async function verifyAdmin(req: Request) {
   const token = authHeader.replace("Bearer ", "");
   
   // Create a temporary client with the user's token to get their user info
-  const userClient = createClient(supabaseUrl, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+  const userClient = createClient(supabaseUrl, process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
     global: { headers: { Authorization: `Bearer ${token}` } }
   });
 
