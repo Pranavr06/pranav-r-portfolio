@@ -83,8 +83,8 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
 
   let displayContent = experience.content || "";
 
-  // Transform Team & Contributions into HTML cards
-  const teamHeaderRegex = /##\s*Team\s*(?:&|and)\s*Contributions/i;
+  // Transform Team & Contributions / Team Neural Forge into HTML cards
+  const teamHeaderRegex = /##\s*(?:Team\s*(?:&|and)\s*Contributions|Team\s*Neural\s*Forge(?:\s*(?:&|and)\s*Synergy)?)/i;
   const teamMatch = displayContent.match(teamHeaderRegex);
   if (teamMatch && teamMatch.index !== undefined) {
     const startIndex = teamMatch.index + teamMatch[0].length;
@@ -132,7 +132,8 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
     }
     
     if (cards.length > 0) {
-      const gridHTML = '\n\n<div class="team-grid">\n' + cards.join('\n') + '\n</div>\n\n' + nonCardText.join('\n');
+      const introHTML = nonCardText.length > 0 ? '\n\n' + nonCardText.join('\n\n') + '\n\n' : '\n\n';
+      const gridHTML = introHTML + '<div class="team-grid">\n' + cards.join('\n') + '\n</div>\n\n';
       displayContent = displayContent.slice(0, startIndex) + gridHTML + displayContent.slice(endIndex);
     }
   }
