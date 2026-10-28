@@ -186,7 +186,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           
           <div className="tech-stack" style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "2.5rem" }}>
             {project.tech_stack?.map((tech: string, i: number) => (
-              <span key={i} className="tech-tag" style={{ fontSize: "0.85rem", background: "var(--light-bg)", padding: "0.4rem 1rem", borderRadius: "1.5rem", color: "var(--light-title)", fontWeight: "600", border: "1px solid #ccc" }}>
+              <span key={i} className="tech-tag">
                 {tech}
               </span>
             ))}

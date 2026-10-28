@@ -2217,17 +2217,20 @@ body.dark-theme .post-content .md-p:has(img) + .md-p {
     color: #ccc;
 }
 
-.post-content figcaption {
-    font-size: 1.05rem;
-    color: #444;
-    font-style: normal;
-    font-weight: 700;
-    margin-top: 1.5rem;
-    margin-bottom: 2.5rem;
+.post-content figcaption,
+.post-content-figcaption {
+    font-size: 1rem;
+    color: #4a4a4a;
+    font-style: italic;
+    font-weight: 500;
+    margin-top: 0.85rem;
+    margin-bottom: 2rem;
     text-align: center;
+    transition: color 0.3s ease;
 }
-body.dark-theme .post-content figcaption {
-    color: #ccc;
+body.dark-theme .post-content figcaption,
+body.dark-theme .post-content-figcaption {
+    color: #e2e8f0 !important;
 }
 
 .share-menu-btn {

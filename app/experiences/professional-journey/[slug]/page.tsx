@@ -249,7 +249,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                     return (
                       <div className="video-wrapper mt-0 mb-0" style={{ flex: 1, minWidth: "0", width: "100%", maxWidth: isCrowdVideo ? "800px" : "354px", margin: "0 auto" }}>
                         <video src={absoluteSrc} controls autoPlay loop muted playsInline width="100%" preload="metadata" style={{ display: "block", width: "100%", height: "auto", borderRadius: "1rem" }} />
-                        {alt && <figcaption style={{ marginTop: "0.75rem", fontSize: "0.95rem", textAlign: "center", fontStyle: "italic" }}>{alt}</figcaption>}
+                        {alt && <figcaption className="post-content-figcaption" style={{ marginTop: "0.75rem", fontSize: "0.95rem", textAlign: "center", fontStyle: "italic" }}>{alt}</figcaption>}
                       </div>
                     );
                   }
@@ -294,17 +294,19 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                         }} 
                       />
                       {captionText && (
-                        <figcaption style={{ 
-                          marginTop: "0.85rem", 
-                          fontSize: "1rem", 
-                          fontWeight: 500, 
-                          color: "var(--light-title, #333)", 
-                          textAlign: "center", 
-                          fontStyle: "italic", 
-                          maxWidth: imgMaxWidth,
-                          lineHeight: 1.5,
-                          padding: "0 1rem"
-                        }}>
+                        <figcaption 
+                          className="post-content-figcaption"
+                          style={{ 
+                            marginTop: "0.85rem", 
+                            fontSize: "1rem", 
+                            fontWeight: 500, 
+                            textAlign: "center", 
+                            fontStyle: "italic", 
+                            maxWidth: imgMaxWidth,
+                            lineHeight: 1.5,
+                            padding: "0 1rem"
+                          }}
+                        >
                           {captionText}
                         </figcaption>
                       )}
@@ -381,7 +383,7 @@ export default async function ExperienceDetailPage({ params }: { params: Promise
                 },
                 figcaption({ node, children, className, ...props }: any) {
                   return (
-                    <figcaption className={className} {...props}>
+                    <figcaption className={className ? `post-content-figcaption ${className}` : "post-content-figcaption"} {...props}>
                       {children}
                     </figcaption>
                   );
