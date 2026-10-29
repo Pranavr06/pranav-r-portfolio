@@ -236,9 +236,9 @@ export default function AdminDashboard() {
                   Icon = MessageSquare;
                   bgColor = "rgba(245, 158, 11, 0.1)";
                   color = "#f59e0b";
-                } else if (typeLower === 'testimonial') {
+                } else if (typeLower.includes('testimonial')) {
                   Icon = MessageCircle;
-                  if (actionLower === 'approved') {
+                  if (typeLower.includes('login') || actionLower === 'approved') {
                     bgColor = "rgba(16, 185, 129, 0.1)";
                     color = "#10b981";
                   } else {
@@ -334,7 +334,7 @@ export default function AdminDashboard() {
                             whiteSpace: "nowrap" 
                           }}>
                             <span style={{ textTransform: "capitalize", fontWeight: 500 }}>
-                              {activity.type} {activity.action}
+                              {(activity.type === 'testimonial_login' ? 'Testimonial Sign-In' : `${activity.type} ${activity.action}`).replace(/_/g, ' ')}
                             </span>
                             <span>&bull;</span>
                             <span>{formattedDate} at {formattedTime}</span>

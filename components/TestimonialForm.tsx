@@ -39,6 +39,29 @@ export default function TestimonialForm({ isAdminMode = false }: { isAdminMode?:
   const githubRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
+  const recordTestimonialLogin = async (userObj: any) => {
+    if (!userObj || !userObj.id) return;
+    const sessionKey = `testimonial_logged_${userObj.id}`;
+    if (sessionStorage.getItem(sessionKey)) return;
+    sessionStorage.setItem(sessionKey, Date.now().toString());
+
+    try {
+      await fetch("/api/testimonials/log-login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: userObj.id,
+          email: userObj.email,
+          name: userObj.user_metadata?.full_name || userObj.user_metadata?.name || userObj.email,
+          avatar_url: userObj.user_metadata?.avatar_url,
+          provider: userObj.app_metadata?.provider || "google"
+        })
+      });
+    } catch (err) {
+      console.warn("Failed to record testimonial login:", err);
+    }
+  };
+
   useEffect(() => {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -47,6 +70,7 @@ export default function TestimonialForm({ isAdminMode = false }: { isAdminMode?:
         if (session.user.user_metadata?.full_name) {
           setFormData(prev => ({ ...prev, name: session.user.user_metadata.full_name }));
         }
+        recordTestimonialLogin(session.user);
       }
       setLoading(false);
     };
@@ -58,6 +82,9 @@ export default function TestimonialForm({ isAdminMode = false }: { isAdminMode?:
         setUser(session.user);
         if (session.user.user_metadata?.full_name && !formData.name) {
           setFormData(prev => ({ ...prev, name: session.user.user_metadata.full_name }));
+        }
+        if (event === 'SIGNED_IN') {
+          recordTestimonialLogin(session.user);
         }
       } else {
         setUser(null);
@@ -125,6 +152,9 @@ export default function TestimonialForm({ isAdminMode = false }: { isAdminMode?:
   };
 
   const handleLogout = async () => {
+    if (user?.id) {
+      sessionStorage.removeItem(`testimonial_logged_${user.id}`);
+    }
     sessionStorage.removeItem("editTestimonial");
     setEditId(null);
     await supabase.auth.signOut();
