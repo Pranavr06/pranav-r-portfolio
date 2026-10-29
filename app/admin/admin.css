@@ -466,3 +466,58 @@ body.dark-theme .admin-stat-card:hover {
   margin-left: 8px;
 }
 
+/* Slidable Recent Activity Container */
+.admin-activity-slider {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  scrollbar-width: thin;
+  scrollbar-color: var(--admin-border) transparent;
+}
+
+.admin-activity-slider::-webkit-scrollbar {
+  height: 6px;
+}
+
+.admin-activity-slider::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-activity-slider::-webkit-scrollbar-thumb {
+  background: var(--admin-border);
+  border-radius: 9999px;
+}
+
+.admin-activity-slider::-webkit-scrollbar-thumb:hover {
+  background: var(--admin-text-muted);
+}
+
+.admin-activity-row {
+  cursor: pointer;
+  user-select: text;
+}
+
+.admin-activity-details-drawer {
+  background: var(--admin-card-hover);
+  border-top: 1px dashed var(--admin-border);
+  padding: 0.85rem 1.5rem 1rem 4rem;
+  font-size: 0.82rem;
+  color: var(--admin-text-muted);
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+.admin-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--admin-border);
+  background-color: var(--admin-bg-primary);
+  color: var(--admin-text-main);
+  white-space: nowrap;
+}
+

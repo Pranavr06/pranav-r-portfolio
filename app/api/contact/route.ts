@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getClientIp, hashIp, checkRateLimit, recordRateLimitAttempt } from "@/lib/rateLimiter";
+import { logActivity } from "@/lib/activityLogger";
 // @ts-ignore
 import { isProfane, clean } from "profanity-cleaner";
 
@@ -101,16 +102,21 @@ export async function POST(req: Request) {
 
     if (insertError) throw insertError;
 
-    // Log Activity
-    const { error: logError } = await supabase.from("activity_logs").insert([{
+    // Log Activity with full attributes
+    await logActivity({
       type: "message",
       action: "received",
-      title: `New Inquiry from ${cleanName}`
-    }]);
-
-    if (logError) {
-      console.error("Failed to log activity:", logError);
-    }
+      title: `New Inquiry: ${cleanName}`,
+      email: email.trim(),
+      ip_address: clientIp,
+      user_agent: req.headers.get("user-agent"),
+      status: "info",
+      details: {
+        purpose: purpose || undefined,
+        company: company || undefined,
+        source_page: source_page || undefined
+      }
+    });
 
     return NextResponse.json({ success: true, message: "Message sent successfully." });
     

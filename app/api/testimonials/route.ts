@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getClientIp, hashIp, checkRateLimit, recordRateLimitAttempt } from "@/lib/rateLimiter";
+import { logActivity } from "@/lib/activityLogger";
 // @ts-ignore
 import { isProfane, clean } from "profanity-cleaner";
 import { isValidLinkedInUrl, isValidGithubUrl } from "@/lib/validators";
@@ -136,17 +137,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Failed to save testimonial. Please try again." }, { status: 500 });
     }
 
-    // 7. Log Activity
-    const { error: logError } = await supabase.from("activity_logs").insert([{
+    // 7. Log Activity with full attributes
+    await logActivity({
       type: "testimonial",
       action: "received",
-      title: `Testimonial from ${cleanName}`,
-    }]);
-
-    if (logError) {
-      console.error("Failed to log activity:", logError);
-      // We don't fail the request if logging fails
-    }
+      title: `Testimonial: ${cleanName}`,
+      email: email ? String(email).trim() : undefined,
+      ip_address: clientIp,
+      user_agent: req.headers.get("user-agent"),
+      status: "info",
+      details: {
+        role: role || undefined,
+        provider: provider || undefined
+      }
+    });
 
     return NextResponse.json({ success: true, message: "Testimonial submitted successfully and is pending review." });
 

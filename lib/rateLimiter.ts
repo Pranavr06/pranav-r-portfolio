@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { createClient } from "@supabase/supabase-js";
+import { logActivity } from "@/lib/activityLogger";
 
 // Extract trusted client IP from Netlify edge or proxy headers
 export function getClientIp(req: Request): string {
@@ -131,7 +132,7 @@ export async function checkRateLimit(
         .from("activity_logs")
         .select("*", { count: "exact", head: true })
         .eq("type", `rate_limit:${options.keyPrefix}`)
-        .eq("title", ipHash)
+        .or(`ip_address.eq.${ip},title.eq.${ipHash},description.ilike.%${ipHash}%`)
         .gte("created_at", windowStart);
 
       if (!dbErr && dbAttempts !== null && dbAttempts >= options.maxAttempts) {
@@ -203,22 +204,30 @@ export async function recordRateLimitAttempt(
 
   // Persist attempt to Supabase activity_logs
   try {
-    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const email = meta?.email ? String(meta.email) : null;
+    const userAgent = req.headers.get("user-agent") || null;
+    const isLockout = record.count >= options.maxAttempts;
 
-    if (supabaseUrl && serviceKey) {
-      const supabase = createClient(supabaseUrl, serviceKey);
-      await supabase.from("activity_logs").insert([{
-        type: `rate_limit:${options.keyPrefix}`,
-        action: record.count >= options.maxAttempts ? "lockout_triggered" : "attempt_recorded",
-        title: ipHash,
-        description: JSON.stringify({
-          endpoint: options.keyPrefix,
-          attempt: record.count,
-          meta: meta || {}
-        })
-      }]);
-    }
+    const displayTitle = email
+      ? `Login Attempt: ${email} (${ip})`
+      : `Rate Limit: ${options.keyPrefix} (${ip})`;
+
+    await logActivity({
+      type: `rate_limit:${options.keyPrefix}`,
+      action: isLockout ? "lockout_triggered" : "attempt_recorded",
+      title: displayTitle,
+      email,
+      ip_address: ip,
+      user_agent: userAgent,
+      status: isLockout ? "blocked" : "warning",
+      details: {
+        endpoint: options.keyPrefix,
+        attempt: record.count,
+        maxAttempts: options.maxAttempts,
+        ipHash,
+        meta: meta || {}
+      }
+    });
   } catch (err) {
     // Log failure quietly without breaking caller
     console.error("Failed to persist rate limit attempt:", err);
@@ -249,7 +258,7 @@ export async function resetRateLimit(
         .from("activity_logs")
         .delete()
         .eq("type", `rate_limit:${options.keyPrefix}`)
-        .eq("title", ipHash);
+        .or(`ip_address.eq.${ip},title.eq.${ipHash},description.ilike.%${ipHash}%`);
     }
   } catch (err) {
     console.error("Failed to clear DB rate limit:", err);

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { checkRateLimit, recordRateLimitAttempt, resetRateLimit } from "@/lib/rateLimiter";
+import { checkRateLimit, recordRateLimitAttempt, resetRateLimit, getClientIp } from "@/lib/rateLimiter";
 import { checkIsAdmin, checkIsAdminByEmail } from "@/lib/admin";
+import { logActivity } from "@/lib/activityLogger";
 
 const RATE_LIMIT_CONFIG = {
   keyPrefix: "admin_login",
@@ -11,11 +12,27 @@ const RATE_LIMIT_CONFIG = {
 };
 
 export async function POST(req: Request) {
+  const ip = getClientIp(req);
+  const userAgent = req.headers.get("user-agent") || null;
+
   try {
     // 1. Enforce strict server-side rate limit
     // Cannot be reset by clearing cookies or localStorage
     const rateCheck = await checkRateLimit(req, RATE_LIMIT_CONFIG);
     if (!rateCheck.allowed) {
+      await logActivity({
+        type: "admin_login",
+        action: "lockout_enforced",
+        title: `Login Blocked (Rate Limit Active): ${ip}`,
+        ip_address: ip,
+        user_agent: userAgent,
+        status: "blocked",
+        details: {
+          retryAfterSeconds: rateCheck.retryAfterSeconds,
+          endpoint: "admin_login"
+        }
+      });
+
       return NextResponse.json(
         { 
           error: rateCheck.error || "Too many failed login attempts. Device locked for 15 minutes.",
@@ -43,20 +60,54 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "Email is required." }, { status: 400 });
       }
 
-      const isAdminEmail = await checkIsAdminByEmail(supabase, email.trim());
+      const cleanResetEmail = email.trim();
+      const isAdminEmail = await checkIsAdminByEmail(supabase, cleanResetEmail);
       if (!isAdminEmail) {
+        await logActivity({
+          type: "admin_login",
+          action: "reset_unauthorized",
+          title: `Password Reset Denied (Non-Admin): ${cleanResetEmail}`,
+          email: cleanResetEmail,
+          ip_address: ip,
+          user_agent: userAgent,
+          status: "failed",
+          details: { reason: "non_admin_email" }
+        });
+
         // Do not reveal email existence to unauthorized callers
         return NextResponse.json({ error: "Unauthorized: Account does not have admin privileges." }, { status: 403 });
       }
 
       const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://pranavr.netlify.app";
-      const { error: resetErr } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      const { error: resetErr } = await supabase.auth.resetPasswordForEmail(cleanResetEmail, {
         redirectTo: `${siteUrl}/admin/update-password`,
       });
 
       if (resetErr) {
+        await logActivity({
+          type: "admin_login",
+          action: "reset_failed",
+          title: `Password Reset Failed: ${cleanResetEmail}`,
+          email: cleanResetEmail,
+          ip_address: ip,
+          user_agent: userAgent,
+          status: "failed",
+          details: { error: resetErr.message }
+        });
+
         return NextResponse.json({ error: resetErr.message }, { status: 400 });
       }
+
+      await logActivity({
+        type: "admin_login",
+        action: "reset_requested",
+        title: `Password Reset Requested: ${cleanResetEmail}`,
+        email: cleanResetEmail,
+        ip_address: ip,
+        user_agent: userAgent,
+        status: "success",
+        details: { endpoint: "reset_password" }
+      });
 
       return NextResponse.json({ success: true, message: "Password reset link sent to registered email." });
     }
@@ -108,12 +159,21 @@ export async function POST(req: Request) {
     // Login successful: Reset rate limit for this IP
     await resetRateLimit(req, RATE_LIMIT_CONFIG);
 
-    // Log successful admin login
-    await supabase.from("activity_logs").insert([{
+    // Log successful admin login with full attributes
+    await logActivity({
       type: "admin_login",
       action: "success",
-      title: `Admin Login: ${cleanEmail}`
-    }]);
+      title: `Admin Login: ${cleanEmail}`,
+      email: cleanEmail,
+      ip_address: ip,
+      user_agent: userAgent,
+      status: "success",
+      details: {
+        userId: authData.user.id,
+        role: "admin",
+        method: "password"
+      }
+    });
 
     return NextResponse.json({
       success: true,

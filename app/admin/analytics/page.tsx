@@ -50,7 +50,9 @@ export default function AnalyticsDashboard() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
         <div>
           <h1 className="admin-page-title">Analytics & Insights</h1>
-          <p style={{ color: "var(--admin-text-muted)", fontSize: "0.95rem" }}>Understand your portfolio traffic and engagement.</p>
+          <p style={{ color: "var(--admin-text-muted)", fontSize: "0.95rem" }}>
+            {days === 0 ? "Showing all-time portfolio traffic and visitor engagement records." : "Understand your portfolio traffic and engagement."}
+          </p>
         </div>
         <select 
           value={days} 
@@ -62,6 +64,7 @@ export default function AnalyticsDashboard() {
           <option value={7}>Last 7 Days</option>
           <option value={30}>Last 30 Days</option>
           <option value={90}>Last 90 Days</option>
+          <option value={0}>All Time</option>
         </select>
       </div>
 
