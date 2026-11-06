@@ -439,180 +439,334 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     border: #ffffff 0.1rem solid;
 }
 
-/* ABOUT SECTION */
+/* ==========================================================================
+   ABOUT SECTION - TOMASZ GAJDA DIAGONAL SPLIT REDESIGN
+   ========================================================================== */
 #about {
     position: relative;
     padding-top: 4vh;
+    padding-bottom: 5vh;
     margin: 0 auto;
-    max-width: 1240px;
+    max-width: 1260px;
     padding-left: 2rem;
     padding-right: 2rem;
 }
 
-#about .title {
-    margin-bottom: 3.5rem;
+.tomasz-about-wrapper {
+    width: 100%;
+    margin: 0 auto;
 }
 
-#about .section__text__p1 {
-    font-size: 1rem;
-    color: #64748b;
+.tomasz-about-card {
+    position: relative;
+    display: flex;
+    min-height: 580px;
+    border-radius: 2rem;
+    overflow: hidden;
+    background-color: #000000;
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.tomasz-about-card:hover {
+    box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.45);
+}
+
+/* Diagonal divider on the left */
+.tomasz-left-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 58%;
+    height: 100%;
+    background: #d8dbdf;
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
+    z-index: 1;
+    transition: background 0.3s ease;
+}
+
+body.dark-theme .tomasz-left-bg {
+    background: #14171d;
+    box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Left Content Area */
+.tomasz-left-content {
+    position: relative;
+    z-index: 2;
+    flex: 1.15;
+    padding: 4rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 60%;
+}
+
+.tomasz-greeting {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.01em;
     margin-bottom: 0.35rem;
 }
 
-body.dark-theme #about .section__text__p1 {
-    color: #94a3b8;
+body.dark-theme .tomasz-greeting {
+    color: #e2e8f0;
 }
 
-#about .section-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4.5rem;
-    max-width: 1140px;
-    margin: 0 auto;
-    height: auto;
+.tomasz-name {
+    font-size: 3.75rem;
+    font-weight: 900;
+    color: #000000;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin: 0 0 0.5rem 0;
 }
 
-#about .section__pic-container {
-    width: 310px;
-    min-width: 280px;
-    max-width: 330px;
-    height: 440px;
-    margin: 0;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+body.dark-theme .tomasz-name {
+    color: #ffffff;
 }
 
-#about .about-pic {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 20%;
-    border-radius: 2rem;
-    box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.12);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-body.dark-theme #about .about-pic {
-    box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.6);
-}
-
-#about .about-details-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-width: 0;
-}
-
-#about .about-containers {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-top: 0;
-    margin-bottom: 2.25rem;
-}
-
-#about .clickable-about-card {
-    background: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 1.75rem;
-    padding: 1.85rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.04);
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-body.dark-theme #about .clickable-about-card {
-    background: #181c24;
-    border-color: rgba(255, 255, 255, 0.14);
-    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.35);
-}
-
-#about .clickable-about-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 25px -4px rgba(0, 0, 0, 0.1);
-    border-color: #0070f3;
-}
-
-body.dark-theme #about .clickable-about-card:hover {
-    box-shadow: 0 12px 25px -4px rgba(0, 0, 0, 0.5);
-    border-color: #38bdf8;
-}
-
-#about .clickable-about-card .icon {
-    width: 2rem !important;
-    height: 2rem !important;
-    object-fit: contain;
-    transform: none !important;
-    margin-bottom: 0.75rem;
-    filter: brightness(0);
-    transition: transform 0.25s ease;
-}
-
-body.dark-theme #about .clickable-about-card .icon {
-    filter: brightness(0) invert(1);
-}
-
-#about .clickable-about-card:hover .icon {
-    transform: scale(1.1) !important;
-}
-
-#about .clickable-about-card h3 {
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin: 0 0 0.35rem 0;
-    color: #0f172a;
+.tomasz-role {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0 0 1.5rem 0;
     letter-spacing: -0.01em;
 }
 
-body.dark-theme #about .clickable-about-card h3 {
-    color: #f8fafc;
-}
-
-#about .clickable-about-card p {
-    font-size: 0.9rem;
-    line-height: 1.45;
-    color: #475569;
-    margin: 0;
-    font-weight: 400;
-}
-
-body.dark-theme #about .clickable-about-card p {
+body.dark-theme .tomasz-role {
     color: #94a3b8;
 }
 
-#about .text-container {
-    color: #374151;
-    font-size: 1rem;
-    line-height: 1.8;
+.tomasz-bio {
+    color: #334155;
+    font-size: 0.98rem;
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+    max-width: 520px;
 }
 
-body.dark-theme #about .text-container {
+body.dark-theme .tomasz-bio {
     color: #cbd5e1;
 }
 
-#about .text-container p {
-    color: inherit;
-    line-height: 1.8;
+.tomasz-bio p {
+    margin-bottom: 0.75rem;
 }
 
-#about .text-container strong {
+.tomasz-bio p:last-child {
+    margin-bottom: 0;
+}
+
+.tomasz-bio strong {
     color: #0f172a;
-    font-weight: 600;
+    font-weight: 700;
 }
 
-body.dark-theme #about .text-container strong {
+body.dark-theme .tomasz-bio strong {
     color: #ffffff;
+}
+
+/* Badges / Pill Tags */
+.tomasz-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.tomasz-badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.35rem 0.8rem;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.06);
+    color: #1e293b;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+body.dark-theme .tomasz-badge {
+    background: rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.tomasz-badge:hover {
+    transform: translateY(-1px);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme .tomasz-badge:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Social Buttons (Square Beveled Tiles) */
+.tomasz-socials {
+    display: flex;
+    gap: 0.85rem;
+    align-items: center;
+}
+
+.tomasz-social-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: #c8cbd2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f172a;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+}
+
+body.dark-theme .tomasz-social-btn {
+    background: #232730;
+    color: #e2e8f0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.tomasz-social-btn:hover {
+    transform: translateY(-3px);
+    background: #ffffff;
+    color: #000000;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-theme .tomasz-social-btn:hover {
+    background: #333a46;
+    color: #38bdf8;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+.tomasz-at-icon {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.tomasz-svg-icon {
+    display: block;
+}
+
+/* Right Content Area (Seamless Black Background with Studio Portrait) */
+.tomasz-right-content {
+    position: relative;
+    z-index: 2;
+    flex: 0.85;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    background: transparent;
+}
+
+.tomasz-portrait-img {
+    height: 100%;
+    max-height: 580px;
+    width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.6));
+}
+
+.tomasz-about-card:hover .tomasz-portrait-img {
+    transform: scale(1.025);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN FOR TOMASZ GAJDA ABOUT LAYOUT
+   ========================================================================== */
+@media screen and (max-width: 1100px) {
+    .tomasz-left-content {
+        padding: 3.5rem 2.5rem;
+        max-width: 62%;
+    }
+    .tomasz-name {
+        font-size: 3.2rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .tomasz-about-card {
+        flex-direction: column-reverse;
+        min-height: auto;
+    }
+
+    .tomasz-left-bg {
+        width: 100%;
+        height: 60%;
+        top: auto;
+        bottom: 0;
+        clip-path: polygon(0 8%, 100% 0%, 100% 100%, 0 100%);
+    }
+
+    .tomasz-left-content {
+        max-width: 100%;
+        padding: 3rem 2rem;
+    }
+
+    .tomasz-right-content {
+        height: 380px;
+        background: #000000;
+    }
+
+    .tomasz-portrait-img {
+        max-height: 380px;
+    }
+
+    .tomasz-name {
+        font-size: 2.8rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #about {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .tomasz-about-card {
+        border-radius: 1.5rem;
+    }
+
+    .tomasz-left-content {
+        padding: 2.25rem 1.25rem;
+    }
+
+    .tomasz-greeting {
+        font-size: 1.2rem;
+    }
+
+    .tomasz-name {
+        font-size: 2.25rem;
+    }
+
+    .tomasz-role {
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+    }
+
+    .tomasz-bio {
+        font-size: 0.92rem;
+    }
+
+    .tomasz-right-content {
+        height: 300px;
+    }
+
+    .tomasz-portrait-img {
+        max-height: 300px;
+    }
 }
 
 .scroll-down-link, .scroll-up-link {
@@ -4462,16 +4616,4 @@ body.dark-theme .cert-gallery-counter {
         display: none !important;
     }
 }
-@media screen and (max-width: 768px) {
-  #about .about-containers {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  #about .section__pic-container {
-    width: 240px;
-    height: 330px;
-  }
-  #about .text-container {
-    text-align: left;
-  }
-}
+
