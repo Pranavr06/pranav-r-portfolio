@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { getClientIp, hashIp, checkRateLimit, recordRateLimitAttempt } from "@/lib/rateLimiter";
 import { logActivity } from "@/lib/activityLogger";
 import { parseDevice, parseLocation } from "@/lib/deviceGeoParser";
+import { getBannedWords, checkTextAgainstBannedWords } from "@/lib/bannedWordsFilter";
 // @ts-ignore
 import { clean } from "profanity-cleaner";
 
@@ -213,6 +214,38 @@ export async function POST(req: Request) {
 
     const clientIp = getClientIp(req);
     const ip_hash = hashIp(clientIp);
+    const rawUserAgent = req.headers.get("user-agent") || "";
+    const device = parseDevice(rawUserAgent);
+    const location = parseLocation(req);
+
+    // 6.5. Admin Banned Words Filter Check
+    const bannedWords = await getBannedWords();
+    const msgCheck = checkTextAgainstBannedWords(trimmedMsg, bannedWords);
+    const authorCheck = checkTextAgainstBannedWords(sanitizedAuthor, bannedWords);
+
+    if (msgCheck.blocked || authorCheck.blocked) {
+      const matched = msgCheck.matchedWord || authorCheck.matchedWord;
+
+      await logActivity({
+        type: "wall_note",
+        action: "blocked_banned_word",
+        title: `Blocked note containing forbidden word: "${matched}"`,
+        ip_address: clientIp,
+        user_agent: rawUserAgent,
+        status: "blocked",
+        details: {
+          banned_word: matched,
+          author: sanitizedAuthor,
+          location,
+          device: device.fullString
+        }
+      });
+
+      return NextResponse.json(
+        { error: `Your note contains restricted or prohibited language: "${matched}". Please remove it and try again.` },
+        { status: 400 }
+      );
+    }
 
     // 7. Duplicate Content Protection (Check if identical message was posted in last 10 minutes)
     try {
@@ -234,10 +267,6 @@ export async function POST(req: Request) {
     } catch (dupErr) {
       // Ignore if table doesn't exist
     }
-
-    const rawUserAgent = req.headers.get("user-agent") || "";
-    const device = parseDevice(rawUserAgent);
-    const location = parseLocation(req);
 
     // Insert into Supabase with full telemetry
     const notePayload: any = {

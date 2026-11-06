@@ -4,6 +4,7 @@ import { checkIsAdmin } from "@/lib/admin";
 import { logActivity } from "@/lib/activityLogger";
 import { getClientIp } from "@/lib/rateLimiter";
 import { revalidatePath } from "next/cache";
+import { clearBannedWordsCache, DEFAULT_BANNED_WORDS } from "@/lib/bannedWordsFilter";
 
 const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -58,21 +59,49 @@ export async function GET(req: Request) {
 
     if (search && search.trim()) {
       const cleanSearch = search.trim().slice(0, 50);
-      query = query.or(`message.ilike.%${cleanSearch}%,author_name.ilike.%${cleanSearch}%`);
+      query = query.or(`message.ilike.%${cleanSearch}%,author_name.ilike.%${cleanSearch}%,ip_address.ilike.%${cleanSearch}%,location.ilike.%${cleanSearch}%`);
     }
 
     query = query.order("is_pinned", { ascending: false }).order("created_at", { ascending: false });
 
     const { data, error } = await query;
 
+    // Fetch banned words list
+    let bannedWords: any[] = [];
+    try {
+      const { data: wordsData } = await supabase
+        .from("wall_banned_words")
+        .select("*")
+        .order("created_at", { ascending: false });
+      
+      if (wordsData && wordsData.length > 0) {
+        bannedWords = wordsData;
+      } else {
+        // Fallback default objects if table is newly empty
+        bannedWords = DEFAULT_BANNED_WORDS.map((w, idx) => ({
+          id: `default-${idx}`,
+          word: w,
+          created_at: new Date().toISOString(),
+          created_by: "System Default"
+        }));
+      }
+    } catch (e) {
+      bannedWords = DEFAULT_BANNED_WORDS.map((w, idx) => ({
+        id: `default-${idx}`,
+        word: w,
+        created_at: new Date().toISOString(),
+        created_by: "System Default"
+      }));
+    }
+
     if (error) {
       if (error.code === "PGRST205" || error.message?.includes("does not exist")) {
-        return NextResponse.json({ notes: [], tableReady: false });
+        return NextResponse.json({ notes: [], bannedWords, tableReady: false });
       }
       throw error;
     }
 
-    return NextResponse.json({ notes: data || [], tableReady: true });
+    return NextResponse.json({ notes: data || [], bannedWords, tableReady: true });
   } catch (error: any) {
     console.error("Admin Wall API GET Error:", error);
     return NextResponse.json({ error: error?.message || "Internal server error" }, { status: 500 });
@@ -87,7 +116,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { action, id, noteData } = body;
+    const { action, id, noteData, word } = body;
     const clientIp = getClientIp(req);
 
     // 1. CREATE NOTE
@@ -111,7 +140,10 @@ export async function POST(req: Request) {
             likes_count: 0,
             is_pinned: !!is_pinned,
             is_archived: false,
-            ip_hash: "admin"
+            ip_hash: "admin",
+            ip_address: clientIp,
+            location: "Admin Panel",
+            device_info: "Admin Session"
           }
         ])
         .select()
@@ -264,6 +296,87 @@ export async function POST(req: Request) {
 
       revalidatePath("/");
       revalidatePath("/wall");
+
+      return NextResponse.json({ success: true });
+    }
+
+    // 7. ADD BANNED WORD
+    if (action === "add_banned_word") {
+      if (!word || typeof word !== "string" || !word.trim()) {
+        return NextResponse.json({ error: "Please enter a word or phrase to block." }, { status: 400 });
+      }
+
+      const cleanWord = word.trim().toLowerCase();
+
+      const { data, error } = await supabase
+        .from("wall_banned_words")
+        .insert([
+          {
+            word: cleanWord,
+            created_by: adminUser.email || "Admin"
+          }
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        if (error.code === "23505" || error.message?.includes("unique")) {
+          return NextResponse.json({ error: `"${cleanWord}" is already on the blacklist.` }, { status: 400 });
+        }
+        if (error.code === "PGRST205" || error.message?.includes("does not exist")) {
+          return NextResponse.json(
+            { error: "Table 'wall_banned_words' not yet provisioned. Run scripts/create_wall_notes.sql in Supabase SQL Editor." },
+            { status: 503 }
+          );
+        }
+        throw error;
+      }
+
+      clearBannedWordsCache();
+
+      await logActivity({
+        type: "wall_moderation",
+        action: "added_banned_word",
+        title: `Admin added banned word: "${cleanWord}"`,
+        ip_address: clientIp,
+        user_agent: req.headers.get("user-agent"),
+        status: "info",
+        details: { word: cleanWord }
+      });
+
+      return NextResponse.json({ success: true, bannedWord: data });
+    }
+
+    // 8. DELETE BANNED WORD
+    if (action === "delete_banned_word") {
+      const wordToDelete = word || body.word;
+      const idToDelete = id || body.id;
+
+      if (!wordToDelete && !idToDelete) {
+        return NextResponse.json({ error: "Word identifier required." }, { status: 400 });
+      }
+
+      let deleteQuery = supabase.from("wall_banned_words").delete();
+      if (idToDelete && !idToDelete.startsWith("default-")) {
+        deleteQuery = deleteQuery.eq("id", idToDelete);
+      } else if (wordToDelete) {
+        deleteQuery = deleteQuery.eq("word", wordToDelete.toLowerCase().trim());
+      }
+
+      const { error } = await deleteQuery;
+      if (error && error.code !== "PGRST205") throw error;
+
+      clearBannedWordsCache();
+
+      await logActivity({
+        type: "wall_moderation",
+        action: "deleted_banned_word",
+        title: `Admin removed banned word: "${wordToDelete || idToDelete}"`,
+        ip_address: clientIp,
+        user_agent: req.headers.get("user-agent"),
+        status: "info",
+        details: { word: wordToDelete, id: idToDelete }
+      });
 
       return NextResponse.json({ success: true });
     }

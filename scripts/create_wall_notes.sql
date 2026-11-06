@@ -1,10 +1,11 @@
 -- ==============================================================================
--- Migration: Create wall_notes Table for Community Sticky Notes (/wall)
+-- Migration: Create wall_notes and wall_banned_words Tables for Community Sticky Notes (/wall)
 -- ==============================================================================
 -- Run this in your Supabase SQL Editor:
 -- https://supabase.com/dashboard/project/zsvkvxpjtirckmfvkjxd/sql
 -- ==============================================================================
 
+-- 1. Wall Notes Table
 CREATE TABLE IF NOT EXISTS wall_notes (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
@@ -57,4 +58,28 @@ WITH CHECK (true);
 -- 4. Admin Full Access Policy
 CREATE POLICY "Admins have full access to wall notes" 
 ON wall_notes FOR ALL 
+USING (auth.role() = 'authenticated');
+
+
+-- ==============================================================================
+-- 2. Wall Banned Words Blacklist Table (Admin Configurable)
+-- ==============================================================================
+
+CREATE TABLE IF NOT EXISTS wall_banned_words (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  word TEXT NOT NULL UNIQUE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  created_by TEXT DEFAULT 'Admin'
+);
+
+CREATE INDEX IF NOT EXISTS idx_wall_banned_words_word ON wall_banned_words(word);
+
+ALTER TABLE wall_banned_words ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public can read banned words for server filtering" 
+ON wall_banned_words FOR SELECT 
+USING (true);
+
+CREATE POLICY "Admins have full access to banned words" 
+ON wall_banned_words FOR ALL 
 USING (auth.role() = 'authenticated');
