@@ -7,7 +7,7 @@ import ScrollArrow from "@/components/ScrollArrow";
 
 export default function Footer() {
   const pathname = usePathname();
-  const isMinimal = pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/") || pathname.startsWith("/blogs/") || pathname.startsWith("/certificates/");
+  const isMinimal = pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname === "/wall" || pathname.startsWith("/admin") || pathname.startsWith("/projects/") || pathname.startsWith("/blogs/") || pathname.startsWith("/certificates/");
 
   const fullNavLinks = [
     { name: "About", href: "/#about" },
@@ -15,6 +15,7 @@ export default function Footer() {
     { name: "Certificates", href: "/#certificate" },
     { name: "Projects", href: "/#projects" },
     { name: "Testimonials", href: "/#testimonials" },
+    { name: "Wall 📌", href: "/wall" },
     { name: "Blog", href: "/#blog" },
     { name: "Contact", href: "/#contact" },
     { name: "Admin", href: "/admin" },

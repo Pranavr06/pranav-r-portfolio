@@ -29,6 +29,8 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
       e.preventDefault();
       router.push(href);
       setMenuOpen(false);
+    } else {
+      setMenuOpen(false);
     }
   };
 
@@ -98,11 +100,12 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
     { name: "Certificates", href: "/#certificate" },
     { name: "Projects", href: "/#projects" },
     { name: "Testimonials", href: "/#testimonials" },
+    { name: "Wall 📌", href: "/wall" },
     { name: "Blog", href: "/#blog" },
     { name: "Contact", href: "/#contact" },
   ];
 
-  const isMinimal = minimal || pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname.startsWith("/admin") || pathname.startsWith("/projects/") || pathname.startsWith("/blogs/") || pathname.startsWith("/certificates/");
+  const isMinimal = minimal || pathname === "/certificates" || pathname === "/projects" || pathname === "/blogs" || pathname === "/wall" || pathname.startsWith("/admin") || pathname.startsWith("/projects/") || pathname.startsWith("/blogs/") || pathname.startsWith("/certificates/");
   
   const navLinks = getNavLinks(pathname, fullNavLinks);
 

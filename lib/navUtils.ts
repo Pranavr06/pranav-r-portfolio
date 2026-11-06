@@ -7,6 +7,7 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
     pathname === "/projects" || 
     pathname === "/blogs" || 
     pathname === "/testimonials" ||
+    pathname === "/wall" ||
     pathname.startsWith("/admin") || 
     pathname.startsWith("/projects/") || 
     pathname.startsWith("/blogs/") || 
@@ -22,7 +23,7 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
     return [{ name: "Home", href: "/" }];
   }
 
-// 3. College Projects Main Page
+  // 3. College Projects Main Page
   if (pathname === "/projects/college-projects") {
     return [{ name: "Home", href: "/" }, { name: "Projects", href: "/projects" }];
   }
@@ -50,6 +51,11 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
     return [{ name: "Home", href: "/" }];
   }
 
+  // Wall logic
+  if (pathname === "/wall") {
+    return [{ name: "Home", href: "/" }];
+  }
+
   // Certificates logic
   if (pathname === "/certificates") {
     return [{ name: "Home", href: "/" }];
@@ -72,4 +78,3 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
   // Default fallback for minimal layout
   return [{ name: "Home", href: "/" }];
 }
-

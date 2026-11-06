@@ -33,6 +33,7 @@ Unlike typical static portfolio templates, this platform is an **enterprise-grad
 * **Professional Journey Case Studies (`/experiences/professional-journey/[slug]`):** In-depth write-ups (such as *Nexathon 2026*, *MY Bharat Budget Quest*, *AIC Nitte*, and *IICT Summer Internship*) with automatic Table of Contents extraction, responsive image grids, custom video players, and theme-adaptive captions.
 * **Undergraduate Projects Hub (`/projects/college-projects`):** Curated multi-year academic milestones with downloadable verification reports, tech stack badges, and GitHub source links.
 * **Verified Testimonial Hub (`/testimonials`):** Community reviews with manual admin review moderation, verified badges, and Google OAuth user authentication.
+* **Interactive Community Sticky Wall (`/wall`):** A digital corkboard canvas where visitors can stick colorful notes, feedback, shoutouts, or fun thoughts without requiring any login or sign-in. Built with real-time pastel sticky notes, reaction hearts, color filtering, search, and IP rate limiting.
 * **Modern UI & Dark/Light Mode:** Seamless zero-flicker theme switching with system-preference detection and persistence.
 
 ### 2. 🔐 Secure Admin Dashboard (`/admin`)
@@ -92,12 +93,14 @@ pranav-r-portfolio/
 │   ├── api/                           # Secure Serverless Backend Handlers
 │   │   ├── admin/                     # Admin authentication & mutation endpoints
 │   │   ├── contact/                   # Contact form with rate-limiting & Turnstile
-│   │   └── testimonials/              # Public submission & OAuth login logging
+│   │   ├── testimonials/              # Public submission & OAuth login logging
+│   │   └── wall/                      # Public sticky note creation & heart reactions
 │   ├── blogs/                         # Public Blog reading hub
 │   ├── certificates/                  # Public Certificate showcase
 │   ├── experiences/                   # Professional Journey & Case Studies
 │   ├── projects/                      # Public Projects & College Projects hub
 │   ├── testimonials/                  # Testimonial Wall & submission form
+│   ├── wall/                          # Community Sticky Notes Corkboard Wall
 │   ├── llms.txt/                      # AI Crawler Knowledge Base endpoint
 │   ├── globals.css                    # Unified light/dark theme styles
 │   └── sitemap.ts                     # Dynamic XML sitemap generator
@@ -113,6 +116,7 @@ pranav-r-portfolio/
 │   └── supabaseServer.ts              # Server-side cookie authenticated client
 ├── scripts/                           # Database Migrations & Prebuild Scripts
 │   ├── alter_activity_logs.sql        # Migration for audit logging schema
+│   ├── create_wall_notes.sql          # Migration for community sticky wall schema
 │   └── generate-assets-manifest.js    # Prebuild asset manifest generator
 ├── .env.example                       # Environment variables template
 ├── .gitignore                         # Hardened git ignore definitions
