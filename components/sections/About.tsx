@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import FadeInSection from "@/components/FadeInSection";
 import ScrollArrow from "@/components/ScrollArrow";
 
@@ -32,7 +31,6 @@ export default function About() {
               href="#experience"
               onClick={(e) => scrollToSection(e, "experience")}
               className="details-container clickable-about-card"
-              style={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
               aria-label="Navigate to Experience section"
             >
               <img src="/assets/experience.webp" alt="Experience icon" className="icon" loading="lazy" />
@@ -47,7 +45,6 @@ export default function About() {
               href="#experience"
               onClick={(e) => scrollToSection(e, "experience")}
               className="details-container clickable-about-card"
-              style={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
               aria-label="View Education and Academic background"
             >
               <img src="/assets/education.webp" alt="Education icon" className="icon" loading="lazy" />
@@ -62,7 +59,6 @@ export default function About() {
               href="#projects"
               onClick={(e) => scrollToSection(e, "projects")}
               className="details-container clickable-about-card"
-              style={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
               aria-label="Navigate to Projects section"
             >
               <img src="/assets/projects.webp" alt="Projects icon" className="icon" loading="lazy" />
