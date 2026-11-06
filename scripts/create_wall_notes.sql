@@ -16,8 +16,18 @@ CREATE TABLE IF NOT EXISTS wall_notes (
   likes_count INTEGER DEFAULT 0,
   is_pinned BOOLEAN DEFAULT false,
   is_archived BOOLEAN DEFAULT false,
-  ip_hash TEXT
+  ip_hash TEXT,
+  ip_address TEXT,
+  location TEXT,
+  device_info TEXT,
+  user_agent TEXT
 );
+
+-- Idempotent column additions for existing tables
+ALTER TABLE wall_notes ADD COLUMN IF NOT EXISTS ip_address TEXT;
+ALTER TABLE wall_notes ADD COLUMN IF NOT EXISTS location TEXT;
+ALTER TABLE wall_notes ADD COLUMN IF NOT EXISTS device_info TEXT;
+ALTER TABLE wall_notes ADD COLUMN IF NOT EXISTS user_agent TEXT;
 
 -- Performance & Query Optimization Indexes
 CREATE INDEX IF NOT EXISTS idx_wall_notes_created_at ON wall_notes(created_at DESC);

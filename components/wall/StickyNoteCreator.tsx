@@ -43,12 +43,18 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
 
     try {
       const clientTime = Date.now().toString();
+      let clientTz = "";
+      try {
+        clientTz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      } catch (e) {}
+
       const res = await fetch("/api/wall", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-wall-client-sig": "pranav-wall-v1",
           "x-wall-client-time": clientTime,
+          "x-client-timezone": clientTz,
         },
         body: JSON.stringify({
           message: message.trim(),

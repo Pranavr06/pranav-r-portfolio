@@ -14,7 +14,11 @@ import {
   Sparkles, 
   MessageSquare, 
   Eye, 
-  AlertCircle 
+  AlertCircle,
+  Globe,
+  Smartphone,
+  Info,
+  X
 } from "lucide-react";
 import AdminDrawer from "@/components/AdminDrawer";
 import ConfirmModal from "@/components/ConfirmModal";
@@ -32,6 +36,10 @@ interface WallNote {
   is_archived: boolean;
   created_at: string;
   ip_hash?: string;
+  ip_address?: string;
+  location?: string;
+  device_info?: string;
+  user_agent?: string;
 }
 
 const PALETTES = [
@@ -66,6 +74,9 @@ export default function AdminWall() {
   const [formPinned, setFormPinned] = useState(false);
   const [formLikes, setFormLikes] = useState(0);
   const [saving, setSaving] = useState(false);
+
+  // Telemetry inspection modal state
+  const [selectedTelemetryNote, setSelectedTelemetryNote] = useState<WallNote | null>(null);
 
   // Delete Confirm Modal
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
@@ -128,7 +139,10 @@ export default function AdminWall() {
         const q = search.toLowerCase().trim();
         const msg = (n.message || "").toLowerCase();
         const author = (n.author_name || "").toLowerCase();
-        if (!msg.includes(q) && !author.includes(q)) return false;
+        const ip = (n.ip_address || "").toLowerCase();
+        const loc = (n.location || "").toLowerCase();
+        const dev = (n.device_info || "").toLowerCase();
+        if (!msg.includes(q) && !author.includes(q) && !ip.includes(q) && !loc.includes(q) && !dev.includes(q)) return false;
       }
 
       return true;
@@ -334,7 +348,7 @@ export default function AdminWall() {
             <span>Wall Notes</span>
           </h1>
           <p style={{ color: "var(--admin-text-muted)", fontSize: "0.95rem", marginTop: "0.25rem" }}>
-            Manage, review, edit, pin, and moderate community sticky notes.
+            Manage, review, edit, pin, and view visitor device / IP telemetry.
           </p>
         </div>
 
@@ -421,7 +435,7 @@ export default function AdminWall() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search note text or author..."
+            placeholder="Search message, author, IP, or location..."
             className="admin-input"
             style={{ width: "100%", paddingLeft: "2.3rem" }}
           />
@@ -493,8 +507,9 @@ export default function AdminWall() {
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                   <th style={{ padding: "0.9rem 1.25rem" }}>Color / Icon</th>
-                  <th style={{ padding: "0.9rem 1.25rem", width: "42%" }}>Message</th>
+                  <th style={{ padding: "0.9rem 1.25rem", width: "38%" }}>Message & Telemetry</th>
                   <th style={{ padding: "0.9rem 1.25rem" }}>Author</th>
+                  <th style={{ padding: "0.9rem 1.25rem" }}>Origin / IP</th>
                   <th style={{ padding: "0.9rem 1.25rem" }}>Status</th>
                   <th style={{ padding: "0.9rem 1.25rem" }}>Likes</th>
                   <th style={{ padding: "0.9rem 1.25rem" }}>Created</th>
@@ -531,16 +546,54 @@ export default function AdminWall() {
                         </div>
                       </td>
 
-                      {/* Message Content */}
+                      {/* Message Content & Telemetry pill */}
                       <td style={{ padding: "0.9rem 1.25rem" }}>
-                        <div style={{ maxWidth: "420px", wordBreak: "break-word", lineHeight: 1.5 }}>
+                        <div style={{ maxWidth: "380px", wordBreak: "break-word", lineHeight: 1.5, fontWeight: 500 }}>
                           {note.message}
+                        </div>
+                        {/* Device & Location Preview pills */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginTop: "0.35rem", fontSize: "0.75rem", color: "var(--admin-text-muted)", flexWrap: "wrap" }}>
+                          {note.location && (
+                            <span style={{ display: "inline-flex", alignItems: "center", gap: "0.2rem" }}>
+                              <Globe size={11} color="#3b82f6" /> {note.location}
+                            </span>
+                          )}
+                          {note.device_info && (
+                            <span style={{ display: "inline-flex", alignItems: "center", gap: "0.2rem" }}>
+                              <Smartphone size={11} color="#10b981" /> {note.device_info.split("(")[0].trim()}
+                            </span>
+                          )}
                         </div>
                       </td>
 
                       {/* Author */}
-                      <td style={{ padding: "0.9rem 1.25rem", fontWeight: 500 }}>
+                      <td style={{ padding: "0.9rem 1.25rem", fontWeight: 600 }}>
                         {note.author_name || "Anonymous"}
+                      </td>
+
+                      {/* Origin & IP */}
+                      <td style={{ padding: "0.9rem 1.25rem" }}>
+                        <div style={{ fontSize: "0.82rem" }}>
+                          <span style={{ fontFamily: "monospace", display: "block", color: "var(--admin-text-main)" }}>
+                            {note.ip_address || (note.ip_hash ? `${note.ip_hash.slice(0, 8)}...` : "Unknown IP")}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedTelemetryNote(note)}
+                            style={{
+                              background: "none",
+                              border: "none",
+                              padding: 0,
+                              color: "#3b82f6",
+                              fontSize: "0.75rem",
+                              cursor: "pointer",
+                              textDecoration: "underline",
+                              marginTop: "0.2rem"
+                            }}
+                          >
+                            Inspect Origin &rarr;
+                          </button>
+                        </div>
                       </td>
 
                       {/* Pinned & Archived Status */}
@@ -604,6 +657,17 @@ export default function AdminWall() {
                       <td style={{ padding: "0.9rem 1.25rem", textAlign: "right" }}>
                         <div style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
                           
+                          {/* Inspect Telemetry */}
+                          <button
+                            type="button"
+                            onClick={() => setSelectedTelemetryNote(note)}
+                            title="Inspect IP & Device Details"
+                            className="admin-btn admin-btn-icon"
+                            style={{ padding: "0.4rem", color: "#3b82f6" }}
+                          >
+                            <Info size={16} />
+                          </button>
+
                           {/* Pin Toggle */}
                           <button
                             type="button"
@@ -676,6 +740,121 @@ export default function AdminWall() {
           </div>
         )}
       </div>
+
+      {/* Telemetry Origin Modal */}
+      {selectedTelemetryNote && (
+        <div 
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            backdropFilter: "blur(4px)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1rem"
+          }}
+          onClick={() => setSelectedTelemetryNote(null)}
+        >
+          <div 
+            style={{
+              backgroundColor: "var(--admin-card-bg)",
+              border: "1px solid var(--admin-border)",
+              borderRadius: "1rem",
+              padding: "1.75rem",
+              maxWidth: "520px",
+              width: "100%",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.3)"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <Info size={20} color="#3b82f6" />
+                <span>Sticky Note Origin & Telemetry</span>
+              </h3>
+              <button 
+                onClick={() => setSelectedTelemetryNote(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "var(--admin-text-muted)" }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              
+              {/* Note Summary */}
+              <div style={{ padding: "0.85rem", borderRadius: "8px", backgroundColor: "var(--admin-bg)", border: "1px solid var(--admin-border)" }}>
+                <span style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--admin-text-muted)", fontWeight: 700 }}>
+                  Posted By
+                </span>
+                <div style={{ fontWeight: 600, fontSize: "0.95rem", marginTop: "0.2rem" }}>
+                  {selectedTelemetryNote.author_name || "Anonymous"}
+                </div>
+                <div style={{ marginTop: "0.4rem", fontSize: "0.9rem", color: "var(--admin-text-muted)", fontStyle: "italic", lineHeight: 1.4 }}>
+                  "{selectedTelemetryNote.message}"
+                </div>
+              </div>
+
+              {/* Location & Device Cards */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+                
+                <div style={{ padding: "0.85rem", borderRadius: "8px", backgroundColor: "var(--admin-bg)", border: "1px solid var(--admin-border)" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.78rem", color: "var(--admin-text-muted)", fontWeight: 600 }}>
+                    <Globe size={14} color="#3b82f6" /> Location
+                  </span>
+                  <div style={{ fontWeight: 600, fontSize: "0.92rem", marginTop: "0.35rem" }}>
+                    {selectedTelemetryNote.location || "Unknown Location"}
+                  </div>
+                </div>
+
+                <div style={{ padding: "0.85rem", borderRadius: "8px", backgroundColor: "var(--admin-bg)", border: "1px solid var(--admin-border)" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.35rem", fontSize: "0.78rem", color: "var(--admin-text-muted)", fontWeight: 600 }}>
+                    <Smartphone size={14} color="#10b981" /> Device Model
+                  </span>
+                  <div style={{ fontWeight: 600, fontSize: "0.92rem", marginTop: "0.35rem" }}>
+                    {selectedTelemetryNote.device_info || "Desktop / PC"}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* IP Address */}
+              <div style={{ padding: "0.85rem", borderRadius: "8px", backgroundColor: "var(--admin-bg)", border: "1px solid var(--admin-border)" }}>
+                <span style={{ fontSize: "0.78rem", color: "var(--admin-text-muted)", fontWeight: 600 }}>
+                  Client IP Address
+                </span>
+                <div style={{ fontWeight: 600, fontSize: "0.95rem", marginTop: "0.25rem", fontFamily: "monospace", color: "#3b82f6" }}>
+                  {selectedTelemetryNote.ip_address || "Not recorded directly (hashed: " + (selectedTelemetryNote.ip_hash?.slice(0, 10) || "none") + ")"}
+                </div>
+              </div>
+
+              {/* Raw User Agent */}
+              {selectedTelemetryNote.user_agent && (
+                <div style={{ padding: "0.85rem", borderRadius: "8px", backgroundColor: "var(--admin-bg)", border: "1px solid var(--admin-border)" }}>
+                  <span style={{ fontSize: "0.78rem", color: "var(--admin-text-muted)", fontWeight: 600 }}>
+                    User-Agent Header
+                  </span>
+                  <div style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "var(--admin-text-muted)", marginTop: "0.3rem", wordBreak: "break-all" }}>
+                    {selectedTelemetryNote.user_agent}
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setSelectedTelemetryNote(null)}
+                className="admin-btn admin-btn-secondary"
+                style={{ width: "100%", justifyContent: "center", marginTop: "0.5rem" }}
+              >
+                Close Inspector
+              </button>
+
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Drawer: Add / Edit Note */}
       <AdminDrawer

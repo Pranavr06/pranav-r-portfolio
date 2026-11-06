@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getClientIp, hashIp, checkRateLimit, recordRateLimitAttempt } from "@/lib/rateLimiter";
 import { logActivity } from "@/lib/activityLogger";
+import { parseDevice, parseLocation } from "@/lib/deviceGeoParser";
 // @ts-ignore
 import { clean } from "profanity-cleaner";
 
@@ -234,27 +235,46 @@ export async function POST(req: Request) {
       // Ignore if table doesn't exist
     }
 
-    // Insert into Supabase
-    const { data, error } = await supabase
+    const rawUserAgent = req.headers.get("user-agent") || "";
+    const device = parseDevice(rawUserAgent);
+    const location = parseLocation(req);
+
+    // Insert into Supabase with full telemetry
+    const notePayload: any = {
+      message: sanitizedMsg,
+      author_name: sanitizedAuthor,
+      color: noteColor,
+      emoji: noteEmoji,
+      rotation: randomRotation,
+      likes_count: 0,
+      is_pinned: false,
+      is_archived: false,
+      ip_hash,
+      ip_address: clientIp,
+      location,
+      device_info: device.fullString,
+      user_agent: rawUserAgent
+    };
+
+    let { data, error } = await supabase
       .from("wall_notes")
-      .insert([
-        {
-          message: sanitizedMsg,
-          author_name: sanitizedAuthor,
-          color: noteColor,
-          emoji: noteEmoji,
-          rotation: randomRotation,
-          likes_count: 0,
-          is_pinned: false,
-          is_archived: false,
-          ip_hash
-        }
-      ])
+      .insert([notePayload])
       .select()
       .single();
 
+    // Fallback if schema does not yet have the telemetry columns
+    if (error && (error.message?.includes("column") || error.code === "PGRST204")) {
+      delete notePayload.ip_address;
+      delete notePayload.location;
+      delete notePayload.device_info;
+      delete notePayload.user_agent;
+      const retry = await supabase.from("wall_notes").insert([notePayload]).select().single();
+      data = retry.data;
+      error = retry.error;
+    }
+
     if (error) {
-      if (error.code === "PGRST205" || error.message.includes("does not exist")) {
+      if (error.code === "PGRST205" || error.message?.includes("does not exist")) {
         return NextResponse.json(
           {
             error: "The wall database table is being initialized. Please run scripts/create_wall_notes.sql in Supabase SQL Editor.",
@@ -270,19 +290,21 @@ export async function POST(req: Request) {
     // Record rate limit attempt
     await recordRateLimitAttempt(req, WALL_RATE_LIMIT, { author: sanitizedAuthor });
 
-    // Log Activity to activity_logs
+    // Log Activity to activity_logs with location and device model
     await logActivity({
       type: "wall_note",
       action: "posted",
       title: `Sticky Note: ${sanitizedAuthor}`,
       ip_address: clientIp,
-      user_agent: req.headers.get("user-agent"),
+      user_agent: rawUserAgent,
       status: "info",
       details: {
-        note_id: data.id,
+        note_id: data?.id,
         color: noteColor,
         emoji: noteEmoji,
-        length: sanitizedMsg.length
+        length: sanitizedMsg.length,
+        location,
+        device: device.fullString
       }
     });
 
