@@ -621,60 +621,125 @@ body.dark-theme #about .tomasz-badge:hover {
     #about {
         flex-direction: column-reverse;
         min-height: auto;
+        background-color: #000000;
     }
 
+    /* Hide absolute desktop diagonal overlay on mobile */
     #about .tomasz-left-bg {
-        width: 100%;
-        height: 60%;
-        top: auto;
-        bottom: 0;
-        clip-path: polygon(0 6%, 100% 0%, 100% 100%, 0 100%);
+        display: none !important;
     }
 
-    #about .tomasz-left-content {
-        max-width: 100%;
-        padding: 4rem 2rem 5rem;
-    }
-
+    /* Photo at top on black */
     #about .tomasz-right-content {
-        height: 440px;
+        height: 360px;
         background: #000000;
         width: 100%;
+        flex: none;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-top: 2rem;
+        position: relative;
+        z-index: 1;
     }
 
     #about .tomasz-portrait-img {
-        max-height: 440px;
+        height: 100%;
+        max-height: 360px;
+        width: auto;
+        object-fit: contain;
+        object-position: bottom center;
+        filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
     }
 
-    #about .tomasz-title {
-        font-size: 2.8rem;
-    }
-}
-
-@media screen and (max-width: 600px) {
+    /* Text block directly receives its own full background and clean angled top */
     #about .tomasz-left-content {
-        padding: 3rem 1.5rem 4rem;
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+        margin-top: -28px;
+        background: #d8dbdf;
+        clip-path: polygon(0 28px, 100% 0, 100% 100%, 0 100%);
+        padding: 4.5rem 2rem 4rem 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        box-sizing: border-box;
+    }
+
+    body.dark-theme #about .tomasz-left-content {
+        background: #14171d;
     }
 
     #about .tomasz-title {
-        font-size: 2.35rem;
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin: 0 0 0.5rem 0;
+        line-height: 1.15;
     }
 
     #about .tomasz-role {
         font-size: 1rem;
-        margin-bottom: 1.25rem;
+        font-weight: 600;
+        margin: 0 0 1.25rem 0;
+        line-height: 1.45;
     }
 
     #about .tomasz-bio {
-        font-size: 0.95rem;
+        font-size: 0.96rem;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        max-width: 100%;
     }
 
+    #about .tomasz-badges {
+        gap: 0.5rem;
+        margin-top: 0.25rem;
+    }
+
+    #about .tomasz-badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.85rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
     #about .tomasz-right-content {
-        height: 340px;
+        height: 310px;
+        padding-top: 1.25rem;
     }
 
     #about .tomasz-portrait-img {
-        max-height: 340px;
+        max-height: 310px;
+    }
+
+    #about .tomasz-left-content {
+        margin-top: -22px;
+        clip-path: polygon(0 22px, 100% 0, 100% 100%, 0 100%);
+        padding: 3.5rem 1.25rem 3.5rem 1.25rem;
+    }
+
+    #about .tomasz-title {
+        font-size: 2.15rem;
+        margin-bottom: 0.4rem;
+    }
+
+    #about .tomasz-role {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    #about .tomasz-bio {
+        font-size: 0.92rem;
+        line-height: 1.65;
+        margin-bottom: 1.25rem;
+    }
+
+    #about .tomasz-badge {
+        font-size: 0.76rem;
+        padding: 0.35rem 0.75rem;
     }
 }
 
