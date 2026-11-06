@@ -5,11 +5,11 @@ import ContactCTA from "@/components/ContactCTA";
 import "./wall.css";
 
 export const metadata = {
-  title: "The Sticky Wall 📌 | Pranav R",
-  description: "An open community digital canvas. Stick a note, drop feedback, shoutout, joke, or spam anything — zero login required!",
+  title: "The Wall | Pranav R",
+  description: "An open community digital canvas. Share thoughts, feedback, shoutouts, or questions — zero login required!",
   openGraph: {
-    title: "The Sticky Wall 📌 | Pranav R",
-    description: "An open community digital canvas. Stick a note, drop feedback, shoutout, joke, or spam anything — zero login required!",
+    title: "The Wall | Pranav R",
+    description: "An open community digital canvas. Share thoughts, feedback, shoutouts, or questions — zero login required!",
     url: "https://pranavr.netlify.app/wall",
   }
 };
@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 const STARTER_NOTES = [
   {
     id: "starter-1",
-    message: "Welcome to The Wall! 📌 Leave any comment, joke, feedback, or shoutout here. No login required!",
+    message: "Welcome to The Wall! Leave any comment, feedback, or shoutout here. No login required!",
     author_name: "Pranav R",
     color: "yellow",
     emoji: "📌",
@@ -30,7 +30,7 @@ const STARTER_NOTES = [
   },
   {
     id: "starter-2",
-    message: "Loved the YojanaSethu project showcase! Great architecture and real-time AI mock interview features. Keep building! 🚀",
+    message: "Loved the YojanaSethu project showcase! Great architecture and real-time AI mock interview features. Keep building!",
     author_name: "Fellow Dev",
     color: "blue",
     emoji: "🚀",
@@ -41,10 +41,10 @@ const STARTER_NOTES = [
   },
   {
     id: "starter-3",
-    message: "The UI design on this portfolio is super smooth. Dark mode is chef's kiss 🤌🔥",
+    message: "The UI design on this portfolio is super smooth. Dark mode is very sleek.",
     author_name: "UI Enthusiast",
     color: "pink",
-    emoji: "🔥",
+    emoji: "✨",
     rotation: -2.0,
     likes_count: 15,
     is_pinned: false,
@@ -95,15 +95,15 @@ export default async function WallPage() {
       {/* Hero Header */}
       <div className="wall-hero">
         <div className="wall-badge-pill">
-          <span>✨ 100% Open & Anonymous</span>
+          <span>Open Canvas • No Login Required</span>
         </div>
-        <h1 className="wall-title">The Sticky Wall 📌</h1>
+        <h1 className="wall-title">The Wall</h1>
         <p className="wall-subtitle">
-          An interactive, public corkboard canvas. Drop your thoughts, secret shoutouts, feedback, questions, or spam whatever you like — no login or sign-in needed!
+          An interactive, public corkboard canvas. Share your thoughts, feedback, engineering questions, or leave your shoutout — no login or sign-in needed.
         </p>
 
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>
-          <ShareMenu title="The Sticky Wall | Pranav R" type="page" />
+          <ShareMenu title="The Wall | Pranav R" type="page" />
         </div>
       </div>
 

@@ -25,6 +25,7 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
   const [authorName, setAuthorName] = useState("");
   const [color, setColor] = useState("yellow");
   const [emoji, setEmoji] = useState("📌");
+  const [honeypot, setHoneypot] = useState(""); // Anti-spam honeypot
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,7 +34,7 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!message.trim()) {
-      setError("Please write something on your sticky note!");
+      setError("Please write something on your sticky note.");
       return;
     }
 
@@ -41,14 +42,20 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
     setError(null);
 
     try {
+      const clientTime = Date.now().toString();
       const res = await fetch("/api/wall", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-wall-client-sig": "pranav-wall-v1",
+          "x-wall-client-time": clientTime,
+        },
         body: JSON.stringify({
           message: message.trim(),
           author_name: authorName.trim() || "Anonymous",
           color,
-          emoji
+          emoji,
+          website_url: honeypot, // Honeypot trap for automated bots
         })
       });
 
@@ -61,6 +68,7 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
       onNoteCreated(data.note);
       setMessage("");
       setAuthorName("");
+      setHoneypot("");
       onClose();
     } catch (err: any) {
       setError(err.message || "An error occurred while posting your note.");
@@ -76,12 +84,12 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
         {/* Modal Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
           <div>
-            <h3 style={{ fontSize: "1.4rem", fontWeight: 700, margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <h3 style={{ fontSize: "1.35rem", fontWeight: 700, margin: 0, display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <span>Stick a Note</span>
               <Sparkles size={18} color="#eab308" />
             </h3>
             <p style={{ fontSize: "0.85rem", color: "var(--admin-text-muted, #64748b)", margin: "0.2rem 0 0 0" }}>
-              No login required. Say whatever you want!
+              No sign-in required. Share thoughts or leave a note.
             </p>
           </div>
           <button 
@@ -115,6 +123,17 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
         )}
 
         <form onSubmit={handleSubmit}>
+          {/* Honeypot field - invisible to humans, attracts bots */}
+          <input
+            type="text"
+            name="website_url"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            style={{ display: "none" }}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
           
           {/* Note Message Input */}
           <div style={{ marginBottom: "1.25rem" }}>
@@ -127,7 +146,7 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Leave a message, feedback, shoutout, joke, or anything on your mind..."
+              placeholder="Leave a message, feedback, question, or anything on your mind..."
               maxLength={400}
               rows={4}
               style={{
@@ -173,10 +192,10 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
             </div>
           </div>
 
-          {/* Emoji Sticker Selector */}
+          {/* Icon Sticker Selector */}
           <div style={{ marginBottom: "1.25rem" }}>
             <label style={{ fontSize: "0.88rem", fontWeight: 600, display: "block", marginBottom: "0.5rem" }}>
-              Pick a Sticker / Pin
+              Pick an Icon Badge
             </label>
             <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
               {EMOJIS.map((e) => (
@@ -209,7 +228,7 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
               type="text"
               value={authorName}
               onChange={(e) => setAuthorName(e.target.value)}
-              placeholder="e.g. CyberNinja, Sarah, or leave blank for Anonymous"
+              placeholder="e.g. Fellow Dev, Sarah, or leave blank for Anonymous"
               maxLength={35}
               style={{
                 width: "100%",
@@ -271,7 +290,7 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
               }}
             >
               <Send size={16} />
-              {submitting ? "Sticking..." : "Stick Note 📌"}
+              {submitting ? "Sticking..." : "Stick Note"}
             </button>
           </div>
 

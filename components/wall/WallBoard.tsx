@@ -208,9 +208,9 @@ export default function WallBoard({ initialNotes = [], tableReady = true }: Wall
               cursor: "pointer"
             }}
           >
-            <option value="newest">🕒 Newest First</option>
-            <option value="popular">🔥 Most Liked</option>
-            <option value="random">🎲 Shuffled</option>
+            <option value="newest">Newest First</option>
+            <option value="popular">Most Liked</option>
+            <option value="random">Random Order</option>
           </select>
 
           <button
@@ -326,7 +326,7 @@ export default function WallBoard({ initialNotes = [], tableReady = true }: Wall
               className="btn btn-color-2"
               style={{ borderRadius: "2rem", padding: "0.7rem 1.5rem" }}
             >
-              Stick the First Note 📌
+              Stick the First Note
             </button>
           </div>
         )}

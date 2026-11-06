@@ -15,7 +15,7 @@ export default function Footer() {
     { name: "Certificates", href: "/#certificate" },
     { name: "Projects", href: "/#projects" },
     { name: "Testimonials", href: "/#testimonials" },
-    { name: "Wall 📌", href: "/wall" },
+    { name: "Wall", href: "/wall" },
     { name: "Blog", href: "/#blog" },
     { name: "Contact", href: "/#contact" },
     { name: "Admin", href: "/admin" },

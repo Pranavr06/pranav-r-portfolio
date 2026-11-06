@@ -23,7 +23,8 @@ import {
   Book,
   Moon,
   Sun,
-  LineChart
+  LineChart,
+  Pin
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -102,6 +103,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const navItems = [
     { name: "Overview", path: "/admin", icon: <LayoutDashboard size={18} /> },
     { name: "Analytics", path: "/admin/analytics", icon: <LineChart size={18} /> },
+    { name: "Wall Notes", path: "/admin/wall", icon: <Pin size={18} /> },
     { name: "Notes", path: "/admin/notes", icon: <Book size={18} /> },
     { name: "Experience Hubs", path: "/admin/experience-hubs", icon: <Layers size={18} /> },
     { name: "Experiences", path: "/admin/experiences", icon: <Activity size={18} /> },

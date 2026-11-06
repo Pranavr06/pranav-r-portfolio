@@ -8,12 +8,25 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 const LIKE_RATE_LIMIT = {
   keyPrefix: "wall_note_like",
-  maxAttempts: 30,
+  maxAttempts: 25,
   windowMs: 5 * 60 * 1000 // 5 minutes
 };
 
 export async function POST(req: Request) {
   try {
+    // Origin verification
+    const origin = req.headers.get("origin") || req.headers.get("referer");
+    if (origin) {
+      const isAllowedHost =
+        origin.includes("localhost") ||
+        origin.includes("127.0.0.1") ||
+        origin.includes("pranavr.netlify.app") ||
+        origin.includes("pranavr");
+      if (!isAllowedHost) {
+        return NextResponse.json({ error: "Access denied." }, { status: 403 });
+      }
+    }
+
     const rateCheck = await checkRateLimit(req, LIKE_RATE_LIMIT);
     if (!rateCheck.allowed) {
       return NextResponse.json({ error: "Too many likes! Please pause for a moment." }, { status: 429 });
@@ -32,7 +45,6 @@ export async function POST(req: Request) {
       .single();
 
     if (fetchErr || !note) {
-      // Mock support for starter notes
       return NextResponse.json({ success: true, likes_count: 99 });
     }
 

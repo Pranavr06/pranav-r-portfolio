@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { 
   FileText, Briefcase, MessageSquare, Plus, Activity, Clock, FileEdit, MessageCircle,
-  ShieldAlert, ShieldCheck, AlertTriangle, Globe, Mail, ChevronDown, ChevronUp
+  ShieldAlert, ShieldCheck, AlertTriangle, Globe, Mail, ChevronDown, ChevronUp, Pin
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -15,6 +15,7 @@ export default function AdminDashboard() {
     projects: { total: 0, thisMonth: 0, active: 0 },
     blogs: { total: 0, thisMonth: 0 },
     testimonials: { total: 0, pending: 0 },
+    wallNotes: 0,
     drafts: 0
   });
 
@@ -41,10 +42,18 @@ export default function AdminDashboard() {
         const { data: testimonialsData } = await supabase.from("testimonials").select("id, is_approved");
         const pendingTestimonials = testimonialsData?.filter(t => t.is_approved === false).length || 0;
 
+        // Fetch Wall Notes
+        let wallCount = 0;
+        try {
+          const { data: wallData } = await supabase.from("wall_notes").select("id, is_archived");
+          wallCount = wallData?.filter(w => !w.is_archived).length || 0;
+        } catch (e) {}
+
         setStats({
           projects: { total: projectsData?.length || 0, thisMonth: projectsThisMonth, active: activeProjects },
           blogs: { total: blogsData?.length || 0, thisMonth: blogsThisMonth },
           testimonials: { total: testimonialsData?.length || 0, pending: pendingTestimonials },
+          wallNotes: wallCount,
           drafts: 0
         });
 
@@ -94,6 +103,10 @@ export default function AdminDashboard() {
           </p>
         </div>
         <div style={{ display: "flex", gap: "1rem" }}>
+          <Link href="/admin/wall" className="admin-btn admin-btn-secondary">
+            <Pin size={16} style={{ marginRight: "0.5rem" }} />
+            Wall Notes
+          </Link>
           <Link href="/admin/blogs" className="admin-btn admin-btn-secondary">
             <FileEdit size={16} style={{ marginRight: "0.5rem" }} />
             New Post
@@ -133,6 +146,17 @@ export default function AdminDashboard() {
           <span className="admin-stat-value">{stats.testimonials.total}</span>
           <div className={`admin-stat-meta ${stats.testimonials.pending > 0 ? 'warning' : 'neutral'}`}>
             {stats.testimonials.pending} pending review
+          </div>
+        </div>
+
+        <div className="admin-stat-card">
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <span className="admin-stat-label">Wall Notes</span>
+            <Pin size={20} color="var(--admin-text-muted)" />
+          </div>
+          <span className="admin-stat-value">{stats.wallNotes}</span>
+          <div className="admin-stat-meta positive">
+            <Link href="/admin/wall" style={{ color: "inherit", textDecoration: "underline" }}>Manage wall</Link>
           </div>
         </div>
 

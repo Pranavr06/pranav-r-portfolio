@@ -103,8 +103,8 @@ function AuthConfirmModal({
 type TrashItem = {
   id: string;
   title: string;
-  type: "project" | "blog" | "certificate" | "testimonial" | "experience" | "experience hub" | "note";
-  table: "projects" | "blogs" | "certificates" | "testimonials" | "experiences" | "experience_hubs" | "admin_notes";
+  type: "project" | "blog" | "certificate" | "testimonial" | "experience" | "experience hub" | "note" | "wall note";
+  table: "projects" | "blogs" | "certificates" | "testimonials" | "experiences" | "experience_hubs" | "admin_notes" | "wall_notes";
   date: string;
 };
 
@@ -122,7 +122,7 @@ export default function AdminTrash() {
   const fetchTrash = async () => {
     setLoading(true);
     try {
-      const [projectsRes, blogsRes, certsRes, testRes, expRes, hubRes, notesRes] = await Promise.all([
+      const [projectsRes, blogsRes, certsRes, testRes, expRes, hubRes, notesRes, wallRes] = await Promise.all([
         supabase.from("projects").select("id, title, created_at").eq("is_archived", true),
         supabase.from("blogs").select("id, title, created_at").eq("is_archived", true),
         supabase.from("certificates").select("id, title, created_at").eq("is_archived", true),
@@ -130,6 +130,7 @@ export default function AdminTrash() {
         supabase.from("experiences").select("id, title, created_at").eq("is_archived", true),
         supabase.from("experience_hubs").select("id, title, created_at").eq("is_archived", true),
         supabase.from("admin_notes").select("id, title, created_at").eq("is_archived", true),
+        supabase.from("wall_notes").select("id, message, author_name, created_at").eq("is_archived", true),
       ]);
 
       const trashItems: TrashItem[] = [];
@@ -160,6 +161,10 @@ export default function AdminTrash() {
 
       notesRes.data?.forEach(n => {
         trashItems.push({ id: n.id, title: n.title, type: "note", table: "admin_notes", date: n.created_at });
+      });
+
+      wallRes.data?.forEach(w => {
+        trashItems.push({ id: w.id, title: `Wall Note: "${(w.message || "").slice(0, 30)}..." (~${w.author_name || "Anonymous"})`, type: "wall note", table: "wall_notes", date: w.created_at });
       });
 
       // Sort by date descending

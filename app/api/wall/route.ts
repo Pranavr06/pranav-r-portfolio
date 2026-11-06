@@ -9,21 +9,21 @@ const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+// Stricter Rate Limit: 5 notes per 10 minutes per IP with 15-minute lockout
 const WALL_RATE_LIMIT = {
   keyPrefix: "wall_note_post",
-  maxAttempts: 10,
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  lockoutMs: 10 * 60 * 1000
+  maxAttempts: 5,
+  windowMs: 10 * 60 * 1000,
+  lockoutMs: 15 * 60 * 1000
 };
 
 const ALLOWED_COLORS = ["yellow", "pink", "green", "blue", "purple", "orange"];
 const ALLOWED_EMOJIS = ["📌", "🚀", "💡", "🔥", "❤️", "☕", "💻", "🎉", "👾", "✨", "⭐", "⚡"];
 
-// Fallback demo notes in case table is not yet created in Supabase
 const STARTER_NOTES = [
   {
     id: "starter-1",
-    message: "Welcome to The Wall! 📌 Leave any comment, joke, feedback, or shoutout here. No login required!",
+    message: "Welcome to The Wall! Leave any comment, feedback, or shoutout here. No login required!",
     author_name: "Pranav R",
     color: "yellow",
     emoji: "📌",
@@ -34,7 +34,7 @@ const STARTER_NOTES = [
   },
   {
     id: "starter-2",
-    message: "Loved the YojanaSethu project showcase! Truly inspiring work at Nexathon 2026. Keep building! 🚀",
+    message: "Loved the YojanaSethu project showcase! Great architecture and real-time AI mock interview features. Keep building!",
     author_name: "Fellow Dev",
     color: "blue",
     emoji: "🚀",
@@ -45,10 +45,10 @@ const STARTER_NOTES = [
   },
   {
     id: "starter-3",
-    message: "The UI design on this portfolio is super smooth. Dark mode is chefs kiss 🤌🔥",
+    message: "The UI design on this portfolio is super smooth. Dark mode is very sleek.",
     author_name: "UI Enthusiast",
     color: "pink",
-    emoji: "🔥",
+    emoji: "✨",
     rotation: -2.0,
     likes_count: 15,
     is_pinned: false,
@@ -99,7 +99,6 @@ export async function GET(req: Request) {
     const { data, error } = await query;
 
     if (error) {
-      // If table doesn't exist yet, return starter notes
       if (error.code === "PGRST205" || error.message.includes("does not exist")) {
         return NextResponse.json({
           notes: STARTER_NOTES,
@@ -123,23 +122,71 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    // 1. Rate Limit Check (10 notes per 10 mins per IP)
+    // 1. Origin / Referer Validation (Blocks cross-site and external bot POSTs)
+    const origin = req.headers.get("origin") || req.headers.get("referer");
+    if (origin) {
+      const isAllowedHost =
+        origin.includes("localhost") ||
+        origin.includes("127.0.0.1") ||
+        origin.includes("pranavr.netlify.app") ||
+        origin.includes("pranavr");
+      if (!isAllowedHost) {
+        return NextResponse.json({ error: "Access denied. Cross-origin requests not allowed." }, { status: 403 });
+      }
+    }
+
+    // 2. Anti-Spam Security Headers Verification
+    const clientSig = req.headers.get("x-wall-client-sig");
+    const clientTimeStr = req.headers.get("x-wall-client-time");
+
+    if (clientSig !== "pranav-wall-v1") {
+      return NextResponse.json(
+        { error: "Security check failed. Please submit directly from the website." },
+        { status: 403 }
+      );
+    }
+
+    if (clientTimeStr) {
+      const clientTime = parseInt(clientTimeStr, 10);
+      const now = Date.now();
+      // Allow +/- 10 minutes clock drift
+      if (isNaN(clientTime) || Math.abs(now - clientTime) > 10 * 60 * 1000) {
+        return NextResponse.json(
+          { error: "Session expired. Please refresh the page and try again." },
+          { status: 403 }
+        );
+      }
+    }
+
+    // 3. User-Agent Bot Filtering
+    const userAgent = (req.headers.get("user-agent") || "").toLowerCase();
+    const badBots = ["curl/", "python-requests", "postman", "go-http-client", "scrapy", "httpclient"];
+    if (badBots.some(bot => userAgent.includes(bot))) {
+      return NextResponse.json({ error: "Automated requests are blocked." }, { status: 403 });
+    }
+
+    // 4. Rate Limiter (5 notes per 10 mins per IP)
     const rateCheck = await checkRateLimit(req, WALL_RATE_LIMIT);
     if (!rateCheck.allowed) {
       return NextResponse.json(
         { 
-          error: `Whoa, slow down! You've stuck too many notes recently. Please wait ${Math.ceil((rateCheck.retryAfterSeconds || 600) / 60)} minute(s).` 
+          error: `Rate limit reached. Please wait ${Math.ceil((rateCheck.retryAfterSeconds || 600) / 60)} minute(s) before posting another note.` 
         }, 
         { status: 429 }
       );
     }
 
     const body = await req.json();
-    const { message, author_name, color, emoji } = body;
+    const { message, author_name, color, emoji, website_url } = body;
 
-    // Validate Message
+    // 5. Honeypot Trap Check (Bot protection)
+    if (website_url && typeof website_url === "string" && website_url.trim().length > 0) {
+      return NextResponse.json({ error: "Bot activity detected." }, { status: 400 });
+    }
+
+    // 6. Validate Message
     if (!message || typeof message !== "string" || !message.trim()) {
-      return NextResponse.json({ error: "Please write a message on your sticky note!" }, { status: 400 });
+      return NextResponse.json({ error: "Please write a message on your sticky note." }, { status: 400 });
     }
 
     const trimmedMsg = message.trim();
@@ -160,11 +207,32 @@ export async function POST(req: Request) {
     const noteColor = color && ALLOWED_COLORS.includes(color) ? color : "yellow";
     const noteEmoji = emoji && ALLOWED_EMOJIS.includes(emoji) ? emoji : "📌";
 
-    // Random subtle tilt angle (-2.8deg to +2.8deg) for natural sticky note look
+    // Random subtle tilt angle (-2.8deg to +2.8deg)
     const randomRotation = Number(((Math.random() * 5.6) - 2.8).toFixed(1));
 
     const clientIp = getClientIp(req);
     const ip_hash = hashIp(clientIp);
+
+    // 7. Duplicate Content Protection (Check if identical message was posted in last 10 minutes)
+    try {
+      const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+      const { data: recentDup } = await supabase
+        .from("wall_notes")
+        .select("id")
+        .eq("ip_hash", ip_hash)
+        .eq("message", sanitizedMsg)
+        .gte("created_at", tenMinutesAgo)
+        .limit(1);
+
+      if (recentDup && recentDup.length > 0) {
+        return NextResponse.json(
+          { error: "Duplicate note detected. You already stuck this exact note recently." },
+          { status: 429 }
+        );
+      }
+    } catch (dupErr) {
+      // Ignore if table doesn't exist
+    }
 
     // Insert into Supabase
     const { data, error } = await supabase
@@ -202,7 +270,7 @@ export async function POST(req: Request) {
     // Record rate limit attempt
     await recordRateLimitAttempt(req, WALL_RATE_LIMIT, { author: sanitizedAuthor });
 
-    // Log Activity
+    // Log Activity to activity_logs
     await logActivity({
       type: "wall_note",
       action: "posted",
