@@ -8,25 +8,48 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-export async function getAnalyticsData(days: number = 7) {
-  const isAllTime = !days || days <= 0;
+/**
+ * Helper to fetch all rows beyond Supabase PostgREST's default 1,000 row ceiling
+ * using sequential range pagination.
+ */
+async function fetchAllRows(tableName: string, startDate?: string, selectFields: string = "*") {
+  const pageSize = 1000;
+  let allRows: any[] = [];
+  let page = 0;
 
-  let pageViewsQuery = supabase.from("page_views").select("*").limit(10000);
-  let eventsQuery = supabase.from("analytics_events").select("*").limit(10000);
-  let sectionViewsQuery = supabase.from("section_views").select("*").limit(10000);
+  while (true) {
+    let query = supabase
+      .from(tableName)
+      .select(selectFields)
+      .range(page * pageSize, (page + 1) * pageSize - 1);
 
-  if (!isAllTime) {
-    const startDate = startOfDay(subDays(new Date(), days - 1)).toISOString();
-    pageViewsQuery = pageViewsQuery.gte("created_at", startDate);
-    eventsQuery = eventsQuery.gte("created_at", startDate);
-    sectionViewsQuery = sectionViewsQuery.gte("created_at", startDate);
+    if (startDate) {
+      query = query.gte("created_at", startDate);
+    }
+
+    const { data, error } = await query;
+    if (error || !data || data.length === 0) break;
+
+    allRows = allRows.concat(data);
+    if (data.length < pageSize) break;
+    page++;
+
+    // Safety guard to prevent runaway memory if table grows to >100k rows
+    if (page >= 100) break;
   }
 
-  // Fetch raw data
-  const [{ data: pageViews }, { data: events }, { data: sectionViews }] = await Promise.all([
-    pageViewsQuery,
-    eventsQuery,
-    sectionViewsQuery
+  return allRows;
+}
+
+export async function getAnalyticsData(days: number = 7) {
+  const isAllTime = !days || days <= 0;
+  const startDate = !isAllTime ? startOfDay(subDays(new Date(), days - 1)).toISOString() : undefined;
+
+  // Fetch all rows without PostgREST 1,000 row truncation
+  const [pageViews, events, sectionViews] = await Promise.all([
+    fetchAllRows("page_views", startDate, "session_id, path, device_type, created_at"),
+    fetchAllRows("analytics_events", startDate, "event_type, created_at"),
+    fetchAllRows("section_views", startDate, "section_id, time_spent_ms, created_at")
   ]);
 
   if (!pageViews || !events || !sectionViews) {
@@ -104,7 +127,7 @@ export async function getAnalyticsData(days: number = 7) {
     if (!sectionCounts[v.section_id]) {
       sectionCounts[v.section_id] = { totalTime: 0, count: 0 };
     }
-    sectionCounts[v.section_id].totalTime += v.time_spent_ms;
+    sectionCounts[v.section_id].totalTime += (v.time_spent_ms || 0);
     sectionCounts[v.section_id].count += 1;
   });
 
