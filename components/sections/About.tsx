@@ -34,7 +34,7 @@ export default function About() {
       {/* Right Content (Studio Portrait on Seamless Black) */}
       <div className="tomasz-right-content">
         <img
-          src="/assets/about-tomasz-portrait.webp"
+          src="/assets/about-pic.webp"
           alt="Pranav R - About Me Portrait"
           className="tomasz-portrait-img"
           loading="lazy"
