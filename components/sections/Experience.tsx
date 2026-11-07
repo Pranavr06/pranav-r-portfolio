@@ -1,47 +1,69 @@
+"use client";
+
+import FadeInSection from "@/components/FadeInSection";
 import ScrollArrow from "@/components/ScrollArrow";
-import CollectionCard from "@/components/cards/CollectionCard";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { ArrowRight } from "lucide-react";
 
-export default async function Experience() { 
-  const { data: hubs, error } = await supabase
-    .from("experience_hubs")
-    .select("*")
-    .or("is_archived.is.null,is_archived.eq.false")
-    .eq("is_published", true)
-    .order("display_order", { ascending: true });
-
-  if (error) {
-    console.error("Error fetching experience hubs:", error.message);
-  }
-
+export default function Experience() {
   return (
-    <section id='experience' className="fade-in-section">
-      <p className='section__text__p1'>My Professional Journey</p>
-      <h2 className='title'>Experiences</h2>
-      
-      <div className="project-details-container mt-3">
-        <div className="project-grid">
-          {hubs && hubs.map((hub) => (
-            <CollectionCard 
-              key={hub.id}
-              title={hub.title}
-              description={hub.description}
-              image={hub.image_url}
-              tags={hub.tags || []}
-              href={hub.href}
-            />
-          ))}
+    <FadeInSection id="experience" className="tomasz-about-section tomasz-experience-section">
+      {/* Diagonal Left Background */}
+      <div className="tomasz-left-bg" aria-hidden="true" />
+
+      {/* Left Content (Title, Subtitle, Overview, Badges, CTAs) */}
+      <div className="tomasz-left-content">
+        <p className="tomasz-section-subtitle">My Professional Journey</p>
+        <h2 className="tomasz-title">Experiences</h2>
+        <p className="tomasz-role">Hands-On Internships • Research Publications • National Hackathons</p>
+
+        <div className="tomasz-bio">
+          <p>
+            Bridging theoretical foundations with real-world engineering, my professional journey spans architecting full-stack systems at <strong>AIC-NITTE</strong>, presenting machine learning research at the <strong>IEEE AIDE 2026</strong> international conference, and building award-winning solutions in national hackathons like <strong>Nexathon (SDIT)</strong>.
+          </p>
+          <p>
+            Explore my work organized into two dedicated hubs: <strong>Technical Expertise</strong> in scalable systems, AI pipelines, and cybersecurity defenses, alongside my <strong>Professional Journey</strong> chronicling key career milestones.
+          </p>
+        </div>
+
+        <div className="tomasz-badges">
+          <span className="tomasz-badge">💼 AIC-NITTE Internship</span>
+          <span className="tomasz-badge">🏆 Nexathon SDIT Hackathon</span>
+          <span className="tomasz-badge">📜 IEEE AIDE 2026 Author</span>
+          <span className="tomasz-badge">🇮🇳 MY Bharat National Round</span>
+        </div>
+
+        <div className="tomasz-exp-actions">
+          <Link href="/experiences" className="btn btn-color-1 tomasz-exp-btn">
+            <span>Explore Experiences Hub</span>
+            <ArrowRight size={16} />
+          </Link>
+          <Link href="/experiences/professional-journey" className="btn btn-color-2 tomasz-exp-btn-secondary">
+            View Milestones
+          </Link>
         </div>
       </div>
-      
-      <div className="btn-container center-footer" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-        <Link href="/experiences" className="btn btn-color-2">
-          View more
+
+      {/* Right Content: Modern Visual Showcase */}
+      <div className="tomasz-right-content tomasz-exp-right">
+        <Link href="/experiences" className="tomasz-exp-showcase-link" aria-label="Explore Experiences Hub">
+          <div className="tomasz-exp-showcase">
+            <img
+              src="/assets/professional-journey-banner.webp"
+              alt="Pranav R - Professional Experiences and Technical Milestones"
+              className="tomasz-exp-banner-img"
+              loading="lazy"
+            />
+            <div className="tomasz-exp-overlay-card">
+              <span className="tomasz-exp-card-pill">Interactive Hub</span>
+              <h3 className="tomasz-exp-card-title">Technical Expertise &amp; Milestones</h3>
+              <p className="tomasz-exp-card-desc">Architecture • Full-Stack • AI/ML • Hackathons</p>
+            </div>
+          </div>
         </Link>
       </div>
 
       <ScrollArrow targetId="certificate" altText="Scroll down to certificates section" />
-    </section>
-  ); 
+    </FadeInSection>
+  );
 }
