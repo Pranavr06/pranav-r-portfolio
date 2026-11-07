@@ -13,7 +13,22 @@ export default function Hero() {
       <div className="hero-glow hero-glow-2" aria-hidden="true" />
 
       <div className="hero-container">
-        {/* Left Column: Text, CTAs, Socials */}
+        {/* Left Column: Radial / Circular Profile Picture (No Border) */}
+        <div className="hero-visual-wrapper">
+          <div className="hero-card-glow-backdrop" aria-hidden="true" />
+          <div className="hero-portrait-card">
+            <Image
+              src="/assets/profile-pic.webp"
+              alt="Profile photo of Pranav R, tech innovator and full-stack developer"
+              width={420}
+              height={420}
+              priority
+              className="hero-portrait-image"
+            />
+          </div>
+        </div>
+
+        {/* Right Column: Text, CTAs, Socials */}
         <div className="hero-content">
           <p className="hero-greeting">Hello, I'm</p>
 
@@ -36,7 +51,7 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Previous Button Design */}
+          {/* Action Buttons */}
           <div className="btn-container hero-btn-group">
             <a
               href="/assets/resume.pdf"
@@ -59,7 +74,7 @@ export default function Hero() {
             </a>
           </div>
 
-          {/* Previous Social Icons Design (LinkedIn & GitHub, No Email, No Connect Label) */}
+          {/* Social Icons (LinkedIn & GitHub) */}
           <div id="socials-container" className="hero-socials-group">
             <a
               href="https://www.linkedin.com/in/pranavr06/"
@@ -92,21 +107,6 @@ export default function Hero() {
                 loading="lazy"
               />
             </a>
-          </div>
-        </div>
-
-        {/* Right Column: Static Clean Portrait Card (No Float, No Hover Scale, No Tags) */}
-        <div className="hero-visual-wrapper">
-          <div className="hero-card-glow-backdrop" aria-hidden="true" />
-          <div className="hero-portrait-card">
-            <Image
-              src="/assets/profile-pic.webp"
-              alt="Profile photo of Pranav R, tech innovator and full-stack developer"
-              width={420}
-              height={420}
-              priority
-              className="hero-portrait-image"
-            />
           </div>
         </div>
       </div>
