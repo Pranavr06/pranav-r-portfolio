@@ -22,53 +22,6 @@ const WALL_RATE_LIMIT = {
 const ALLOWED_COLORS = ["yellow", "pink", "green", "blue", "purple", "orange"];
 const ALLOWED_EMOJIS = ["📌", "🚀", "💡", "🔥", "❤️", "☕", "💻", "🎉", "👾", "✨", "⭐", "⚡"];
 
-const STARTER_NOTES = [
-  {
-    id: "starter-1",
-    message: "Welcome to The Wall! Leave any comment, feedback, or shoutout here. No login required!",
-    author_name: "Pranav R",
-    color: "yellow",
-    emoji: "📌",
-    rotation: -1.5,
-    likes_count: 12,
-    is_pinned: true,
-    created_at: new Date(Date.now() - 3600000).toISOString()
-  },
-  {
-    id: "starter-2",
-    message: "Loved the YojanaSethu project showcase! Great architecture and real-time AI mock interview features. Keep building!",
-    author_name: "Fellow Dev",
-    color: "blue",
-    emoji: "🚀",
-    rotation: 2.1,
-    likes_count: 8,
-    is_pinned: false,
-    created_at: new Date(Date.now() - 7200000).toISOString()
-  },
-  {
-    id: "starter-3",
-    message: "The UI design on this portfolio is super smooth. Dark mode is very sleek.",
-    author_name: "UI Enthusiast",
-    color: "pink",
-    emoji: "✨",
-    rotation: -2.0,
-    likes_count: 15,
-    is_pinned: false,
-    created_at: new Date(Date.now() - 14400000).toISOString()
-  },
-  {
-    id: "starter-4",
-    message: "First time checking out your work, the Zero-Knowledge Vaultary project is very clean!",
-    author_name: "CyberSec Geek",
-    color: "green",
-    emoji: "💡",
-    rotation: 1.2,
-    likes_count: 6,
-    is_pinned: false,
-    created_at: new Date(Date.now() - 28800000).toISOString()
-  }
-];
-
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -103,22 +56,22 @@ export async function GET(req: Request) {
     if (error) {
       if (error.code === "PGRST205" || error.message.includes("does not exist")) {
         return NextResponse.json({
-          notes: STARTER_NOTES,
+          notes: [],
           tableReady: false,
           hint: "Table 'wall_notes' not yet provisioned. Run scripts/create_wall_notes.sql in Supabase SQL Editor."
         });
       }
       console.error("Error fetching wall notes:", error);
-      return NextResponse.json({ notes: STARTER_NOTES, tableReady: false });
+      return NextResponse.json({ notes: [], tableReady: false });
     }
 
     return NextResponse.json({
-      notes: data && data.length > 0 ? data : STARTER_NOTES,
+      notes: data || [],
       tableReady: true
     });
   } catch (err: any) {
     console.error("GET /api/wall error:", err);
-    return NextResponse.json({ notes: STARTER_NOTES, tableReady: false });
+    return NextResponse.json({ notes: [], tableReady: false });
   }
 }
 
