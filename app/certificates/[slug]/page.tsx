@@ -182,15 +182,19 @@ export default async function CertificateDetailPage({ params }: { params: Promis
           </div>
 
           {/* Tags */}
-          {cert.skills && cert.skills.length > 0 && (
-            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "1.25rem" }}>
-              {cert.skills.map((skill: string, idx: number) => (
-                <span key={idx} className="custom-tag" style={{ padding: "0.3rem 0.8rem", fontSize: "0.85rem" }}>
-                  {skill}
-                </span>
-              ))}
-            </div>
-          )}
+          {(() => {
+            const displayTags = (cert.tags && cert.tags.length > 0) ? cert.tags : cert.skills;
+            if (!displayTags || displayTags.length === 0) return null;
+            return (
+              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", justifyContent: "center", marginBottom: "1.25rem" }}>
+                {displayTags.map((skill: string, idx: number) => (
+                  <span key={idx} className="custom-tag" style={{ padding: "0.3rem 0.8rem", fontSize: "0.85rem" }}>
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            );
+          })()}
 
           {/* Description */}
           {cert.description && (

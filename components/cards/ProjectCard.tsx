@@ -80,7 +80,7 @@ export default function ProjectCard({ project }: { project: any }) {
       </figure>
       <p>{project.description}</p>
       <div className="tech-stack">
-        {project.tech_stack?.map((tech: string, i: number) => (
+        {((project.tags && project.tags.length > 0 ? project.tags : project.tech_stack) || [])?.map((tech: string, i: number) => (
           <span key={i} className="tech-tag">{tech}</span>
         ))}
       </div>

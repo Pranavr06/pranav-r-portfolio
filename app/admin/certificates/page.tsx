@@ -52,6 +52,7 @@ export default function ManageCertificates() {
   const [galleryImages, setGalleryImages] = useState<Array<{ url: string; caption?: string }>>([]);
   const [newImageUrl, setNewImageUrl] = useState("");
   const [newImageCaption, setNewImageCaption] = useState("");
+  const [tags, setTags] = useState("");
   const [category, setCategory] = useState("course");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("Published");
@@ -98,6 +99,7 @@ export default function ManageCertificates() {
     setExperienceUrl(""); setProjectUrl(""); setGalleryTitle("");
     setGalleryImages([]); setNewImageUrl(""); setNewImageCaption("");
     setCategory("course"); setDescription(""); setStatus("Published");
+    setTags("");
     setSortOrder("0"); setDisplayOrder("");
     setDrawerOpen(true);
   };
@@ -115,6 +117,10 @@ export default function ManageCertificates() {
     setGalleryTitle(cert.gallery_title || "");
     setCategory(cert.category || "");
     setDescription(cert.description || "");
+    const certTags = (Array.isArray(cert.tags) && cert.tags.length > 0)
+      ? cert.tags
+      : (Array.isArray(cert.skills) ? cert.skills : []);
+    setTags(certTags.join(", "));
     setStatus(cert.status || "Published");
     setSortOrder((cert.sort_order || 0).toString());
     setDisplayOrder(cert.display_order !== null ? cert.display_order.toString() : "");
@@ -252,6 +258,7 @@ export default function ManageCertificates() {
     e.preventDefault();
     
     const computedSlug = slug.trim() || slugify(title);
+    const tagsArray = tags.split(",").map(t => t.trim()).filter(Boolean);
     const certData: any = {
       title, 
       slug: computedSlug,
@@ -265,6 +272,8 @@ export default function ManageCertificates() {
       project_url: projectUrl.trim() || null,
       category, 
       description, 
+      skills: tagsArray,
+      tags: tagsArray,
       status, 
       sort_order: parseInt(sortOrder) || 0, 
       display_order: displayOrder ? parseInt(displayOrder) : null
@@ -275,6 +284,12 @@ export default function ManageCertificates() {
     if (editingId) {
       let res = await supabase.from("certificates").update(certData).eq("id", editingId);
       error = res.error;
+      // If tags column does not exist yet in DB schema, fallback gracefully
+      if (error && error.message?.includes("'tags'")) {
+        delete certData.tags;
+        res = await supabase.from("certificates").update(certData).eq("id", editingId);
+        error = res.error;
+      }
       // If gallery_title column does not exist yet in DB schema, fallback gracefully
       if (error && error.message?.includes("'gallery_title'")) {
         delete certData.gallery_title;
@@ -296,6 +311,11 @@ export default function ManageCertificates() {
     } else {
       let res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
       error = res.error;
+      if (error && error.message?.includes("'tags'")) {
+        delete certData.tags;
+        res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
+        error = res.error;
+      }
       if (error && error.message?.includes("'gallery_title'")) {
         delete certData.gallery_title;
         res = await supabase.from("certificates").insert([{ ...certData, is_archived: false }]);
@@ -406,7 +426,7 @@ export default function ManageCertificates() {
                     {c.status === "Draft" && <span style={{ marginLeft: "0.5rem", fontSize: "0.75rem", padding: "0.1rem 0.4rem", borderRadius: "10px", backgroundColor: "rgba(107, 114, 128, 0.1)", color: "var(--admin-text-main)", fontWeight: 400 }}>Draft</span>}
                   </div>
                   <div style={{ fontSize: "0.8rem", color: "var(--admin-text-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    /{c.slug || slugify(c.title)} • {CERT_CATEGORIES.find(cat => cat.value === c.category)?.label || c.category} • {c.date}
+                    /{c.slug || slugify(c.title)} • {CERT_CATEGORIES.find(cat => cat.value === c.category)?.label || c.category} • {c.date}{(c.tags || c.skills)?.length > 0 ? ` • ${(c.tags || c.skills).length} tags` : ""}
                   </div>
                 </div>
               </div>
@@ -589,6 +609,24 @@ export default function ManageCertificates() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Description</label>
             <textarea placeholder="Brief details about the certificate..." value={description} onChange={(e) => setDescription(e.target.value)} required style={{...inputStyle, minHeight: "80px", resize: "vertical"}} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+              Relevant Tags / Skills (comma separated)
+              <Tooltip content="Tags appear as pill badges on the certificate card and detail subpage">
+                <Info size={14} style={{ color: "var(--admin-text-muted)", cursor: "help" }} />
+              </Tooltip>
+            </label>
+            <input 
+              placeholder="e.g. Full-Stack Development, Next.js 14, TypeScript, Supabase, System Architecture" 
+              value={tags} 
+              onChange={(e) => setTags(e.target.value)} 
+              style={inputStyle} 
+            />
+            <span style={{ fontSize: "0.75rem", color: "var(--admin-text-muted)" }}>
+              Displayed on public certificate cards and detail subpages.
+            </span>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>

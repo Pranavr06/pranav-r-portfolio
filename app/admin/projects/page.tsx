@@ -62,7 +62,10 @@ export default function ManageProjects() {
     setDescription(project.description || "");
     setContent(project.content || "");
     setImageUrl(project.image_url || "");
-    setTechStack(project.tech_stack ? project.tech_stack.join(", ") : "");
+    const projectTags = (Array.isArray(project.tags) && project.tags.length > 0)
+      ? project.tags
+      : (Array.isArray(project.tech_stack) ? project.tech_stack : []);
+    setTechStack(projectTags.join(", "));
     setStatus(project.status || "Completed");
     setDemoUrl(project.demo_url || "");
     setRepoUrl(project.repo_url || "");
@@ -76,9 +79,9 @@ export default function ManageProjects() {
     e.preventDefault();
     const techArray = techStack.split(",").map(t => t.trim()).filter(Boolean);
     
-    const projectData = {
+    const projectData: any = {
       title, description, content, image_url: imageUrl, 
-      tech_stack: techArray, status, demo_url: demoUrl, repo_url: repoUrl, 
+      tech_stack: techArray, tags: techArray, status, demo_url: demoUrl, repo_url: repoUrl, 
       slug, sort_order: parseInt(sortOrder) || 0, 
       display_order: displayOrder ? parseInt(displayOrder) : null
     };
@@ -86,11 +89,21 @@ export default function ManageProjects() {
     let error;
 
     if (editingId) {
-      const res = await supabase.from("projects").update(projectData).eq("id", editingId);
+      let res = await supabase.from("projects").update(projectData).eq("id", editingId);
       error = res.error;
+      if (error && error.message?.includes("'tags'")) {
+        delete projectData.tags;
+        res = await supabase.from("projects").update(projectData).eq("id", editingId);
+        error = res.error;
+      }
     } else {
-      const res = await supabase.from("projects").insert([{ ...projectData, is_archived: false }]);
+      let res = await supabase.from("projects").insert([{ ...projectData, is_archived: false }]);
       error = res.error;
+      if (error && error.message?.includes("'tags'")) {
+        delete projectData.tags;
+        res = await supabase.from("projects").insert([{ ...projectData, is_archived: false }]);
+        error = res.error;
+      }
     }
 
     if (error) {
@@ -262,8 +275,11 @@ export default function ManageProjects() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Tech Stack</label>
+            <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Tech Stack / Relevant Tags</label>
             <input placeholder="React, Node.js, PostgreSQL (comma separated)" value={techStack} onChange={(e) => setTechStack(e.target.value)} required style={inputStyle} />
+            <span style={{ fontSize: "0.75rem", color: "var(--admin-text-muted)" }}>
+              Tags and tech stack appear on project cards and detail subpages.
+            </span>
           </div>
           
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>

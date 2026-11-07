@@ -496,23 +496,11 @@ export default function AdminWall() {
       </div>
 
       {/* Navigation Tabs */}
-      <div style={{ display: "flex", gap: "0.5rem", borderBottom: "1px solid var(--admin-border)", paddingBottom: "0.75rem" }}>
+      <div className="admin-tabs-nav">
         <button
           type="button"
           onClick={() => setActiveTab("notes")}
-          className="admin-btn"
-          style={{
-            backgroundColor: activeTab === "notes" ? "var(--admin-btn-primary-bg, #3b82f6)" : "transparent",
-            color: activeTab === "notes" ? "#ffffff" : "var(--admin-text-muted)",
-            borderColor: activeTab === "notes" ? "transparent" : "var(--admin-border)",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            fontWeight: 600,
-            fontSize: "0.9rem",
-            padding: "0.55rem 1.15rem",
-            borderRadius: "0.6rem"
-          }}
+          className={`admin-tab-btn ${activeTab === "notes" ? "active" : ""}`}
         >
           <MessageSquare size={16} />
           <span>Sticky Notes ({notes.length})</span>
@@ -521,19 +509,7 @@ export default function AdminWall() {
         <button
           type="button"
           onClick={() => setActiveTab("banned_words")}
-          className="admin-btn"
-          style={{
-            backgroundColor: activeTab === "banned_words" ? "var(--admin-btn-primary-bg, #3b82f6)" : "transparent",
-            color: activeTab === "banned_words" ? "#ffffff" : "var(--admin-text-muted)",
-            borderColor: activeTab === "banned_words" ? "transparent" : "var(--admin-border)",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            fontWeight: 600,
-            fontSize: "0.9rem",
-            padding: "0.55rem 1.15rem",
-            borderRadius: "0.6rem"
-          }}
+          className={`admin-tab-btn ${activeTab === "banned_words" ? "active" : ""}`}
         >
           <Shield size={16} />
           <span>Forbidden Words Filter ({bannedWords.length})</span>
@@ -567,24 +543,39 @@ export default function AdminWall() {
           {/* Metrics Row */}
           <div className="admin-metrics-grid">
             <div className="admin-stat-card">
-              <span className="admin-stat-label">Active Notes</span>
-              <span className="admin-stat-value" style={{ color: "#3b82f6" }}>{stats.active}</span>
-              <span className="admin-stat-sub">Visible on public wall</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <span className="admin-stat-label">Active Notes</span>
+                <MessageSquare size={18} color="var(--admin-text-muted)" />
+              </div>
+              <span className="admin-stat-value">{stats.active}</span>
+              <div className="admin-stat-meta positive">Visible on public wall</div>
             </div>
+
             <div className="admin-stat-card">
-              <span className="admin-stat-label">Pinned Notes</span>
-              <span className="admin-stat-value" style={{ color: "#10b981" }}>{stats.pinned}</span>
-              <span className="admin-stat-sub">Highlighted at top</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <span className="admin-stat-label">Pinned Notes</span>
+                <Pin size={18} color="var(--admin-text-muted)" />
+              </div>
+              <span className="admin-stat-value">{stats.pinned}</span>
+              <div className="admin-stat-meta positive">Highlighted at top</div>
             </div>
+
             <div className="admin-stat-card">
-              <span className="admin-stat-label">Total Likes</span>
-              <span className="admin-stat-value" style={{ color: "#ec4899" }}>{stats.totalLikes}</span>
-              <span className="admin-stat-sub">Hearts from visitors</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <span className="admin-stat-label">Total Likes</span>
+                <Heart size={18} color="var(--admin-text-muted)" />
+              </div>
+              <span className="admin-stat-value">{stats.totalLikes}</span>
+              <div className="admin-stat-meta positive">Hearts from visitors</div>
             </div>
+
             <div className="admin-stat-card">
-              <span className="admin-stat-label">Archived / Hidden</span>
-              <span className="admin-stat-value" style={{ color: "#64748b" }}>{stats.archived}</span>
-              <span className="admin-stat-sub">Removed from view</span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <span className="admin-stat-label">Archived / Hidden</span>
+                <Trash2 size={18} color="var(--admin-text-muted)" />
+              </div>
+              <span className="admin-stat-value">{stats.archived}</span>
+              <div className="admin-stat-meta neutral">Removed from view</div>
             </div>
           </div>
 
@@ -619,15 +610,8 @@ export default function AdminWall() {
                 <button
                   key={st}
                   onClick={() => setStatusFilter(st)}
-                  className="admin-btn"
-                  style={{
-                    textTransform: "capitalize",
-                    padding: "0.45rem 0.85rem",
-                    fontSize: "0.85rem",
-                    backgroundColor: statusFilter === st ? "var(--admin-btn-primary-bg, #3b82f6)" : "transparent",
-                    color: statusFilter === st ? "#ffffff" : "var(--admin-text-muted)",
-                    borderColor: statusFilter === st ? "transparent" : "var(--admin-border)"
-                  }}
+                  className={`admin-filter-btn ${statusFilter === st ? "active" : ""}`}
+                  style={{ textTransform: "capitalize" }}
                 >
                   {st}
                 </button>
@@ -640,8 +624,8 @@ export default function AdminWall() {
               <select
                 value={colorFilter}
                 onChange={(e) => setColorFilter(e.target.value)}
-                className="admin-input"
-                style={{ padding: "0.45rem 0.85rem", fontSize: "0.85rem", width: "auto" }}
+                className="admin-select"
+                style={{ padding: "0.4rem 0.85rem", fontSize: "0.85rem", width: "auto" }}
               >
                 <option value="all">All Colors</option>
                 {PALETTES.map((p) => (
@@ -652,12 +636,7 @@ export default function AdminWall() {
           </div>
 
           {/* Notes Table */}
-          <div style={{
-            backgroundColor: "var(--admin-card-bg)",
-            borderRadius: "0.75rem",
-            border: "1px solid var(--admin-border)",
-            overflow: "hidden"
-          }}>
+          <div className="admin-table-container">
             {loading ? (
               <div style={{ padding: "3rem", textAlign: "center", color: "var(--admin-text-muted)" }}>
                 Loading wall notes...
@@ -677,7 +656,7 @@ export default function AdminWall() {
               <div style={{ overflowX: "auto" }}>
                 <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem", textAlign: "left" }}>
                   <thead>
-                    <tr style={{ borderBottom: "1px solid var(--admin-border)", color: "var(--admin-text-muted)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    <tr style={{ borderBottom: "1px solid var(--admin-border)", backgroundColor: "var(--admin-card-hover)", color: "var(--admin-text-muted)", fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                       <th style={{ padding: "0.9rem 1.25rem" }}>Color / Icon</th>
                       <th style={{ padding: "0.9rem 1.25rem", width: "38%" }}>Message & Telemetry</th>
                       <th style={{ padding: "0.9rem 1.25rem" }}>Author</th>

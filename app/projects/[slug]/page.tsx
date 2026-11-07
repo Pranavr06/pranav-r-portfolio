@@ -185,7 +185,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
           <h2 style={{ fontSize: "2.2rem", marginBottom: "1rem", fontWeight: "700" }} className="project-overview-title">Project Overview</h2>
           
           <div className="tech-stack" style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "2.5rem" }}>
-            {project.tech_stack?.map((tech: string, i: number) => (
+            {((project.tags && project.tags.length > 0 ? project.tags : project.tech_stack) || [])?.map((tech: string, i: number) => (
               <span key={i} className="tech-tag">
                 {tech}
               </span>

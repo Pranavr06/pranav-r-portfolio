@@ -62,19 +62,26 @@ export default function CertificateCard({ cert }: { cert: any }) {
         </div>
       )}
 
-      {cert.skills && cert.skills.length > 0 && (
-        <div className="skill-tags" style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.8rem", justifyContent: "center" }}>
-          {cert.skills.map((skill: string, index: number) => (
-            <span key={index} className="custom-tag" style={{ padding: "0.2rem 0.6rem", fontSize: "0.85rem" }}>{skill}</span>
-          ))}
-        </div>
-      )}
-      
-      {cert.category && (!cert.skills || cert.skills.length === 0) && (
-        <div className="skill-tags" style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.8rem", justifyContent: "center" }}>
-          <span className="custom-tag" style={{ padding: "0.2rem 0.6rem", fontSize: "0.85rem" }}>{cert.category}</span>
-        </div>
-      )}
+      {(() => {
+        const displayTags = (cert.tags && cert.tags.length > 0) ? cert.tags : cert.skills;
+        if (displayTags && displayTags.length > 0) {
+          return (
+            <div className="skill-tags" style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.8rem", justifyContent: "center" }}>
+              {displayTags.map((skill: string, index: number) => (
+                <span key={index} className="custom-tag" style={{ padding: "0.2rem 0.6rem", fontSize: "0.85rem" }}>{skill}</span>
+              ))}
+            </div>
+          );
+        }
+        if (cert.category) {
+          return (
+            <div className="skill-tags" style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "0.8rem", justifyContent: "center" }}>
+              <span className="custom-tag" style={{ padding: "0.2rem 0.6rem", fontSize: "0.85rem" }}>{cert.category}</span>
+            </div>
+          );
+        }
+        return null;
+      })()}
 
       {cert.issuer && !cert.issuer.includes("Unknown") && (
         <p className="achievement-highlight-custom" style={{ fontSize: "0.9rem", marginTop: "0.5rem" }}>

@@ -316,6 +316,100 @@ body.dark-theme .admin-stat-card:hover {
   background-color: rgba(239, 68, 68, 0.1);
 }
 
+/* Tab Navigation */
+.admin-tabs-nav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--admin-border);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.admin-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  background-color: transparent;
+  color: var(--admin-text-muted);
+}
+
+.admin-tab-btn:hover {
+  background-color: var(--admin-card-hover);
+  color: var(--admin-text-main);
+  border-color: var(--admin-border);
+}
+
+.admin-tab-btn.active {
+  background-color: var(--admin-accent);
+  color: var(--admin-bg);
+  font-weight: 600;
+}
+
+/* Filter Pill Buttons */
+.admin-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid var(--admin-border);
+  background-color: transparent;
+  color: var(--admin-text-muted);
+}
+
+.admin-filter-btn:hover {
+  background-color: var(--admin-card-hover);
+  color: var(--admin-text-main);
+}
+
+.admin-filter-btn.active {
+  background-color: var(--admin-accent);
+  color: var(--admin-bg);
+  border-color: var(--admin-accent);
+  font-weight: 600;
+}
+
+/* Inputs & Form Controls */
+.admin-input,
+.admin-select {
+  background-color: var(--admin-sidebar-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  padding: 0.55rem 0.85rem;
+  color: var(--admin-text-main);
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-input:focus,
+.admin-select:focus {
+  border-color: var(--admin-text-muted);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-theme .admin-input:focus,
+body.dark-theme .admin-select:focus {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
+}
+
+.admin-input::placeholder {
+  color: var(--admin-text-muted);
+  opacity: 0.7;
+}
+
 @media screen and (max-width: 768px) {
   .admin-sidebar {
     position: fixed;
