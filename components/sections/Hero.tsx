@@ -33,7 +33,7 @@ export default function Hero() {
           <p className="hero-greeting">Hello, I'm</p>
 
           <h1 className="hero-name">
-            PRANAV <span className="hero-name-highlight">R</span>
+            PRANAV R
           </h1>
 
           {/* Dynamic Animated Role */}
