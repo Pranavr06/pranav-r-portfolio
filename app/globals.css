@@ -311,7 +311,8 @@ body.dark-theme .hero-glow-2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4.5rem;
+    gap: 5rem;
+    padding: 0 2rem;
 }
 
 /* Left Column: Radial / Circular Profile Picture (Zero Border) */
@@ -325,8 +326,8 @@ body.dark-theme .hero-glow-2 {
 
 .hero-card-glow-backdrop {
     position: absolute;
-    width: 360px;
-    height: 360px;
+    width: 350px;
+    height: 350px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, rgba(147, 51, 234, 0.18) 70%, transparent 100%);
     filter: blur(40px);
@@ -343,8 +344,8 @@ body.dark-theme .hero-card-glow-backdrop {
 .hero-portrait-card {
     position: relative;
     z-index: 2;
-    width: 380px;
-    height: 380px;
+    width: 370px;
+    height: 370px;
     border-radius: 50%;
     padding: 0;
     background: transparent;
@@ -373,11 +374,14 @@ body.dark-theme .hero-portrait-card {
     display: block;
 }
 
-/* Right Content Area */
+/* Right Content Area (Center-Aligned with Buttons & Socials) */
 .hero-content {
-    flex: 1.15;
-    max-width: 620px;
-    text-align: left;
+    flex: 0 1 auto;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 /* Typography */
@@ -387,6 +391,7 @@ body.dark-theme .hero-portrait-card {
     color: #64748b;
     margin: 0 0 0.4rem 0;
     letter-spacing: -0.01em;
+    text-align: center;
 }
 
 body.dark-theme .hero-greeting {
@@ -400,6 +405,7 @@ body.dark-theme .hero-greeting {
     line-height: 1.05;
     color: #0f172a;
     margin: 0 0 0.85rem 0;
+    text-align: center;
 }
 
 body.dark-theme .hero-name {
@@ -418,16 +424,18 @@ body.dark-theme .hero-name-highlight {
     -webkit-text-fill-color: transparent;
 }
 
-/* Dynamic Animated Role */
+/* Dynamic Animated Role (Centered) */
 .hero-role-wrapper {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     font-size: 1.25rem;
     font-weight: 700;
     color: #2563eb;
     margin: 0 0 1.25rem 0;
     font-family: monospace, sans-serif;
     letter-spacing: -0.01em;
+    text-align: center;
 }
 
 body.dark-theme .hero-role-wrapper {
@@ -439,17 +447,26 @@ body.dark-theme .hero-role-wrapper {
     margin-right: 0.35rem;
 }
 
-/* Classic Button Group in Hero */
+/* Classic Button Group in Hero (Centered) */
 .hero-content .hero-btn-group {
-    justify-content: flex-start;
-    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
     margin-bottom: 1.25rem;
+    width: 100%;
 }
 
-/* Classic Social Icons in Hero */
+/* Classic Social Icons in Hero (Centered) */
+.hero-content #socials-container,
 .hero-content .hero-socials-group {
-    justify-content: flex-start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.25rem;
     margin-top: 0;
+    width: 100%;
 }
 
 /* Hero Responsive */
@@ -459,7 +476,7 @@ body.dark-theme .hero-role-wrapper {
     }
 
     .hero-container {
-        gap: 2.5rem;
+        gap: 3.5rem;
     }
 
     .hero-portrait-card {
@@ -481,54 +498,79 @@ body.dark-theme .hero-role-wrapper {
 
     .hero-container {
         flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
-        gap: 2.5rem;
+        gap: 2rem;
+        padding: 0 1rem;
+    }
+
+    .hero-visual-wrapper {
+        margin-bottom: 0.25rem;
     }
 
     .hero-content {
         max-width: 100%;
+        width: 100%;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    .hero-content .hero-btn-group {
-        justify-content: center;
-    }
-
-    .hero-content .hero-socials-group {
-        justify-content: center;
+    .hero-name {
+        font-size: clamp(2.4rem, 8vw, 3.2rem);
     }
 
     .hero-portrait-card {
-        width: 270px;
-        height: 270px;
+        width: 250px;
+        height: 250px;
     }
 
     .hero-card-glow-backdrop {
-        width: 250px;
-        height: 250px;
+        width: 230px;
+        height: 230px;
+    }
+
+    .hero-content .hero-btn-group {
+        justify-content: center;
+        gap: 0.85rem;
+    }
+
+    .hero-content #socials-container,
+    .hero-content .hero-socials-group {
+        justify-content: center;
+        gap: 1.25rem;
     }
 }
 
 @media screen and (max-width: 480px) {
     .hero-name {
-        font-size: 2.5rem;
+        font-size: 2.25rem;
     }
 
     .hero-role-wrapper {
-        font-size: 1.05rem;
+        font-size: 1rem;
     }
 
     .hero-portrait-card {
-        width: 230px;
-        height: 230px;
+        width: 210px;
+        height: 210px;
     }
 
     .hero-card-glow-backdrop {
-        width: 210px;
-        height: 210px;
+        width: 190px;
+        height: 190px;
+    }
+
+    .hero-content .hero-btn-group {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .hero-content .hero-btn-group .btn {
+        padding: 0.65rem 1.15rem;
+        font-size: 0.85rem;
     }
 }
 
