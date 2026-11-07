@@ -747,10 +747,10 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
 }
 
 /* ==========================================================================
-   ABOUT SECTION - FULL-BLEED TOMASZ GAJDA DIAGONAL SPLIT
+   ABOUT & EXPERIENCES - TOMASZ GAJDA DIAGONAL SPLIT (ALTERNATING RHYTHM)
    ========================================================================== */
 #about,
-#experience.tomasz-experience-section {
+#experience.tomasz-experience-opposite {
     margin: 0 !important;
     padding: 0 !important;
     width: 100vw !important;
@@ -768,9 +768,8 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     box-sizing: border-box;
 }
 
-/* Diagonal divider on the left */
-#about .tomasz-left-bg,
-#experience.tomasz-experience-section .tomasz-left-bg {
+/* --- About Section (Left: Text on Angled Grey, Right: Photo on Seamless Black) --- */
+#about .tomasz-left-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -782,14 +781,11 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     transition: background 0.3s ease;
 }
 
-body.dark-theme #about .tomasz-left-bg,
-body.dark-theme #experience.tomasz-experience-section .tomasz-left-bg {
+body.dark-theme #about .tomasz-left-bg {
     background: #14171d;
 }
 
-/* Left Content Area (Text, Bio, Badges) */
-#about .tomasz-left-content,
-#experience.tomasz-experience-section .tomasz-left-content {
+#about .tomasz-left-content {
     position: relative;
     z-index: 2;
     flex: 1.15;
@@ -800,255 +796,6 @@ body.dark-theme #experience.tomasz-experience-section .tomasz-left-bg {
     max-width: 58%;
 }
 
-.tomasz-section-subtitle {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #64748b;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    margin: 0 0 0.4rem 0;
-}
-
-body.dark-theme .tomasz-section-subtitle {
-    color: #94a3b8;
-}
-
-#about .tomasz-title,
-#experience.tomasz-experience-section .tomasz-title {
-    font-size: 3.8rem;
-    font-weight: 900;
-    color: #000000;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-    margin: 0 0 0.75rem 0;
-}
-
-body.dark-theme #about .tomasz-title,
-body.dark-theme #experience.tomasz-experience-section .tomasz-title {
-    color: #ffffff;
-}
-
-#about .tomasz-role,
-#experience.tomasz-experience-section .tomasz-role {
-    font-size: 1.12rem;
-    font-weight: 600;
-    color: #64748b;
-    margin: 0 0 1.75rem 0;
-    letter-spacing: -0.01em;
-}
-
-body.dark-theme #about .tomasz-role,
-body.dark-theme #experience.tomasz-experience-section .tomasz-role {
-    color: #94a3b8;
-}
-
-#about .tomasz-bio,
-#experience.tomasz-experience-section .tomasz-bio {
-    color: #334155;
-    font-size: 1.05rem;
-    line-height: 1.8;
-    margin-bottom: 2rem;
-    max-width: 560px;
-}
-
-body.dark-theme #about .tomasz-bio,
-body.dark-theme #experience.tomasz-experience-section .tomasz-bio {
-    color: #cbd5e1;
-}
-
-#about .tomasz-bio p,
-#experience.tomasz-experience-section .tomasz-bio p {
-    margin-bottom: 0.85rem;
-}
-
-#about .tomasz-bio p:last-child,
-#experience.tomasz-experience-section .tomasz-bio p:last-child {
-    margin-bottom: 0;
-}
-
-#about .tomasz-bio strong,
-#experience.tomasz-experience-section .tomasz-bio strong {
-    color: #0f172a;
-    font-weight: 700;
-}
-
-body.dark-theme #about .tomasz-bio strong,
-body.dark-theme #experience.tomasz-experience-section .tomasz-bio strong {
-    color: #ffffff;
-}
-
-/* Badges / Pill Tags */
-#about .tomasz-badges,
-#experience.tomasz-experience-section .tomasz-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-    margin-top: 0.25rem;
-}
-
-#about .tomasz-badge,
-#experience.tomasz-experience-section .tomasz-badge {
-    font-size: 0.84rem;
-    font-weight: 600;
-    padding: 0.45rem 0.95rem;
-    border-radius: 9999px;
-    background: rgba(0, 0, 0, 0.06);
-    color: #1e293b;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
-}
-
-body.dark-theme #about .tomasz-badge,
-body.dark-theme #experience.tomasz-experience-section .tomasz-badge {
-    background: rgba(255, 255, 255, 0.06);
-    color: #e2e8f0;
-    border-color: rgba(255, 255, 255, 0.1);
-}
-
-#about .tomasz-badge:hover,
-#experience.tomasz-experience-section .tomasz-badge:hover {
-    transform: translateY(-2px);
-    background: rgba(0, 0, 0, 0.1);
-}
-
-body.dark-theme #about .tomasz-badge:hover,
-body.dark-theme #experience.tomasz-experience-section .tomasz-badge:hover {
-    background: rgba(255, 255, 255, 0.12);
-}
-
-/* Experience Section Action Buttons */
-.tomasz-exp-actions {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-}
-
-.tomasz-exp-btn {
-    padding: 0.65rem 1.6rem !important;
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-    border-radius: 2rem !important;
-    text-decoration: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-}
-
-.tomasz-exp-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.tomasz-exp-btn-secondary {
-    padding: 0.65rem 1.4rem !important;
-    font-size: 0.95rem !important;
-    font-weight: 600 !important;
-    border-radius: 2rem !important;
-    text-decoration: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    transition: transform 0.2s ease !important;
-}
-
-.tomasz-exp-btn-secondary:hover {
-    transform: translateY(-2px);
-}
-
-/* Right Content Area for Experience */
-#experience .tomasz-right-content {
-    position: relative;
-    z-index: 2;
-    flex: 0.85;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    background: #000000;
-    padding: 3.5rem 3rem;
-}
-
-.tomasz-exp-showcase-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    width: 100%;
-    max-width: 520px;
-}
-
-.tomasz-exp-showcase {
-    position: relative;
-    width: 100%;
-    border-radius: 1.25rem;
-    overflow: hidden;
-    background: #0a0c10;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
-}
-
-.tomasz-exp-showcase:hover {
-    transform: translateY(-5px) scale(1.015);
-    box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.95);
-    border-color: rgba(255, 255, 255, 0.35);
-}
-
-.tomasz-exp-banner-img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.5s ease;
-}
-
-.tomasz-exp-showcase:hover .tomasz-exp-banner-img {
-    transform: scale(1.04);
-}
-
-.tomasz-exp-overlay-card {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 1.5rem 1.25rem 1.25rem;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 60%, transparent 100%);
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-}
-
-.tomasz-exp-card-pill {
-    align-self: flex-start;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 0.2rem 0.6rem;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.tomasz-exp-card-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0;
-    letter-spacing: -0.01em;
-}
-
-.tomasz-exp-card-desc {
-    font-size: 0.82rem;
-    color: #94a3b8;
-    margin: 0;
-}
-
-/* Right Content Area (Seamless Solid Black Background with Studio Portrait) */
 #about .tomasz-right-content {
     position: relative;
     z-index: 2;
@@ -1075,37 +822,237 @@ body.dark-theme #experience.tomasz-experience-section .tomasz-badge:hover {
     transform: scale(1.02);
 }
 
+/* --- Experiences Section (Opposite: Left: Photo on Seamless Black, Right: Text on Angled Grey) --- */
+#experience.tomasz-experience-opposite .tomasz-exp-left-pic {
+    position: relative;
+    z-index: 2;
+    flex: 0.85;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+    background: #000000;
+}
+
+#experience.tomasz-experience-opposite .tomasz-exp-portrait-img {
+    height: 100%;
+    max-height: 720px;
+    width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+    display: block;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+}
+
+#experience.tomasz-experience-opposite:hover .tomasz-exp-portrait-img {
+    transform: scale(1.02);
+}
+
+#experience.tomasz-experience-opposite .tomasz-right-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 58%;
+    height: 100%;
+    background: #d8dbdf;
+    clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 1;
+    transition: background 0.3s ease;
+}
+
+body.dark-theme #experience.tomasz-experience-opposite .tomasz-right-bg {
+    background: #14171d;
+}
+
+#experience.tomasz-experience-opposite .tomasz-exp-right-content {
+    position: relative;
+    z-index: 2;
+    flex: 1.15;
+    padding: 6rem calc(max(3rem, (100vw - 1280px) / 2 + 3rem)) 6rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 58%;
+    margin-left: auto;
+}
+
+/* --- Shared Typography & Badges --- */
+.tomasz-section-subtitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.4rem 0;
+}
+
+body.dark-theme .tomasz-section-subtitle {
+    color: #94a3b8;
+}
+
+#about .tomasz-title,
+#experience.tomasz-experience-opposite .tomasz-title {
+    font-size: 3.8rem;
+    font-weight: 900;
+    color: #000000;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin: 0 0 0.75rem 0;
+}
+
+body.dark-theme #about .tomasz-title,
+body.dark-theme #experience.tomasz-experience-opposite .tomasz-title {
+    color: #ffffff;
+}
+
+#about .tomasz-role {
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: #64748b;
+    margin: 0 0 1.75rem 0;
+    letter-spacing: -0.01em;
+}
+
+body.dark-theme #about .tomasz-role {
+    color: #94a3b8;
+}
+
+#about .tomasz-bio,
+#experience.tomasz-experience-opposite .tomasz-bio {
+    color: #334155;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    max-width: 560px;
+}
+
+body.dark-theme #about .tomasz-bio,
+body.dark-theme #experience.tomasz-experience-opposite .tomasz-bio {
+    color: #cbd5e1;
+}
+
+#about .tomasz-bio p,
+#experience.tomasz-experience-opposite .tomasz-bio p {
+    margin-bottom: 0.85rem;
+}
+
+#about .tomasz-bio p:last-child,
+#experience.tomasz-experience-opposite .tomasz-bio p:last-child {
+    margin-bottom: 0;
+}
+
+#about .tomasz-bio strong,
+#experience.tomasz-experience-opposite .tomasz-bio strong {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+body.dark-theme #about .tomasz-bio strong,
+body.dark-theme #experience.tomasz-experience-opposite .tomasz-bio strong {
+    color: #ffffff;
+}
+
+/* Badges / Pill Tags */
+#about .tomasz-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 0.25rem;
+}
+
+#about .tomasz-badge {
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 0.45rem 0.95rem;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.06);
+    color: #1e293b;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+body.dark-theme #about .tomasz-badge {
+    background: rgba(255, 255, 255, 0.06);
+    color: #e2e8f0;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+#about .tomasz-badge:hover {
+    transform: translateY(-2px);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme #about .tomasz-badge:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Experience Section Action Button */
+.tomasz-exp-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.tomasz-exp-btn {
+    padding: 0.75rem 1.85rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    border-radius: 2rem !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.55rem !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.tomasz-exp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
 /* ==========================================================================
-   RESPONSIVE DESIGN FOR FULL-BLEED ABOUT LAYOUT
+   RESPONSIVE DESIGN FOR FULL-BLEED SPLIT LAYOUTS
    ========================================================================== */
 @media screen and (max-width: 1100px) {
-    #about .tomasz-left-content,
-    #experience.tomasz-experience-section .tomasz-left-content {
+    #about .tomasz-left-content {
         padding: 5rem 2.5rem 5rem 3rem;
         max-width: 60%;
     }
+    #experience.tomasz-experience-opposite .tomasz-exp-right-content {
+        padding: 5rem 3rem 5rem 2.5rem;
+        max-width: 60%;
+    }
     #about .tomasz-title,
-    #experience.tomasz-experience-section .tomasz-title {
+    #experience.tomasz-experience-opposite .tomasz-title {
         font-size: 3.2rem;
     }
 }
 
 @media screen and (max-width: 900px) {
-    #about,
-    #experience.tomasz-experience-section {
+    #about {
         flex-direction: column-reverse;
         min-height: auto;
         background-color: #000000;
     }
 
-    /* Hide absolute desktop diagonal overlay on mobile */
+    #experience.tomasz-experience-opposite {
+        flex-direction: column;
+        min-height: auto;
+        background-color: #000000;
+    }
+
+    /* Hide desktop absolute diagonal backgrounds on mobile */
     #about .tomasz-left-bg,
-    #experience.tomasz-experience-section .tomasz-left-bg {
+    #experience.tomasz-experience-opposite .tomasz-right-bg {
         display: none !important;
     }
 
     /* Photo at top on black */
-    #about .tomasz-right-content {
+    #about .tomasz-right-content,
+    #experience.tomasz-experience-opposite .tomasz-exp-left-pic {
         height: 360px;
         background: #000000;
         width: 100%;
@@ -1118,25 +1065,8 @@ body.dark-theme #experience.tomasz-experience-section .tomasz-badge:hover {
         z-index: 1;
     }
 
-    #experience.tomasz-experience-section .tomasz-right-content {
-        height: auto;
-        min-height: 240px;
-        background: #000000;
-        width: 100%;
-        flex: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2.5rem 1.5rem 1.5rem 1.5rem;
-        position: relative;
-        z-index: 1;
-    }
-
-    #experience.tomasz-experience-section .tomasz-exp-showcase {
-        max-width: 440px;
-    }
-
-    #about .tomasz-portrait-img {
+    #about .tomasz-portrait-img,
+    #experience.tomasz-experience-opposite .tomasz-exp-portrait-img {
         height: 100%;
         max-height: 360px;
         width: auto;
@@ -1147,7 +1077,7 @@ body.dark-theme #experience.tomasz-experience-section .tomasz-badge:hover {
 
     /* Text block directly receives its own full background and clean angled top */
     #about .tomasz-left-content,
-    #experience.tomasz-experience-section .tomasz-left-content {
+    #experience.tomasz-experience-opposite .tomasz-exp-right-content {
         position: relative;
         z-index: 2;
         width: 100%;
@@ -1164,20 +1094,19 @@ body.dark-theme #experience.tomasz-experience-section .tomasz-badge:hover {
     }
 
     body.dark-theme #about .tomasz-left-content,
-    body.dark-theme #experience.tomasz-experience-section .tomasz-left-content {
+    body.dark-theme #experience.tomasz-experience-opposite .tomasz-exp-right-content {
         background: #14171d;
     }
 
     #about .tomasz-title,
-    #experience.tomasz-experience-section .tomasz-title {
+    #experience.tomasz-experience-opposite .tomasz-title {
         font-size: 2.5rem;
         font-weight: 900;
         margin: 0 0 0.5rem 0;
         line-height: 1.15;
     }
 
-    #about .tomasz-role,
-    #experience.tomasz-experience-section .tomasz-role {
+    #about .tomasz-role {
         font-size: 1rem;
         font-weight: 600;
         margin: 0 0 1.25rem 0;
@@ -1185,80 +1114,71 @@ body.dark-theme #experience.tomasz-experience-section .tomasz-badge:hover {
     }
 
     #about .tomasz-bio,
-    #experience.tomasz-experience-section .tomasz-bio {
+    #experience.tomasz-experience-opposite .tomasz-bio {
         font-size: 0.96rem;
         line-height: 1.7;
         margin-bottom: 1.5rem;
         max-width: 100%;
     }
 
-    #about .tomasz-badges,
-    #experience.tomasz-experience-section .tomasz-badges {
+    #about .tomasz-badges {
         gap: 0.5rem;
         margin-top: 0.25rem;
     }
 
-    #about .tomasz-badge,
-    #experience.tomasz-experience-section .tomasz-badge {
+    #about .tomasz-badge {
         font-size: 0.8rem;
         padding: 0.4rem 0.85rem;
     }
 }
 
 @media screen and (max-width: 600px) {
-    #about .tomasz-right-content {
+    #about .tomasz-right-content,
+    #experience.tomasz-experience-opposite .tomasz-exp-left-pic {
         height: 310px;
         padding-top: 1.25rem;
     }
 
-    #about .tomasz-portrait-img {
+    #about .tomasz-portrait-img,
+    #experience.tomasz-experience-opposite .tomasz-exp-portrait-img {
         max-height: 310px;
     }
 
-    #experience.tomasz-experience-section .tomasz-right-content {
-        padding: 2rem 1.25rem 1rem 1.25rem;
-    }
-
     #about .tomasz-left-content,
-    #experience.tomasz-experience-section .tomasz-left-content {
+    #experience.tomasz-experience-opposite .tomasz-exp-right-content {
         margin-top: -22px;
         clip-path: polygon(0 22px, 100% 0, 100% 100%, 0 100%);
         padding: 3.5rem 1.25rem 3.5rem 1.25rem;
     }
 
     #about .tomasz-title,
-    #experience.tomasz-experience-section .tomasz-title {
+    #experience.tomasz-experience-opposite .tomasz-title {
         font-size: 2.15rem;
         margin-bottom: 0.4rem;
     }
 
-    #about .tomasz-role,
-    #experience.tomasz-experience-section .tomasz-role {
+    #about .tomasz-role {
         font-size: 0.9rem;
         margin-bottom: 1rem;
     }
 
     #about .tomasz-bio,
-    #experience.tomasz-experience-section .tomasz-bio {
+    #experience.tomasz-experience-opposite .tomasz-bio {
         font-size: 0.92rem;
         line-height: 1.65;
         margin-bottom: 1.25rem;
     }
 
-    #about .tomasz-badge,
-    #experience.tomasz-experience-section .tomasz-badge {
+    #about .tomasz-badge {
         font-size: 0.76rem;
         padding: 0.35rem 0.75rem;
     }
 
-    #experience.tomasz-experience-section .tomasz-exp-actions {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.75rem;
+    #experience.tomasz-experience-opposite .tomasz-exp-actions {
+        width: 100%;
     }
 
-    #experience.tomasz-experience-section .tomasz-exp-btn,
-    #experience.tomasz-experience-section .tomasz-exp-btn-secondary {
+    #experience.tomasz-experience-opposite .tomasz-exp-btn {
         justify-content: center;
         width: 100%;
         text-align: center;
