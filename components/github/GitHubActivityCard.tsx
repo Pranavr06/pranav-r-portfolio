@@ -20,10 +20,15 @@ interface GitHubActivityCardProps {
     followers?: number;
     bio?: string;
   } | null;
+  customUsername?: string;
+  customUrl?: string;
 }
 
-export default function GitHubActivityCard({ initialContrib, userStats }: GitHubActivityCardProps) {
+export default function GitHubActivityCard({ initialContrib, userStats, customUsername, customUrl }: GitHubActivityCardProps) {
   const [hoveredDay, setHoveredDay] = useState<{ day: ContributionDay; x: number; y: number } | null>(null);
+
+  const username = customUsername || userStats?.login || "Pranavr06";
+  const profileUrl = customUrl || `https://github.com/${username}`;
 
   const days: ContributionDay[] = useMemo(() => {
     return initialContrib?.contributions || [];
@@ -130,19 +135,19 @@ export default function GitHubActivityCard({ initialContrib, userStats }: GitHub
             <p className="github-hero-subtitle">
               Public commit velocity &amp; open-source metrics for{' '}
               <a 
-                href="https://github.com/Pranavr06" 
+                href={profileUrl} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="github-handle-link"
               >
-                @Pranavr06
+                @{username}
               </a>
             </p>
           </div>
         </div>
 
         <a 
-          href="https://github.com/Pranavr06" 
+          href={profileUrl} 
           target="_blank" 
           rel="noopener noreferrer" 
           className="btn-github-view"

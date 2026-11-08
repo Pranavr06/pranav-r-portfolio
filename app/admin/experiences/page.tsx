@@ -15,6 +15,7 @@ export default function ManageExperiences() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deleteItem, setDeleteItem] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const router = useRouter();
   const { addToast } = useToast();
 
@@ -53,7 +54,9 @@ export default function ManageExperiences() {
 
   const openDrawerForNew = () => {
     setEditingId(null);
-    setTitle(""); setCategory(""); setDateText(""); setHighlightText(""); 
+    setTitle(""); 
+    setCategory(selectedCategory !== "all" ? selectedCategory : "technical_expertise"); 
+    setDateText(""); setHighlightText(""); 
     setDescription(""); setBulletPoints(""); setTags(""); setImageUrl("");
     setCertificateUrl(""); setReadMoreUrl(""); setContent("");
     setIsPublished(true);
@@ -149,6 +152,34 @@ export default function ManageExperiences() {
         </button>
       </div>
 
+      {/* Category Filter Pills */}
+      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.25rem", flexWrap: "wrap" }}>
+        {[
+          { id: "all", label: `All (${experiences.length})` },
+          { id: "technical_expertise", label: `Technical Expertise (${experiences.filter(e => e.category === 'technical_expertise').length})` },
+          { id: "professional_journey", label: `Professional Journey (${experiences.filter(e => e.category === 'professional_journey').length})` },
+        ].map(tab => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setSelectedCategory(tab.id)}
+            style={{
+              padding: "0.4rem 0.9rem",
+              borderRadius: "20px",
+              border: "1px solid var(--admin-border)",
+              background: selectedCategory === tab.id ? "var(--admin-text-main)" : "var(--admin-card-bg)",
+              color: selectedCategory === tab.id ? "var(--admin-bg)" : "var(--admin-text-main)",
+              fontSize: "0.85rem",
+              fontWeight: 500,
+              cursor: "pointer",
+              transition: "all 0.15s ease"
+            }}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="admin-table-container">
         <div className="admin-table-header" style={{ gridTemplateColumns: "3fr 1fr 1fr 1.5fr" }}>
           <div>Title</div>
@@ -157,10 +188,14 @@ export default function ManageExperiences() {
           <div style={{ textAlign: "right" }}>Actions</div>
         </div>
         
-        {experiences.length === 0 ? (
-          <div style={{ padding: "2rem", textAlign: "center", color: "var(--admin-text-muted)" }}>No active experiences found.</div>
+        {experiences.filter(e => selectedCategory === "all" || e.category === selectedCategory).length === 0 ? (
+          <div style={{ padding: "2rem", textAlign: "center", color: "var(--admin-text-muted)" }}>
+            No experiences found for this filter.
+          </div>
         ) : (
-          experiences.map((exp) => (
+          experiences
+            .filter(e => selectedCategory === "all" || e.category === selectedCategory)
+            .map((exp) => (
             <div key={exp.id} className="admin-table-row" style={{ gridTemplateColumns: "3fr 1fr 1fr 1.5fr" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                 {exp.image_url && (

@@ -12,33 +12,40 @@ export const metadata: Metadata = {
 
 export const revalidate = 60; // revalidate every 60 seconds
 
-async function getGitHubData() {
+async function getGitHubData(username: string) {
   try {
     const [userRes, contribRes] = await Promise.all([
-      fetch("https://api.github.com/users/Pranavr06", {
+      fetch(`https://api.github.com/users/${username}`, {
         headers: { "User-Agent": "PranavR-Portfolio" },
         next: { revalidate: 3600 },
       }).catch(() => null),
-      fetch("https://github-contributions-api.jogruber.de/v4/Pranavr06?y=last", {
+      fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, {
         next: { revalidate: 3600 },
       }).catch(() => null),
     ]);
 
-    const user = userRes?.ok ? await userRes.json() : { login: "Pranavr06", public_repos: 11 };
-    const contrib = contribRes?.ok ? await contribRes.json() : githubFallback;
+    const user = userRes?.ok ? await userRes.json() : { login: username, public_repos: 11 };
+    const contrib = contribRes?.ok 
+      ? await contribRes.json() 
+      : (username.toLowerCase() === "pranavr06" ? githubFallback : null);
 
     return { user, contrib };
   } catch (err) {
     console.error("Error fetching GitHub data in page.tsx:", err);
     return {
-      user: { login: "Pranavr06", public_repos: 11 },
-      contrib: githubFallback,
+      user: { login: username, public_repos: 11 },
+      contrib: username.toLowerCase() === "pranavr06" ? githubFallback : null,
     };
   }
 }
 
 export default async function TechnicalExpertisePage() {
-  const [experiencesResult, githubData] = await Promise.all([
+  const [hubResult, experiencesResult] = await Promise.all([
+    supabase
+      .from("experience_hubs")
+      .select("*")
+      .eq("href", "/experiences/technical-expertise")
+      .maybeSingle(),
     supabase
       .from("experiences")
       .select("*")
@@ -46,9 +53,16 @@ export default async function TechnicalExpertisePage() {
       .eq("is_published", true)
       .or("is_archived.is.null,is_archived.eq.false")
       .order("display_order", { ascending: true }),
-    getGitHubData(),
   ]);
 
+  const hub = hubResult.data;
+  const githubUsername = hub?.github_username || "Pranavr06";
+  const githubUrl = hub?.github_url || `https://github.com/${githubUsername}`;
+  const subtitle = hub?.subtitle || "Technologies & Architecture I Use in Production";
+  const focusText = hub?.focus_text || "Core Focus: Scalable Full-Stack Architectures & Secure Systems";
+  const showGithubGraph = hub?.show_github_graph ?? true;
+
+  const githubData = showGithubGraph ? await getGitHubData(githubUsername) : null;
   const experiences = experiencesResult.data || [];
 
   if (experiencesResult.error) {
@@ -61,6 +75,13 @@ export default async function TechnicalExpertisePage() {
         <TechnicalExpertiseClient 
           experiences={experiences} 
           githubData={githubData} 
+          pageSettings={{
+            subtitle,
+            focusText,
+            showGithubGraph,
+            githubUsername,
+            githubUrl,
+          }}
         />
         
         <ScrollArrow targetId="contact" altText="Scroll down to contact section" />

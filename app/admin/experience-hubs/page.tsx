@@ -27,6 +27,11 @@ export default function ManageExperienceHubs() {
   const [isPublished, setIsPublished] = useState(true);
   const [sortOrder, setSortOrder] = useState("0");
   const [displayOrder, setDisplayOrder] = useState("");
+  const [githubUsername, setGithubUsername] = useState("Pranavr06");
+  const [githubUrl, setGithubUrl] = useState("https://github.com/Pranavr06");
+  const [subtitle, setSubtitle] = useState("");
+  const [focusText, setFocusText] = useState("");
+  const [showGithubGraph, setShowGithubGraph] = useState(true);
 
   useEffect(() => {
     fetchHubs();
@@ -51,6 +56,11 @@ export default function ManageExperienceHubs() {
     setTags(""); setHref("");
     setIsPublished(true);
     setSortOrder("0"); setDisplayOrder("");
+    setGithubUsername("Pranavr06");
+    setGithubUrl("https://github.com/Pranavr06");
+    setSubtitle("");
+    setFocusText("");
+    setShowGithubGraph(true);
     setDrawerOpen(true);
   };
 
@@ -64,13 +74,18 @@ export default function ManageExperienceHubs() {
     setIsPublished(hub.is_published ?? true);
     setSortOrder((hub.sort_order || 0).toString());
     setDisplayOrder(hub.display_order !== null ? hub.display_order.toString() : "");
+    setGithubUsername(hub.github_username || "Pranavr06");
+    setGithubUrl(hub.github_url || "https://github.com/Pranavr06");
+    setSubtitle(hub.subtitle || "");
+    setFocusText(hub.focus_text || "");
+    setShowGithubGraph(hub.show_github_graph ?? true);
     setDrawerOpen(true);
   };
 
   const handleSaveHub = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const hubData = {
+    const baseHubData: any = {
       title, 
       description, 
       image_url: imageUrl, 
@@ -81,20 +96,47 @@ export default function ManageExperienceHubs() {
       display_order: displayOrder ? Math.max(0, parseInt(displayOrder)) : null
     };
 
-    let error;
+    const fullHubData: any = {
+      ...baseHubData,
+      github_username: githubUsername || "Pranavr06",
+      github_url: githubUrl || "https://github.com/Pranavr06",
+      subtitle: subtitle || null,
+      focus_text: focusText || null,
+      show_github_graph: showGithubGraph
+    };
+
+    let error: any = null;
+    let savedWithExtendedFields = true;
 
     if (editingId) {
-      const res = await supabase.from("experience_hubs").update(hubData).eq("id", editingId);
-      error = res.error;
+      const res = await supabase.from("experience_hubs").update(fullHubData).eq("id", editingId);
+      if (res.error && res.error.message.includes("schema cache")) {
+        // Fallback if migration script not yet executed in Supabase SQL editor
+        savedWithExtendedFields = false;
+        const fallbackRes = await supabase.from("experience_hubs").update(baseHubData).eq("id", editingId);
+        error = fallbackRes.error;
+      } else {
+        error = res.error;
+      }
     } else {
-      const res = await supabase.from("experience_hubs").insert([{ ...hubData, is_archived: false }]);
-      error = res.error;
+      const res = await supabase.from("experience_hubs").insert([{ ...fullHubData, is_archived: false }]);
+      if (res.error && res.error.message.includes("schema cache")) {
+        savedWithExtendedFields = false;
+        const fallbackRes = await supabase.from("experience_hubs").insert([{ ...baseHubData, is_archived: false }]);
+        error = fallbackRes.error;
+      } else {
+        error = res.error;
+      }
     }
 
     if (error) {
       addToast("Error saving experience hub: " + error.message, "error");
     } else {
-      addToast(`Experience hub ${editingId ? "updated" : "added"} successfully!`, "success");
+      if (!savedWithExtendedFields) {
+        addToast("Hub saved! (To enable custom GitHub fields, run scripts/add_experience_hub_settings.sql in Supabase SQL editor)", "success");
+      } else {
+        addToast(`Experience hub ${editingId ? "updated" : "added"} successfully!`, "success");
+      }
       setDrawerOpen(false);
       fetchHubs();
     }
@@ -252,6 +294,77 @@ export default function ManageExperienceHubs() {
           <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Link Path (href)</label>
             <input placeholder="E.g. /experiences/technical-expertise" value={href} onChange={(e) => setHref(e.target.value)} style={inputStyle} />
+          </div>
+
+          {/* GitHub & Page Settings (for Technical Expertise or Custom Pages) */}
+          <div style={{ padding: "1.1rem", borderRadius: "10px", border: "1px solid var(--admin-border)", backgroundColor: "var(--admin-card-hover)", display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span style={{ fontSize: "1.1rem" }}>⚙️</span>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--admin-text-main)" }}>Page &amp; GitHub Settings</div>
+                <div style={{ fontSize: "0.78rem", color: "var(--admin-text-muted)" }}>Control the live GitHub commit heatmap and headline for this page</div>
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                <label style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--admin-text-main)" }}>GitHub Username</label>
+                <input 
+                  placeholder="Pranavr06" 
+                  value={githubUsername} 
+                  onChange={(e) => {
+                    const u = e.target.value.trim();
+                    setGithubUsername(u);
+                    if (!githubUrl || githubUrl.includes("github.com")) {
+                      setGithubUrl(`https://github.com/${u}`);
+                    }
+                  }} 
+                  style={inputStyle} 
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                <label style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--admin-text-main)" }}>GitHub Activity Graph</label>
+                <select 
+                  value={showGithubGraph ? "true" : "false"} 
+                  onChange={(e) => setShowGithubGraph(e.target.value === "true")} 
+                  style={inputStyle}
+                >
+                  <option value="true">Enabled (Show 365-day graph)</option>
+                  <option value="false">Disabled (Hide graph)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+              <label style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--admin-text-main)" }}>GitHub Profile URL</label>
+              <input 
+                placeholder="https://github.com/Pranavr06" 
+                value={githubUrl} 
+                onChange={(e) => setGithubUrl(e.target.value)} 
+                style={inputStyle} 
+              />
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+              <label style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Page Subtitle / Tagline</label>
+              <input 
+                placeholder="Technologies &amp; Architecture I Use in Production" 
+                value={subtitle} 
+                onChange={(e) => setSubtitle(e.target.value)} 
+                style={inputStyle} 
+              />
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+              <label style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Focus / Specialization Headline</label>
+              <input 
+                placeholder="Core Focus: Scalable Full-Stack Architectures &amp; Secure Systems" 
+                value={focusText} 
+                onChange={(e) => setFocusText(e.target.value)} 
+                style={inputStyle} 
+              />
+            </div>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>

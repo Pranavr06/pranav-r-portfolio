@@ -18,10 +18,17 @@ interface TechnicalExpertiseClientProps {
   githubData: {
     user: any;
     contrib: any;
+  } | null;
+  pageSettings?: {
+    subtitle?: string;
+    focusText?: string;
+    showGithubGraph?: boolean;
+    githubUsername?: string;
+    githubUrl?: string;
   };
 }
 
-export default function TechnicalExpertiseClient({ experiences, githubData }: TechnicalExpertiseClientProps) {
+export default function TechnicalExpertiseClient({ experiences, githubData, pageSettings }: TechnicalExpertiseClientProps) {
   const [activeFilter, setActiveFilter] = useState<string>('all');
 
   const filterTabs = [
@@ -50,12 +57,16 @@ export default function TechnicalExpertiseClient({ experiences, githubData }: Te
     <>
       {/* Section Header */}
       <div className="expertise-header-wrap">
-        <p className="section__text__p1">Technologies &amp; Architecture I Use in Production</p>
+        <p className="section__text__p1">
+          {pageSettings?.subtitle || "Technologies & Architecture I Use in Production"}
+        </p>
         <h1 className="title mb-2">Technical Expertise</h1>
         
         <div className="expertise-focus-badge">
           <ShieldCheck size={16} className="focus-badge-icon" />
-          <span>Core Focus: Scalable Full-Stack Architectures &amp; Secure Systems</span>
+          <span>
+            {pageSettings?.focusText || "Core Focus: Scalable Full-Stack Architectures & Secure Systems"}
+          </span>
         </div>
 
         <div className="expertise-intro-row">
@@ -66,11 +77,15 @@ export default function TechnicalExpertiseClient({ experiences, githubData }: Te
         </div>
       </div>
 
-      {/* GitHub Bento Hero Component */}
-      <GitHubActivityCard 
-        initialContrib={githubData.contrib}
-        userStats={githubData.user}
-      />
+      {/* GitHub Bento Hero Component (Toggleable by Admin) */}
+      {pageSettings?.showGithubGraph !== false && githubData && (
+        <GitHubActivityCard 
+          initialContrib={githubData.contrib}
+          userStats={githubData.user}
+          customUsername={pageSettings?.githubUsername}
+          customUrl={pageSettings?.githubUrl}
+        />
+      )}
 
       {/* Interactive Domain Filter Pills */}
       <div className="expertise-filter-bar">
