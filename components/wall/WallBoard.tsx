@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Plus, Search, Heart, Pin, Sparkles, RefreshCw, MessageSquare } from "lucide-react";
 import StickyNoteCreator from "./StickyNoteCreator";
+import ShareMenu from "@/components/ShareMenu";
 
 interface Note {
   id: string;
@@ -31,14 +32,33 @@ const PALETTES = [
   { id: "orange", name: "Orange", hex: "#fed7aa" },
 ];
 
+const SORT_OPTIONS = [
+  { id: "newest", label: "All (newest first)" },
+  { id: "popular", label: "Most Liked" },
+  { id: "oldest", label: "Oldest" },
+];
+
 export default function WallBoard({ initialNotes = [], tableReady = true }: WallBoardProps) {
   const [notes, setNotes] = useState<Note[]>(initialNotes);
   const [search, setSearch] = useState("");
   const [selectedColor, setSelectedColor] = useState("all");
-  const [sortBy, setSortBy] = useState<"newest" | "popular" | "random">("newest");
+  const [sortBy, setSortBy] = useState<"newest" | "popular" | "oldest">("newest");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [likedNoteIds, setLikedNoteIds] = useState<Set<string>>(new Set());
   const [likingMap, setLikingMap] = useState<Record<string, boolean>>({});
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Load liked note IDs from localStorage
   useEffect(() => {
@@ -106,15 +126,19 @@ export default function WallBoard({ initialNotes = [], tableReady = true }: Wall
         if (!a.is_pinned && b.is_pinned) return 1;
         return (b.likes_count || 0) - (a.likes_count || 0);
       });
-    } else if (sortBy === "newest") {
+    } else if (sortBy === "oldest") {
+      result.sort((a, b) => {
+        if (a.is_pinned && !b.is_pinned) return -1;
+        if (!a.is_pinned && b.is_pinned) return 1;
+        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+      });
+    } else {
+      // Default: "newest" / "All (newest first)"
       result.sort((a, b) => {
         if (a.is_pinned && !b.is_pinned) return -1;
         if (!a.is_pinned && b.is_pinned) return 1;
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       });
-    } else if (sortBy === "random") {
-      // Deterministic shuffle based on note ID
-      result.sort((a, b) => (a.id > b.id ? 1 : -1));
     }
 
     return result;
@@ -148,6 +172,55 @@ export default function WallBoard({ initialNotes = [], tableReady = true }: Wall
 
   return (
     <>
+      {/* Centered Sort Dropdown & Share Menu (matching Certificates design) */}
+      <div className="filter-container" style={{ margin: "0 auto 2.5rem auto" }}>
+        <div className="custom-select-container" ref={dropdownRef} style={{ width: "210px" }}>
+          <button 
+            type="button" 
+            className="custom-select-btn" 
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            aria-haspopup="listbox"
+            aria-expanded={dropdownOpen}
+          >
+            <span>{SORT_OPTIONS.find(o => o.id === sortBy)?.label || "All (newest first)"}</span>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              style={{ 
+                transform: dropdownOpen ? 'rotate(180deg)' : 'none', 
+                transition: 'transform 0.2s ease', 
+                flexShrink: 0, 
+                marginLeft: '0.5rem' 
+              }}
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div className={`custom-select-dropdown ${dropdownOpen ? 'open' : ''}`} role="listbox">
+            {SORT_OPTIONS.map(opt => (
+              <button 
+                key={opt.id} 
+                type="button" 
+                className={`custom-select-option ${sortBy === opt.id ? 'selected' : ''}`}
+                onClick={() => { setSortBy(opt.id as any); setDropdownOpen(false); }}
+                role="option"
+                aria-selected={sortBy === opt.id}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <ShareMenu title="The Wall | Pranav R" type="page" />
+      </div>
+
       {/* Controls Bar */}
       <div className="wall-controls-bar">
         
@@ -191,28 +264,8 @@ export default function WallBoard({ initialNotes = [], tableReady = true }: Wall
           ))}
         </div>
 
-        {/* Right: Sort & Stick Button */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
-            className="admin-input"
-            style={{
-              padding: "0.5rem 0.9rem",
-              borderRadius: "9999px",
-              fontSize: "0.85rem",
-              border: "1px solid var(--admin-border, #cbd5e1)",
-              backgroundColor: "var(--admin-card-bg, #ffffff)",
-              color: "inherit",
-              outline: "none",
-              cursor: "pointer"
-            }}
-          >
-            <option value="newest">Newest First</option>
-            <option value="popular">Most Liked</option>
-            <option value="random">Random Order</option>
-          </select>
-
+        {/* Right: Stick Button */}
+        <div>
           <button
             onClick={() => setIsCreatorOpen(true)}
             className="btn btn-color-2"

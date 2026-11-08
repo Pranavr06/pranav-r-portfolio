@@ -1,17 +1,10 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ExperienceCard from "@/components/cards/ExperienceCard";
 import GitHubActivityCard from "@/components/github/GitHubActivityCard";
 import PageShareMenu from "@/components/PageShareMenu";
-import { 
-  Layers, 
-  Code2, 
-  Server, 
-  ShieldCheck, 
-  Sparkles, 
-  Palette 
-} from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 interface TechnicalExpertiseClientProps {
   experiences: any[];
@@ -30,14 +23,27 @@ interface TechnicalExpertiseClientProps {
 
 export default function TechnicalExpertiseClient({ experiences, githubData, pageSettings }: TechnicalExpertiseClientProps) {
   const [activeFilter, setActiveFilter] = useState<string>('all');
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close custom dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const filterTabs = [
-    { id: 'all', label: 'All Domains', count: experiences.length, icon: Layers },
-    { id: 'web', label: 'Full-Stack & Web', count: 1, icon: Code2 },
-    { id: 'backend', label: 'Backend & DBs', count: 1, icon: Server },
-    { id: 'security', label: 'Security & Systems', count: 1, icon: ShieldCheck },
-    { id: 'ai', label: 'AI & ML Features', count: 1, icon: Sparkles },
-    { id: 'design', label: 'UI/UX & Tools', count: 1, icon: Palette },
+    { id: 'all', label: 'All Domains' },
+    { id: 'web', label: 'Full-Stack & Web' },
+    { id: 'backend', label: 'Backend & Databases' },
+    { id: 'security', label: 'Security & Systems' },
+    { id: 'ai', label: 'AI & ML Features' },
+    { id: 'design', label: 'UI/UX & Tools' },
   ];
 
   const filteredExperiences = useMemo(() => {
@@ -45,13 +51,15 @@ export default function TechnicalExpertiseClient({ experiences, githubData, page
     return experiences.filter((exp) => {
       const titleLower = exp.title.toLowerCase();
       if (activeFilter === 'web' && titleLower.includes('web')) return true;
-      if (activeFilter === 'backend' && titleLower.includes('backend')) return true;
-      if (activeFilter === 'security' && titleLower.includes('security')) return true;
+      if (activeFilter === 'backend' && (titleLower.includes('backend') || titleLower.includes('database'))) return true;
+      if (activeFilter === 'security' && (titleLower.includes('security') || titleLower.includes('system'))) return true;
       if (activeFilter === 'ai' && (titleLower.includes('ai') || titleLower.includes('machine'))) return true;
       if (activeFilter === 'design' && (titleLower.includes('design') || titleLower.includes('tool'))) return true;
       return false;
     });
   }, [experiences, activeFilter]);
+
+  const currentFilterLabel = filterTabs.find((t) => t.id === activeFilter)?.label || "All Domains";
 
   return (
     <>
@@ -87,25 +95,58 @@ export default function TechnicalExpertiseClient({ experiences, githubData, page
         />
       )}
 
-      {/* Interactive Domain Filter Pills */}
-      <div className="expertise-filter-bar">
-        <div className="expertise-filter-scroll">
-          {filterTabs.map((tab) => {
-            const IconComponent = tab.icon;
-            const isActive = activeFilter === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveFilter(tab.id)}
-                className={`filter-pill-btn ${isActive ? 'active' : ''}`}
-                aria-pressed={isActive}
-              >
-                <IconComponent size={15} />
-                <span>{tab.label}</span>
-                <span className="filter-count">{tab.count}</span>
-              </button>
-            );
-          })}
+      {/* Centered Domain Filter Dropdown (Same design as Certificates) */}
+      <div className="filter-container expertise-filter-container">
+        <div className="custom-select-container" ref={dropdownRef}>
+          <button 
+            type="button"
+            className="custom-select-btn"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            aria-haspopup="listbox"
+            aria-expanded={dropdownOpen}
+          >
+            <span>{currentFilterLabel}</span>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              style={{
+                transform: dropdownOpen ? 'rotate(180deg)' : 'none',
+                transition: 'transform 0.2s ease',
+                flexShrink: 0,
+                marginLeft: '0.5rem'
+              }}
+            >
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          <div className={`custom-select-dropdown ${dropdownOpen ? 'open' : ''}`} role="listbox">
+            {filterTabs.map((tab) => {
+              const isSelected = activeFilter === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  className={`custom-select-option ${isSelected ? 'selected' : ''}`}
+                  onClick={() => {
+                    setActiveFilter(tab.id);
+                    setDropdownOpen(false);
+                  }}
+                  role="option"
+                  aria-selected={isSelected}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 

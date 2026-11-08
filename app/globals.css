@@ -1877,7 +1877,18 @@ body.dark-theme .calendar-tooltip.flipped::after {
     border-color: transparent transparent #21262d transparent;
 }
 
-/* --- EXPERTISE DOMAIN FILTER BAR --- */
+/* --- EXPERTISE DOMAIN FILTER BAR & DROPDOWN --- */
+.expertise-filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 2.5rem auto;
+}
+
+.expertise-filter-container .custom-select-container {
+    width: 230px;
+}
+
 .expertise-filter-bar {
     max-width: 1200px;
     margin: 0 auto 2rem auto;

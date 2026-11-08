@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase";
 import WallBoard from "@/components/wall/WallBoard";
-import ShareMenu from "@/components/ShareMenu";
 import ContactCTA from "@/components/ContactCTA";
 import "./wall.css";
 
@@ -54,10 +53,6 @@ export default async function WallPage() {
         <p className="wall-subtitle">
           An interactive, public corkboard canvas. Share your thoughts, feedback, engineering questions, or leave your shoutout — no login or sign-in needed.
         </p>
-
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem", marginTop: "1rem" }}>
-          <ShareMenu title="The Wall | Pranav R" type="page" />
-        </div>
       </div>
 
       {/* Interactive Sticky Notes Board */}
