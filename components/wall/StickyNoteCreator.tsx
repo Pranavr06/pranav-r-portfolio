@@ -84,8 +84,8 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
   };
 
   return (
-    <div className="wall-modal-overlay" onClick={onClose}>
-      <div className="wall-modal-card" onClick={(e) => e.stopPropagation()}>
+    <div className="wall-modal-overlay">
+      <div className="wall-modal-card">
         
         {/* Modal Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
