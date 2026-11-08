@@ -1539,6 +1539,7 @@ body.dark-theme .github-calendar-scroll-wrapper::-webkit-scrollbar-thumb {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    position: relative;
 }
 
 .calendar-months-row {
@@ -1687,18 +1688,48 @@ body.dark-theme .legend-cell.level-3 { background-color: #26a641; }
 body.dark-theme .legend-cell.level-4 { background-color: #39d353; }
 
 .calendar-tooltip {
+    position: absolute;
     background: #0f172a;
     color: #ffffff;
-    font-size: 0.76rem;
-    padding: 0.35rem 0.65rem;
-    border-radius: 0.4rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    font-size: 0.78rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.45rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     white-space: nowrap;
+    pointer-events: none;
+    z-index: 50;
+    transition: opacity 0.1s ease;
+}
+
+.calendar-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #0f172a transparent transparent transparent;
+}
+
+.calendar-tooltip.flipped::after {
+    top: auto;
+    bottom: 100%;
+    border-color: transparent transparent #0f172a transparent;
 }
 
 body.dark-theme .calendar-tooltip {
     background: #21262d;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+body.dark-theme .calendar-tooltip::after {
+    border-color: #21262d transparent transparent transparent;
+}
+
+body.dark-theme .calendar-tooltip.flipped::after {
+    border-color: transparent transparent #21262d transparent;
 }
 
 /* --- EXPERTISE DOMAIN FILTER BAR --- */

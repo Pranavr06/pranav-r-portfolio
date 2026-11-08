@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { GitCommit, GitBranch, Flame, ExternalLink, Activity } from 'lucide-react';
 
 interface ContributionDay {
@@ -25,7 +25,8 @@ interface GitHubActivityCardProps {
 }
 
 export default function GitHubActivityCard({ initialContrib, userStats, customUsername, customUrl }: GitHubActivityCardProps) {
-  const [hoveredDay, setHoveredDay] = useState<{ day: ContributionDay; x: number; y: number } | null>(null);
+  const [hoveredDay, setHoveredDay] = useState<{ day: ContributionDay; x: number; y: number; isFlipped: boolean } | null>(null);
+  const calendarInnerRef = useRef<HTMLDivElement>(null);
 
   const username = customUsername || userStats?.login || "Pranavr06";
   const profileUrl = customUrl || `https://github.com/${username}`;
@@ -203,7 +204,7 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
       {/* GitHub Contribution Calendar Heatmap */}
       <div className="github-calendar-box">
         <div className="github-calendar-scroll-wrapper">
-          <div className="github-calendar-inner">
+          <div className="github-calendar-inner" ref={calendarInnerRef}>
             {/* Months Header */}
             <div className="calendar-months-row">
               <div className="day-label-placeholder" />
@@ -248,11 +249,16 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
                           data-date={day.date}
                           data-count={day.count}
                           onMouseEnter={(e) => {
+                            if (!calendarInnerRef.current) return;
+                            const innerRect = calendarInnerRef.current.getBoundingClientRect();
                             const rect = e.currentTarget.getBoundingClientRect();
+                            const cellTop = rect.top - innerRect.top;
+                            const isFlipped = cellTop < 35;
                             setHoveredDay({
                               day,
-                              x: rect.left + rect.width / 2,
-                              y: rect.top - 8,
+                              x: rect.left - innerRect.left + rect.width / 2,
+                              y: isFlipped ? cellTop + rect.height + 8 : cellTop - 8,
+                              isFlipped,
                             });
                           }}
                           onMouseLeave={() => setHoveredDay(null)}
@@ -263,25 +269,22 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
                 ))}
               </div>
             </div>
+
+            {/* Floating Tooltip inside calendar-inner */}
+            {hoveredDay && (
+              <div 
+                className={`calendar-tooltip ${hoveredDay.isFlipped ? 'flipped' : ''}`}
+                style={{ 
+                  left: `${hoveredDay.x}px`,
+                  top: `${hoveredDay.y}px`,
+                  transform: hoveredDay.isFlipped ? 'translate(-50%, 0)' : 'translate(-50%, -100%)',
+                }}
+              >
+                <strong>{hoveredDay.day.count} contribution{hoveredDay.day.count === 1 ? '' : 's'}</strong> on {formatDate(hoveredDay.day.date)}
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Floating Tooltip */}
-        {hoveredDay && (
-          <div 
-            className="calendar-tooltip"
-            style={{ 
-              position: 'fixed',
-              left: `${hoveredDay.x}px`,
-              top: `${hoveredDay.y}px`,
-              transform: 'translate(-50%, -100%)',
-              pointerEvents: 'none',
-              zIndex: 9999
-            }}
-          >
-            <strong>{hoveredDay.day.count} contribution{hoveredDay.day.count === 1 ? '' : 's'}</strong> on {formatDate(hoveredDay.day.date)}
-          </div>
-        )}
 
         {/* Heatmap Footer & Legend */}
         <div className="github-calendar-footer">
