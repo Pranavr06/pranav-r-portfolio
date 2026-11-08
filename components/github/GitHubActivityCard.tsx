@@ -40,35 +40,53 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
     return years.sort((a, b) => Number(b) - Number(a));
   }, [initialContrib]);
 
-  // 4 Options: 'all', '2026', '2025', '2024' (defaults to 'all')
-  const [selectedYear, setSelectedYear] = useState<string>("all");
+  // Default to current year (2026), with 'all' as 4th option
+  const [selectedYear, setSelectedYear] = useState<string>(availableYears[0] || "2026");
 
-  // Auto-scroll recent activity on the right when 'all' is selected
+  // Today's date string YYYY-MM-DD to avoid showing future blocks
+  const todayStr = useMemo(() => {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }, []);
+
+  // On mobile / narrow view, smoothly slide to the latest 3-4 months on the right
   useEffect(() => {
     const timer = setTimeout(() => {
       if (scrollWrapperRef.current) {
-        if (selectedYear === "all") {
-          scrollWrapperRef.current.scrollLeft = scrollWrapperRef.current.scrollWidth;
+        if (selectedYear === "all" || selectedYear === availableYears[0]) {
+          scrollWrapperRef.current.scrollTo({
+            left: scrollWrapperRef.current.scrollWidth,
+            behavior: 'smooth'
+          });
         } else {
-          scrollWrapperRef.current.scrollLeft = 0;
+          scrollWrapperRef.current.scrollTo({
+            left: 0,
+            behavior: 'smooth'
+          });
         }
       }
-    }, 60);
+    }, 120);
     return () => clearTimeout(timer);
-  }, [selectedYear]);
+  }, [selectedYear, availableYears]);
 
-  // Filter days based on selectedYear and ensure ascending chronological order
+  // Filter days based on selectedYear, strip future dates beyond today, and ensure ascending order
   const days: ContributionDay[] = useMemo(() => {
     const all = initialContrib?.contributions || [];
     if (!all.length) return [];
 
+    // Filter out future dates so future months (like Dec) are never displayed
+    const pastAndToday = all.filter((d) => d.date <= todayStr);
+
     if (selectedYear === "all") {
-      return [...all].sort((a, b) => a.date.localeCompare(b.date));
+      return [...pastAndToday].sort((a, b) => a.date.localeCompare(b.date));
     }
 
-    const filtered = all.filter((d) => d.date.startsWith(`${selectedYear}-`));
+    const filtered = pastAndToday.filter((d) => d.date.startsWith(`${selectedYear}-`));
     return filtered.sort((a, b) => a.date.localeCompare(b.date));
-  }, [initialContrib, selectedYear]);
+  }, [initialContrib, selectedYear, todayStr]);
 
   // Total contributions for the selected view
   const totalContributions = useMemo(() => {
@@ -128,7 +146,7 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
 
   const publicRepos = userStats?.public_repos || 11;
 
-  // Group days into columns of weeks (53 for single year, ~157 for all years)
+  // Group days into columns of weeks
   const { weeks, monthLabels } = useMemo(() => {
     if (!days.length) return { weeks: [], monthLabels: [] };
 
@@ -223,7 +241,7 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
           </div>
         </div>
 
-        {/* Right-aligned Action Controls: Year Dropdown & Profile Link */}
+        {/* Right-aligned Action Controls: 4 Options Dropdown & Profile Link */}
         <div className="github-header-actions">
           <div className="github-year-dropdown-wrap">
             <Calendar size={14} className="github-select-icon" aria-hidden="true" />
@@ -237,12 +255,12 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
               className="github-year-select"
               aria-label="Filter contributions by year"
             >
-              <option value="all">All</option>
               {availableYears.map((yr) => (
                 <option key={yr} value={yr}>
                   {yr === availableYears[0] ? `${yr} (Current)` : yr}
                 </option>
               ))}
+              <option value="all">All</option>
             </select>
             <ChevronDown size={14} className="github-select-chevron" aria-hidden="true" />
           </div>

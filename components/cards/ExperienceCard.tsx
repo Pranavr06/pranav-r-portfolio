@@ -124,7 +124,13 @@ export default function ExperienceCard({ experience }: { experience: any }) {
       fallbackHighlight = '<strong>Relevant Work:</strong> <a href="/projects/3d-aircraft-model" class="expertise-link">3D Aircraft Model</a>';
     }
 
-    const highlightHtml = experience.highlight_text || fallbackHighlight;
+    let highlightHtml = experience.highlight_text || fallbackHighlight;
+    if (highlightHtml && highlightHtml.includes('online-exam-project')) {
+      highlightHtml = highlightHtml
+        .replace(/\/college-projects\/online-exam-project/g, '/projects/college-projects/online-examination-management-system')
+        .replace(/\/projects\/college-projects\/online-exam-project/g, '/projects/college-projects/online-examination-management-system')
+        .replace(/\/projects\/online-exam-project/g, '/projects/college-projects/online-examination-management-system');
+    }
 
     return (
       <div className={`expertise-card ${accentClass}`}>

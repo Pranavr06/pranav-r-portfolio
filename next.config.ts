@@ -27,6 +27,21 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: '/college-projects/online-exam-project',
+        destination: '/projects/college-projects/online-examination-management-system',
+        permanent: true,
+      },
+      {
+        source: '/projects/college-projects/online-exam-project',
+        destination: '/projects/college-projects/online-examination-management-system',
+        permanent: true,
+      },
+      {
+        source: '/projects/online-exam-project',
+        destination: '/projects/college-projects/online-examination-management-system',
+        permanent: true,
+      },
+      {
         source: '/experiences/professional-journey/iict-summer-internship-in-ai-ml',
         destination: '/experiences/professional-journey/IICT-Summer-Internship-in-AI-&-ML',
         permanent: true,
