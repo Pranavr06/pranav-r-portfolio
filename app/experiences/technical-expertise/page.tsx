@@ -19,15 +19,23 @@ async function getGitHubData(username: string) {
         headers: { "User-Agent": "PranavR-Portfolio" },
         next: { revalidate: 3600 },
       }).catch(() => null),
-      fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, {
+      fetch(`https://github-contributions-api.jogruber.de/v4/${username}`, {
         next: { revalidate: 3600 },
       }).catch(() => null),
     ]);
 
     const user = userRes?.ok ? await userRes.json() : { login: username, public_repos: 11 };
-    const contrib = contribRes?.ok 
-      ? await contribRes.json() 
-      : (username.toLowerCase() === "pranavr06" ? githubFallback : null);
+    let contrib = contribRes?.ok ? await contribRes.json() : null;
+    
+    if (contrib && contrib.contributions) {
+      if (!contrib.total) contrib.total = {};
+      if (!contrib.total.lastYear) {
+        const sortedDesc = [...contrib.contributions].sort((a: any, b: any) => b.date.localeCompare(a.date));
+        contrib.total.lastYear = sortedDesc.slice(0, 365).reduce((s: number, c: any) => s + (c.count || 0), 0);
+      }
+    } else if (username.toLowerCase() === "pranavr06") {
+      contrib = githubFallback;
+    }
 
     return { user, contrib };
   } catch (err) {

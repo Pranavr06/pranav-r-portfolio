@@ -100,8 +100,8 @@ export default function Navbar({ minimal = false }: { minimal?: boolean }) {
     { name: "Certificates", href: "/#certificate" },
     { name: "Projects", href: "/#projects" },
     { name: "Testimonials", href: "/#testimonials" },
-    { name: "Wall", href: "/wall" },
     { name: "Blog", href: "/#blog" },
+    { name: "Wall", href: "/wall" },
     { name: "Contact", href: "/#contact" },
   ];
 
