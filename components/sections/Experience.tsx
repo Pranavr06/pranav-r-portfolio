@@ -1,50 +1,49 @@
-"use client";
-
-import FadeInSection from "@/components/FadeInSection";
 import ScrollArrow from "@/components/ScrollArrow";
+import CollectionCard from "@/components/cards/CollectionCard";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
-export default function Experience() {
+export default async function Experience() { 
+  const { data: hubs, error } = await supabase
+    .from("experience_hubs")
+    .select("*")
+    .or("is_archived.is.null,is_archived.eq.false")
+    .eq("is_published", true)
+    .order("display_order", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching experience hubs:", error.message);
+  }
+
   return (
-    <FadeInSection id="experience" className="tomasz-about-section tomasz-experience-opposite">
-      {/* Diagonal Right Background (Mirrored from About Me) */}
-      <div className="tomasz-right-bg" aria-hidden="true" />
-
-      {/* Left Content: Studio Portrait on Seamless Black */}
-      <div className="tomasz-exp-left-pic">
-        <img
-          src="/assets/about-pic.webp"
-          alt="Pranav R - Experiences Portrait"
-          className="tomasz-portrait-img tomasz-exp-portrait-img"
-          loading="lazy"
-        />
+    <section id='experience' className="fade-in-section">
+      <p className='section__text__p1'>My Professional Journey</p>
+      <h2 className='title'>Experiences</h2>
+      
+      <div className="project-details-container mt-3">
+        <div className="project-grid">
+          {hubs && hubs.map((hub) => (
+            <CollectionCard 
+              key={hub.id}
+              title={hub.title}
+              description={hub.description}
+              image={hub.image_url}
+              tags={hub.tags || []}
+              href={hub.href}
+            />
+          ))}
+        </div>
       </div>
-
-      {/* Right Content: Title, 2 Lines About Experience, Button for /experiences */}
-      <div className="tomasz-right-content tomasz-exp-right-content">
-        <p className="tomasz-section-subtitle">My Professional Journey</p>
-        <h2 className="tomasz-title">Experiences</h2>
-
-        <div className="tomasz-bio tomasz-exp-bio">
-          <p>
-            Bridging engineering theory with production systems across full-stack development, applied AI pipelines, and cybersecurity.
-          </p>
-          <p>
-            From architecting enterprise platforms at AIC-NITTE to presenting published research at IEEE AIDE 2026 and building award-winning hackathon solutions.
-          </p>
-        </div>
-
-        <div className="tomasz-exp-actions">
-          <Link href="/experiences" className="btn btn-color-1 tomasz-exp-btn">
-            <span>Explore Experiences</span>
-            <ArrowRight size={16} />
-          </Link>
-        </div>
+      
+      <div className="btn-container center-footer" style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+        <Link href="/experiences" className="btn btn-color-2">
+          View more
+        </Link>
       </div>
 
       <ScrollArrow targetId="certificate" altText="Scroll down to certificates section" />
-    </FadeInSection>
-  );
+    </section>
+  ); 
 }
+
 
