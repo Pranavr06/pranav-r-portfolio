@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { GitCommit, GitBranch, Flame, ExternalLink, Activity, Calendar, ChevronDown } from 'lucide-react';
 
 interface ContributionDay {
@@ -27,11 +27,12 @@ interface GitHubActivityCardProps {
 export default function GitHubActivityCard({ initialContrib, userStats, customUsername, customUrl }: GitHubActivityCardProps) {
   const [hoveredDay, setHoveredDay] = useState<{ day: ContributionDay; x: number; y: number; isFlipped: boolean } | null>(null);
   const calendarInnerRef = useRef<HTMLDivElement>(null);
+  const scrollWrapperRef = useRef<HTMLDivElement>(null);
 
   const username = customUsername || userStats?.login || "Pranavr06";
   const profileUrl = customUrl || `https://github.com/${username}`;
 
-  // Extract available years from API totals, default to ['2026', '2025', '2024']
+  // Extract available years from API totals (e.g. ['2026', '2025', '2024'])
   const availableYears = useMemo(() => {
     if (!initialContrib?.total) return ['2026', '2025', '2024'];
     const years = Object.keys(initialContrib.total).filter((k) => k !== 'lastYear' && /^\d{4}$/.test(k));
@@ -39,29 +40,46 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
     return years.sort((a, b) => Number(b) - Number(a));
   }, [initialContrib]);
 
-  // Selected year state (default to the newest year or 2026)
-  const [selectedYear, setSelectedYear] = useState<string>(availableYears[0] || "2026");
+  // 4 Options: 'all', '2026', '2025', '2024' (defaults to 'all')
+  const [selectedYear, setSelectedYear] = useState<string>("all");
+
+  // Auto-scroll recent activity on the right when 'all' is selected
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (scrollWrapperRef.current) {
+        if (selectedYear === "all") {
+          scrollWrapperRef.current.scrollLeft = scrollWrapperRef.current.scrollWidth;
+        } else {
+          scrollWrapperRef.current.scrollLeft = 0;
+        }
+      }
+    }, 60);
+    return () => clearTimeout(timer);
+  }, [selectedYear]);
 
   // Filter days based on selectedYear and ensure ascending chronological order
   const days: ContributionDay[] = useMemo(() => {
     const all = initialContrib?.contributions || [];
     if (!all.length) return [];
 
-    if (selectedYear === "lastYear") {
-      // Sort newest to oldest, take last 365, then sort chronological ascending
-      const sortedDesc = [...all].sort((a, b) => b.date.localeCompare(a.date));
-      const slice = sortedDesc.slice(0, 365);
-      return slice.sort((a, b) => a.date.localeCompare(b.date));
+    if (selectedYear === "all") {
+      return [...all].sort((a, b) => a.date.localeCompare(b.date));
     }
 
     const filtered = all.filter((d) => d.date.startsWith(`${selectedYear}-`));
     return filtered.sort((a, b) => a.date.localeCompare(b.date));
   }, [initialContrib, selectedYear]);
 
-  // Total contributions for the selected year
+  // Total contributions for the selected view
   const totalContributions = useMemo(() => {
-    if (selectedYear === "lastYear") {
-      return initialContrib?.total?.lastYear || days.reduce((sum, d) => sum + d.count, 0) || 724;
+    if (selectedYear === "all") {
+      if (initialContrib?.total) {
+        const sum = Object.entries(initialContrib.total)
+          .filter(([k]) => /^\d{4}$/.test(k))
+          .reduce((acc, [, val]) => acc + (typeof val === 'number' ? val : 0), 0);
+        if (sum > 0) return sum;
+      }
+      return days.reduce((sum, d) => sum + d.count, 0) || 887;
     }
     if (initialContrib?.total && initialContrib.total[selectedYear] !== undefined) {
       return initialContrib.total[selectedYear];
@@ -69,8 +87,8 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
     return days.reduce((sum, d) => sum + d.count, 0);
   }, [initialContrib, selectedYear, days]);
 
-  const contributionsLabel = selectedYear === "lastYear"
-    ? "Yearly Contributions"
+  const contributionsLabel = selectedYear === "all"
+    ? "All-Time Contributions"
     : `${selectedYear} Contributions`;
 
   // Calculate streaks
@@ -100,17 +118,17 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
     return { currentStreak: cur || 0, maxStreak: max || 0 };
   }, [days]);
 
-  const isCurrentOrRecent = selectedYear === availableYears[0] || selectedYear === "lastYear";
-  const streakDisplay = isCurrentOrRecent 
+  const isCurrentOrAll = selectedYear === "all" || selectedYear === availableYears[0];
+  const streakDisplay = isCurrentOrAll 
     ? `${currentStreak || 4} Days` 
     : `${maxStreak} Days`;
-  const streakLabel = isCurrentOrRecent 
+  const streakLabel = isCurrentOrAll 
     ? "Active Commit Streak" 
     : `Longest Streak (${selectedYear})`;
 
   const publicRepos = userStats?.public_repos || 11;
 
-  // Group days into 53 columns of weeks
+  // Group days into columns of weeks (53 for single year, ~157 for all years)
   const { weeks, monthLabels } = useMemo(() => {
     if (!days.length) return { weeks: [], monthLabels: [] };
 
@@ -127,20 +145,29 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
 
     const months: { label: string; weekIndex: number }[] = [];
     let lastMonth = -1;
+    let lastYear = -1;
 
     days.forEach((day) => {
       curW.push(day);
 
       const dObj = new Date(day.date);
       const m = dObj.getMonth();
+      const y = dObj.getFullYear();
+
       if (lastMonth === -1) {
         lastMonth = m;
-        const monthShort = dObj.toLocaleString('en-US', { month: 'short' });
-        months.push({ label: monthShort, weekIndex: 0 });
+        lastYear = y;
+        const label = selectedYear === "all"
+          ? `${dObj.toLocaleString('en-US', { month: 'short' })} '${String(y).slice(-2)}`
+          : dObj.toLocaleString('en-US', { month: 'short' });
+        months.push({ label, weekIndex: 0 });
       } else if (m !== lastMonth) {
         lastMonth = m;
-        const monthShort = dObj.toLocaleString('en-US', { month: 'short' });
-        months.push({ label: monthShort, weekIndex: w.length });
+        const label = (selectedYear === "all" && (m === 0 || y !== lastYear))
+          ? `${dObj.toLocaleString('en-US', { month: 'short' })} '${String(y).slice(-2)}`
+          : dObj.toLocaleString('en-US', { month: 'short' });
+        lastYear = y;
+        months.push({ label, weekIndex: w.length });
       }
 
       if (curW.length === 7) {
@@ -157,7 +184,7 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
     }
 
     return { weeks: w, monthLabels: months };
-  }, [days]);
+  }, [days, selectedYear]);
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
@@ -166,7 +193,7 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
 
   return (
     <div className="github-bento-hero">
-      {/* Top Header Row with Year Dropdown and Profile Button */}
+      {/* Top Header Row with Profile Meta on Left, Controls on Right */}
       <div className="github-hero-header">
         <div className="github-profile-meta">
           <div className="github-avatar-badge">
@@ -196,12 +223,9 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
           </div>
         </div>
 
-        {/* Action Controls: Year Dropdown & Profile Link */}
+        {/* Right-aligned Action Controls: Year Dropdown & Profile Link */}
         <div className="github-header-actions">
           <div className="github-year-dropdown-wrap">
-            <label htmlFor="github-year-select" className="sr-only">
-              Filter contributions by year
-            </label>
             <Calendar size={14} className="github-select-icon" aria-hidden="true" />
             <select
               id="github-year-select"
@@ -213,12 +237,12 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
               className="github-year-select"
               aria-label="Filter contributions by year"
             >
+              <option value="all">All</option>
               {availableYears.map((yr) => (
                 <option key={yr} value={yr}>
                   {yr === availableYears[0] ? `${yr} (Current)` : yr}
                 </option>
               ))}
-              <option value="lastYear">Last 12 Months</option>
             </select>
             <ChevronDown size={14} className="github-select-chevron" aria-hidden="true" />
           </div>
@@ -280,7 +304,7 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
 
       {/* GitHub Contribution Calendar Heatmap */}
       <div className="github-calendar-box">
-        <div className="github-calendar-scroll-wrapper">
+        <div className="github-calendar-scroll-wrapper" ref={scrollWrapperRef}>
           <div className="github-calendar-inner" ref={calendarInnerRef}>
             {/* Months Header */}
             <div className="calendar-months-row">
@@ -311,7 +335,7 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
                 <span className="day-label">Sat</span>
               </div>
 
-              {/* 53 Columns of Days */}
+              {/* Columns of Days */}
               <div className="weeks-container">
                 {weeks.map((week, wIdx) => (
                   <div key={wIdx} className="calendar-week-col">
@@ -366,7 +390,7 @@ export default function GitHubActivityCard({ initialContrib, userStats, customUs
         {/* Heatmap Footer & Legend */}
         <div className="github-calendar-footer">
           <span className="footer-sync-note">
-            Synchronized directly via GitHub contribution graph • Showing {selectedYear === 'lastYear' ? 'Last 12 Months' : selectedYear}
+            Synchronized directly via GitHub contribution graph • Showing {selectedYear === 'all' ? 'All Years (2024 - 2026)' : selectedYear}
           </span>
           <div className="calendar-legend">
             <span>Less</span>
