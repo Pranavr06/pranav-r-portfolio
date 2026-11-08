@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { showToast } from "@/components/Toast";
+import { slugify } from "@/lib/slug";
 import { 
   Code2, 
   Server, 
@@ -17,6 +18,11 @@ export default function ExperienceCard({ experience }: { experience: any }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // Compute card slug for deep-linking
+  const cardSlug = experience.read_more_url && experience.read_more_url.includes('#')
+    ? experience.read_more_url.split('#')[1]
+    : slugify(experience.title);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -29,7 +35,14 @@ export default function ExperienceCard({ experience }: { experience: any }) {
 
   const getShareUrl = () => {
     if (experience.read_more_url) {
-      return `${window.location.origin}${experience.read_more_url}`;
+      if (experience.read_more_url.startsWith('http')) {
+        return experience.read_more_url;
+      }
+      return `${window.location.origin}${experience.read_more_url.startsWith('/') ? '' : '/'}${experience.read_more_url}`;
+    }
+    const slug = slugify(experience.title);
+    if (experience.category === 'technical_expertise') {
+      return `${window.location.origin}/experiences/technical-expertise#${slug}`;
     }
     return window.location.href; // Fallback to current page
   };
@@ -133,7 +146,7 @@ export default function ExperienceCard({ experience }: { experience: any }) {
     }
 
     return (
-      <div className={`expertise-card ${accentClass}`}>
+      <div id={cardSlug} className={`expertise-card ${accentClass}`}>
         <div className="expertise-card-top">
           <div className="domain-header-left">
             <div className="domain-icon-wrap">
@@ -185,7 +198,7 @@ export default function ExperienceCard({ experience }: { experience: any }) {
 
   // Professional Journey Category
   return (
-    <article className="details-container color-container">
+    <article id={cardSlug} className="details-container color-container">
       <MenuDropdown />
       
       {experience.image_url && (

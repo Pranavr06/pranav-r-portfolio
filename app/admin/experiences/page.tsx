@@ -8,6 +8,7 @@ import AdminDrawer from "@/components/AdminDrawer";
 import Tooltip from "@/components/admin/Tooltip";
 import { useToast } from "@/components/ToastProvider";
 import ConfirmModal from "@/components/ConfirmModal";
+import { slugify } from "@/lib/slug";
 
 export default function ManageExperiences() {
   const [experiences, setExperiences] = useState<any[]>([]);
@@ -86,6 +87,10 @@ export default function ManageExperiences() {
   const handleSaveExperience = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    const finalReadMoreUrl = readMoreUrl.trim() 
+      ? readMoreUrl.trim() 
+      : (category === 'technical_expertise' && title ? `/experiences/technical-expertise#${slugify(title)}` : null);
+
     const expData = {
       title, 
       category, 
@@ -95,7 +100,7 @@ export default function ManageExperiences() {
       content,
       image_url: imageUrl, 
       certificate_url: certificateUrl,
-      read_more_url: readMoreUrl,
+      read_more_url: finalReadMoreUrl,
       bullet_points: bulletPoints ? bulletPoints.split('\n').map(s => s.trim()).filter(Boolean) : null,
       tags: tags ? tags.split(',').map(s => s.trim()).filter(Boolean) : null,
       is_published: isPublished, 
@@ -326,8 +331,26 @@ export default function ManageExperiences() {
           
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Read More URL</label>
-              <input placeholder="Link to detailed post..." value={readMoreUrl} onChange={(e) => setReadMoreUrl(e.target.value)} style={inputStyle} />
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>
+                  Read More URL / Box #Hash
+                </label>
+                {category === "technical_expertise" && (
+                  <button 
+                    type="button" 
+                    onClick={() => setReadMoreUrl(`/experiences/technical-expertise#${slugify(title)}`)}
+                    style={{ fontSize: "0.75rem", color: "#3b82f6", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}
+                  >
+                    Auto #hash
+                  </button>
+                )}
+              </div>
+              <input 
+                placeholder={category === "technical_expertise" ? "/experiences/technical-expertise#box-name" : "Link to detailed post..."} 
+                value={readMoreUrl} 
+                onChange={(e) => setReadMoreUrl(e.target.value)} 
+                style={inputStyle} 
+              />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               <label style={{ fontSize: "0.85rem", fontWeight: 500, color: "var(--admin-text-main)" }}>Certificate URL</label>

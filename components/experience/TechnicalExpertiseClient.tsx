@@ -37,6 +37,63 @@ export default function TechnicalExpertiseClient({ experiences, githubData, page
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Handle URL hash deep-linking (e.g. #web-development, #backend-databases)
+  useEffect(() => {
+    const handleHash = () => {
+      if (typeof window !== "undefined" && window.location.hash) {
+        const rawHash = decodeURIComponent(window.location.hash.substring(1)).toLowerCase().trim();
+        if (rawHash) {
+          // Switch filter to "all" to ensure the target card is rendered in DOM
+          setActiveFilter('all');
+
+          setTimeout(() => {
+            let targetEl = document.getElementById(rawHash);
+            if (!targetEl) {
+              const aliasMap: Record<string, string> = {
+                'web': 'web-development',
+                'frontend': 'web-development',
+                'web-dev': 'web-development',
+                'backend': 'backend-databases',
+                'backend-and-databases': 'backend-databases',
+                'database': 'backend-databases',
+                'databases': 'backend-databases',
+                'security': 'security-systems',
+                'security-and-systems': 'security-systems',
+                'systems': 'security-systems',
+                'ai': 'ai-driven-features',
+                'ai-features': 'ai-driven-features',
+                'machine-learning': 'ai-driven-features',
+                'design': 'design-tools',
+                'design-and-tools': 'design-tools',
+                'tools': 'design-tools',
+                'ui-ux': 'design-tools',
+              };
+              const resolvedId = aliasMap[rawHash] || aliasMap[rawHash.replace(/[\s_]+/g, '-')];
+              if (resolvedId) {
+                targetEl = document.getElementById(resolvedId);
+              }
+            }
+
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              targetEl.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease, transform 0.4s ease';
+              targetEl.style.boxShadow = '0 0 25px rgba(0, 112, 243, 0.7)';
+              targetEl.style.borderColor = '#0070f3';
+              setTimeout(() => {
+                targetEl.style.boxShadow = '';
+                targetEl.style.borderColor = '';
+              }, 3500);
+            }
+          }, 350);
+        }
+      }
+    };
+
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
   const filterTabs = [
     { id: 'all', label: 'All Domains' },
     { id: 'web', label: 'Full-Stack & Web' },

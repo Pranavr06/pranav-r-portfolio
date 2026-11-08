@@ -2010,6 +2010,7 @@ body.dark-theme .filter-pill-btn.active .filter-count {
     height: 100%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
     position: relative;
+    scroll-margin-top: 100px;
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
