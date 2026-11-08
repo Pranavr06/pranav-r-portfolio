@@ -3,6 +3,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { showToast } from "@/components/Toast";
+import { 
+  Code2, 
+  Server, 
+  ShieldCheck, 
+  Sparkles, 
+  Palette, 
+  CheckCircle2, 
+  ArrowUpRight 
+} from 'lucide-react';
 
 export default function ExperienceCard({ experience }: { experience: any }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -84,32 +93,85 @@ export default function ExperienceCard({ experience }: { experience: any }) {
   );
 
   if (experience.category === 'technical_expertise') {
+    const titleLower = (experience.title || '').toLowerCase();
+    
+    let DomainIcon = Code2;
+    let eyebrow = "Architecture & Systems";
+    let accentClass = "accent-web";
+    let fallbackHighlight = null;
+
+    if (titleLower.includes('web')) {
+      DomainIcon = Code2;
+      eyebrow = "Frontend & Client Engineering";
+      accentClass = "accent-web";
+    } else if (titleLower.includes('backend') || titleLower.includes('database')) {
+      DomainIcon = Server;
+      eyebrow = "Distributed Services & Storage";
+      accentClass = "accent-backend";
+    } else if (titleLower.includes('security') || titleLower.includes('system')) {
+      DomainIcon = ShieldCheck;
+      eyebrow = "System Hardening & Auth";
+      accentClass = "accent-security";
+    } else if (titleLower.includes('ai') || titleLower.includes('feature')) {
+      DomainIcon = Sparkles;
+      eyebrow = "Applied AI & Inference Pipelines";
+      accentClass = "accent-ai";
+      fallbackHighlight = '<strong>Relevant Work:</strong> <a href="/projects/sentiment-analysis-ai" class="expertise-link">Sentiment Analysis AI</a>';
+    } else if (titleLower.includes('design') || titleLower.includes('tool')) {
+      DomainIcon = Palette;
+      eyebrow = "UI/UX & Interactive Design";
+      accentClass = "accent-design";
+      fallbackHighlight = '<strong>Relevant Work:</strong> <a href="/projects/3d-aircraft-model" class="expertise-link">3D Aircraft Model</a>';
+    }
+
+    const highlightHtml = experience.highlight_text || fallbackHighlight;
+
     return (
-      <div className={`expertise-card ${experience.display_order <= 2 ? 'highlighted-expertise' : ''}`}>
-        <MenuDropdown />
-        <h3 className="expertise-title">
-          {experience.icon && <span style={{ marginRight: '8px' }}>{experience.icon}</span>}
-          {experience.title}
-        </h3>
+      <div className={`expertise-card ${accentClass}`}>
+        <div className="expertise-card-top">
+          <div className="domain-header-left">
+            <div className="domain-icon-wrap">
+              <DomainIcon size={22} className="domain-icon" />
+            </div>
+            <div className="domain-header-meta">
+              <span className="domain-eyebrow">{eyebrow}</span>
+              <h3 className="expertise-title">
+                {experience.icon && <span style={{ marginRight: '8px' }}>{experience.icon}</span>}
+                {experience.title}
+              </h3>
+            </div>
+          </div>
+          <MenuDropdown />
+        </div>
         
         {experience.tags && Array.isArray(experience.tags) && (
           <div className="expertise-skills">
             {experience.tags.map((tag: string, idx: number) => (
-              <span key={idx} className="tech-tag">{tag}</span>
+              <span key={idx} className="tech-tag">
+                <span className="tag-dot" />
+                {tag}
+              </span>
             ))}
           </div>
         )}
 
         {experience.bullet_points && Array.isArray(experience.bullet_points) && (
-          <ul className="expertise-proof">
-            {experience.bullet_points.map((pt: string, idx: number) => (
-              <li key={idx}>{pt}</li>
-            ))}
-          </ul>
+          <div className="expertise-proof-wrap">
+            <ul className="expertise-proof">
+              {experience.bullet_points.map((pt: string, idx: number) => (
+                <li key={idx}>
+                  <CheckCircle2 size={16} className="proof-check-icon" />
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
 
-        {experience.highlight_text && (
-          <div className="expertise-work" dangerouslySetInnerHTML={{ __html: experience.highlight_text }} />
+        {highlightHtml && (
+          <div className="expertise-work">
+            <div className="work-highlight-content" dangerouslySetInnerHTML={{ __html: highlightHtml }} />
+          </div>
         )}
       </div>
     );

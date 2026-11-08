@@ -1,8 +1,8 @@
 import { supabase } from "@/lib/supabase";
-import ExperienceCard from "@/components/cards/ExperienceCard";
 import ScrollArrow from "@/components/ScrollArrow";
 import Contact from "@/components/sections/Contact";
-import PageShareMenu from "@/components/PageShareMenu";
+import TechnicalExpertiseClient from "@/components/experience/TechnicalExpertiseClient";
+import githubFallback from "@/lib/githubFallback.json";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,42 +12,56 @@ export const metadata: Metadata = {
 
 export const revalidate = 60; // revalidate every 60 seconds
 
-export default async function TechnicalExpertisePage() {
-  const { data: experiences, error } = await supabase
-    .from("experiences")
-    .select("*")
-    .eq("category", "technical_expertise")
-    .eq("is_published", true)
-    .or("is_archived.is.null,is_archived.eq.false")
-    .order("display_order", { ascending: true });
+async function getGitHubData() {
+  try {
+    const [userRes, contribRes] = await Promise.all([
+      fetch("https://api.github.com/users/Pranavr06", {
+        headers: { "User-Agent": "PranavR-Portfolio" },
+        next: { revalidate: 3600 },
+      }).catch(() => null),
+      fetch("https://github-contributions-api.jogruber.de/v4/Pranavr06?y=last", {
+        next: { revalidate: 3600 },
+      }).catch(() => null),
+    ]);
 
-  if (error) {
-    console.error("Error fetching technical expertise experiences:", error?.message || error?.details || JSON.stringify(error) || "Unknown error");
+    const user = userRes?.ok ? await userRes.json() : { login: "Pranavr06", public_repos: 11 };
+    const contrib = contribRes?.ok ? await contribRes.json() : githubFallback;
+
+    return { user, contrib };
+  } catch (err) {
+    console.error("Error fetching GitHub data in page.tsx:", err);
+    return {
+      user: { login: "Pranavr06", public_repos: 11 },
+      contrib: githubFallback,
+    };
+  }
+}
+
+export default async function TechnicalExpertisePage() {
+  const [experiencesResult, githubData] = await Promise.all([
+    supabase
+      .from("experiences")
+      .select("*")
+      .eq("category", "technical_expertise")
+      .eq("is_published", true)
+      .or("is_archived.is.null,is_archived.eq.false")
+      .order("display_order", { ascending: true }),
+    getGitHubData(),
+  ]);
+
+  const experiences = experiencesResult.data || [];
+
+  if (experiencesResult.error) {
+    console.error("Error fetching technical expertise experiences:", experiencesResult.error.message);
   }
 
   return (
     <main id="main-content">
       <section id="expertise-section" className="mobile-spacing fade-in-section" style={{ paddingTop: "2rem", marginTop: 0 }}>
-        <p className="section__text__p1">Technologies I use to build scalable and secure applications</p>
-        <h1 className="title mb-2">Technical Expertise</h1>
-        
-        <p className="expertise-focus">Focus: Full-Stack Development &amp; Secure Systems</p>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-          <p className="expertise-intro" style={{ margin: 0 }}>I build secure, real-time web systems with strong backend architecture and monitoring capabilities.</p>
-          <PageShareMenu />
-        </div>
-        
-        <div className="expertise-grid mt-3">
-          {experiences && experiences.length > 0 ? (
-            experiences.map((exp: any) => (
-              <ExperienceCard key={exp.id} experience={exp} />
-            ))
-          ) : (
-            <p style={{ textAlign: "center", width: "100%", gridColumn: "1 / -1" }}>
-              Technical expertise details coming soon!
-            </p>
-          )}
-        </div>
+        <TechnicalExpertiseClient 
+          experiences={experiences} 
+          githubData={githubData} 
+        />
         
         <ScrollArrow targetId="contact" altText="Scroll down to contact section" />
       </section>
