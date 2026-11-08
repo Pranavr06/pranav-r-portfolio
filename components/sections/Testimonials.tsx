@@ -23,11 +23,11 @@ export default async function Testimonials() {
       <p className="section__text__p1">What others say</p>
       <h2 className="title">Testimonials</h2>
       
-      <p style={{ textAlign: "center", marginBottom: "2rem", color: "gray", fontSize: "0.9rem", fontStyle: "italic" }}>
+      <p style={{ textAlign: "center", marginBottom: "1rem", color: "gray", fontSize: "0.9rem", fontStyle: "italic" }}>
         All testimonials are manually reviewed before publication.
       </p>
 
-      <div className="about-containers" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2rem", maxWidth: "1200px", margin: "0 auto", marginBottom: "2rem" }}>
+      <div className="about-containers" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2rem", maxWidth: "1200px", margin: "0 auto", marginBottom: "1.5rem" }}>
         {testimonials && testimonials.length > 0 ? (
           testimonials.map((testimonial: any) => (
             <TestimonialCard key={testimonial.id} testimonial={testimonial} />
@@ -37,7 +37,7 @@ export default async function Testimonials() {
         )}
       </div>
 
-      <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+      <div style={{ textAlign: "center", marginBottom: "1rem" }}>
         <Link href="/testimonials" className="btn btn-color-2 view-more" aria-label="View more testimonials">
           View more / Leave a testimonial
         </Link>

@@ -32,7 +32,7 @@ export default async function Blog() {
           <p style={{ textAlign: "center", width: "100%", gridColumn: "1 / -1" }}>No blog posts found.</p>
         )}
       </div>
-      <div style={{ textAlign: "center", marginTop: "2rem" }}>
+      <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
           <Link href="/blogs" className="btn btn-color-2 view-more" aria-label="View more blog posts">
             View more
           </Link>

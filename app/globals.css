@@ -34,6 +34,7 @@ body.dark-theme .title {
 
 html {
     scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
 }
 
 p {
@@ -237,18 +238,28 @@ body.dark-theme .menu-links button {
 }
 
 
-/* SECTIONS */
+/* SECTIONS - UNIFIED FULL-SCREEN VIEWPORT SIZING */
 section {
-    padding-top: 4vh;
-    min-height: 96vh;
+    min-height: 100vh;
     height: auto;
-    margin: 0 10rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
     box-sizing: border-box;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    scroll-margin-top: 0;
 }
 
 .section-container {
     display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* ==========================================================================
@@ -256,16 +267,19 @@ section {
    ========================================================================== */
 #profile.hero-modern-section {
     position: relative;
-    min-height: 84vh;
+    min-height: calc(100vh - 17vh);
+    height: calc(100vh - 17vh);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem 0 4rem;
+    padding: 2rem 1.5rem;
     margin: 0 auto;
     max-width: 1200px;
-    height: auto;
+    width: 100%;
     overflow: visible;
     z-index: 1;
+    scroll-snap-align: start;
+    scroll-margin-top: 0;
 }
 
 /* Ambient Radial Glows - Keep Black and White (Disabled) */
@@ -760,12 +774,15 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     right: 50% !important;
     margin-left: -50vw !important;
     margin-right: -50vw !important;
-    min-height: 88vh;
+    min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: stretch;
     overflow: hidden;
     background-color: #000000;
     box-sizing: border-box;
+    scroll-snap-align: start;
+    scroll-margin-top: 0;
 }
 
 /* --- About Section (Left: Text on Angled Grey, Right: Photo on Seamless Black) --- */
@@ -1032,6 +1049,17 @@ body.dark-theme #about .tomasz-badge:hover {
 }
 
 @media screen and (max-width: 900px) {
+    html {
+        scroll-snap-type: none !important;
+    }
+
+    section {
+        min-height: auto !important;
+        height: auto !important;
+        scroll-snap-align: none !important;
+        padding: 4rem 1.25rem !important;
+    }
+
     #about {
         flex-direction: column-reverse;
         min-height: auto;
@@ -1188,11 +1216,19 @@ body.dark-theme #about .tomasz-badge:hover {
 .scroll-down-link, .scroll-up-link {
     display: inline-block;
     position: absolute !important;
-    bottom: 2.5rem !important;
-    right: -5rem !important;
+    bottom: 2rem !important;
+    right: 2rem !important;
     margin: 0 !important;
     box-shadow: none !important;
     transition: transform 0.2s ease-in-out;
+    z-index: 10;
+}
+
+#about .scroll-down-link,
+#experience .scroll-down-link {
+    right: 3rem !important;
+    bottom: 2rem !important;
+    z-index: 10;
 }
 
 #blog-post .scroll-up-link,
@@ -1850,9 +1886,15 @@ body.dark-theme .author-info .author-title {
 
 /* BLOG */
 #blog {
-    padding: 4vh 0;
-    min-height: auto;
+    padding: 3rem 1.5rem;
+    min-height: 100vh;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    scroll-margin-top: 0;
 }
 
 .blog-grid-container {
@@ -2032,9 +2074,13 @@ body.dark-theme .disabled-link:hover {
 #contact {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
-    height: fit-content;
-    padding-top: 4vh;
+    min-height: 100vh;
+    padding: 3rem 1.5rem;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    scroll-margin-top: 0;
 }
 
 .contact-form-container {
@@ -3280,7 +3326,7 @@ body.dark-theme .btn-color-2:hover { background: #ffffff; color: #000000; }
 
 .arrow { width: 30px; height: 30px; }
 
-#contact { display: flex; justify-content: center; flex-direction: column; min-height: 70vh; position: relative; }
+#contact { display: flex; justify-content: center; align-items: center; flex-direction: column; min-height: 100vh; position: relative; scroll-snap-align: start; scroll-margin-top: 0; }
 .contact-form-container { display: flex; justify-content: center; margin-bottom: 2rem; width: 100%; }
 #contact-form { display: flex; flex-direction: column; gap: 1.5rem; width: 100%; max-width: 600px; background: rgb(250, 250, 250); border: 1px solid rgb(163, 163, 163); border-radius: 2rem; padding: 2rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 body.dark-theme #contact-form { background: #2d2d2d; border-color: #555; }

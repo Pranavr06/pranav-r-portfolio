@@ -23,7 +23,7 @@ export default async function Certificates() {
       <p className="section__text__p1">My Achievements</p>
       <h2 className="title">Certificates</h2>
       <div className="experience-details-container">
-        <div className="about-containers" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "2rem", maxWidth: "1200px", margin: "0 auto", marginBottom: "3rem" }}>
+        <div className="about-containers" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: "2rem", maxWidth: "1200px", margin: "0 auto", marginBottom: "1.75rem" }}>
           {certificates && certificates.length > 0 ? (
             certificates.map((cert: any) => (
               <CertificateCard key={cert.id} cert={cert} />
@@ -32,7 +32,7 @@ export default async function Certificates() {
             <p style={{ textAlign: "center", width: "100%", gridColumn: "1 / -1" }}>No certificates available yet.</p>
           )}
         </div>
-        <div style={{ textAlign: "center", marginTop: "2rem" }}>
+        <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
           <Link href="/certificates" className="btn btn-color-2 view-more" aria-label="View more certificates">
             View more
           </Link>
