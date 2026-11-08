@@ -114,20 +114,6 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
           </button>
         </div>
 
-        {error && (
-          <div style={{ 
-            backgroundColor: "rgba(239, 68, 68, 0.12)", 
-            color: "#ef4444", 
-            padding: "0.75rem 1rem", 
-            borderRadius: "0.75rem", 
-            fontSize: "0.88rem",
-            marginBottom: "1rem",
-            border: "1px solid rgba(239, 68, 68, 0.2)"
-          }}>
-            {error}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
           {/* Honeypot field - invisible to humans, attracts bots */}
           <input
@@ -270,6 +256,21 @@ export default function StickyNoteCreator({ isOpen, onClose, onNoteCreated }: St
               </div>
             </div>
           </div>
+
+          {/* Error Message above Action Buttons */}
+          {error && (
+            <div style={{ 
+              backgroundColor: "rgba(239, 68, 68, 0.12)", 
+              color: "#ef4444", 
+              padding: "0.75rem 1rem", 
+              borderRadius: "0.75rem", 
+              fontSize: "0.88rem",
+              marginBottom: "1rem",
+              border: "1px solid rgba(239, 68, 68, 0.2)"
+            }}>
+              {error}
+            </div>
+          )}
 
           {/* Action Buttons */}
           <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.75rem" }}>
