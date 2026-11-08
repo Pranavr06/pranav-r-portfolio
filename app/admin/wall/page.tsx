@@ -25,7 +25,8 @@ import {
   HelpCircle
 } from "lucide-react";
 import AdminDrawer from "@/components/AdminDrawer";
-import ConfirmModal from "@/components/ConfirmModal";
+import Tooltip from "@/components/admin/Tooltip";
+import AuthConfirmModal from "@/components/admin/AuthConfirmModal";
 import { useToast } from "@/components/ToastProvider";
 
 interface WallNote {
@@ -396,9 +397,9 @@ export default function AdminWall() {
         body: JSON.stringify({ action: "archive", id })
       });
 
-      if (!res.ok) throw new Error("Failed to archive note");
+      if (!res.ok) throw new Error("Failed to move note to trash");
 
-      addToast("Note moved to archive / hidden from public wall", "info");
+      addToast("Note moved to trash", "success");
       setNotes((prev) =>
         prev.map((n) => (n.id === id ? { ...n, is_archived: true } : n))
       );
@@ -798,73 +799,87 @@ export default function AdminWall() {
 
                           <td style={{ padding: "0.9rem 1.25rem", textAlign: "right" }}>
                             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.35rem" }}>
-                              <button
-                                type="button"
-                                onClick={() => setSelectedTelemetryNote(note)}
-                                title="Inspect IP & Device Details"
-                                className="admin-btn admin-btn-icon"
-                                style={{ padding: "0.4rem", color: "#3b82f6" }}
-                              >
-                                <Info size={16} />
-                              </button>
+                              <Tooltip content="Inspect Details" position="top">
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedTelemetryNote(note)}
+                                  className="admin-btn admin-btn-icon"
+                                  style={{ padding: "0.4rem", color: "#3b82f6" }}
+                                  aria-label="Inspect IP & Device Details"
+                                >
+                                  <Info size={16} />
+                                </button>
+                              </Tooltip>
 
-                              <button
-                                type="button"
-                                onClick={() => handleTogglePin(note)}
-                                title={note.is_pinned ? "Unpin note" : "Pin to top"}
-                                className="admin-btn admin-btn-icon"
-                                style={{
-                                  padding: "0.4rem",
-                                  color: note.is_pinned ? "#10b981" : "var(--admin-text-muted)"
-                                }}
-                              >
-                                <Pin size={16} fill={note.is_pinned ? "#10b981" : "none"} />
-                              </button>
+                              <Tooltip content={note.is_pinned ? "Unpin Note" : "Pin Note to Top"} position="top">
+                                <button
+                                  type="button"
+                                  onClick={() => handleTogglePin(note)}
+                                  className="admin-btn admin-btn-icon"
+                                  style={{
+                                    padding: "0.4rem",
+                                    color: note.is_pinned ? "#10b981" : "var(--admin-text-muted)"
+                                  }}
+                                  aria-label={note.is_pinned ? "Unpin note" : "Pin to top"}
+                                >
+                                  <Pin size={16} fill={note.is_pinned ? "#10b981" : "none"} />
+                                </button>
+                              </Tooltip>
 
-                              <button
-                                type="button"
-                                onClick={() => handleOpenEdit(note)}
-                                title="Edit note"
-                                className="admin-btn admin-btn-icon"
-                                style={{ padding: "0.4rem" }}
-                              >
-                                <Edit2 size={16} />
-                              </button>
+                              <Tooltip content="Edit Note" position="top">
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenEdit(note)}
+                                  className="admin-btn admin-btn-icon"
+                                  style={{ padding: "0.4rem" }}
+                                  aria-label="Edit note"
+                                >
+                                  <Edit2 size={16} />
+                                </button>
+                              </Tooltip>
 
                               {note.is_archived ? (
-                                <button
-                                  type="button"
-                                  onClick={() => handleRestoreNote(note.id)}
-                                  title="Restore note to live wall"
-                                  className="admin-btn admin-btn-icon"
-                                  style={{ padding: "0.4rem", color: "#10b981" }}
-                                >
-                                  <RotateCcw size={16} />
-                                </button>
-                              ) : (
-                                <button
-                                  type="button"
-                                  onClick={() => handleArchiveNote(note.id)}
-                                  title="Archive (hide from wall)"
-                                  className="admin-btn admin-btn-icon"
-                                  style={{ padding: "0.4rem", color: "#f59e0b" }}
-                                >
-                                  <Trash2 size={16} />
-                                </button>
-                              )}
+                                <>
+                                  <Tooltip content="Restore to Wall" position="top">
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRestoreNote(note.id)}
+                                      className="admin-btn admin-btn-icon"
+                                      style={{ padding: "0.4rem", color: "#10b981" }}
+                                      aria-label="Restore note to live wall"
+                                    >
+                                      <RotateCcw size={16} />
+                                    </button>
+                                  </Tooltip>
 
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setDeleteConfirmId(note.id);
-                                  setDeleteIsPermanent(true);
-                                }}
-                                title="Delete permanently"
-                                className="admin-btn admin-btn-icon"
-                                style={{ padding: "0.4rem", color: "#ef4444" }}
-                              >
-                                <Trash2 size={16} />
-                              </button>
+                                  <Tooltip content="Delete Permanently" position="top">
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setDeleteConfirmId(note.id);
+                                        setDeleteIsPermanent(true);
+                                      }}
+                                      className="admin-btn admin-btn-icon"
+                                      style={{ padding: "0.4rem", color: "#ef4444" }}
+                                      aria-label="Delete permanently"
+                                    >
+                                      <Trash2 size={16} />
+                                    </button>
+                                  </Tooltip>
+                                </>
+                              ) : (
+                                <Tooltip content="Move to Trash" position="top">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleArchiveNote(note.id)}
+                                    className="admin-btn admin-btn-icon"
+                                    style={{ padding: "0.4rem", color: "#ef4444" }}
+                                    aria-label="Move note to trash"
+                                  >
+                                    <Trash2 size={16} />
+                                  </button>
+                                </Tooltip>
+                              )}
                             </div>
                           </td>
                         </tr>
@@ -1368,14 +1383,13 @@ export default function AdminWall() {
         </form>
       </AdminDrawer>
 
-      {/* Delete Confirmation Modal */}
-      <ConfirmModal
+      {/* Permanent Delete Authentication Modal with Password */}
+      <AuthConfirmModal
         isOpen={!!deleteConfirmId}
         onClose={() => setDeleteConfirmId(null)}
         onConfirm={handleConfirmPermanentDelete}
-        title="Permanently Delete Note"
-        message="Are you sure you want to completely delete this sticky note from the database? This action cannot be undone."
-        confirmText="Delete Permanently"
+        title="Admin Password Required"
+        message="Permanently deleting this sticky note cannot be undone. Please enter your admin password to confirm."
       />
 
     </div>
