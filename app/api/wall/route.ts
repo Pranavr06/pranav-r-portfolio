@@ -221,7 +221,7 @@ export async function POST(req: Request) {
       // Ignore if table doesn't exist
     }
 
-    // Insert into Supabase with full telemetry
+    // Insert into Supabase
     const notePayload: any = {
       message: sanitizedMsg,
       author_name: sanitizedAuthor,
@@ -231,11 +231,7 @@ export async function POST(req: Request) {
       likes_count: 0,
       is_pinned: false,
       is_archived: false,
-      ip_hash,
-      ip_address: clientIp,
-      location,
-      device_info: device.fullString,
-      user_agent: rawUserAgent
+      ip_hash
     };
 
     let { data, error } = await supabase
@@ -243,17 +239,6 @@ export async function POST(req: Request) {
       .insert([notePayload])
       .select()
       .single();
-
-    // Fallback if schema does not yet have the telemetry columns
-    if (error && (error.message?.includes("column") || error.code === "PGRST204")) {
-      delete notePayload.ip_address;
-      delete notePayload.location;
-      delete notePayload.device_info;
-      delete notePayload.user_agent;
-      const retry = await supabase.from("wall_notes").insert([notePayload]).select().single();
-      data = retry.data;
-      error = retry.error;
-    }
 
     if (error) {
       if (error.code === "PGRST205" || error.message?.includes("does not exist")) {

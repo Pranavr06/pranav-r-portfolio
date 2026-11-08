@@ -59,7 +59,7 @@ export async function GET(req: Request) {
 
     if (search && search.trim()) {
       const cleanSearch = search.trim().slice(0, 50);
-      query = query.or(`message.ilike.%${cleanSearch}%,author_name.ilike.%${cleanSearch}%,ip_address.ilike.%${cleanSearch}%,location.ilike.%${cleanSearch}%`);
+      query = query.or(`message.ilike.%${cleanSearch}%,author_name.ilike.%${cleanSearch}%`);
     }
 
     query = query.order("is_pinned", { ascending: false }).order("created_at", { ascending: false });
@@ -128,24 +128,21 @@ export async function POST(req: Request) {
 
       const randomRotation = Number(((Math.random() * 5.6) - 2.8).toFixed(1));
 
+      const notePayload = {
+        message: message.trim(),
+        author_name: author_name?.trim() || "Pranav R (Admin)",
+        color: color || "yellow",
+        emoji: emoji || "📌",
+        rotation: randomRotation,
+        likes_count: 0,
+        is_pinned: !!is_pinned,
+        is_archived: false,
+        ip_hash: "admin"
+      };
+
       const { data, error } = await supabase
         .from("wall_notes")
-        .insert([
-          {
-            message: message.trim(),
-            author_name: author_name?.trim() || "Pranav R (Admin)",
-            color: color || "yellow",
-            emoji: emoji || "📌",
-            rotation: randomRotation,
-            likes_count: 0,
-            is_pinned: !!is_pinned,
-            is_archived: false,
-            ip_hash: "admin",
-            ip_address: clientIp,
-            location: "Admin Panel",
-            device_info: "Admin Session"
-          }
-        ])
+        .insert([notePayload])
         .select()
         .single();
 
