@@ -68,11 +68,8 @@ export function getNavLinks(pathname: string, fullNavLinks: NavLink[]): NavLink[
   if (pathname === "/experiences") {
     return [{ name: "Home", href: "/" }];
   }
-  if (pathname === "/experiences/professional-journey") {
-    return [{ name: "Home", href: "/" }, { name: "Experiences Hub", href: "/experiences" }];
-  }
   if (pathname.startsWith("/experiences/")) {
-    return [{ name: "Home", href: "/" }, { name: "Professional Journey", href: "/experiences/professional-journey" }];
+    return [{ name: "Home", href: "/" }, { name: "Experience Hub", href: "/experiences" }];
   }
 
   // Default fallback for minimal layout

@@ -763,8 +763,13 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     display: flex;
     align-items: stretch;
     overflow: hidden;
-    background-color: #000000;
+    background-color: #ffffff;
     box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
+
+body.dark-theme #about {
+    background-color: #000000;
 }
 
 /* Diagonal divider on the left */
@@ -774,7 +779,7 @@ body.dark-theme .btn-color-2:hover:not([disabled]) {
     left: 0;
     width: 58%;
     height: 100%;
-    background: #d8dbdf;
+    background: #f8fafc;
     clip-path: polygon(0 0, 100% 0, 80% 100%, 0 100%);
     z-index: 1;
     transition: background 0.3s ease;
@@ -804,6 +809,11 @@ body.dark-theme #about .tomasz-left-bg {
     align-items: flex-end;
     justify-content: center;
     overflow: hidden;
+    background: #ffffff;
+    transition: background 0.3s ease;
+}
+
+body.dark-theme #about .tomasz-right-content {
     background: #000000;
 }
 
@@ -814,7 +824,11 @@ body.dark-theme #about .tomasz-left-bg {
     object-fit: contain;
     object-position: bottom center;
     display: block;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.12));
+}
+
+body.dark-theme #about .tomasz-portrait-img {
     filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
 }
 
@@ -941,6 +955,11 @@ body.dark-theme #about .tomasz-badge:hover {
     #about {
         flex-direction: column-reverse;
         min-height: auto;
+        background-color: #ffffff;
+        transition: background-color 0.3s ease;
+    }
+
+    body.dark-theme #about {
         background-color: #000000;
     }
 
@@ -949,10 +968,10 @@ body.dark-theme #about .tomasz-badge:hover {
         display: none !important;
     }
 
-    /* Photo at top on black */
+    /* Photo at top on adaptive background */
     #about .tomasz-right-content {
         height: 360px;
-        background: #000000;
+        background: #ffffff;
         width: 100%;
         flex: none;
         display: flex;
@@ -961,6 +980,11 @@ body.dark-theme #about .tomasz-badge:hover {
         padding-top: 2rem;
         position: relative;
         z-index: 1;
+        transition: background 0.3s ease;
+    }
+
+    body.dark-theme #about .tomasz-right-content {
+        background: #000000;
     }
 
     #about .tomasz-portrait-img {
@@ -969,6 +993,10 @@ body.dark-theme #about .tomasz-badge:hover {
         width: auto;
         object-fit: contain;
         object-position: bottom center;
+        filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.12));
+    }
+
+    body.dark-theme #about .tomasz-portrait-img {
         filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
     }
 
@@ -980,13 +1008,14 @@ body.dark-theme #about .tomasz-badge:hover {
         max-width: 100%;
         flex: none;
         margin-top: -28px;
-        background: #d8dbdf;
+        background: #f8fafc;
         clip-path: polygon(0 28px, 100% 0, 100% 100%, 0 100%);
         padding: 4.5rem 2rem 4rem 2rem;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         box-sizing: border-box;
+        transition: background 0.3s ease;
     }
 
     body.dark-theme #about .tomasz-left-content {
