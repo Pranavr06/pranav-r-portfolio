@@ -817,17 +817,18 @@ body.dark-theme #about .tomasz-left-bg {
 #about .tomasz-right-content {
     position: relative;
     z-index: 2;
-    flex: 0.85;
+    flex: 0.9;
+    margin-left: -5rem;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    overflow: hidden;
-    background: #ffffff;
+    overflow: visible;
+    background: transparent;
     transition: background 0.3s ease;
 }
 
 body.dark-theme #about .tomasz-right-content {
-    background: #000000;
+    background: transparent;
 }
 
 #about .tomasz-portrait-img {
@@ -835,7 +836,7 @@ body.dark-theme #about .tomasz-right-content {
     max-height: 720px;
     width: 100%;
     object-fit: contain;
-    object-position: bottom center;
+    object-position: bottom 20%;
     display: block;
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.12));
@@ -962,6 +963,9 @@ body.dark-theme #about .tomasz-badge:hover {
     #about .tomasz-title {
         font-size: 3.2rem;
     }
+    #about .tomasz-right-content {
+        margin-left: -2.5rem;
+    }
 }
 
 @media screen and (max-width: 900px) {
@@ -993,6 +997,8 @@ body.dark-theme #about .tomasz-badge:hover {
         padding-top: 2rem;
         position: relative;
         z-index: 1;
+        margin-left: 0;
+        overflow: hidden;
         transition: background 0.3s ease;
     }
 
