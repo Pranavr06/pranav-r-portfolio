@@ -35,7 +35,7 @@ export default async function Experience() {
         </div>
       </div>
       
-      <div className="btn-container center-footer" style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+      <div className="btn-container center-footer" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
         <Link href="/experiences" className="btn btn-color-2">
           View more
         </Link>

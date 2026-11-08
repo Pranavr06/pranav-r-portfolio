@@ -37,7 +37,7 @@ export default async function Projects() {
             </div>
           )}
         </div>
-        <div style={{ textAlign: "center", marginTop: "1.5rem" }}>
+        <div style={{ textAlign: "center", marginTop: "2rem" }}>
           <Link href="/projects" className="btn btn-color-2 view-more" aria-label="View more projects">
             View more
           </Link>
