@@ -1223,12 +1223,12 @@ body.dark-theme .clickable-about-card:hover {
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
-    min-height: 86vh;
+    min-height: 88vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 6rem 2rem 5rem;
+    padding: 5rem 2rem 4.5rem;
     background-color: #ffffff;
     box-sizing: border-box;
     overflow: hidden;
@@ -1251,13 +1251,13 @@ body.dark-theme #experience.editorial-experience-section {
     z-index: 2;
 }
 
-/* --- Left Column: Portrait holding binoculars (~45% width) --- */
+/* --- Left Column: Portrait holding binoculars (Matched to About Me portrait size) --- */
 .editorial-experience-left {
-    flex: 0 0 45%;
-    max-width: 45%;
+    flex: 0.95;
+    width: 100%;
     display: flex;
+    align-items: flex-end;
     justify-content: center;
-    align-items: center;
     position: relative;
     opacity: 0;
     transform: translateY(24px);
@@ -1272,17 +1272,21 @@ body.dark-theme #experience.editorial-experience-section {
 .editorial-portrait-wrapper {
     position: relative;
     width: 100%;
-    max-width: 460px;
-    aspect-ratio: 1 / 1;
+    height: 100%;
+    max-height: 720px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
 }
 
-/* Subtle Abstract Backdrop Elements */
+/* Subtle Abstract Backdrop Elements (Centered behind portrait torso) */
 .editorial-portrait-aura {
     position: absolute;
-    inset: -6%;
+    width: 440px;
+    height: 440px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     background: radial-gradient(circle, rgba(0, 0, 0, 0.038) 0%, rgba(0, 0, 0, 0.01) 62%, transparent 75%);
     pointer-events: none;
@@ -1296,7 +1300,11 @@ body.dark-theme .editorial-portrait-aura {
 
 .editorial-portrait-ring {
     position: absolute;
-    inset: 2%;
+    width: 410px;
+    height: 410px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     border: 1px dashed rgba(0, 0, 0, 0.09);
     pointer-events: none;
@@ -1309,10 +1317,10 @@ body.dark-theme .editorial-portrait-ring {
 }
 
 .editorial-portrait-wrapper:hover .editorial-portrait-ring {
-    transform: rotate(15deg);
+    transform: translate(-50%, -50%) rotate(15deg);
 }
 
-/* Minimalist Corner Crosshair Accents (Lens Coordinates / Explorer Theme) */
+/* Minimalist Corner Crosshair Accents */
 .editorial-portrait-crosshair {
     position: absolute;
     width: 14px;
@@ -1323,15 +1331,15 @@ body.dark-theme .editorial-portrait-ring {
 }
 
 .editorial-portrait-crosshair.ch-tl {
-    top: 4%;
-    left: 4%;
+    top: 15%;
+    left: 10%;
     border-top: 1.5px solid rgba(0, 0, 0, 0.18);
     border-left: 1.5px solid rgba(0, 0, 0, 0.18);
 }
 
 .editorial-portrait-crosshair.ch-br {
-    bottom: 4%;
-    right: 4%;
+    bottom: 15%;
+    right: 10%;
     border-bottom: 1.5px solid rgba(0, 0, 0, 0.18);
     border-right: 1.5px solid rgba(0, 0, 0, 0.18);
 }
@@ -1346,31 +1354,32 @@ body.dark-theme .editorial-portrait-crosshair.ch-br {
     border-right-color: rgba(255, 255, 255, 0.22);
 }
 
-/* Portrait Image */
+/* Portrait Image - Exact match to About Me desktop size */
 .editorial-portrait-img {
+    height: 100%;
+    max-height: 720px;
+    width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+    display: block;
     position: relative;
     z-index: 2;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center bottom;
-    display: block;
-    filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.12));
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.12));
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
 }
 
 body.dark-theme .editorial-portrait-img {
-    filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.85));
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
 }
 
 .editorial-portrait-wrapper:hover .editorial-portrait-img {
-    transform: scale(1.025);
+    transform: scale(1.02);
 }
 
-/* --- Right Column: Editorial Content (~55% width) --- */
+/* --- Right Column: Editorial Content --- */
 .editorial-experience-right {
-    flex: 0 0 55%;
-    max-width: 55%;
+    flex: 1.15;
+    max-width: 560px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1385,31 +1394,14 @@ body.dark-theme .editorial-portrait-img {
     transform: translateY(0);
 }
 
-/* Eyebrow Label: / EXPERIENCE */
-.editorial-eyebrow {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #64748b;
-    margin-bottom: 0.75rem;
-    display: inline-block;
-    transition: color 0.3s ease;
-}
-
-body.dark-theme .editorial-eyebrow {
-    color: #94a3b8;
-}
-
-/* Main Heading: My Professional Journey */
+/* Main Heading: "My Experience" in serif italic accent and subtle underline */
 .editorial-heading {
-    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    font-size: clamp(2.8rem, 4.5vw, 3.8rem);
     font-weight: 900;
     line-height: 1.08;
-    letter-spacing: -0.035em;
+    letter-spacing: -0.03em;
     color: #000000;
-    margin: 0 0 1.25rem 0;
+    margin: 0 0 1.5rem 0;
     transition: color 0.3s ease;
 }
 
@@ -1417,7 +1409,6 @@ body.dark-theme .editorial-heading {
     color: #ffffff;
 }
 
-/* Accent treatment on "Journey" */
 .editorial-heading-accent {
     font-family: Georgia, 'Playfair Display', Cambria, "Times New Roman", serif;
     font-style: italic;
@@ -1430,7 +1421,7 @@ body.dark-theme .editorial-heading {
     content: '';
     position: absolute;
     left: 0;
-    bottom: 3px;
+    bottom: 4px;
     width: 100%;
     height: 2px;
     background: currentColor;
@@ -1444,11 +1435,11 @@ body.dark-theme .editorial-heading-accent::after {
 
 /* Supporting Description */
 .editorial-description {
-    font-size: 1.08rem;
-    line-height: 1.75;
+    font-size: 1.12rem;
+    line-height: 1.8;
     color: #475569;
-    margin: 0 0 2rem 0;
-    max-width: 580px;
+    margin: 0 0 2.25rem 0;
+    max-width: 520px;
     transition: color 0.3s ease;
 }
 
@@ -1456,80 +1447,18 @@ body.dark-theme .editorial-description {
     color: #94a3b8;
 }
 
-/* --- Compact Professional Highlights (Minimal Inline Typography) --- */
-.editorial-highlights {
-    display: flex;
-    flex-direction: column;
-    gap: 0.95rem;
-    margin: 0 0 2.25rem 0;
-    width: 100%;
-    max-width: 600px;
-}
-
-.editorial-highlight-row {
-    display: flex;
-    align-items: baseline;
-    gap: 1.2rem;
-    padding-bottom: 0.85rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-    transition: border-color 0.3s ease;
-}
-
-body.dark-theme .editorial-highlight-row {
-    border-bottom-color: rgba(255, 255, 255, 0.08);
-}
-
-.editorial-highlight-index {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #64748b;
-    letter-spacing: 0.08em;
-    min-width: 120px;
-    flex-shrink: 0;
-    text-transform: uppercase;
-    transition: color 0.3s ease;
-}
-
-body.dark-theme .editorial-highlight-index {
-    color: #94a3b8;
-}
-
-.editorial-highlight-content {
-    font-size: 0.96rem;
-    line-height: 1.55;
-    color: #334155;
-    margin: 0;
-    transition: color 0.3s ease;
-}
-
-body.dark-theme .editorial-highlight-content {
-    color: #cbd5e1;
-}
-
-.editorial-highlight-content strong {
-    color: #000000;
-    font-weight: 700;
-    transition: color 0.3s ease;
-}
-
-body.dark-theme .editorial-highlight-content strong {
-    color: #ffffff;
-}
-
 /* --- Call-to-Action Button: Explore My Experience ↗ --- */
 .editorial-cta-wrap {
     display: flex;
     align-items: center;
-    margin-top: 0.5rem;
 }
 
 .editorial-cta-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    padding: 0.95rem 2rem;
-    font-size: 0.98rem;
+    padding: 0.95rem 2.1rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     text-decoration: none;
@@ -1586,81 +1515,98 @@ body.dark-theme .editorial-cta-btn:hover {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN FOR EDITORIAL EXPERIENCE SECTION
+   RESPONSIVE DESIGN - MATCHED EXACTLY TO ABOUT ME SECTION SIZING
    ========================================================================== */
-@media screen and (max-width: 1080px) {
+@media screen and (max-width: 1100px) {
     .editorial-experience-container {
-        gap: 3rem;
-    }
-
-    .editorial-portrait-wrapper {
-        max-width: 400px;
+        gap: 2.5rem;
     }
 
     .editorial-heading {
-        font-size: 2.7rem;
-    }
-
-    .editorial-highlight-index {
-        min-width: 105px;
+        font-size: 3.2rem;
     }
 }
 
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 900px) {
     #experience.editorial-experience-section {
-        padding: 5rem 1.5rem 4rem;
+        padding: 4.5rem 1.5rem 3.5rem;
         min-height: auto;
     }
 
     .editorial-experience-container {
         flex-direction: column;
         align-items: center;
-        gap: 2.75rem;
+        gap: 2rem;
+        text-align: center;
     }
 
+    /* Mobile portrait container - exact match to #about .tomasz-right-content (height: 360px) */
     .editorial-experience-left {
-        flex: 0 0 auto;
+        height: 360px;
         width: 100%;
-        max-width: 340px;
+        flex: none;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-top: 2rem;
+        position: relative;
+        z-index: 1;
         margin: 0 auto;
+        overflow: hidden;
     }
 
     .editorial-portrait-wrapper {
-        max-width: 340px;
+        height: 100%;
+        max-height: 360px;
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .editorial-portrait-img {
+        height: 100%;
+        max-height: 360px;
+        width: auto;
+        object-fit: contain;
+        object-position: bottom center;
+        filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.12));
+    }
+
+    body.dark-theme .editorial-portrait-img {
+        filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
+    }
+
+    .editorial-portrait-aura {
+        width: 280px;
+        height: 280px;
+    }
+
+    .editorial-portrait-ring {
+        width: 260px;
+        height: 260px;
     }
 
     .editorial-experience-right {
-        flex: 0 0 auto;
+        flex: none;
         width: 100%;
-        max-width: 100%;
+        max-width: 520px;
         align-items: center;
         text-align: center;
     }
 
-    .editorial-eyebrow {
-        text-align: center;
-    }
-
     .editorial-heading {
-        font-size: clamp(2.1rem, 6vw, 2.7rem);
+        font-size: 2.5rem;
         text-align: center;
+        margin-bottom: 1rem;
     }
 
     .editorial-description {
         text-align: center;
         margin-left: auto;
         margin-right: auto;
-        font-size: 1.02rem;
-    }
-
-    .editorial-highlights {
-        max-width: 520px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .editorial-highlight-row {
-        text-align: left;
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
     }
 
     .editorial-cta-wrap {
@@ -1673,44 +1619,48 @@ body.dark-theme .editorial-cta-btn:hover {
     }
 }
 
-@media screen and (max-width: 520px) {
+@media screen and (max-width: 600px) {
     #experience.editorial-experience-section {
-        padding: 4rem 1rem 3.5rem;
+        padding: 3.5rem 1.25rem 3rem;
     }
 
+    /* Small mobile portrait container - exact match to #about .tomasz-right-content (height: 310px) */
     .editorial-experience-left {
-        max-width: 290px;
+        height: 310px;
+        padding-top: 1.25rem;
     }
 
     .editorial-portrait-wrapper {
-        max-width: 290px;
+        max-height: 310px;
+    }
+
+    .editorial-portrait-img {
+        max-height: 310px;
+    }
+
+    .editorial-portrait-aura {
+        width: 230px;
+        height: 230px;
+    }
+
+    .editorial-portrait-ring {
+        width: 210px;
+        height: 210px;
     }
 
     .editorial-heading {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 
-    .editorial-highlight-row {
-        flex-direction: column;
-        gap: 0.3rem;
-        align-items: flex-start;
-        padding-bottom: 0.75rem;
-    }
-
-    .editorial-highlight-index {
-        min-width: auto;
-        font-size: 0.74rem;
-    }
-
-    .editorial-highlight-content {
-        font-size: 0.92rem;
+    .editorial-description {
+        font-size: 0.98rem;
     }
 
     .editorial-cta-btn {
         width: 100%;
-        max-width: 320px;
+        max-width: 300px;
         justify-content: center;
-        padding: 0.85rem 1.5rem;
+        padding: 0.9rem 1.75rem;
     }
 }
 

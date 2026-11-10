@@ -8,7 +8,7 @@ export default function Experience() {
   return (
     <FadeInSection id="experience" className="editorial-experience-section">
       <div className="editorial-experience-container">
-        {/* Left Column: Portrait holding binoculars (~45% width) */}
+        {/* Left Column: Portrait holding binoculars (same size as About Me section) */}
         <div className="editorial-experience-left">
           <div className="editorial-portrait-wrapper">
             {/* Subtle Abstract Backdrop Elements */}
@@ -29,48 +29,15 @@ export default function Experience() {
           </div>
         </div>
 
-        {/* Right Column: Editorial Experience Intro, Highlights, and CTA (~55% width) */}
+        {/* Right Column: Editorial Experience Intro and CTA */}
         <div className="editorial-experience-right">
-          <span className="editorial-eyebrow">/ EXPERIENCE</span>
-
           <h2 className="editorial-heading">
-            My Professional <span className="editorial-heading-accent">Journey</span>
+            <span className="editorial-heading-accent">My Experience</span>
           </h2>
 
           <p className="editorial-description">
             A journey of internships, hackathons, research presentations and achievements that have shaped my professional growth.
           </p>
-
-          {/* Compact Professional Highlights (Minimal Inline Typography) */}
-          <div className="editorial-highlights">
-            <div className="editorial-highlight-row">
-              <span className="editorial-highlight-index">01 // Internships</span>
-              <p className="editorial-highlight-content">
-                <strong>Full-Stack &amp; IoT</strong> at AIC-NITTE • <strong>AI/ML Engineering</strong> at IICT
-              </p>
-            </div>
-
-            <div className="editorial-highlight-row">
-              <span className="editorial-highlight-index">02 // Hackathons</span>
-              <p className="editorial-highlight-content">
-                <strong>National Finalist</strong> at MY Bharat Budget Quest 2026 &amp; Nexathon (YojanaSethu)
-              </p>
-            </div>
-
-            <div className="editorial-highlight-row">
-              <span className="editorial-highlight-index">03 // Research</span>
-              <p className="editorial-highlight-content">
-                <strong>IEEE AIDE 2026 Author</strong> on applied machine learning model architectures
-              </p>
-            </div>
-
-            <div className="editorial-highlight-row">
-              <span className="editorial-highlight-index">04 // Systems</span>
-              <p className="editorial-highlight-content">
-                <strong>Real-time AI proctoring</strong>, enterprise web applications &amp; secure infrastructure
-              </p>
-            </div>
-          </div>
 
           {/* Call-to-Action Button */}
           <div className="editorial-cta-wrap">
