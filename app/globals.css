@@ -3007,12 +3007,12 @@ body.dark-theme .cert-board-btn:hover {
 
 /* Row 1 & Row 3: Left to Right */
 .track-ltr {
-    animation: certMarqueeLTR 48s linear infinite;
+    animation: certMarqueeLTR 105s linear infinite;
 }
 
 /* Row 2: Right to Left */
 .track-rtl {
-    animation: certMarqueeRTL 44s linear infinite;
+    animation: certMarqueeRTL 98s linear infinite;
 }
 
 /* Hover pause for effortless reading and clicking */
