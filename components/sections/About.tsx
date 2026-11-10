@@ -41,7 +41,10 @@ export default function About() {
         />
       </div>
 
-      <ScrollArrow targetId="experience" altText="Scroll down to experience section" />
+      {/* Smooth Scroll Navigation to Experience */}
+      <div className="editorial-scroll-arrow">
+        <ScrollArrow targetId="experience" altText="Scroll down to experience section" />
+      </div>
     </FadeInSection>
   );
 }

@@ -268,16 +268,17 @@ section {
    HERO SECTION
    ========================================================================== */
 #profile.hero-modern-section {
-    position: relative;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
     min-height: 84vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 3rem 0 4rem;
-    margin: 0 auto;
-    max-width: 1200px;
-    height: auto;
-    overflow: visible;
+    box-sizing: border-box;
+    overflow: hidden;
     z-index: 1;
 }
 
@@ -1508,15 +1509,16 @@ body.dark-theme .editorial-cta-btn:hover {
 
 /* --- Scroll Navigation Arrow: Positioned on the Right Side --- */
 .editorial-scroll-arrow {
-    position: absolute;
-    right: 3rem;
-    bottom: 2rem;
-    z-index: 10;
-    margin: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: auto;
+    position: absolute !important;
+    right: 3rem !important;
+    bottom: 2rem !important;
+    z-index: 10 !important;
+    margin: 0 !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
 .editorial-scroll-arrow .scroll-down-link,
@@ -1664,8 +1666,8 @@ body.dark-theme .editorial-cta-btn:hover {
     }
 
     .editorial-scroll-arrow {
-        right: 2rem;
-        bottom: 1.5rem;
+        right: 2rem !important;
+        bottom: 1.5rem !important;
     }
 }
 
@@ -4514,11 +4516,16 @@ body.dark-theme .tech-tag {
 }
 /* TESTIMONIALS */
 #testimonials {
-    padding: 4vh 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 5rem 2rem 5rem !important;
+    box-sizing: border-box;
+    position: relative !important;
     height: fit-content;
     min-height: auto;
     text-align: center;
-    position: relative;
+    overflow: hidden;
 }
 
 .testimonial-grid-container {
@@ -4970,9 +4977,14 @@ body.dark-theme .contact-info-upper-container {
 
 /* FOOTER SECTION */
 footer {
-    height: 26vh;
-    margin: 0 1rem;
-    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 2.5rem 0 2rem;
+    box-sizing: border-box;
+    position: relative !important;
+    height: auto;
+    min-height: 22vh;
 }
 
 footer .scroll-up-link {
@@ -6689,14 +6701,17 @@ body.dark-theme .custom-select-option.selected {
     }
     /* Keep homepage section navigation arrows visible on the right side on mobile */
     .editorial-scroll-arrow {
-        display: inline-flex !important;
+        display: flex !important;
         position: absolute !important;
         right: 1.5rem !important;
         bottom: 1.5rem !important;
         margin: 0 !important;
-        width: auto !important;
+        width: 30px !important;
+        height: 30px !important;
+        z-index: 10 !important;
     }
-    .editorial-scroll-arrow .scroll-down-link {
+    .editorial-scroll-arrow .scroll-down-link,
+    .editorial-scroll-arrow .scroll-up-link {
         display: inline-flex !important;
     }
     #profile .scroll-down-link {

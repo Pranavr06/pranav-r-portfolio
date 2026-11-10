@@ -111,7 +111,10 @@ export default function Hero() {
         </div>
       </div>
 
-      <ScrollArrow targetId="about" altText="Scroll down to about section" />
+      {/* Smooth Scroll Navigation to About */}
+      <div className="editorial-scroll-arrow">
+        <ScrollArrow targetId="about" altText="Scroll down to about section" />
+      </div>
     </section>
   );
 }

@@ -48,7 +48,9 @@ export default function Footer() {
         - All rights reserved.
       </p>
       {!pathname?.startsWith('/admin') && (
-        <ScrollArrow direction="up" targetId="top" altText="Back to top" />
+        <div className="editorial-scroll-arrow">
+          <ScrollArrow direction="up" targetId="top" altText="Back to top" />
+        </div>
       )}
     </footer>
   );
