@@ -11,13 +11,10 @@ export default function Experience() {
         {/* Left Column: Portrait holding binoculars (same size as About Me section) */}
         <div className="editorial-experience-left">
           <div className="editorial-portrait-wrapper">
-            {/* Viewfinder Lens & Studio Disc Backdrop Elements */}
+            {/* Subtle Abstract Backdrop Elements */}
             <div className="editorial-portrait-aura" aria-hidden="true" />
             <div className="editorial-portrait-ring" aria-hidden="true" />
-            <div className="editorial-portrait-inner-ring" aria-hidden="true" />
             <div className="editorial-portrait-crosshair ch-tl" aria-hidden="true" />
-            <div className="editorial-portrait-crosshair ch-tr" aria-hidden="true" />
-            <div className="editorial-portrait-crosshair ch-bl" aria-hidden="true" />
             <div className="editorial-portrait-crosshair ch-br" aria-hidden="true" />
 
             {/* Supplied Binoculars Portrait Asset */}
