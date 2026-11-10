@@ -5,17 +5,6 @@ import Link from "next/link";
 import FadeInSection from "@/components/FadeInSection";
 import ScrollArrow from "@/components/ScrollArrow";
 import { supabase } from "@/lib/supabase";
-import { slugify } from "@/lib/slug";
-import {
-  Award,
-  Trophy,
-  GraduationCap,
-  Briefcase,
-  Video,
-  Laptop,
-  BrainCircuit,
-  Sparkles,
-} from "lucide-react";
 
 interface CertificateItem {
   id: string;
@@ -24,7 +13,7 @@ interface CertificateItem {
   slug?: string;
 }
 
-// Fallback certificates list pre-populated directly from database for instant SSR and zero layout shift
+// Fallback certificates pre-populated directly from database for instant SSR and zero layout shift
 const FALLBACK_CERTIFICATES: CertificateItem[] = [
   { id: "1", title: "Training in Artificial Intelligence and Machine Learning", category: "Courses" },
   { id: "2", title: "IICT AI & ML Summer Internship", category: "Internships" },
@@ -59,18 +48,6 @@ const FALLBACK_CERTIFICATES: CertificateItem[] = [
   { id: "31", title: "Swachh Bharat Mission Grameen Phase-II Certification", category: "Certifications" },
 ];
 
-function getCategoryIcon(category?: string) {
-  const cat = (category || "").toLowerCase();
-  if (cat.includes("course")) return GraduationCap;
-  if (cat.includes("hackathon") || cat.includes("competition") || cat.includes("winner")) return Trophy;
-  if (cat.includes("internship")) return Briefcase;
-  if (cat.includes("webinar")) return Video;
-  if (cat.includes("workshop")) return Laptop;
-  if (cat.includes("quiz")) return BrainCircuit;
-  if (cat.includes("conference") || cat.includes("presentation")) return Sparkles;
-  return Award;
-}
-
 export default function Certificates() {
   const [certificates, setCertificates] = useState<CertificateItem[]>(FALLBACK_CERTIFICATES);
 
@@ -95,30 +72,85 @@ export default function Certificates() {
     fetchLiveCertificates();
   }, []);
 
-  // Partition certificates into 3 alternating rows and quadruple for seamless infinite marquee loop
-  const { row1, row2, row3 } = useMemo(() => {
+  // Partition certificates into 4 alternating rows and quadruple for seamless infinite marquee loop
+  const { row1, row2, row3, row4 } = useMemo(() => {
     const r1: CertificateItem[] = [];
     const r2: CertificateItem[] = [];
     const r3: CertificateItem[] = [];
+    const r4: CertificateItem[] = [];
 
     certificates.forEach((cert, idx) => {
-      if (idx % 3 === 0) r1.push(cert);
-      else if (idx % 3 === 1) r2.push(cert);
-      else r3.push(cert);
+      const mod = idx % 4;
+      if (mod === 0) r1.push(cert);
+      else if (mod === 1) r2.push(cert);
+      else if (mod === 2) r3.push(cert);
+      else r4.push(cert);
     });
 
     return {
       row1: [...r1, ...r1, ...r1, ...r1],
       row2: [...r2, ...r2, ...r2, ...r2],
       row3: [...r3, ...r3, ...r3, ...r3],
+      row4: [...r4, ...r4, ...r4, ...r4],
     };
   }, [certificates]);
 
   return (
     <FadeInSection id="certificate" className="editorial-certificates-section">
-      {/* Top Block: Two-Column Editorial Layout */}
+      {/* Background Marquee Ticker Layer (10-15% Opacity Depth Watermark) */}
+      <div className="cert-bg-marquee-layer" aria-hidden="true">
+        {/* Row 1: Left to Right */}
+        <div className="cert-bg-marquee-row row-ltr">
+          <div className="cert-bg-marquee-track track-ltr">
+            {row1.map((cert, idx) => (
+              <span key={`bg-r1-${idx}`} className="cert-bg-marquee-item">
+                <span className="cert-bg-title">{cert.title}</span>
+                <span className="cert-bg-separator">✦</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2: Right to Left */}
+        <div className="cert-bg-marquee-row row-rtl">
+          <div className="cert-bg-marquee-track track-rtl">
+            {row2.map((cert, idx) => (
+              <span key={`bg-r2-${idx}`} className="cert-bg-marquee-item">
+                <span className="cert-bg-title">{cert.title}</span>
+                <span className="cert-bg-separator">✦</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 3: Left to Right */}
+        <div className="cert-bg-marquee-row row-ltr row-3">
+          <div className="cert-bg-marquee-track track-ltr">
+            {row3.map((cert, idx) => (
+              <span key={`bg-r3-${idx}`} className="cert-bg-marquee-item">
+                <span className="cert-bg-title">{cert.title}</span>
+                <span className="cert-bg-separator">✦</span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 4: Right to Left */}
+        <div className="cert-bg-marquee-row row-rtl row-extra">
+          <div className="cert-bg-marquee-track track-rtl">
+            {row4.map((cert, idx) => (
+              <span key={`bg-r4-${idx}`} className="cert-bg-marquee-item">
+                <span className="cert-bg-title">{cert.title}</span>
+                <span className="cert-bg-separator">✦</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Foreground Editorial Two-Column Layout */}
       <div className="editorial-cert-container">
-        {/* Left Column: Heading, Description, and CTA */}
+        {/* Left Column: Heading and Description (No CTA button per user request) */}
         <div className="editorial-cert-left">
           <h2 className="editorial-heading">
             <span className="editorial-heading-accent">My Certificates</span>
@@ -127,20 +159,9 @@ export default function Certificates() {
           <p className="editorial-description">
             A curated showcase of industry certifications, hackathon recognitions, technical workshops, and academic milestones from leading organizations and competitions.
           </p>
-
-          <div className="editorial-cta-wrap">
-            <Link
-              href="/certificates"
-              className="editorial-cta-btn"
-              aria-label="Explore All Certificates"
-            >
-              <span>Explore All Certificates</span>
-              <span className="editorial-cta-arrow" aria-hidden="true">↗</span>
-            </Link>
-          </div>
         </div>
 
-        {/* Right Column: Portrait holding certificate (same size as About Me section) */}
+        {/* Right Column: Portrait holding certificate (Matched to About Me portrait size) */}
         <div className="editorial-cert-right">
           <div className="editorial-portrait-wrapper">
             {/* Subtle Abstract Backdrop Elements */}
@@ -171,75 +192,6 @@ export default function Certificates() {
                 <span className="cert-board-btn-arrow" aria-hidden="true">↗</span>
               </Link>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Block: Marquee Ticker Rows of Certificate Titles */}
-      <div className="cert-marquee-showcase" role="region" aria-label="Certificates Directory Marquee">
-        {/* Row 1: Left to Right */}
-        <div className="cert-marquee-row" aria-label="Certificates Row 1">
-          <div className="cert-marquee-track track-ltr">
-            {row1.map((cert, idx) => {
-              const Icon = getCategoryIcon(cert.category);
-              const certSlug = cert.slug || slugify(cert.title);
-              return (
-                <Link
-                  key={`r1-${idx}-${cert.id || cert.title}`}
-                  href={`/certificates#${certSlug}`}
-                  className="cert-marquee-pill"
-                  title={cert.title}
-                >
-                  <span className="cert-pill-icon"><Icon size={14} strokeWidth={2.2} /></span>
-                  <span className="cert-pill-title">{cert.title}</span>
-                  {cert.category && <span className="cert-pill-category">{cert.category}</span>}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Row 2: Right to Left */}
-        <div className="cert-marquee-row" aria-label="Certificates Row 2">
-          <div className="cert-marquee-track track-rtl">
-            {row2.map((cert, idx) => {
-              const Icon = getCategoryIcon(cert.category);
-              const certSlug = cert.slug || slugify(cert.title);
-              return (
-                <Link
-                  key={`r2-${idx}-${cert.id || cert.title}`}
-                  href={`/certificates#${certSlug}`}
-                  className="cert-marquee-pill"
-                  title={cert.title}
-                >
-                  <span className="cert-pill-icon"><Icon size={14} strokeWidth={2.2} /></span>
-                  <span className="cert-pill-title">{cert.title}</span>
-                  {cert.category && <span className="cert-pill-category">{cert.category}</span>}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Row 3: Left to Right */}
-        <div className="cert-marquee-row" aria-label="Certificates Row 3">
-          <div className="cert-marquee-track track-ltr">
-            {row3.map((cert, idx) => {
-              const Icon = getCategoryIcon(cert.category);
-              const certSlug = cert.slug || slugify(cert.title);
-              return (
-                <Link
-                  key={`r3-${idx}-${cert.id || cert.title}`}
-                  href={`/certificates#${certSlug}`}
-                  className="cert-marquee-pill"
-                  title={cert.title}
-                >
-                  <span className="cert-pill-icon"><Icon size={14} strokeWidth={2.2} /></span>
-                  <span className="cert-pill-title">{cert.title}</span>
-                  {cert.category && <span className="cert-pill-category">{cert.category}</span>}
-                </Link>
-              );
-            })}
           </div>
         </div>
       </div>
