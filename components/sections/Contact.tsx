@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import FadeInSection from "@/components/FadeInSection";
+import ScrollArrow from "@/components/ScrollArrow";
 
 export default function Contact({ hideArrow = false }: { hideArrow?: boolean }) {
   return (
@@ -81,6 +82,13 @@ export default function Contact({ hideArrow = false }: { hideArrow?: boolean }) 
           </div>
         </div>
       </div>
+
+      {/* Smooth Scroll Navigation to Footer */}
+      {!hideArrow && (
+        <div className="editorial-scroll-arrow">
+          <ScrollArrow targetId="footer" altText="Scroll down to footer" />
+        </div>
+      )}
     </FadeInSection>
   );
 }

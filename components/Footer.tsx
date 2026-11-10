@@ -26,7 +26,7 @@ export default function Footer() {
   if (pathname?.startsWith('/admin')) return null;
 
   return (
-    <footer>
+    <footer id="footer">
       <nav>
         <div className="nav-links-container">
           <ul className="nav-links">

@@ -43,7 +43,10 @@ export default async function Testimonials() {
         </Link>
       </div>
 
-      <ScrollArrow targetId="blog" altText="Scroll down to blog section" />
+      {/* Smooth Scroll Navigation to Blog */}
+      <div className="editorial-scroll-arrow">
+        <ScrollArrow targetId="blog" altText="Scroll down to blog section" />
+      </div>
     </FadeInSection>
   );
 }

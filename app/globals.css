@@ -1115,7 +1115,7 @@ body.dark-theme #about .tomasz-badge:hover {
     display: inline-block;
     position: absolute !important;
     bottom: 2.5rem !important;
-    right: -5rem !important;
+    right: 3rem !important;
     margin: 0 !important;
     box-shadow: none !important;
     transition: transform 0.2s ease-in-out;
@@ -1133,8 +1133,10 @@ body.dark-theme #about .tomasz-badge:hover {
 }
 
 footer .scroll-up-link {
-    right: 4rem !important;
-    bottom: 20rem !important;
+    position: absolute !important;
+    right: 3rem !important;
+    bottom: 2rem !important;
+    z-index: 10;
 }
 
 .scroll-down-link .arrow, .scroll-up-link .arrow {
@@ -1236,7 +1238,7 @@ body.dark-theme .clickable-about-card:hover {
 }
 
 body.dark-theme #experience.editorial-experience-section {
-    background-color: #000000;
+    background-color: var(--dark-bg);
 }
 
 .editorial-experience-container {
@@ -1507,11 +1509,37 @@ body.dark-theme .editorial-cta-btn:hover {
 /* --- Scroll Navigation Arrow --- */
 .editorial-scroll-arrow {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     margin-top: 3.5rem;
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100%;
+}
+
+.editorial-scroll-arrow .scroll-down-link,
+.editorial-scroll-arrow .scroll-up-link {
+    position: static !important;
+    right: auto !important;
+    bottom: auto !important;
+    margin: 0 auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    transform: none;
+}
+
+.editorial-scroll-arrow .scroll-down-link .arrow,
+.editorial-scroll-arrow .scroll-up-link .arrow {
+    margin: 0 !important;
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.editorial-scroll-arrow .scroll-down-link:hover .arrow,
+.editorial-scroll-arrow .scroll-up-link:hover .arrow {
+    transform: translateY(4px) scale(1.1) !important;
+    transition: transform 0.2s ease-in-out;
 }
 
 /* ==========================================================================
@@ -2869,7 +2897,7 @@ body.dark-theme .icon {
 }
 
 body.dark-theme #certificate.editorial-certificates-section {
-    background-color: #000000;
+    background-color: var(--dark-bg);
 }
 
 .editorial-cert-container {
@@ -3346,7 +3374,7 @@ body.dark-theme .cert-board-btn:hover {
 }
 
 body.dark-theme #projects.editorial-projects-section {
-    background-color: #000000;
+    background-color: var(--dark-bg);
 }
 
 .editorial-projects-container {
@@ -3596,7 +3624,7 @@ body.dark-theme .editorial-eyebrow {
 }
 
 body.dark-theme #blog.editorial-blog-section {
-    background-color: #000000;
+    background-color: var(--dark-bg);
 }
 
 .editorial-blog-container {
@@ -3866,7 +3894,7 @@ body.dark-theme .blog-portrait-img {
 }
 
 body.dark-theme #contact.editorial-contact-section {
-    background-color: #000000;
+    background-color: var(--dark-bg);
 }
 
 .editorial-contact-container {
@@ -4487,6 +4515,7 @@ body.dark-theme .tech-tag {
     height: fit-content;
     min-height: auto;
     text-align: center;
+    position: relative;
 }
 
 .testimonial-grid-container {
@@ -4944,7 +4973,10 @@ footer {
 }
 
 footer .scroll-up-link {
-    bottom: 18rem;
+    position: absolute !important;
+    right: 3rem !important;
+    bottom: 2rem !important;
+    z-index: 10;
 }
 
 footer p {
@@ -6651,6 +6683,32 @@ body.dark-theme .custom-select-option.selected {
 @media (max-width: 600px) {
     .scroll-down-link, .scroll-up-link {
         display: none !important;
+    }
+    /* Keep homepage section navigation arrows visible and properly sized on mobile */
+    .editorial-scroll-arrow {
+        display: flex !important;
+        margin-top: 2rem !important;
+        margin-bottom: 0.5rem !important;
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    .editorial-scroll-arrow .scroll-down-link {
+        display: inline-flex !important;
+    }
+    #profile .scroll-down-link {
+        display: inline-block !important;
+        right: 1.5rem !important;
+        bottom: 1.5rem !important;
+    }
+    #about .scroll-down-link {
+        display: inline-block !important;
+        right: 1.5rem !important;
+        bottom: 1.5rem !important;
+    }
+    footer .scroll-up-link {
+        display: inline-block !important;
+        right: 1.5rem !important;
+        bottom: 1.5rem !important;
     }
     .search-input-container, .custom-search-input {
         width: 100%;
