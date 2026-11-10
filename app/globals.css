@@ -3296,6 +3296,231 @@ body.dark-theme .cert-board-btn:hover {
     }
 }
 
+/* ==========================================================================
+   HOMEPAGE PROJECTS SECTION - EDITORIAL LIFESTYLE REDESIGN
+   ========================================================================== */
+#projects.editorial-projects-section {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5rem 2rem 4.5rem;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+body.dark-theme #projects.editorial-projects-section {
+    background-color: #000000;
+}
+
+.editorial-projects-container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* --- Left Column: Lifestyle Portrait (Pranav on wooden bench with blue mojito) --- */
+.editorial-projects-left {
+    flex: 1.15;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-projects-section.visible .editorial-projects-left {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.lifestyle-portrait-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.12), 0 8px 20px -6px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease;
+}
+
+body.dark-theme .lifestyle-portrait-wrapper {
+    box-shadow: 0 24px 50px -10px rgba(0, 0, 0, 0.7), 0 0 30px rgba(255, 255, 255, 0.04);
+}
+
+.lifestyle-portrait-img {
+    width: 100%;
+    height: auto;
+    max-height: 520px;
+    object-fit: contain;
+    display: block;
+}
+
+/* --- Right Column: Projects Editorial Content --- */
+.editorial-projects-right {
+    flex: 1;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+}
+
+.editorial-projects-section.visible .editorial-projects-right {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.editorial-eyebrow {
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 0.85rem;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .editorial-eyebrow {
+    color: #94a3b8;
+}
+
+.editorial-projects-right .editorial-heading {
+    margin: 0 0 1.5rem 0;
+}
+
+.editorial-projects-right .editorial-description {
+    margin: 0 0 2.25rem 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN - EDITORIAL PROJECTS SECTION
+   ========================================================================== */
+@media screen and (max-width: 1100px) {
+    .editorial-projects-container {
+        gap: 2.5rem;
+    }
+
+    .editorial-projects-left .lifestyle-portrait-wrapper {
+        max-width: 500px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    #projects.editorial-projects-section {
+        padding: 4.5rem 1.5rem 3.5rem;
+        min-height: auto;
+    }
+
+    .editorial-projects-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 2.25rem;
+        text-align: center;
+    }
+
+    .editorial-projects-left {
+        width: 100%;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .editorial-projects-left .lifestyle-portrait-wrapper {
+        max-width: 440px;
+    }
+
+    .editorial-projects-right {
+        width: 100%;
+        max-width: 520px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .editorial-projects-right .editorial-eyebrow {
+        margin: 0 auto 0.75rem;
+        text-align: center;
+    }
+
+    .editorial-projects-right .editorial-heading {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .editorial-projects-right .editorial-description {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
+    }
+
+    .editorial-projects-right .editorial-cta-wrap {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #projects.editorial-projects-section {
+        padding: 3.5rem 1.25rem 3rem;
+    }
+
+    .editorial-projects-left .lifestyle-portrait-wrapper {
+        max-width: 330px;
+        border-radius: 14px;
+    }
+
+    .editorial-projects-right .editorial-heading {
+        font-size: 2.2rem;
+    }
+
+    .editorial-projects-right .editorial-description {
+        font-size: 0.98rem;
+    }
+
+    .editorial-projects-right .editorial-cta-btn {
+        width: 100%;
+        max-width: 290px;
+        justify-content: center;
+        padding: 0.88rem 1.6rem;
+        font-size: 0.92rem;
+    }
+}
+
+/* Reduced-motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .editorial-projects-left,
+    .editorial-projects-right {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
 /* CERTIFICATES SECTION */
 #certificate {
     position: relative;
