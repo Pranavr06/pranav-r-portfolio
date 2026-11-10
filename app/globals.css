@@ -1279,79 +1279,112 @@ body.dark-theme #experience.editorial-experience-section {
     justify-content: center;
 }
 
-/* Subtle Abstract Backdrop Elements (Centered behind portrait torso) */
+/* Viewfinder Lens & Studio Disc Backdrop Elements */
 .editorial-portrait-aura {
     position: absolute;
-    width: 440px;
-    height: 440px;
-    top: 50%;
+    width: 500px;
+    height: 500px;
+    top: 48%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 0, 0, 0.038) 0%, rgba(0, 0, 0, 0.01) 62%, transparent 75%);
+    background: radial-gradient(circle at 50% 45%, #e2e8f0 0%, #cbd5e1 65%, #94a3b8 100%);
+    border: 1.5px solid rgba(15, 23, 42, 0.22);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12), inset 0 0 30px rgba(0, 0, 0, 0.04);
     pointer-events: none;
     z-index: 1;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 body.dark-theme .editorial-portrait-aura {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.065) 0%, rgba(255, 255, 255, 0.015) 62%, transparent 75%);
+    background: radial-gradient(circle at 50% 45%, #1e293b 0%, #0f172a 68%, #020617 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.85), 0 0 50px rgba(255, 255, 255, 0.06), inset 0 0 30px rgba(255, 255, 255, 0.04);
 }
 
 .editorial-portrait-ring {
     position: absolute;
-    width: 410px;
-    height: 410px;
-    top: 50%;
+    width: 540px;
+    height: 540px;
+    top: 48%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    border: 1px dashed rgba(0, 0, 0, 0.09);
+    border: 2px dashed rgba(15, 23, 42, 0.45);
     pointer-events: none;
     z-index: 1;
     transition: border-color 0.3s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 body.dark-theme .editorial-portrait-ring {
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.5);
 }
 
 .editorial-portrait-wrapper:hover .editorial-portrait-ring {
     transform: translate(-50%, -50%) rotate(15deg);
 }
 
-/* Minimalist Corner Crosshair Accents */
+.editorial-portrait-inner-ring {
+    position: absolute;
+    width: 440px;
+    height: 440px;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    border: 1.5px solid rgba(15, 23, 42, 0.25);
+    pointer-events: none;
+    z-index: 1;
+    transition: border-color 0.3s ease;
+}
+
+body.dark-theme .editorial-portrait-inner-ring {
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* Minimalist Corner Crosshair / Viewfinder Targeting Accents */
 .editorial-portrait-crosshair {
     position: absolute;
-    width: 14px;
-    height: 14px;
+    width: 20px;
+    height: 20px;
     pointer-events: none;
     z-index: 1;
     transition: border-color 0.3s ease;
 }
 
 .editorial-portrait-crosshair.ch-tl {
-    top: 15%;
-    left: 10%;
-    border-top: 1.5px solid rgba(0, 0, 0, 0.18);
-    border-left: 1.5px solid rgba(0, 0, 0, 0.18);
+    top: 8%;
+    left: 5%;
+    border-top: 2.5px solid rgba(15, 23, 42, 0.7);
+    border-left: 2.5px solid rgba(15, 23, 42, 0.7);
+}
+
+.editorial-portrait-crosshair.ch-tr {
+    top: 8%;
+    right: 5%;
+    border-top: 2.5px solid rgba(15, 23, 42, 0.7);
+    border-right: 2.5px solid rgba(15, 23, 42, 0.7);
+}
+
+.editorial-portrait-crosshair.ch-bl {
+    bottom: 8%;
+    left: 5%;
+    border-bottom: 2.5px solid rgba(15, 23, 42, 0.7);
+    border-left: 2.5px solid rgba(15, 23, 42, 0.7);
 }
 
 .editorial-portrait-crosshair.ch-br {
-    bottom: 15%;
-    right: 10%;
-    border-bottom: 1.5px solid rgba(0, 0, 0, 0.18);
-    border-right: 1.5px solid rgba(0, 0, 0, 0.18);
+    bottom: 8%;
+    right: 5%;
+    border-bottom: 2.5px solid rgba(15, 23, 42, 0.7);
+    border-right: 2.5px solid rgba(15, 23, 42, 0.7);
 }
 
-body.dark-theme .editorial-portrait-crosshair.ch-tl {
-    border-top-color: rgba(255, 255, 255, 0.22);
-    border-left-color: rgba(255, 255, 255, 0.22);
-}
-
+body.dark-theme .editorial-portrait-crosshair.ch-tl,
+body.dark-theme .editorial-portrait-crosshair.ch-tr,
+body.dark-theme .editorial-portrait-crosshair.ch-bl,
 body.dark-theme .editorial-portrait-crosshair.ch-br {
-    border-bottom-color: rgba(255, 255, 255, 0.22);
-    border-right-color: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.85);
 }
 
 /* Portrait Image - Exact match to About Me desktop size */
@@ -1578,13 +1611,26 @@ body.dark-theme .editorial-cta-btn:hover {
     }
 
     .editorial-portrait-aura {
-        width: 280px;
-        height: 280px;
+        width: 320px;
+        height: 320px;
+        top: 50%;
     }
 
     .editorial-portrait-ring {
-        width: 260px;
-        height: 260px;
+        width: 345px;
+        height: 345px;
+        top: 50%;
+    }
+
+    .editorial-portrait-inner-ring {
+        width: 280px;
+        height: 280px;
+        top: 50%;
+    }
+
+    .editorial-portrait-crosshair {
+        width: 14px;
+        height: 14px;
     }
 
     .editorial-experience-right {
@@ -1639,13 +1685,18 @@ body.dark-theme .editorial-cta-btn:hover {
     }
 
     .editorial-portrait-aura {
-        width: 230px;
-        height: 230px;
+        width: 275px;
+        height: 275px;
     }
 
     .editorial-portrait-ring {
-        width: 210px;
-        height: 210px;
+        width: 295px;
+        height: 295px;
+    }
+
+    .editorial-portrait-inner-ring {
+        width: 240px;
+        height: 240px;
     }
 
     .editorial-heading {
