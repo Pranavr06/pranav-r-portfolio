@@ -1536,22 +1536,46 @@ body.dark-theme .editorial-cta-btn:hover {
     .editorial-experience-container {
         flex-direction: column;
         align-items: center;
-        gap: 2rem;
+        gap: 1.5rem;
         text-align: center;
     }
 
-    /* Mobile portrait container - exact match to #about .tomasz-right-content (height: 360px) */
+    /* Mobile: Display Title & Description first, then Portrait, then CTA Button */
+    .editorial-experience-right {
+        display: contents;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .editorial-experience-right .editorial-heading {
+        order: 1;
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .editorial-experience-right .editorial-description {
+        order: 2;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.05rem;
+        margin-bottom: 1.25rem;
+    }
+
+    /* Mobile portrait container */
     .editorial-experience-left {
+        order: 3;
         height: 360px;
         width: 100%;
         flex: none;
         display: flex;
         align-items: flex-end;
         justify-content: center;
-        padding-top: 2rem;
+        padding-top: 1rem;
         position: relative;
         z-index: 1;
-        margin: 0 auto;
+        margin: 0 auto 0.5rem;
         overflow: hidden;
     }
 
@@ -1587,31 +1611,26 @@ body.dark-theme .editorial-cta-btn:hover {
         height: 260px;
     }
 
-    .editorial-experience-right {
-        flex: none;
-        width: 100%;
-        max-width: 520px;
-        align-items: center;
-        text-align: center;
-    }
-
-    .editorial-heading {
-        font-size: 2.5rem;
-        text-align: center;
-        margin-bottom: 1rem;
-    }
-
-    .editorial-description {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 1.05rem;
-        margin-bottom: 2rem;
-    }
-
-    .editorial-cta-wrap {
+    .editorial-experience-right .editorial-cta-wrap {
+        order: 4;
         justify-content: center;
         width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .editorial-experience-section:not(.visible) .editorial-heading,
+    .editorial-experience-section:not(.visible) .editorial-description,
+    .editorial-experience-section:not(.visible) .editorial-cta-wrap {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    .editorial-experience-section.visible .editorial-heading,
+    .editorial-experience-section.visible .editorial-description,
+    .editorial-experience-section.visible .editorial-cta-wrap {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .editorial-scroll-arrow {
@@ -1624,10 +1643,25 @@ body.dark-theme .editorial-cta-btn:hover {
         padding: 3.5rem 1.25rem 3rem;
     }
 
-    /* Small mobile portrait container - exact match to #about .tomasz-right-content (height: 310px) */
+    .editorial-experience-container {
+        gap: 1.25rem;
+    }
+
+    .editorial-experience-right .editorial-heading {
+        font-size: 2.2rem;
+        margin-bottom: 0.65rem;
+    }
+
+    .editorial-experience-right .editorial-description {
+        font-size: 0.98rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Small mobile portrait container */
     .editorial-experience-left {
         height: 310px;
-        padding-top: 1.25rem;
+        padding-top: 0.75rem;
+        margin-bottom: 0.25rem;
     }
 
     .editorial-portrait-wrapper {
@@ -1648,14 +1682,6 @@ body.dark-theme .editorial-cta-btn:hover {
         height: 210px;
     }
 
-    .editorial-heading {
-        font-size: 2.2rem;
-    }
-
-    .editorial-description {
-        font-size: 0.98rem;
-    }
-
     .editorial-cta-btn {
         width: 100%;
         max-width: 300px;
@@ -1668,6 +1694,9 @@ body.dark-theme .editorial-cta-btn:hover {
 @media (prefers-reduced-motion: reduce) {
     .editorial-experience-left,
     .editorial-experience-right,
+    .editorial-experience-section .editorial-heading,
+    .editorial-experience-section .editorial-description,
+    .editorial-experience-section .editorial-cta-wrap,
     .editorial-portrait-img,
     .editorial-portrait-ring,
     .editorial-cta-btn,
@@ -3438,49 +3467,72 @@ body.dark-theme .editorial-eyebrow {
     .editorial-projects-container {
         flex-direction: column;
         align-items: center;
-        gap: 2.25rem;
+        gap: 1.5rem;
         text-align: center;
     }
 
+    /* Mobile: Display Eyebrow, Title & Description first, then Lifestyle Portrait, then CTA Button */
+    .editorial-projects-right {
+        display: contents;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .editorial-projects-right .editorial-eyebrow {
+        order: 1;
+        margin: 0 auto 0.6rem;
+        text-align: center;
+    }
+
+    .editorial-projects-right .editorial-heading {
+        order: 2;
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .editorial-projects-right .editorial-description {
+        order: 3;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.05rem;
+        margin-bottom: 1.25rem;
+    }
+
     .editorial-projects-left {
+        order: 4;
         width: 100%;
         justify-content: center;
-        margin: 0 auto;
+        margin: 0 auto 0.5rem;
     }
 
     .editorial-projects-left .lifestyle-portrait-wrapper {
         max-width: 440px;
     }
 
-    .editorial-projects-right {
-        width: 100%;
-        max-width: 520px;
-        align-items: center;
-        text-align: center;
-    }
-
-    .editorial-projects-right .editorial-eyebrow {
-        margin: 0 auto 0.75rem;
-        text-align: center;
-    }
-
-    .editorial-projects-right .editorial-heading {
-        font-size: 2.5rem;
-        text-align: center;
-        margin-bottom: 1rem;
-    }
-
-    .editorial-projects-right .editorial-description {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 1.05rem;
-        margin-bottom: 2rem;
-    }
-
     .editorial-projects-right .editorial-cta-wrap {
+        order: 5;
         justify-content: center;
         width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    .editorial-projects-section:not(.visible) .editorial-eyebrow,
+    .editorial-projects-section:not(.visible) .editorial-heading,
+    .editorial-projects-section:not(.visible) .editorial-description,
+    .editorial-projects-section:not(.visible) .editorial-cta-wrap {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    .editorial-projects-section.visible .editorial-eyebrow,
+    .editorial-projects-section.visible .editorial-heading,
+    .editorial-projects-section.visible .editorial-description,
+    .editorial-projects-section.visible .editorial-cta-wrap {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 }
 
@@ -3489,17 +3541,23 @@ body.dark-theme .editorial-eyebrow {
         padding: 3.5rem 1.25rem 3rem;
     }
 
-    .editorial-projects-left .lifestyle-portrait-wrapper {
-        max-width: 330px;
-        border-radius: 14px;
+    .editorial-projects-container {
+        gap: 1.25rem;
     }
 
     .editorial-projects-right .editorial-heading {
         font-size: 2.2rem;
+        margin-bottom: 0.65rem;
     }
 
     .editorial-projects-right .editorial-description {
         font-size: 0.98rem;
+        margin-bottom: 1rem;
+    }
+
+    .editorial-projects-left .lifestyle-portrait-wrapper {
+        max-width: 330px;
+        border-radius: 14px;
     }
 
     .editorial-projects-right .editorial-cta-btn {
@@ -3514,7 +3572,11 @@ body.dark-theme .editorial-eyebrow {
 /* Reduced-motion accessibility */
 @media (prefers-reduced-motion: reduce) {
     .editorial-projects-left,
-    .editorial-projects-right {
+    .editorial-projects-right,
+    .editorial-projects-section .editorial-eyebrow,
+    .editorial-projects-section .editorial-heading,
+    .editorial-projects-section .editorial-description,
+    .editorial-projects-section .editorial-cta-wrap {
         opacity: 1 !important;
         transform: none !important;
         transition: none !important;
