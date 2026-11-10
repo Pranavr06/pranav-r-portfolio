@@ -2945,12 +2945,13 @@ body.dark-theme .cert-bg-separator {
     max-width: 1320px;
     margin: 0 auto;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: 4.5rem;
     position: relative;
     z-index: 5;
-    min-height: 720px;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
 }
 
 /* --- Left Column: Heading and Description --- */
@@ -2966,7 +2967,7 @@ body.dark-theme .cert-bg-separator {
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     z-index: 6;
-    padding-bottom: 5.5rem; /* Elevates text vertically to balance tall portrait */
+    padding-bottom: 0;
 }
 
 .editorial-certificates-section.visible .editorial-cert-left {
@@ -2982,13 +2983,12 @@ body.dark-theme .cert-bg-separator {
     margin: 0;
 }
 
-/* --- Right Column: Portrait holding certificate (Exact match to About Me size: max-height 720px) --- */
+/* --- Right Column: Portrait holding certificate (Exact match to About Me size: max-width 620px, max-height 720px) --- */
 .editorial-cert-right {
     flex: 1.15;
     width: 100%;
-    height: 720px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     position: relative;
     z-index: 6;
@@ -3005,49 +3005,51 @@ body.dark-theme .cert-bg-separator {
 .editorial-cert-right .editorial-portrait-wrapper {
     position: relative;
     width: 100%;
-    height: 100%;
-    max-height: 720px;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
 }
 
 /* Subtle Gold Backdrop Elements */
 .cert-gold-aura {
-    background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.02) 62%, transparent 75%);
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.14) 0%, rgba(212, 175, 55, 0.02) 62%, transparent 75%);
+    width: 520px;
+    height: 520px;
 }
 
 body.dark-theme .cert-gold-aura {
-    background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.04) 62%, transparent 75%);
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, rgba(212, 175, 55, 0.04) 62%, transparent 75%);
 }
 
 .cert-gold-ring {
-    border-color: rgba(212, 175, 55, 0.22);
+    border-color: rgba(212, 175, 55, 0.25);
+    width: 460px;
+    height: 460px;
 }
 
 body.dark-theme .cert-gold-ring {
-    border-color: rgba(212, 175, 55, 0.3);
+    border-color: rgba(212, 175, 55, 0.35);
 }
 
 /* Dedicated Portrait Frame tightly wrapping image and button */
 .cert-portrait-frame {
     position: relative;
     display: inline-flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
-    height: 100%;
     max-height: 720px;
     width: auto;
+    max-width: 100%;
     z-index: 2;
 }
 
 .cert-portrait-img {
-    height: 100%;
+    height: auto;
     max-height: 720px;
-    width: auto;
-    max-width: 100%;
+    width: 100%;
+    max-width: 620px;
     object-fit: contain;
-    object-position: bottom center;
+    object-position: center;
     display: block;
     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.12));
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
@@ -3061,11 +3063,11 @@ body.dark-theme .cert-portrait-img {
     transform: scale(1.02);
 }
 
-/* Board CTA Button inside certificate in hand - centered at exact horizontal center (49.0%) */
+/* Board CTA Button inside certificate in hand - centered at exact geometric center (49.4%, 61.5%) */
 .cert-board-btn {
     position: absolute;
-    top: 67.7%;
-    left: 49.0%;
+    top: 61.5%;
+    left: 49.4%;
     transform: translate(-50%, -50%);
     z-index: 10;
     display: inline-flex;
@@ -3130,21 +3132,16 @@ body.dark-theme .cert-board-btn:hover {
 @media screen and (max-width: 1100px) {
     .editorial-cert-container {
         gap: 2.5rem;
-        min-height: 600px;
     }
 
-    .editorial-cert-right {
-        height: 600px;
-    }
-
-    .editorial-cert-left {
-        padding-bottom: 2.5rem;
+    .editorial-cert-right .cert-portrait-img {
+        max-width: 500px;
     }
 }
 
 @media screen and (max-width: 900px) {
     #certificate.editorial-certificates-section {
-        padding: 4.5rem 1.5rem 3.5rem;
+        padding: 4rem 1.5rem 3rem;
         min-height: auto;
     }
 
@@ -3178,16 +3175,16 @@ body.dark-theme .cert-board-btn:hover {
         font-size: 1.05rem;
     }
 
-    /* Tablet portrait container - exact match to About Me (height: 360px) */
+    /* Tablet portrait container - exact match to About Me (height: 380px) */
     .editorial-cert-right {
-        height: 360px;
-        max-height: 360px;
+        height: auto;
+        max-height: 420px;
         width: 100%;
         flex: none;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
-        padding-top: 1.5rem;
+        padding-top: 1rem;
         position: relative;
         z-index: 6;
         margin: 0 auto;
@@ -3196,23 +3193,24 @@ body.dark-theme .cert-board-btn:hover {
 
     .editorial-cert-right .editorial-portrait-wrapper {
         height: 100%;
-        max-height: 360px;
+        max-height: 420px;
         width: 100%;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: center;
     }
 
     .editorial-cert-right .cert-portrait-frame {
-        max-height: 360px;
+        max-height: 420px;
     }
 
     .editorial-cert-right .editorial-portrait-img {
-        height: 100%;
-        max-height: 360px;
+        height: auto;
+        max-height: 420px;
         width: auto;
+        max-width: 400px;
         object-fit: contain;
-        object-position: bottom center;
+        object-position: center;
         filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.12));
     }
 
@@ -3238,30 +3236,35 @@ body.dark-theme .cert-board-btn:hover {
 
 @media screen and (max-width: 600px) {
     #certificate.editorial-certificates-section {
-        padding: 3.5rem 1.25rem 3rem;
+        padding: 3rem 1.25rem 2.5rem;
     }
 
     .editorial-cert-container {
         gap: 1.5rem;
     }
 
-    /* Small mobile portrait container - exact match to About Me (height: 310px) */
+    /* Small mobile portrait container - exact match to About Me */
     .editorial-cert-right {
-        height: 310px;
-        max-height: 310px;
-        padding-top: 1rem;
+        height: auto;
+        max-height: 350px;
+        padding-top: 0.5rem;
     }
 
     .editorial-cert-right .editorial-portrait-wrapper {
-        max-height: 310px;
+        max-height: 350px;
     }
 
     .editorial-cert-right .cert-portrait-frame {
-        max-height: 310px;
+        max-height: 350px;
     }
 
     .editorial-cert-right .editorial-portrait-img {
-        max-height: 310px;
+        height: auto;
+        max-height: 350px;
+        width: auto;
+        max-width: 320px;
+        object-fit: contain;
+        object-position: center;
     }
 
     .editorial-cert-aura {

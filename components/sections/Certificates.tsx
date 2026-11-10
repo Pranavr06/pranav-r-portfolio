@@ -172,12 +172,12 @@ export default function Certificates() {
 
             {/* Frame wrapping image & button for pixel-perfect relative positioning */}
             <div className="cert-portrait-frame">
-              {/* Supplied Certificate Portrait Asset */}
+              {/* Supplied Certificate Portrait Asset (Tightly cropped, matching About Me portrait scale) */}
               <img
                 src="/assets/pranavr-certificate.webp"
                 alt="Pranav R holding certificate of achievements"
                 className="editorial-portrait-img cert-portrait-img"
-                width={1536}
+                width={1036}
                 height={1024}
                 loading="lazy"
               />
