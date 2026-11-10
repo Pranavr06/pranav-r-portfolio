@@ -1215,7 +1215,518 @@ body.dark-theme .clickable-about-card:hover {
     margin: auto 0;
 }
 
-/*EXPERIENCE*/
+/* ==========================================================================
+   HOMEPAGE EXPERIENCE SECTION - EDITORIAL TWO-COLUMN REDESIGN
+   ========================================================================== */
+#experience.editorial-experience-section {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    min-height: 86vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 6rem 2rem 5rem;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+body.dark-theme #experience.editorial-experience-section {
+    background-color: #000000;
+}
+
+.editorial-experience-container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* --- Left Column: Portrait holding binoculars (~45% width) --- */
+.editorial-experience-left {
+    flex: 0 0 45%;
+    max-width: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-experience-section.visible .editorial-experience-left {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.editorial-portrait-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Subtle Abstract Backdrop Elements */
+.editorial-portrait-aura {
+    position: absolute;
+    inset: -6%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.038) 0%, rgba(0, 0, 0, 0.01) 62%, transparent 75%);
+    pointer-events: none;
+    z-index: 1;
+    transition: background 0.3s ease;
+}
+
+body.dark-theme .editorial-portrait-aura {
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.065) 0%, rgba(255, 255, 255, 0.015) 62%, transparent 75%);
+}
+
+.editorial-portrait-ring {
+    position: absolute;
+    inset: 2%;
+    border-radius: 50%;
+    border: 1px dashed rgba(0, 0, 0, 0.09);
+    pointer-events: none;
+    z-index: 1;
+    transition: border-color 0.3s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.dark-theme .editorial-portrait-ring {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.editorial-portrait-wrapper:hover .editorial-portrait-ring {
+    transform: rotate(15deg);
+}
+
+/* Minimalist Corner Crosshair Accents (Lens Coordinates / Explorer Theme) */
+.editorial-portrait-crosshair {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    pointer-events: none;
+    z-index: 1;
+    transition: border-color 0.3s ease;
+}
+
+.editorial-portrait-crosshair.ch-tl {
+    top: 4%;
+    left: 4%;
+    border-top: 1.5px solid rgba(0, 0, 0, 0.18);
+    border-left: 1.5px solid rgba(0, 0, 0, 0.18);
+}
+
+.editorial-portrait-crosshair.ch-br {
+    bottom: 4%;
+    right: 4%;
+    border-bottom: 1.5px solid rgba(0, 0, 0, 0.18);
+    border-right: 1.5px solid rgba(0, 0, 0, 0.18);
+}
+
+body.dark-theme .editorial-portrait-crosshair.ch-tl {
+    border-top-color: rgba(255, 255, 255, 0.22);
+    border-left-color: rgba(255, 255, 255, 0.22);
+}
+
+body.dark-theme .editorial-portrait-crosshair.ch-br {
+    border-bottom-color: rgba(255, 255, 255, 0.22);
+    border-right-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Portrait Image */
+.editorial-portrait-img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    display: block;
+    filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.12));
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+}
+
+body.dark-theme .editorial-portrait-img {
+    filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.85));
+}
+
+.editorial-portrait-wrapper:hover .editorial-portrait-img {
+    transform: scale(1.025);
+}
+
+/* --- Right Column: Editorial Content (~55% width) --- */
+.editorial-experience-right {
+    flex: 0 0 55%;
+    max-width: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+}
+
+.editorial-experience-section.visible .editorial-experience-right {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Eyebrow Label: / EXPERIENCE */
+.editorial-eyebrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .editorial-eyebrow {
+    color: #94a3b8;
+}
+
+/* Main Heading: My Professional Journey */
+.editorial-heading {
+    font-size: clamp(2.4rem, 4vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    color: #000000;
+    margin: 0 0 1.25rem 0;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .editorial-heading {
+    color: #ffffff;
+}
+
+/* Accent treatment on "Journey" */
+.editorial-heading-accent {
+    font-family: Georgia, 'Playfair Display', Cambria, "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+}
+
+.editorial-heading-accent::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 3px;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    opacity: 0.35;
+    border-radius: 2px;
+}
+
+body.dark-theme .editorial-heading-accent::after {
+    opacity: 0.45;
+}
+
+/* Supporting Description */
+.editorial-description {
+    font-size: 1.08rem;
+    line-height: 1.75;
+    color: #475569;
+    margin: 0 0 2rem 0;
+    max-width: 580px;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .editorial-description {
+    color: #94a3b8;
+}
+
+/* --- Compact Professional Highlights (Minimal Inline Typography) --- */
+.editorial-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+    margin: 0 0 2.25rem 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+.editorial-highlight-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    transition: border-color 0.3s ease;
+}
+
+body.dark-theme .editorial-highlight-row {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.editorial-highlight-index {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #64748b;
+    letter-spacing: 0.08em;
+    min-width: 120px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .editorial-highlight-index {
+    color: #94a3b8;
+}
+
+.editorial-highlight-content {
+    font-size: 0.96rem;
+    line-height: 1.55;
+    color: #334155;
+    margin: 0;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .editorial-highlight-content {
+    color: #cbd5e1;
+}
+
+.editorial-highlight-content strong {
+    color: #000000;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .editorial-highlight-content strong {
+    color: #ffffff;
+}
+
+/* --- Call-to-Action Button: Explore My Experience ↗ --- */
+.editorial-cta-wrap {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.editorial-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.95rem 2rem;
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    border-radius: 8px;
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #000000;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-cta-btn:hover {
+    background-color: #1f2937;
+    border-color: #1f2937;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.2);
+}
+
+.editorial-cta-arrow {
+    display: inline-block;
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-cta-btn:hover .editorial-cta-arrow {
+    transform: translate(3px, -3px);
+}
+
+/* Dark Mode Button Styling */
+body.dark-theme .editorial-cta-btn {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+body.dark-theme .editorial-cta-btn:hover {
+    background-color: #f1f5f9;
+    border-color: #f1f5f9;
+    color: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -4px rgba(255, 255, 255, 0.25);
+}
+
+/* --- Scroll Navigation Arrow --- */
+.editorial-scroll-arrow {
+    position: relative;
+    z-index: 2;
+    margin-top: 3.5rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN FOR EDITORIAL EXPERIENCE SECTION
+   ========================================================================== */
+@media screen and (max-width: 1080px) {
+    .editorial-experience-container {
+        gap: 3rem;
+    }
+
+    .editorial-portrait-wrapper {
+        max-width: 400px;
+    }
+
+    .editorial-heading {
+        font-size: 2.7rem;
+    }
+
+    .editorial-highlight-index {
+        min-width: 105px;
+    }
+}
+
+@media screen and (max-width: 860px) {
+    #experience.editorial-experience-section {
+        padding: 5rem 1.5rem 4rem;
+        min-height: auto;
+    }
+
+    .editorial-experience-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 2.75rem;
+    }
+
+    .editorial-experience-left {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 340px;
+        margin: 0 auto;
+    }
+
+    .editorial-portrait-wrapper {
+        max-width: 340px;
+    }
+
+    .editorial-experience-right {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+
+    .editorial-eyebrow {
+        text-align: center;
+    }
+
+    .editorial-heading {
+        font-size: clamp(2.1rem, 6vw, 2.7rem);
+        text-align: center;
+    }
+
+    .editorial-description {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.02rem;
+    }
+
+    .editorial-highlights {
+        max-width: 520px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .editorial-highlight-row {
+        text-align: left;
+    }
+
+    .editorial-cta-wrap {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .editorial-scroll-arrow {
+        margin-top: 2.5rem;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    #experience.editorial-experience-section {
+        padding: 4rem 1rem 3.5rem;
+    }
+
+    .editorial-experience-left {
+        max-width: 290px;
+    }
+
+    .editorial-portrait-wrapper {
+        max-width: 290px;
+    }
+
+    .editorial-heading {
+        font-size: 2rem;
+    }
+
+    .editorial-highlight-row {
+        flex-direction: column;
+        gap: 0.3rem;
+        align-items: flex-start;
+        padding-bottom: 0.75rem;
+    }
+
+    .editorial-highlight-index {
+        min-width: auto;
+        font-size: 0.74rem;
+    }
+
+    .editorial-highlight-content {
+        font-size: 0.92rem;
+    }
+
+    .editorial-cta-btn {
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
+        padding: 0.85rem 1.5rem;
+    }
+}
+
+/* Reduced-motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .editorial-experience-left,
+    .editorial-experience-right,
+    .editorial-portrait-img,
+    .editorial-portrait-ring,
+    .editorial-cta-btn,
+    .editorial-cta-arrow {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
 
 #experience {
     padding: 4rem 0;

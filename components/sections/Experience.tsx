@@ -1,49 +1,95 @@
-import ScrollArrow from "@/components/ScrollArrow";
-import CollectionCard from "@/components/cards/CollectionCard";
+"use client";
+
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import FadeInSection from "@/components/FadeInSection";
+import ScrollArrow from "@/components/ScrollArrow";
 
-export default async function Experience() { 
-  const { data: hubs, error } = await supabase
-    .from("experience_hubs")
-    .select("*")
-    .or("is_archived.is.null,is_archived.eq.false")
-    .eq("is_published", true)
-    .order("display_order", { ascending: true });
-
-  if (error) {
-    console.error("Error fetching experience hubs:", error.message);
-  }
-
+export default function Experience() {
   return (
-    <section id='experience' className="fade-in-section">
-      <p className='section__text__p1'>My Professional Journey</p>
-      <h2 className='title'>Experiences</h2>
-      
-      <div className="project-details-container mt-3">
-        <div className="project-grid">
-          {hubs && hubs.map((hub) => (
-            <CollectionCard 
-              key={hub.id}
-              title={hub.title}
-              description={hub.description}
-              image={hub.image_url}
-              tags={hub.tags || []}
-              href={hub.href}
+    <FadeInSection id="experience" className="editorial-experience-section">
+      <div className="editorial-experience-container">
+        {/* Left Column: Portrait holding binoculars (~45% width) */}
+        <div className="editorial-experience-left">
+          <div className="editorial-portrait-wrapper">
+            {/* Subtle Abstract Backdrop Elements */}
+            <div className="editorial-portrait-aura" aria-hidden="true" />
+            <div className="editorial-portrait-ring" aria-hidden="true" />
+            <div className="editorial-portrait-crosshair ch-tl" aria-hidden="true" />
+            <div className="editorial-portrait-crosshair ch-br" aria-hidden="true" />
+
+            {/* Supplied Binoculars Portrait Asset */}
+            <img
+              src="/assets/pranavr-experience.webp"
+              alt="Pranav R holding binoculars, representing exploration, curiosity, and looking towards professional opportunities"
+              className="editorial-portrait-img"
+              loading="lazy"
+              width={1254}
+              height={1254}
             />
-          ))}
+          </div>
+        </div>
+
+        {/* Right Column: Editorial Experience Intro, Highlights, and CTA (~55% width) */}
+        <div className="editorial-experience-right">
+          <span className="editorial-eyebrow">/ EXPERIENCE</span>
+
+          <h2 className="editorial-heading">
+            My Professional <span className="editorial-heading-accent">Journey</span>
+          </h2>
+
+          <p className="editorial-description">
+            A journey of internships, hackathons, research presentations and achievements that have shaped my professional growth.
+          </p>
+
+          {/* Compact Professional Highlights (Minimal Inline Typography) */}
+          <div className="editorial-highlights">
+            <div className="editorial-highlight-row">
+              <span className="editorial-highlight-index">01 // Internships</span>
+              <p className="editorial-highlight-content">
+                <strong>Full-Stack &amp; IoT</strong> at AIC-NITTE • <strong>AI/ML Engineering</strong> at IICT
+              </p>
+            </div>
+
+            <div className="editorial-highlight-row">
+              <span className="editorial-highlight-index">02 // Hackathons</span>
+              <p className="editorial-highlight-content">
+                <strong>National Finalist</strong> at MY Bharat Budget Quest 2026 &amp; Nexathon (YojanaSethu)
+              </p>
+            </div>
+
+            <div className="editorial-highlight-row">
+              <span className="editorial-highlight-index">03 // Research</span>
+              <p className="editorial-highlight-content">
+                <strong>IEEE AIDE 2026 Author</strong> on applied machine learning model architectures
+              </p>
+            </div>
+
+            <div className="editorial-highlight-row">
+              <span className="editorial-highlight-index">04 // Systems</span>
+              <p className="editorial-highlight-content">
+                <strong>Real-time AI proctoring</strong>, enterprise web applications &amp; secure infrastructure
+              </p>
+            </div>
+          </div>
+
+          {/* Call-to-Action Button */}
+          <div className="editorial-cta-wrap">
+            <Link
+              href="/experiences"
+              className="editorial-cta-btn"
+              aria-label="Explore My Experience"
+            >
+              <span>Explore My Experience</span>
+              <span className="editorial-cta-arrow" aria-hidden="true">↗</span>
+            </Link>
+          </div>
         </div>
       </div>
-      
-      <div className="btn-container center-footer" style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
-        <Link href="/experiences" className="btn btn-color-2">
-          View more
-        </Link>
+
+      {/* Smooth Scroll Navigation to Certificates */}
+      <div className="editorial-scroll-arrow">
+        <ScrollArrow targetId="certificate" altText="Scroll down to certificates section" />
       </div>
-
-      <ScrollArrow targetId="certificate" altText="Scroll down to certificates section" />
-    </section>
-  ); 
+    </FadeInSection>
+  );
 }
-
-
