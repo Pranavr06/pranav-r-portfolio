@@ -2819,6 +2819,521 @@ body.dark-theme .icon {
 
 
   
+/* ==========================================================================
+   HOMEPAGE CERTIFICATES SECTION - CIRCULAR ORBIT REDESIGN
+   ========================================================================== */
+#certificate.circular-certificates-section {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 6rem 1.5rem 5rem;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+    --orbit-radius: 275px;
+}
+
+body.dark-theme #certificate.circular-certificates-section {
+    background-color: #000000;
+}
+
+/* --- Section Heading --- */
+.cert-header-wrap {
+    text-align: center;
+    max-width: 780px;
+    margin: 0 auto 1.5rem auto;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.circular-certificates-section.visible .cert-header-wrap {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Eyebrow Label: / MY ACHIEVEMENTS */
+.cert-eyebrow {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .cert-eyebrow {
+    color: #94a3b8;
+}
+
+/* Main Heading: A Journey of Learning & Recognition */
+.cert-heading {
+    font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    color: #000000;
+    margin: 0 0 1rem 0;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .cert-heading {
+    color: #ffffff;
+}
+
+.cert-heading-accent {
+    font-family: Georgia, 'Playfair Display', Cambria, "Times New Roman", serif;
+    font-style: italic;
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+}
+
+.cert-heading-accent::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 3px;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+    opacity: 0.35;
+    border-radius: 2px;
+}
+
+body.dark-theme .cert-heading-accent::after {
+    opacity: 0.45;
+}
+
+/* Supporting Text */
+.cert-subtext {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #475569;
+    margin: 0 auto;
+    max-width: 620px;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .cert-subtext {
+    color: #94a3b8;
+}
+
+/* --- Orbit Universe Stage --- */
+.cert-orbit-stage {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    height: 560px;
+    margin: 1.5rem auto 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.96) translateY(24px);
+    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+.circular-certificates-section.visible .cert-orbit-stage {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* Subtle Spotlight Glow Behind Portrait */
+.cert-spotlight {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 520px;
+    height: 520px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.08) 0%, rgba(0, 0, 0, 0.035) 40%, rgba(0, 0, 0, 0.01) 65%, transparent 75%);
+    pointer-events: none;
+    z-index: 1;
+    transition: background 0.3s ease;
+}
+
+body.dark-theme .cert-spotlight {
+    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.14) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0.012) 65%, transparent 75%);
+}
+
+/* SVG Orbital Paths & Dotted Circular Guides */
+.cert-orbit-guide-svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+}
+
+.cert-guide-circle-outer {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.05);
+    stroke-width: 1;
+    stroke-dasharray: 4 6;
+    transition: stroke 0.3s ease;
+}
+
+body.dark-theme .cert-guide-circle-outer {
+    stroke: rgba(255, 255, 255, 0.06);
+}
+
+.cert-guide-circle-main {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.1);
+    stroke-width: 1.25;
+    stroke-dasharray: 6 6;
+    transition: stroke 0.3s ease;
+}
+
+body.dark-theme .cert-guide-circle-main {
+    stroke: rgba(255, 255, 255, 0.13);
+}
+
+.cert-guide-arc-highlight {
+    fill: none;
+    stroke: rgba(212, 175, 55, 0.45);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    transition: stroke 0.3s ease;
+}
+
+body.dark-theme .cert-guide-arc-highlight {
+    stroke: rgba(212, 175, 55, 0.6);
+}
+
+.cert-guide-circle-inner {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.035);
+    stroke-width: 1;
+    transition: stroke 0.3s ease;
+}
+
+body.dark-theme .cert-guide-circle-inner {
+    stroke: rgba(255, 255, 255, 0.04);
+}
+
+/* Rotating Planetary Category Orbit System */
+.cert-orbit-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    z-index: 5;
+    animation: certOrbitSpin 42s linear infinite;
+}
+
+.cert-orbit-stage:hover .cert-orbit-ring {
+    animation-play-state: paused;
+}
+
+.cert-orbit-slot {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Category Badge (Counter-Spins to Stay strictly Horizontal & Upright) */
+.cert-orbit-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.52rem 1.15rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06), 0 0 10px rgba(212, 175, 55, 0.08);
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    animation: certCounterSpin 42s linear infinite;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cert-orbit-stage:hover .cert-orbit-badge {
+    animation-play-state: paused;
+}
+
+.cert-orbit-badge:hover {
+    border-color: rgba(212, 175, 55, 0.95);
+    box-shadow: 0 6px 22px rgba(212, 175, 55, 0.3);
+    color: #000000;
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.cert-orbit-icon {
+    color: #d4af37;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+}
+
+.cert-orbit-badge:hover .cert-orbit-icon {
+    transform: scale(1.15);
+}
+
+body.dark-theme .cert-orbit-badge {
+    background: #0f172a;
+    color: #f8fafc;
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 14px rgba(212, 175, 55, 0.12);
+}
+
+body.dark-theme .cert-orbit-badge:hover {
+    border-color: rgba(212, 175, 55, 1);
+    box-shadow: 0 6px 26px rgba(212, 175, 55, 0.4);
+    color: #ffffff;
+}
+
+/* --- Central Portrait Holding Certificate Board --- */
+.cert-portrait-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    aspect-ratio: 1536 / 1024;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cert-portrait-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.14));
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+}
+
+body.dark-theme .cert-portrait-img {
+    filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.85));
+}
+
+.cert-portrait-wrapper:hover .cert-portrait-img {
+    transform: scale(1.015);
+}
+
+/* --- Prominent CTA Button directly over the blank certificate board --- */
+.cert-board-btn {
+    position: absolute;
+    top: 67.7%;
+    left: 51.3%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    background: #000000;
+    color: #ffffff;
+    padding: 0.75rem 1.6rem;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(212, 175, 55, 0.75);
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), 0 0 12px rgba(212, 175, 55, 0.2);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cert-board-btn:hover {
+    background: #111827;
+    border-color: rgba(212, 175, 55, 1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.45);
+    transform: translate(-50%, -50%) scale(1.06);
+    color: #ffffff;
+}
+
+.cert-board-btn-arrow {
+    display: inline-block;
+    font-size: 1.05rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
+}
+
+.cert-board-btn:hover .cert-board-btn-arrow {
+    transform: translate(2px, -2px);
+}
+
+body.dark-theme .cert-board-btn {
+    background: #000000;
+    color: #ffffff;
+    border-color: rgba(212, 175, 55, 0.85);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 16px rgba(212, 175, 55, 0.3);
+}
+
+body.dark-theme .cert-board-btn:hover {
+    background: #18181b;
+    border-color: #ffd700;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.9), 0 0 25px rgba(212, 175, 55, 0.6);
+    transform: translate(-50%, -50%) scale(1.06);
+}
+
+/* --- Scroll Navigation Arrow to Projects --- */
+.cert-scroll-arrow {
+    position: relative;
+    z-index: 2;
+    margin-top: 3.5rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* --- Orbit Animation Keyframes --- */
+@keyframes certOrbitSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes certCounterSpin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    to {
+        transform: translate(-50%, -50%) rotate(-360deg);
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN FOR CIRCULAR ORBIT CERTIFICATES SECTION
+   ========================================================================== */
+@media screen and (max-width: 900px) {
+    #certificate.circular-certificates-section {
+        padding: 5rem 1.5rem 4rem;
+        --orbit-radius: 220px;
+    }
+
+    .cert-orbit-stage {
+        height: 480px;
+    }
+
+    .cert-spotlight {
+        width: 440px;
+        height: 440px;
+    }
+
+    .cert-orbit-guide-svg {
+        width: 500px;
+        height: 500px;
+    }
+
+    .cert-portrait-wrapper {
+        max-width: 360px;
+    }
+
+    .cert-orbit-badge {
+        font-size: 0.82rem;
+        padding: 0.45rem 0.95rem;
+        gap: 0.45rem;
+    }
+
+    .cert-board-btn {
+        padding: 0.62rem 1.35rem;
+        font-size: 0.85rem;
+    }
+
+    .cert-heading {
+        font-size: 2.6rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #certificate.circular-certificates-section {
+        padding: 4rem 1rem 3.5rem;
+        --orbit-radius: 155px;
+    }
+
+    .cert-orbit-stage {
+        height: 380px;
+    }
+
+    .cert-spotlight {
+        width: 320px;
+        height: 320px;
+    }
+
+    .cert-orbit-guide-svg {
+        width: 380px;
+        height: 380px;
+    }
+
+    .cert-portrait-wrapper {
+        max-width: 270px;
+    }
+
+    .cert-orbit-badge {
+        font-size: 0.72rem;
+        padding: 0.32rem 0.65rem;
+        gap: 0.35rem;
+    }
+
+    .cert-orbit-icon {
+        width: 13px;
+        height: 13px;
+    }
+
+    .cert-board-btn {
+        padding: 0.45rem 0.95rem;
+        font-size: 0.75rem;
+        gap: 0.3rem;
+    }
+
+    .cert-heading {
+        font-size: 2.1rem;
+    }
+
+    .cert-subtext {
+        font-size: 0.95rem;
+    }
+
+    .cert-scroll-arrow {
+        margin-top: 2rem;
+    }
+}
+
+/* Reduced-motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .cert-orbit-ring,
+    .cert-orbit-badge {
+        animation: none !important;
+    }
+}
+
 /* CERTIFICATES SECTION */
 #certificate {
     position: relative;
