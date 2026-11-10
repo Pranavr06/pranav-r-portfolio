@@ -24,12 +24,9 @@ export default function Projects() {
 
         {/* Right Column: Projects Editorial Introduction & CTA */}
         <div className="editorial-projects-right">
-          {/* Eyebrow Label */}
-          <span className="editorial-eyebrow">03 / SELECTED WORK</span>
-
           {/* Main Heading: Italic serif accent with subtle underline */}
           <h2 className="editorial-heading">
-            <span className="editorial-heading-accent">Ideas Into Reality.</span>
+            <span className="editorial-heading-accent">My Projects</span>
           </h2>
 
           {/* Supporting Description */}

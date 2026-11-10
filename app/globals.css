@@ -3471,28 +3471,22 @@ body.dark-theme .editorial-eyebrow {
         text-align: center;
     }
 
-    /* Mobile: Display Eyebrow, Title & Description first, then Lifestyle Portrait, then CTA Button */
+    /* Mobile: Display Title & Description first, then Lifestyle Portrait, then CTA Button */
     .editorial-projects-right {
         display: contents;
         opacity: 1 !important;
         transform: none !important;
     }
 
-    .editorial-projects-right .editorial-eyebrow {
-        order: 1;
-        margin: 0 auto 0.6rem;
-        text-align: center;
-    }
-
     .editorial-projects-right .editorial-heading {
-        order: 2;
+        order: 1;
         font-size: 2.5rem;
         text-align: center;
         margin-bottom: 0.75rem;
     }
 
     .editorial-projects-right .editorial-description {
-        order: 3;
+        order: 2;
         text-align: center;
         margin-left: auto;
         margin-right: auto;
@@ -3501,7 +3495,7 @@ body.dark-theme .editorial-eyebrow {
     }
 
     .editorial-projects-left {
-        order: 4;
+        order: 3;
         width: 100%;
         justify-content: center;
         margin: 0 auto 0.5rem;
@@ -3512,13 +3506,12 @@ body.dark-theme .editorial-eyebrow {
     }
 
     .editorial-projects-right .editorial-cta-wrap {
-        order: 5;
+        order: 4;
         justify-content: center;
         width: 100%;
         margin-top: 0.5rem;
     }
 
-    .editorial-projects-section:not(.visible) .editorial-eyebrow,
     .editorial-projects-section:not(.visible) .editorial-heading,
     .editorial-projects-section:not(.visible) .editorial-description,
     .editorial-projects-section:not(.visible) .editorial-cta-wrap {
@@ -3526,7 +3519,6 @@ body.dark-theme .editorial-eyebrow {
         transform: translateY(16px);
     }
 
-    .editorial-projects-section.visible .editorial-eyebrow,
     .editorial-projects-section.visible .editorial-heading,
     .editorial-projects-section.visible .editorial-description,
     .editorial-projects-section.visible .editorial-cta-wrap {
