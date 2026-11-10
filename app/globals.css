@@ -2820,9 +2820,9 @@ body.dark-theme .icon {
 
   
 /* ==========================================================================
-   HOMEPAGE CERTIFICATES SECTION - SEMICIRCULAR ORBIT REDESIGN
+   HOMEPAGE CERTIFICATES SECTION - EDITORIAL TWO-COLUMN & MARQUEE SHOWCASE
    ========================================================================== */
-#certificate.circular-certificates-section {
+#certificate.editorial-certificates-section {
     position: relative !important;
     width: 100% !important;
     max-width: 100% !important;
@@ -2837,315 +2837,116 @@ body.dark-theme .icon {
     box-sizing: border-box;
     overflow: hidden;
     transition: background-color 0.3s ease;
-    --orbit-radius: 320px;
 }
 
-body.dark-theme #certificate.circular-certificates-section {
+body.dark-theme #certificate.editorial-certificates-section {
     background-color: #000000;
 }
 
-/* --- Section Heading: My Certificates --- */
-.cert-header-wrap {
-    text-align: center;
-    max-width: 780px;
-    margin: 0 auto 1rem auto;
+/* Two-column container (Left: Content, Right: Portrait) */
+.editorial-cert-container {
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4.5rem;
     position: relative;
     z-index: 2;
+}
+
+/* --- Left Column: Content (Heading, Description, CTA) --- */
+.editorial-cert-left {
+    flex: 1.15;
+    max-width: 580px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(24px);
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.circular-certificates-section.visible .cert-header-wrap {
+.editorial-certificates-section.visible .editorial-cert-left {
     opacity: 1;
     transform: translateY(0);
 }
 
-.cert-heading {
-    font-size: clamp(2.8rem, 4.5vw, 3.8rem);
-    font-weight: 900;
-    line-height: 1.08;
-    letter-spacing: -0.03em;
-    color: #000000;
-    margin: 0;
-    transition: color 0.3s ease;
-}
-
-body.dark-theme .cert-heading {
-    color: #ffffff;
-}
-
-.cert-heading-accent {
-    font-family: Georgia, 'Playfair Display', Cambria, "Times New Roman", serif;
-    font-style: italic;
-    font-weight: 700;
-    position: relative;
-    display: inline-block;
-}
-
-.cert-heading-accent::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 4px;
+/* --- Right Column: Portrait holding certificate board (Matched to About Me portrait size) --- */
+.editorial-cert-right {
+    flex: 0.95;
     width: 100%;
-    height: 2px;
-    background: currentColor;
-    opacity: 0.35;
-    border-radius: 2px;
-}
-
-body.dark-theme .cert-heading-accent::after {
-    opacity: 0.45;
-}
-
-/* --- Orbit Universe Stage --- */
-.cert-orbit-stage {
-    position: relative;
-    width: 100%;
-    max-width: 880px;
-    height: 580px;
-    margin: 1rem auto 0 auto;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
+    position: relative;
     opacity: 0;
-    transform: scale(0.96) translateY(24px);
-    transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
 }
 
-.circular-certificates-section.visible .cert-orbit-stage {
+.editorial-certificates-section.visible .editorial-cert-right {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
 }
 
-/* Subtle Spotlight Glow Behind Portrait */
-.cert-spotlight {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 620px;
-    height: 620px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.09) 0%, rgba(0, 0, 0, 0.035) 45%, rgba(0, 0, 0, 0.01) 65%, transparent 75%);
-    pointer-events: none;
-    z-index: 1;
-    transition: background 0.3s ease;
+/* Subtle Gold Backdrop Elements */
+.cert-gold-aura {
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.02) 62%, transparent 75%);
 }
 
-body.dark-theme .cert-spotlight {
-    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.16) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0.01) 65%, transparent 75%);
+body.dark-theme .cert-gold-aura {
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.18) 0%, rgba(212, 175, 55, 0.035) 62%, transparent 75%);
 }
 
-/* SVG Orbital Paths & Semicircular Guide Arcs */
-.cert-orbit-guide-svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 720px;
-    height: 480px;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 2;
-    overflow: visible;
+.cert-gold-ring {
+    border-color: rgba(212, 175, 55, 0.22);
 }
 
-.cert-guide-arc-outer {
-    fill: none;
-    stroke: rgba(0, 0, 0, 0.05);
-    stroke-width: 1;
-    stroke-dasharray: 4 6;
-    transition: stroke 0.3s ease;
+body.dark-theme .cert-gold-ring {
+    border-color: rgba(212, 175, 55, 0.3);
 }
 
-body.dark-theme .cert-guide-arc-outer {
-    stroke: rgba(255, 255, 255, 0.06);
-}
-
-.cert-guide-arc-main {
-    fill: none;
-    stroke: rgba(212, 175, 55, 0.45);
-    stroke-width: 1.5;
-    stroke-dasharray: 6 6;
-    stroke-linecap: round;
-    transition: stroke 0.3s ease;
-}
-
-body.dark-theme .cert-guide-arc-main {
-    stroke: rgba(212, 175, 55, 0.6);
-}
-
-.cert-guide-arc-inner {
-    fill: none;
-    stroke: rgba(0, 0, 0, 0.035);
-    stroke-width: 1;
-    transition: stroke 0.3s ease;
-}
-
-body.dark-theme .cert-guide-arc-inner {
-    stroke: rgba(255, 255, 255, 0.04);
-}
-
-/* Semicircular Orbit Track */
-.cert-orbit-track {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    z-index: 5;
-}
-
-/* Individual Category Item Traveling Along Semicircle (Left -> Right -> Loops) */
-.cert-orbit-item {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    animation: semiOrbit 21s linear infinite;
-    will-change: transform, opacity;
-}
-
-.cert-orbit-stage:hover .cert-orbit-item {
-    animation-play-state: paused;
-}
-
-/* Category Badge (Upright, Pill Styled with Subtle Gold Border) */
-.cert-orbit-badge {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.52rem 1.15rem;
-    border-radius: 9999px;
-    background: #ffffff;
-    color: #0f172a;
-    border: 1px solid rgba(212, 175, 55, 0.45);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06), 0 0 10px rgba(212, 175, 55, 0.08);
-    font-size: 0.88rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    text-decoration: none;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
-}
-
-.cert-orbit-badge:hover {
-    border-color: rgba(212, 175, 55, 0.95);
-    box-shadow: 0 6px 22px rgba(212, 175, 55, 0.35);
-    color: #000000;
-    transform: translate(-50%, -50%) scale(1.08);
-}
-
-.cert-orbit-icon {
-    color: #d4af37;
-    flex-shrink: 0;
-    transition: transform 0.25s ease;
-}
-
-.cert-orbit-badge:hover .cert-orbit-icon {
-    transform: scale(1.15);
-}
-
-body.dark-theme .cert-orbit-badge {
-    background: #0f172a;
-    color: #f8fafc;
-    border: 1px solid rgba(212, 175, 55, 0.5);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 14px rgba(212, 175, 55, 0.12);
-}
-
-body.dark-theme .cert-orbit-badge:hover {
-    border-color: rgba(212, 175, 55, 1);
-    box-shadow: 0 6px 26px rgba(212, 175, 55, 0.4);
-    color: #ffffff;
-}
-
-/* --- Central Portrait Holding Certificate Board (Enlarged) --- */
-.cert-portrait-wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 660px;
-    aspect-ratio: 1536 / 1024;
-    z-index: 6;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-}
-
-.cert-portrait-img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    display: block;
-    filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.14));
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
-}
-
-body.dark-theme .cert-portrait-img {
-    filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.85));
-}
-
-.cert-portrait-wrapper:hover .cert-portrait-img {
-    transform: scale(1.012);
-}
-
-/* --- Prominent CTA Button directly over the blank certificate board --- */
+/* Board CTA Button inside certificate in hand */
 .cert-board-btn {
     position: absolute;
     top: 67.7%;
     left: 51.3%;
     transform: translate(-50%, -50%);
-    z-index: 10;
+    z-index: 5;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.45rem;
+    padding: 0.75rem 1.65rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     background: #000000;
     color: #ffffff;
-    padding: 0.85rem 1.95rem;
+    border: 1.5px solid #d4af37;
     border-radius: 9999px;
-    border: 1.5px solid rgba(212, 175, 55, 0.8);
-    font-size: 0.95rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    text-decoration: none;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 0 14px rgba(212, 175, 55, 0.22);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 0 12px rgba(212, 175, 55, 0.3);
     cursor: pointer;
+    text-decoration: none;
     white-space: nowrap;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cert-board-btn:hover {
-    background: #111827;
+    background: #0a0a0a;
     border-color: #ffd700;
     box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45), 0 0 22px rgba(212, 175, 55, 0.5);
     transform: translate(-50%, -50%) scale(1.05);
     color: #ffffff;
 }
 
-.cert-board-btn-arrow {
-    display: inline-block;
-    font-size: 1.05rem;
-    line-height: 1;
-    transition: transform 0.25s ease;
-}
-
-.cert-board-btn:hover .cert-board-btn-arrow {
-    transform: translate(2px, -2px);
-}
-
 body.dark-theme .cert-board-btn {
-    background: #000000;
-    color: #ffffff;
-    border-color: rgba(212, 175, 55, 0.85);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 16px rgba(212, 175, 55, 0.3);
+    background: #0a0a0a;
+    border-color: #d4af37;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.4);
 }
 
 body.dark-theme .cert-board-btn:hover {
@@ -3155,149 +2956,354 @@ body.dark-theme .cert-board-btn:hover {
     transform: translate(-50%, -50%) scale(1.05);
 }
 
-/* --- Scroll Navigation Arrow to Projects --- */
-.cert-scroll-arrow {
-    position: relative;
-    z-index: 2;
-    margin-top: 3.5rem;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+.cert-board-btn-arrow {
+    display: inline-block;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- Semicircular Orbit Animation (Left -> Right -> Respawn Left) --- */
-@keyframes semiOrbit {
-    0% {
-        opacity: 0;
-        transform: rotate(-90deg) translateY(calc(-1 * var(--orbit-radius))) rotate(90deg) scale(0.85);
-        pointer-events: none;
-    }
-    5% {
-        opacity: 1;
-        transform: rotate(-81deg) translateY(calc(-1 * var(--orbit-radius))) rotate(81deg) scale(1);
-        pointer-events: auto;
-    }
-    25% {
-        opacity: 1;
-        transform: rotate(-45deg) translateY(calc(-1 * var(--orbit-radius))) rotate(45deg) scale(1);
-    }
-    50% {
-        opacity: 1;
-        transform: rotate(0deg) translateY(calc(-1 * var(--orbit-radius))) rotate(0deg) scale(1);
-    }
-    75% {
-        opacity: 1;
-        transform: rotate(45deg) translateY(calc(-1 * var(--orbit-radius))) rotate(-45deg) scale(1);
-    }
-    95% {
-        opacity: 1;
-        transform: rotate(81deg) translateY(calc(-1 * var(--orbit-radius))) rotate(-81deg) scale(1);
-        pointer-events: auto;
-    }
-    100% {
-        opacity: 0;
-        transform: rotate(90deg) translateY(calc(-1 * var(--orbit-radius))) rotate(-90deg) scale(0.85);
-        pointer-events: none;
-    }
+.cert-board-btn:hover .cert-board-btn-arrow {
+    transform: translate(2px, -2px);
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN FOR SEMICIRCULAR ORBIT CERTIFICATES SECTION
+   MARQUEE SHOWCASE - INFINITE SCROLLING TICKERS
    ========================================================================== */
+.cert-marquee-showcase {
+    width: 100%;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    position: relative;
+    z-index: 2;
+    margin-top: 3.5rem;
+    padding: 0.5rem 0;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+}
+
+.editorial-certificates-section.visible .cert-marquee-showcase {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.cert-marquee-row {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 7%, black 93%, transparent 100%);
+    padding: 0.25rem 0;
+}
+
+.cert-marquee-track {
+    display: flex;
+    gap: 1rem;
+    width: max-content;
+    will-change: transform;
+}
+
+/* Row 1 & Row 3: Left to Right */
+.track-ltr {
+    animation: certMarqueeLTR 48s linear infinite;
+}
+
+/* Row 2: Right to Left */
+.track-rtl {
+    animation: certMarqueeRTL 44s linear infinite;
+}
+
+/* Hover pause for effortless reading and clicking */
+.cert-marquee-row:hover .cert-marquee-track {
+    animation-play-state: paused;
+}
+
+@keyframes certMarqueeLTR {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes certMarqueeRTL {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Marquee Certificate Pill */
+.cert-marquee-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.62rem 1.25rem;
+    background: #ffffff;
+    color: #0f172a;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 9999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+}
+
+body.dark-theme .cert-marquee-pill {
+    background: #0f0f12;
+    color: #f1f5f9;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+.cert-marquee-pill:hover {
+    border-color: #d4af37;
+    background: #fafaf9;
+    color: #000000;
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.22);
+    transform: translateY(-2px);
+}
+
+body.dark-theme .cert-marquee-pill:hover {
+    border-color: #ffd700;
+    background: #18181b;
+    color: #ffffff;
+    box-shadow: 0 6px 22px rgba(212, 175, 55, 0.32);
+    transform: translateY(-2px);
+}
+
+.cert-pill-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4af37;
+    flex-shrink: 0;
+}
+
+body.dark-theme .cert-pill-icon {
+    color: #ffd700;
+}
+
+.cert-pill-title {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.cert-pill-category {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.05);
+    color: #64748b;
+    margin-left: 0.25rem;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+}
+
+body.dark-theme .cert-pill-category {
+    background: rgba(255, 255, 255, 0.08);
+    color: #94a3b8;
+}
+
+.cert-marquee-pill:hover .cert-pill-category {
+    background: rgba(212, 175, 55, 0.15);
+    color: #926b00;
+}
+
+body.dark-theme .cert-marquee-pill:hover .cert-pill-category {
+    background: rgba(212, 175, 55, 0.22);
+    color: #ffd700;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN - EDITORIAL CERTIFICATES & MARQUEE
+   ========================================================================== */
+@media screen and (max-width: 1100px) {
+    .editorial-cert-container {
+        gap: 2.5rem;
+    }
+}
+
 @media screen and (max-width: 900px) {
-    #certificate.circular-certificates-section {
-        padding: 5rem 1.5rem 4rem;
-        --orbit-radius: 250px;
+    #certificate.editorial-certificates-section {
+        padding: 4.5rem 1.5rem 3.5rem;
+        min-height: auto;
     }
 
-    .cert-orbit-stage {
-        height: 500px;
+    .editorial-cert-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        text-align: center;
     }
 
-    .cert-spotlight {
-        width: 500px;
-        height: 500px;
+    .editorial-cert-left {
+        flex: none;
+        width: 100%;
+        max-width: 520px;
+        align-items: center;
+        text-align: center;
     }
 
-    .cert-orbit-guide-svg {
-        width: 560px;
-        height: 400px;
+    .editorial-cert-left .editorial-heading {
+        font-size: 2.5rem;
+        text-align: center;
+        margin-bottom: 1rem;
     }
 
-    .cert-portrait-wrapper {
-        max-width: 480px;
+    .editorial-cert-left .editorial-description {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.05rem;
+        margin-bottom: 2rem;
     }
 
-    .cert-orbit-badge {
-        font-size: 0.82rem;
-        padding: 0.45rem 0.95rem;
-        gap: 0.45rem;
+    .editorial-cert-left .editorial-cta-wrap {
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Tablet portrait container - exact match to About Me (height: 360px) */
+    .editorial-cert-right {
+        height: 360px;
+        width: 100%;
+        flex: none;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-top: 2rem;
+        position: relative;
+        z-index: 1;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    .editorial-cert-right .editorial-portrait-wrapper {
+        height: 100%;
+        max-height: 360px;
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .editorial-cert-right .editorial-portrait-img {
+        height: 100%;
+        max-height: 360px;
+        width: auto;
+        object-fit: contain;
+        object-position: bottom center;
+        filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.12));
+    }
+
+    body.dark-theme .editorial-cert-right .editorial-portrait-img {
+        filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
     }
 
     .cert-board-btn {
-        padding: 0.7rem 1.55rem;
-        font-size: 0.88rem;
+        padding: 0.65rem 1.4rem;
+        font-size: 0.82rem;
     }
 
-    .cert-heading {
-        font-size: 2.8rem;
+    .cert-marquee-showcase {
+        margin-top: 2.5rem;
+        gap: 0.75rem;
+    }
+
+    .cert-marquee-pill {
+        padding: 0.52rem 1rem;
+        font-size: 0.82rem;
     }
 }
 
 @media screen and (max-width: 600px) {
-    #certificate.circular-certificates-section {
-        padding: 4rem 1rem 3.5rem;
-        --orbit-radius: 180px;
+    #certificate.editorial-certificates-section {
+        padding: 3.5rem 1.25rem 3rem;
     }
 
-    .cert-orbit-stage {
-        height: 400px;
+    .editorial-cert-container {
+        gap: 1.75rem;
     }
 
-    .cert-spotlight {
-        width: 340px;
-        height: 340px;
+    /* Small mobile portrait container - exact match to About Me (height: 310px) */
+    .editorial-cert-right {
+        height: 310px;
+        padding-top: 1.25rem;
     }
 
-    .cert-orbit-guide-svg {
-        width: 400px;
-        height: 280px;
+    .editorial-cert-right .editorial-portrait-wrapper {
+        max-height: 310px;
     }
 
-    .cert-portrait-wrapper {
-        max-width: 320px;
+    .editorial-cert-right .editorial-portrait-img {
+        max-height: 310px;
     }
 
-    .cert-orbit-badge {
-        font-size: 0.72rem;
-        padding: 0.32rem 0.65rem;
-        gap: 0.35rem;
+    .editorial-cert-aura {
+        width: 230px;
+        height: 230px;
     }
 
-    .cert-orbit-icon {
-        width: 13px;
-        height: 13px;
+    .editorial-cert-ring {
+        width: 210px;
+        height: 210px;
     }
 
-    .cert-board-btn {
-        padding: 0.48rem 1.05rem;
-        font-size: 0.76rem;
-        gap: 0.35rem;
-    }
-
-    .cert-heading {
+    .editorial-cert-left .editorial-heading {
         font-size: 2.2rem;
     }
 
-    .cert-scroll-arrow {
+    .editorial-cert-left .editorial-description {
+        font-size: 0.98rem;
+    }
+
+    .editorial-cert-left .editorial-cta-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .cert-board-btn {
+        padding: 0.45rem 0.95rem;
+        font-size: 0.74rem;
+        gap: 0.3rem;
+    }
+
+    .cert-marquee-showcase {
         margin-top: 2rem;
+        gap: 0.65rem;
+    }
+
+    .cert-marquee-pill {
+        padding: 0.42rem 0.85rem;
+        font-size: 0.78rem;
+        gap: 0.45rem;
+    }
+
+    .cert-pill-category {
+        display: none; /* Keep pill compact on mobile */
     }
 }
 
 /* Reduced-motion accessibility */
 @media (prefers-reduced-motion: reduce) {
-    .cert-orbit-item {
+    .cert-marquee-track {
         animation: none !important;
+    }
+    .cert-marquee-row {
+        overflow-x: auto;
     }
 }
 
