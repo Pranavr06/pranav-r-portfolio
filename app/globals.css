@@ -1506,15 +1506,17 @@ body.dark-theme .editorial-cta-btn:hover {
     box-shadow: 0 10px 24px -4px rgba(255, 255, 255, 0.25);
 }
 
-/* --- Scroll Navigation Arrow --- */
+/* --- Scroll Navigation Arrow: Positioned on the Right Side --- */
 .editorial-scroll-arrow {
-    position: relative;
+    position: absolute;
+    right: 3rem;
+    bottom: 2rem;
     z-index: 10;
-    margin-top: 3.5rem;
-    display: flex;
-    justify-content: center;
+    margin: 0;
+    display: inline-flex;
     align-items: center;
-    width: 100%;
+    justify-content: center;
+    width: auto;
 }
 
 .editorial-scroll-arrow .scroll-down-link,
@@ -1522,7 +1524,7 @@ body.dark-theme .editorial-cta-btn:hover {
     position: static !important;
     right: auto !important;
     bottom: auto !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
@@ -1662,7 +1664,8 @@ body.dark-theme .editorial-cta-btn:hover {
     }
 
     .editorial-scroll-arrow {
-        margin-top: 2.5rem;
+        right: 2rem;
+        bottom: 1.5rem;
     }
 }
 
@@ -6684,13 +6687,14 @@ body.dark-theme .custom-select-option.selected {
     .scroll-down-link, .scroll-up-link {
         display: none !important;
     }
-    /* Keep homepage section navigation arrows visible and properly sized on mobile */
+    /* Keep homepage section navigation arrows visible on the right side on mobile */
     .editorial-scroll-arrow {
-        display: flex !important;
-        margin-top: 2rem !important;
-        margin-bottom: 0.5rem !important;
-        width: 100% !important;
-        justify-content: center !important;
+        display: inline-flex !important;
+        position: absolute !important;
+        right: 1.5rem !important;
+        bottom: 1.5rem !important;
+        margin: 0 !important;
+        width: auto !important;
     }
     .editorial-scroll-arrow .scroll-down-link {
         display: inline-flex !important;
