@@ -44,7 +44,7 @@ export default function Contact({ hideArrow = false }: { hideArrow?: boolean }) 
               </a>
 
               <a
-                href="https://linkedin.com/in/pranavr2006"
+                href="https://www.linkedin.com/in/pranavr06/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="contact-pill-link"
