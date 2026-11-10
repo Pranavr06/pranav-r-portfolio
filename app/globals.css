@@ -3065,11 +3065,11 @@ body.dark-theme .cert-portrait-img {
     transform: scale(1.02);
 }
 
-/* Board CTA Button inside certificate in hand - centered at exact geometric center (49.4%, 61.5%) */
+/* Board CTA Button inside certificate in hand - centered at exact geometric center of the certificate board */
 .cert-board-btn {
     position: absolute;
-    top: 61.5%;
-    left: 49.4%;
+    top: 68.0%;
+    left: 48.2%;
     transform: translate(-50%, -50%);
     z-index: 10;
     display: inline-flex;
