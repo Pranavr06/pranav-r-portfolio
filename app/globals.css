@@ -2909,11 +2909,33 @@ body.dark-theme .cert-gold-ring {
     border-color: rgba(212, 175, 55, 0.3);
 }
 
-/* Board CTA Button inside certificate in hand */
+/* Portrait Frame wrapping image and button tightly for consistent alignment across all screen sizes */
+.cert-portrait-frame {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100%;
+    max-height: 720px;
+    width: auto;
+    z-index: 2;
+}
+
+.cert-portrait-img {
+    height: 100%;
+    max-height: 720px;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+    display: block;
+}
+
+/* Board CTA Button inside certificate in hand - centered at exact horizontal center (49.0%) */
 .cert-board-btn {
     position: absolute;
     top: 67.7%;
-    left: 51.3%;
+    left: 49.0%;
     transform: translate(-50%, -50%);
     z-index: 5;
     display: inline-flex;
@@ -2935,6 +2957,9 @@ body.dark-theme .cert-gold-ring {
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Hover state triggered when hovering button directly OR when hovering anywhere on the portrait image / frame */
+.editorial-portrait-wrapper:hover .cert-board-btn,
+.cert-portrait-frame:hover .cert-board-btn,
 .cert-board-btn:hover {
     background: #0a0a0a;
     border-color: #ffd700;
@@ -2949,6 +2974,8 @@ body.dark-theme .cert-board-btn {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.4);
 }
 
+body.dark-theme .editorial-portrait-wrapper:hover .cert-board-btn,
+body.dark-theme .cert-portrait-frame:hover .cert-board-btn,
 body.dark-theme .cert-board-btn:hover {
     background: #18181b;
     border-color: #ffd700;
@@ -2961,6 +2988,8 @@ body.dark-theme .cert-board-btn:hover {
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.editorial-portrait-wrapper:hover .cert-board-btn .cert-board-btn-arrow,
+.cert-portrait-frame:hover .cert-board-btn .cert-board-btn-arrow,
 .cert-board-btn:hover .cert-board-btn-arrow {
     transform: translate(2px, -2px);
 }
@@ -3200,6 +3229,10 @@ body.dark-theme .cert-marquee-pill:hover .cert-pill-category {
         justify-content: center;
     }
 
+    .editorial-cert-right .cert-portrait-frame {
+        max-height: 360px;
+    }
+
     .editorial-cert-right .editorial-portrait-img {
         height: 100%;
         max-height: 360px;
@@ -3245,6 +3278,10 @@ body.dark-theme .cert-marquee-pill:hover .cert-pill-category {
     }
 
     .editorial-cert-right .editorial-portrait-wrapper {
+        max-height: 310px;
+    }
+
+    .editorial-cert-right .cert-portrait-frame {
         max-height: 310px;
     }
 

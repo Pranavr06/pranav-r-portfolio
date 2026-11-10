@@ -149,25 +149,28 @@ export default function Certificates() {
             <div className="editorial-portrait-crosshair ch-tl" aria-hidden="true" />
             <div className="editorial-portrait-crosshair ch-br" aria-hidden="true" />
 
-            {/* Supplied Certificate Portrait Asset */}
-            <img
-              src="/assets/pranavr-certificate.webp"
-              alt="Pranav R holding certificate of achievements"
-              className="editorial-portrait-img cert-portrait-img"
-              width={1536}
-              height={1024}
-              loading="lazy"
-            />
+            {/* Frame wrapping image & button for pixel-perfect relative positioning */}
+            <div className="cert-portrait-frame">
+              {/* Supplied Certificate Portrait Asset */}
+              <img
+                src="/assets/pranavr-certificate.webp"
+                alt="Pranav R holding certificate of achievements"
+                className="editorial-portrait-img cert-portrait-img"
+                width={1536}
+                height={1024}
+                loading="lazy"
+              />
 
-            {/* Interactive Board CTA Button */}
-            <Link
-              href="/certificates"
-              className="cert-board-btn"
-              aria-label="View Certificates from board"
-            >
-              <span className="cert-board-btn-text">View Certificates</span>
-              <span className="cert-board-btn-arrow" aria-hidden="true">↗</span>
-            </Link>
+              {/* Interactive Board CTA Button */}
+              <Link
+                href="/certificates"
+                className="cert-board-btn"
+                aria-label="View Certificates from board"
+              >
+                <span className="cert-board-btn-text">View Certificates</span>
+                <span className="cert-board-btn-arrow" aria-hidden="true">↗</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
