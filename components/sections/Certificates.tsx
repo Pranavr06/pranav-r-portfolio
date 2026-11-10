@@ -97,60 +97,9 @@ export default function Certificates() {
 
   return (
     <FadeInSection id="certificate" className="editorial-certificates-section">
-      {/* Background Marquee Ticker Layer (10-15% Opacity Depth Watermark) */}
-      <div className="cert-bg-marquee-layer" aria-hidden="true">
-        {/* Row 1: Left to Right */}
-        <div className="cert-bg-marquee-row row-ltr">
-          <div className="cert-bg-marquee-track track-ltr">
-            {row1.map((cert, idx) => (
-              <span key={`bg-r1-${idx}`} className="cert-bg-marquee-item">
-                <span className="cert-bg-title">{cert.title}</span>
-                <span className="cert-bg-separator">✦</span>
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Row 2: Right to Left */}
-        <div className="cert-bg-marquee-row row-rtl">
-          <div className="cert-bg-marquee-track track-rtl">
-            {row2.map((cert, idx) => (
-              <span key={`bg-r2-${idx}`} className="cert-bg-marquee-item">
-                <span className="cert-bg-title">{cert.title}</span>
-                <span className="cert-bg-separator">✦</span>
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Row 3: Left to Right */}
-        <div className="cert-bg-marquee-row row-ltr row-3">
-          <div className="cert-bg-marquee-track track-ltr">
-            {row3.map((cert, idx) => (
-              <span key={`bg-r3-${idx}`} className="cert-bg-marquee-item">
-                <span className="cert-bg-title">{cert.title}</span>
-                <span className="cert-bg-separator">✦</span>
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Row 4: Right to Left */}
-        <div className="cert-bg-marquee-row row-rtl row-extra">
-          <div className="cert-bg-marquee-track track-rtl">
-            {row4.map((cert, idx) => (
-              <span key={`bg-r4-${idx}`} className="cert-bg-marquee-item">
-                <span className="cert-bg-title">{cert.title}</span>
-                <span className="cert-bg-separator">✦</span>
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Foreground Editorial Two-Column Layout */}
       <div className="editorial-cert-container">
-        {/* Left Column: Heading and Description (No CTA button per user request) */}
+        {/* Left Column: Heading and Description (Clean, no background marquee text behind text area) */}
         <div className="editorial-cert-left">
           <h2 className="editorial-heading">
             <span className="editorial-heading-accent">My Certificates</span>
@@ -161,8 +110,60 @@ export default function Certificates() {
           </p>
         </div>
 
-        {/* Right Column: Portrait holding certificate (Matched to About Me portrait size) */}
+        {/* Right Column: Portrait holding certificate + Marquee Tickers strictly in background of picture */}
         <div className="editorial-cert-right">
+          {/* Ambient Marquee Layer ONLY behind the portrait */}
+          <div className="cert-portrait-marquee-bg" aria-hidden="true">
+            {/* Row 1: Left to Right */}
+            <div className="cert-bg-marquee-row row-ltr">
+              <div className="cert-bg-marquee-track track-ltr">
+                {row1.map((cert, idx) => (
+                  <span key={`bg-r1-${idx}`} className="cert-bg-marquee-item">
+                    <span className="cert-bg-title">{cert.title}</span>
+                    <span className="cert-bg-separator">✦</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 2: Right to Left */}
+            <div className="cert-bg-marquee-row row-rtl">
+              <div className="cert-bg-marquee-track track-rtl">
+                {row2.map((cert, idx) => (
+                  <span key={`bg-r2-${idx}`} className="cert-bg-marquee-item">
+                    <span className="cert-bg-title">{cert.title}</span>
+                    <span className="cert-bg-separator">✦</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 3: Left to Right */}
+            <div className="cert-bg-marquee-row row-ltr row-3">
+              <div className="cert-bg-marquee-track track-ltr">
+                {row3.map((cert, idx) => (
+                  <span key={`bg-r3-${idx}`} className="cert-bg-marquee-item">
+                    <span className="cert-bg-title">{cert.title}</span>
+                    <span className="cert-bg-separator">✦</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* Row 4: Right to Left */}
+            <div className="cert-bg-marquee-row row-rtl row-extra">
+              <div className="cert-bg-marquee-track track-rtl">
+                {row4.map((cert, idx) => (
+                  <span key={`bg-r4-${idx}`} className="cert-bg-marquee-item">
+                    <span className="cert-bg-title">{cert.title}</span>
+                    <span className="cert-bg-separator">✦</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Portrait Wrapper in Foreground */}
           <div className="editorial-portrait-wrapper">
             {/* Subtle Abstract Backdrop Elements */}
             <div className="editorial-portrait-aura cert-gold-aura" aria-hidden="true" />

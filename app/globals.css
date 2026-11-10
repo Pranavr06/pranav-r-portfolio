@@ -2820,14 +2820,14 @@ body.dark-theme .icon {
 
   
 /* ==========================================================================
-   HOMEPAGE CERTIFICATES SECTION - EDITORIAL WITH AMBIENT BACKGROUND MARQUEE
+   HOMEPAGE CERTIFICATES SECTION - EDITORIAL WITH PORTRAIT-CONFINED MARQUEE
    ========================================================================== */
 #certificate.editorial-certificates-section {
     position: relative !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 !important;
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -2843,103 +2843,6 @@ body.dark-theme #certificate.editorial-certificates-section {
     background-color: #000000;
 }
 
-/* ==========================================================================
-   BACKGROUND MARQUEE LAYER (10-15% OPACITY AMBIENT TYPOGRAPHY WATERMARK)
-   ========================================================================== */
-.cert-bg-marquee-layer {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 3rem 0;
-    box-sizing: border-box;
-    user-select: none;
-}
-
-.cert-bg-marquee-row {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    white-space: nowrap;
-    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-}
-
-.cert-bg-marquee-track {
-    display: flex;
-    gap: 2.75rem;
-    width: max-content;
-    will-change: transform;
-}
-
-/* Row speeds: slow, ambient, continuous drift */
-.cert-bg-marquee-track.track-ltr {
-    animation: certBgMarqueeLTR 85s linear infinite;
-}
-
-.cert-bg-marquee-track.track-rtl {
-    animation: certBgMarqueeRTL 80s linear infinite;
-}
-
-@keyframes certBgMarqueeLTR {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0%);
-    }
-}
-
-@keyframes certBgMarqueeRTL {
-    0% {
-        transform: translateX(0%);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-/* Background Marquee Text Styling (10-15% opacity subtle grey with gold accents) */
-.cert-bg-marquee-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 2.25rem;
-    font-size: clamp(2rem, 3.8vw, 3.5rem);
-    font-weight: 800;
-    letter-spacing: -0.025em;
-    text-transform: uppercase;
-    color: rgba(15, 23, 42, 0.12); /* Subtle 12% opacity in light mode */
-    white-space: nowrap;
-    line-height: 1;
-    transition: color 0.3s ease;
-}
-
-body.dark-theme .cert-bg-marquee-item {
-    color: rgba(255, 255, 255, 0.11); /* Subtle 11% opacity in dark mode */
-}
-
-/* Subtle gold diamond separator between certificate titles */
-.cert-bg-separator {
-    display: inline-block;
-    font-size: 1.15rem;
-    color: rgba(212, 175, 55, 0.28);
-    opacity: 0.85;
-}
-
-body.dark-theme .cert-bg-separator {
-    color: rgba(212, 175, 55, 0.35);
-}
-
-/* ==========================================================================
-   FOREGROUND TWO-COLUMN EDITORIAL CONTENT
-   ========================================================================== */
 .editorial-cert-container {
     width: 100%;
     max-width: 1320px;
@@ -2954,7 +2857,7 @@ body.dark-theme .cert-bg-separator {
     padding-bottom: 2rem;
 }
 
-/* --- Left Column: Heading and Description --- */
+/* --- Left Column: Heading and Description (Pristine, 100% clean background) --- */
 .editorial-cert-left {
     flex: 1.05;
     max-width: 560px;
@@ -2983,7 +2886,7 @@ body.dark-theme .cert-bg-separator {
     margin: 0;
 }
 
-/* --- Right Column: Portrait holding certificate (Exact match to About Me size: max-width 620px, max-height 720px) --- */
+/* --- Right Column: Portrait + Background Marquee strictly inside this column --- */
 .editorial-cert-right {
     flex: 1.15;
     width: 100%;
@@ -2992,6 +2895,8 @@ body.dark-theme .cert-bg-separator {
     justify-content: center;
     position: relative;
     z-index: 6;
+    overflow: hidden; /* Restricts marquee ribbons strictly within the portrait area */
+    border-radius: 20px;
     opacity: 0;
     transform: translateY(24px);
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
@@ -3002,12 +2907,107 @@ body.dark-theme .cert-bg-separator {
     transform: translateY(0);
 }
 
+/* ==========================================================================
+   AMBIENT MARQUEE LAYER - STRICTLY BEHIND PORTRAIT ONLY
+   ========================================================================== */
+.cert-portrait-marquee-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 2rem 0;
+    box-sizing: border-box;
+    user-select: none;
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+.cert-bg-marquee-row {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    white-space: nowrap;
+}
+
+.cert-bg-marquee-track {
+    display: flex;
+    gap: 2rem;
+    width: max-content;
+    will-change: transform;
+}
+
+/* Row speeds */
+.cert-bg-marquee-track.track-ltr {
+    animation: certBgMarqueeLTR 75s linear infinite;
+}
+
+.cert-bg-marquee-track.track-rtl {
+    animation: certBgMarqueeRTL 70s linear infinite;
+}
+
+@keyframes certBgMarqueeLTR {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes certBgMarqueeRTL {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Marquee Text Styling (Subtle depth behind portrait) */
+.cert-bg-marquee-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: rgba(15, 23, 42, 0.14); /* 14% opacity in light mode */
+    white-space: nowrap;
+    line-height: 1;
+    transition: color 0.3s ease;
+}
+
+body.dark-theme .cert-bg-marquee-item {
+    color: rgba(255, 255, 255, 0.13); /* 13% opacity in dark mode */
+}
+
+.cert-bg-separator {
+    display: inline-block;
+    font-size: 0.95rem;
+    color: rgba(212, 175, 55, 0.35);
+    opacity: 0.9;
+}
+
+body.dark-theme .cert-bg-separator {
+    color: rgba(212, 175, 55, 0.4);
+}
+
+/* Portrait Wrapper in Foreground */
 .editorial-cert-right .editorial-portrait-wrapper {
     position: relative;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 3;
 }
 
 /* Subtle Gold Backdrop Elements */
@@ -3015,6 +3015,7 @@ body.dark-theme .cert-bg-separator {
     background: radial-gradient(circle, rgba(212, 175, 55, 0.14) 0%, rgba(212, 175, 55, 0.02) 62%, transparent 75%);
     width: 520px;
     height: 520px;
+    z-index: 2;
 }
 
 body.dark-theme .cert-gold-aura {
@@ -3025,6 +3026,7 @@ body.dark-theme .cert-gold-aura {
     border-color: rgba(212, 175, 55, 0.25);
     width: 460px;
     height: 460px;
+    z-index: 2;
 }
 
 body.dark-theme .cert-gold-ring {
@@ -3040,7 +3042,7 @@ body.dark-theme .cert-gold-ring {
     max-height: 720px;
     width: auto;
     max-width: 100%;
-    z-index: 2;
+    z-index: 4;
 }
 
 .cert-portrait-img {
@@ -3127,7 +3129,7 @@ body.dark-theme .cert-board-btn:hover {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN - EDITORIAL CERTIFICATES & BACKGROUND MARQUEE
+   RESPONSIVE DESIGN - EDITORIAL CERTIFICATES & PORTRAIT-CONFINED MARQUEE
    ========================================================================== */
 @media screen and (max-width: 1100px) {
     .editorial-cert-container {
@@ -3175,31 +3177,24 @@ body.dark-theme .cert-board-btn:hover {
         font-size: 1.05rem;
     }
 
-    /* Tablet portrait container - exact match to About Me (height: 380px) */
+    /* Tablet: marquee lines stay strictly behind the portrait, never over text */
     .editorial-cert-right {
         height: auto;
         max-height: 420px;
         width: 100%;
+        max-width: 480px;
         flex: none;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding-top: 1rem;
+        padding-top: 0.5rem;
         position: relative;
         z-index: 6;
         margin: 0 auto;
         overflow: hidden;
     }
 
-    .editorial-cert-right .editorial-portrait-wrapper {
-        height: 100%;
-        max-height: 420px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
+    .editorial-cert-right .editorial-portrait-wrapper,
     .editorial-cert-right .cert-portrait-frame {
         max-height: 420px;
     }
@@ -3211,26 +3206,20 @@ body.dark-theme .cert-board-btn:hover {
         max-width: 400px;
         object-fit: contain;
         object-position: center;
-        filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.12));
     }
 
-    body.dark-theme .editorial-cert-right .editorial-portrait-img {
-        filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
+    .cert-bg-marquee-item {
+        font-size: 1.4rem;
+        gap: 1.25rem;
+    }
+
+    .cert-bg-marquee-row.row-extra {
+        display: none;
     }
 
     .cert-board-btn {
         padding: 0.65rem 1.4rem;
         font-size: 0.82rem;
-    }
-
-    /* Tablet background marquee adjustments */
-    .cert-bg-marquee-item {
-        font-size: 1.9rem;
-        gap: 1.5rem;
-    }
-
-    .cert-bg-marquee-row.row-extra {
-        display: none;
     }
 }
 
@@ -3243,17 +3232,16 @@ body.dark-theme .cert-board-btn:hover {
         gap: 1.5rem;
     }
 
-    /* Small mobile portrait container - exact match to About Me */
+    /* Mobile: marquee lines stay strictly behind the portrait, text above is 100% clean */
     .editorial-cert-right {
         height: auto;
         max-height: 350px;
-        padding-top: 0.5rem;
+        max-width: 360px;
+        padding-top: 0.25rem;
+        overflow: hidden;
     }
 
-    .editorial-cert-right .editorial-portrait-wrapper {
-        max-height: 350px;
-    }
-
+    .editorial-cert-right .editorial-portrait-wrapper,
     .editorial-cert-right .cert-portrait-frame {
         max-height: 350px;
     }
@@ -3265,16 +3253,6 @@ body.dark-theme .cert-board-btn:hover {
         max-width: 320px;
         object-fit: contain;
         object-position: center;
-    }
-
-    .editorial-cert-aura {
-        width: 230px;
-        height: 230px;
-    }
-
-    .editorial-cert-ring {
-        width: 210px;
-        height: 210px;
     }
 
     .editorial-cert-left .editorial-heading {
@@ -3291,10 +3269,10 @@ body.dark-theme .cert-board-btn:hover {
         gap: 0.3rem;
     }
 
-    /* Mobile background marquee adjustments: 2 rows with smaller font size */
+    /* Mobile background marquee adjustments: 2 rows behind pic only */
     .cert-bg-marquee-item {
-        font-size: 1.4rem;
-        gap: 1.2rem;
+        font-size: 1.15rem;
+        gap: 1rem;
     }
 
     .cert-bg-marquee-row.row-3,
@@ -3302,9 +3280,9 @@ body.dark-theme .cert-board-btn:hover {
         display: none;
     }
 
-    .cert-bg-marquee-layer {
+    .cert-portrait-marquee-bg {
         justify-content: space-around;
-        padding: 1.5rem 0;
+        padding: 0.75rem 0;
     }
 }
 
