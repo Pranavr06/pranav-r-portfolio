@@ -12,35 +12,26 @@ import {
   BrainCircuit,
 } from "lucide-react";
 
-interface OrbitCategory {
-  name: string;
-  icon: typeof GraduationCap;
-  angle: number; // in degrees around orbit
-}
-
-const CATEGORIES: OrbitCategory[] = [
-  { name: "Courses", icon: GraduationCap, angle: 0 },
-  { name: "Hackathons", icon: Trophy, angle: 60 },
-  { name: "Internships", icon: Briefcase, angle: 120 },
-  { name: "Webinars", icon: Video, angle: 180 },
-  { name: "Workshops", icon: Laptop, angle: 240 },
-  { name: "Quizzes", icon: BrainCircuit, angle: 300 },
+const CATEGORIES = [
+  { name: "Courses", icon: GraduationCap },
+  { name: "Hackathons", icon: Trophy },
+  { name: "Internships", icon: Briefcase },
+  { name: "Webinars", icon: Video },
+  { name: "Workshops", icon: Laptop },
+  { name: "Quizzes", icon: BrainCircuit },
 ];
 
 export default function Certificates() {
+  const total = CATEGORIES.length;
+  const duration = 21; // Duration in seconds for full left-to-right arc flow
+
   return (
     <FadeInSection id="certificate" className="circular-certificates-section">
-      {/* Eyebrow and Section Heading */}
+      {/* Section Heading: My Certificates */}
       <div className="cert-header-wrap">
-        <span className="cert-eyebrow">/ MY ACHIEVEMENTS</span>
-
         <h2 className="cert-heading">
-          A Journey of Learning &amp; <span className="cert-heading-accent">Recognition</span>
+          <span className="cert-heading-accent">My Certificates</span>
         </h2>
-
-        <p className="cert-subtext">
-          Every course, competition and achievement represents another step in my journey of continuous learning.
-        </p>
       </div>
 
       {/* Orbit Universe Stage */}
@@ -48,24 +39,24 @@ export default function Certificates() {
         {/* Soft Spotlight Glow Behind Portrait */}
         <div className="cert-spotlight" aria-hidden="true" />
 
-        {/* Curved Orbital Path / Dotted Circular Guides */}
-        <svg className="cert-orbit-guide-svg" viewBox="0 0 600 600" aria-hidden="true">
-          <circle cx="300" cy="300" r="280" className="cert-guide-circle-outer" />
-          <circle cx="300" cy="300" r="230" className="cert-guide-circle-main" />
-          <path d="M 70 300 A 230 230 0 0 1 530 300" className="cert-guide-arc-highlight" />
-          <circle cx="300" cy="300" r="175" className="cert-guide-circle-inner" />
+        {/* Semicircular Guide Arcs */}
+        <svg className="cert-orbit-guide-svg" viewBox="0 0 800 500" aria-hidden="true">
+          <path d="M 50 370 A 350 350 0 0 1 750 370" className="cert-guide-arc-outer" />
+          <path d="M 80 370 A 320 320 0 0 1 720 370" className="cert-guide-arc-main" />
+          <path d="M 120 370 A 280 280 0 0 1 680 370" className="cert-guide-arc-inner" />
         </svg>
 
-        {/* Rotating Planetary Category Orbit */}
-        <div className="cert-orbit-ring" role="region" aria-label="Achievement Categories Orbit">
-          {CATEGORIES.map((cat) => {
+        {/* Semicircular Planetary Category Orbit (Left to Right, looping back to Left) */}
+        <div className="cert-orbit-track" role="region" aria-label="Achievement Categories Semicircular Orbit">
+          {CATEGORIES.map((cat, idx) => {
             const Icon = cat.icon;
+            const delay = -1 * (duration / total) * idx;
             return (
               <div
                 key={cat.name}
-                className="cert-orbit-slot"
+                className="cert-orbit-item"
                 style={{
-                  transform: `rotate(${cat.angle}deg) translateY(calc(-1 * var(--orbit-radius))) rotate(-${cat.angle}deg)`,
+                  animationDelay: `${delay}s`,
                 }}
               >
                 <Link
@@ -81,7 +72,7 @@ export default function Certificates() {
           })}
         </div>
 
-        {/* Central Portrait Holding Blank Certificate Board */}
+        {/* Central Portrait Holding Blank Certificate Board (Enlarged) */}
         <div className="cert-portrait-wrapper">
           <img
             src="/assets/pranavr-certificate.webp"

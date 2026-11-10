@@ -2820,7 +2820,7 @@ body.dark-theme .icon {
 
   
 /* ==========================================================================
-   HOMEPAGE CERTIFICATES SECTION - CIRCULAR ORBIT REDESIGN
+   HOMEPAGE CERTIFICATES SECTION - SEMICIRCULAR ORBIT REDESIGN
    ========================================================================== */
 #certificate.circular-certificates-section {
     position: relative !important;
@@ -2832,23 +2832,23 @@ body.dark-theme .icon {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 6rem 1.5rem 5rem;
+    padding: 5.5rem 1.5rem 4.5rem;
     background-color: #ffffff;
     box-sizing: border-box;
     overflow: hidden;
     transition: background-color 0.3s ease;
-    --orbit-radius: 275px;
+    --orbit-radius: 320px;
 }
 
 body.dark-theme #certificate.circular-certificates-section {
     background-color: #000000;
 }
 
-/* --- Section Heading --- */
+/* --- Section Heading: My Certificates --- */
 .cert-header-wrap {
     text-align: center;
     max-width: 780px;
-    margin: 0 auto 1.5rem auto;
+    margin: 0 auto 1rem auto;
     position: relative;
     z-index: 2;
     opacity: 0;
@@ -2861,31 +2861,13 @@ body.dark-theme #certificate.circular-certificates-section {
     transform: translateY(0);
 }
 
-/* Eyebrow Label: / MY ACHIEVEMENTS */
-.cert-eyebrow {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #64748b;
-    margin-bottom: 0.75rem;
-    display: inline-block;
-    transition: color 0.3s ease;
-}
-
-body.dark-theme .cert-eyebrow {
-    color: #94a3b8;
-}
-
-/* Main Heading: A Journey of Learning & Recognition */
 .cert-heading {
-    font-size: clamp(2.2rem, 3.8vw, 3.4rem);
+    font-size: clamp(2.8rem, 4.5vw, 3.8rem);
     font-weight: 900;
-    line-height: 1.1;
-    letter-spacing: -0.035em;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
     color: #000000;
-    margin: 0 0 1rem 0;
+    margin: 0;
     transition: color 0.3s ease;
 }
 
@@ -2905,7 +2887,7 @@ body.dark-theme .cert-heading {
     content: '';
     position: absolute;
     left: 0;
-    bottom: 3px;
+    bottom: 4px;
     width: 100%;
     height: 2px;
     background: currentColor;
@@ -2917,27 +2899,13 @@ body.dark-theme .cert-heading-accent::after {
     opacity: 0.45;
 }
 
-/* Supporting Text */
-.cert-subtext {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: #475569;
-    margin: 0 auto;
-    max-width: 620px;
-    transition: color 0.3s ease;
-}
-
-body.dark-theme .cert-subtext {
-    color: #94a3b8;
-}
-
 /* --- Orbit Universe Stage --- */
 .cert-orbit-stage {
     position: relative;
     width: 100%;
-    max-width: 760px;
-    height: 560px;
-    margin: 1.5rem auto 0 auto;
+    max-width: 880px;
+    height: 580px;
+    margin: 1rem auto 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2956,34 +2924,34 @@ body.dark-theme .cert-subtext {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 520px;
-    height: 520px;
+    width: 620px;
+    height: 620px;
     transform: translate(-50%, -50%);
     border-radius: 50%;
-    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.08) 0%, rgba(0, 0, 0, 0.035) 40%, rgba(0, 0, 0, 0.01) 65%, transparent 75%);
+    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.09) 0%, rgba(0, 0, 0, 0.035) 45%, rgba(0, 0, 0, 0.01) 65%, transparent 75%);
     pointer-events: none;
     z-index: 1;
     transition: background 0.3s ease;
 }
 
 body.dark-theme .cert-spotlight {
-    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.14) 0%, rgba(255, 255, 255, 0.05) 40%, rgba(255, 255, 255, 0.012) 65%, transparent 75%);
+    background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.16) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0.01) 65%, transparent 75%);
 }
 
-/* SVG Orbital Paths & Dotted Circular Guides */
+/* SVG Orbital Paths & Semicircular Guide Arcs */
 .cert-orbit-guide-svg {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 600px;
-    height: 600px;
+    width: 720px;
+    height: 480px;
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 2;
     overflow: visible;
 }
 
-.cert-guide-circle-outer {
+.cert-guide-arc-outer {
     fill: none;
     stroke: rgba(0, 0, 0, 0.05);
     stroke-width: 1;
@@ -2991,69 +2959,60 @@ body.dark-theme .cert-spotlight {
     transition: stroke 0.3s ease;
 }
 
-body.dark-theme .cert-guide-circle-outer {
+body.dark-theme .cert-guide-arc-outer {
     stroke: rgba(255, 255, 255, 0.06);
 }
 
-.cert-guide-circle-main {
-    fill: none;
-    stroke: rgba(0, 0, 0, 0.1);
-    stroke-width: 1.25;
-    stroke-dasharray: 6 6;
-    transition: stroke 0.3s ease;
-}
-
-body.dark-theme .cert-guide-circle-main {
-    stroke: rgba(255, 255, 255, 0.13);
-}
-
-.cert-guide-arc-highlight {
+.cert-guide-arc-main {
     fill: none;
     stroke: rgba(212, 175, 55, 0.45);
     stroke-width: 1.5;
+    stroke-dasharray: 6 6;
     stroke-linecap: round;
     transition: stroke 0.3s ease;
 }
 
-body.dark-theme .cert-guide-arc-highlight {
+body.dark-theme .cert-guide-arc-main {
     stroke: rgba(212, 175, 55, 0.6);
 }
 
-.cert-guide-circle-inner {
+.cert-guide-arc-inner {
     fill: none;
     stroke: rgba(0, 0, 0, 0.035);
     stroke-width: 1;
     transition: stroke 0.3s ease;
 }
 
-body.dark-theme .cert-guide-circle-inner {
+body.dark-theme .cert-guide-arc-inner {
     stroke: rgba(255, 255, 255, 0.04);
 }
 
-/* Rotating Planetary Category Orbit System */
-.cert-orbit-ring {
+/* Semicircular Orbit Track */
+.cert-orbit-track {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 0;
     height: 0;
     z-index: 5;
-    animation: certOrbitSpin 42s linear infinite;
 }
 
-.cert-orbit-stage:hover .cert-orbit-ring {
-    animation-play-state: paused;
-}
-
-.cert-orbit-slot {
+/* Individual Category Item Traveling Along Semicircle (Left -> Right -> Loops) */
+.cert-orbit-item {
     position: absolute;
     top: 0;
     left: 0;
     width: 0;
     height: 0;
+    animation: semiOrbit 21s linear infinite;
+    will-change: transform, opacity;
 }
 
-/* Category Badge (Counter-Spins to Stay strictly Horizontal & Upright) */
+.cert-orbit-stage:hover .cert-orbit-item {
+    animation-play-state: paused;
+}
+
+/* Category Badge (Upright, Pill Styled with Subtle Gold Border) */
 .cert-orbit-badge {
     position: absolute;
     top: 0;
@@ -3066,7 +3025,7 @@ body.dark-theme .cert-guide-circle-inner {
     border-radius: 9999px;
     background: #ffffff;
     color: #0f172a;
-    border: 1px solid rgba(212, 175, 55, 0.4);
+    border: 1px solid rgba(212, 175, 55, 0.45);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06), 0 0 10px rgba(212, 175, 55, 0.08);
     font-size: 0.88rem;
     font-weight: 600;
@@ -3074,17 +3033,12 @@ body.dark-theme .cert-guide-circle-inner {
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
-    animation: certCounterSpin 42s linear infinite;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.cert-orbit-stage:hover .cert-orbit-badge {
-    animation-play-state: paused;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .cert-orbit-badge:hover {
     border-color: rgba(212, 175, 55, 0.95);
-    box-shadow: 0 6px 22px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 6px 22px rgba(212, 175, 55, 0.35);
     color: #000000;
     transform: translate(-50%, -50%) scale(1.08);
 }
@@ -3102,7 +3056,7 @@ body.dark-theme .cert-guide-circle-inner {
 body.dark-theme .cert-orbit-badge {
     background: #0f172a;
     color: #f8fafc;
-    border: 1px solid rgba(212, 175, 55, 0.45);
+    border: 1px solid rgba(212, 175, 55, 0.5);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 14px rgba(212, 175, 55, 0.12);
 }
 
@@ -3112,16 +3066,17 @@ body.dark-theme .cert-orbit-badge:hover {
     color: #ffffff;
 }
 
-/* --- Central Portrait Holding Certificate Board --- */
+/* --- Central Portrait Holding Certificate Board (Enlarged) --- */
 .cert-portrait-wrapper {
     position: relative;
     width: 100%;
-    max-width: 450px;
+    max-width: 660px;
     aspect-ratio: 1536 / 1024;
     z-index: 6;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0 auto;
 }
 
 .cert-portrait-img {
@@ -3138,7 +3093,7 @@ body.dark-theme .cert-portrait-img {
 }
 
 .cert-portrait-wrapper:hover .cert-portrait-img {
-    transform: scale(1.015);
+    transform: scale(1.012);
 }
 
 /* --- Prominent CTA Button directly over the blank certificate board --- */
@@ -3151,17 +3106,17 @@ body.dark-theme .cert-portrait-img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.45rem;
+    gap: 0.5rem;
     background: #000000;
     color: #ffffff;
-    padding: 0.75rem 1.6rem;
+    padding: 0.85rem 1.95rem;
     border-radius: 9999px;
-    border: 1.5px solid rgba(212, 175, 55, 0.75);
-    font-size: 0.92rem;
+    border: 1.5px solid rgba(212, 175, 55, 0.8);
+    font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: -0.01em;
     text-decoration: none;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), 0 0 12px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35), 0 0 14px rgba(212, 175, 55, 0.22);
     cursor: pointer;
     white-space: nowrap;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -3169,9 +3124,9 @@ body.dark-theme .cert-portrait-img {
 
 .cert-board-btn:hover {
     background: #111827;
-    border-color: rgba(212, 175, 55, 1);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(212, 175, 55, 0.45);
-    transform: translate(-50%, -50%) scale(1.06);
+    border-color: #ffd700;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45), 0 0 22px rgba(212, 175, 55, 0.5);
+    transform: translate(-50%, -50%) scale(1.05);
     color: #ffffff;
 }
 
@@ -3197,7 +3152,7 @@ body.dark-theme .cert-board-btn:hover {
     background: #18181b;
     border-color: #ffd700;
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.9), 0 0 25px rgba(212, 175, 55, 0.6);
-    transform: translate(-50%, -50%) scale(1.06);
+    transform: translate(-50%, -50%) scale(1.05);
 }
 
 /* --- Scroll Navigation Arrow to Projects --- */
@@ -3210,50 +3165,67 @@ body.dark-theme .cert-board-btn:hover {
     width: 100%;
 }
 
-/* --- Orbit Animation Keyframes --- */
-@keyframes certOrbitSpin {
-    from {
-        transform: rotate(0deg);
+/* --- Semicircular Orbit Animation (Left -> Right -> Respawn Left) --- */
+@keyframes semiOrbit {
+    0% {
+        opacity: 0;
+        transform: rotate(-90deg) translateY(calc(-1 * var(--orbit-radius))) rotate(90deg) scale(0.85);
+        pointer-events: none;
     }
-    to {
-        transform: rotate(360deg);
+    5% {
+        opacity: 1;
+        transform: rotate(-81deg) translateY(calc(-1 * var(--orbit-radius))) rotate(81deg) scale(1);
+        pointer-events: auto;
     }
-}
-
-@keyframes certCounterSpin {
-    from {
-        transform: translate(-50%, -50%) rotate(0deg);
+    25% {
+        opacity: 1;
+        transform: rotate(-45deg) translateY(calc(-1 * var(--orbit-radius))) rotate(45deg) scale(1);
     }
-    to {
-        transform: translate(-50%, -50%) rotate(-360deg);
+    50% {
+        opacity: 1;
+        transform: rotate(0deg) translateY(calc(-1 * var(--orbit-radius))) rotate(0deg) scale(1);
+    }
+    75% {
+        opacity: 1;
+        transform: rotate(45deg) translateY(calc(-1 * var(--orbit-radius))) rotate(-45deg) scale(1);
+    }
+    95% {
+        opacity: 1;
+        transform: rotate(81deg) translateY(calc(-1 * var(--orbit-radius))) rotate(-81deg) scale(1);
+        pointer-events: auto;
+    }
+    100% {
+        opacity: 0;
+        transform: rotate(90deg) translateY(calc(-1 * var(--orbit-radius))) rotate(-90deg) scale(0.85);
+        pointer-events: none;
     }
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN FOR CIRCULAR ORBIT CERTIFICATES SECTION
+   RESPONSIVE DESIGN FOR SEMICIRCULAR ORBIT CERTIFICATES SECTION
    ========================================================================== */
 @media screen and (max-width: 900px) {
     #certificate.circular-certificates-section {
         padding: 5rem 1.5rem 4rem;
-        --orbit-radius: 220px;
+        --orbit-radius: 250px;
     }
 
     .cert-orbit-stage {
-        height: 480px;
+        height: 500px;
     }
 
     .cert-spotlight {
-        width: 440px;
-        height: 440px;
-    }
-
-    .cert-orbit-guide-svg {
         width: 500px;
         height: 500px;
     }
 
+    .cert-orbit-guide-svg {
+        width: 560px;
+        height: 400px;
+    }
+
     .cert-portrait-wrapper {
-        max-width: 360px;
+        max-width: 480px;
     }
 
     .cert-orbit-badge {
@@ -3263,37 +3235,37 @@ body.dark-theme .cert-board-btn:hover {
     }
 
     .cert-board-btn {
-        padding: 0.62rem 1.35rem;
-        font-size: 0.85rem;
+        padding: 0.7rem 1.55rem;
+        font-size: 0.88rem;
     }
 
     .cert-heading {
-        font-size: 2.6rem;
+        font-size: 2.8rem;
     }
 }
 
 @media screen and (max-width: 600px) {
     #certificate.circular-certificates-section {
         padding: 4rem 1rem 3.5rem;
-        --orbit-radius: 155px;
+        --orbit-radius: 180px;
     }
 
     .cert-orbit-stage {
-        height: 380px;
+        height: 400px;
     }
 
     .cert-spotlight {
-        width: 320px;
-        height: 320px;
+        width: 340px;
+        height: 340px;
     }
 
     .cert-orbit-guide-svg {
-        width: 380px;
-        height: 380px;
+        width: 400px;
+        height: 280px;
     }
 
     .cert-portrait-wrapper {
-        max-width: 270px;
+        max-width: 320px;
     }
 
     .cert-orbit-badge {
@@ -3308,17 +3280,13 @@ body.dark-theme .cert-board-btn:hover {
     }
 
     .cert-board-btn {
-        padding: 0.45rem 0.95rem;
-        font-size: 0.75rem;
-        gap: 0.3rem;
+        padding: 0.48rem 1.05rem;
+        font-size: 0.76rem;
+        gap: 0.35rem;
     }
 
     .cert-heading {
-        font-size: 2.1rem;
-    }
-
-    .cert-subtext {
-        font-size: 0.95rem;
+        font-size: 2.2rem;
     }
 
     .cert-scroll-arrow {
@@ -3328,8 +3296,7 @@ body.dark-theme .cert-board-btn:hover {
 
 /* Reduced-motion accessibility */
 @media (prefers-reduced-motion: reduce) {
-    .cert-orbit-ring,
-    .cert-orbit-badge {
+    .cert-orbit-item {
         animation: none !important;
     }
 }
