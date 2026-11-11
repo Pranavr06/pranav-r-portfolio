@@ -1665,9 +1665,14 @@ body.dark-theme .editorial-cta-btn:hover {
         transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .editorial-scroll-arrow {
-        right: 2rem !important;
-        bottom: 1.5rem !important;
+    /* Hide all scroll navigation arrows on mobile and small screens (<= 900px) */
+    .editorial-scroll-arrow,
+    .scroll-down-link,
+    .scroll-up-link,
+    #profile .scroll-down-link,
+    #about .scroll-down-link,
+    footer .scroll-up-link {
+        display: none !important;
     }
 }
 
@@ -6696,38 +6701,14 @@ body.dark-theme .custom-select-option.selected {
 }
 
 @media (max-width: 600px) {
-    .scroll-down-link, .scroll-up-link {
-        display: none !important;
-    }
-    /* Keep homepage section navigation arrows visible on the right side on mobile */
-    .editorial-scroll-arrow {
-        display: flex !important;
-        position: absolute !important;
-        right: 1.5rem !important;
-        bottom: 1.5rem !important;
-        margin: 0 !important;
-        width: 30px !important;
-        height: 30px !important;
-        z-index: 10 !important;
-    }
-    .editorial-scroll-arrow .scroll-down-link,
-    .editorial-scroll-arrow .scroll-up-link {
-        display: inline-flex !important;
-    }
-    #profile .scroll-down-link {
-        display: inline-block !important;
-        right: 1.5rem !important;
-        bottom: 1.5rem !important;
-    }
-    #about .scroll-down-link {
-        display: inline-block !important;
-        right: 1.5rem !important;
-        bottom: 1.5rem !important;
-    }
+    /* Strictly hide all scroll navigation arrows on mobile devices */
+    .editorial-scroll-arrow,
+    .scroll-down-link,
+    .scroll-up-link,
+    #profile .scroll-down-link,
+    #about .scroll-down-link,
     footer .scroll-up-link {
-        display: inline-block !important;
-        right: 1.5rem !important;
-        bottom: 1.5rem !important;
+        display: none !important;
     }
     .search-input-container, .custom-search-input {
         width: 100%;
