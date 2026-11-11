@@ -83,10 +83,10 @@ export default function Contact({ hideArrow = false }: { hideArrow?: boolean }) 
         </div>
       </div>
 
-      {/* Smooth Scroll Navigation to Footer */}
+      {/* Smooth Scroll Navigation back up to Hero section */}
       {!hideArrow && (
         <div className="editorial-scroll-arrow">
-          <ScrollArrow targetId="footer" altText="Scroll down to footer" />
+          <ScrollArrow direction="up" targetId="profile" altText="Scroll up to hero section" />
         </div>
       )}
     </FadeInSection>

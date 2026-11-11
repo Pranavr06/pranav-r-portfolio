@@ -1540,9 +1540,13 @@ body.dark-theme .editorial-cta-btn:hover {
     height: 30px !important;
 }
 
-.editorial-scroll-arrow .scroll-down-link:hover .arrow,
-.editorial-scroll-arrow .scroll-up-link:hover .arrow {
+.editorial-scroll-arrow .scroll-down-link:hover .arrow {
     transform: translateY(4px) scale(1.1) !important;
+    transition: transform 0.2s ease-in-out;
+}
+
+.editorial-scroll-arrow .scroll-up-link:hover .arrow {
+    transform: translateY(-4px) scale(1.1) !important;
     transition: transform 0.2s ease-in-out;
 }
 

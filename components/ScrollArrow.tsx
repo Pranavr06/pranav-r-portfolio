@@ -16,6 +16,8 @@ export default function ScrollArrow({ direction = 'down', targetId, altText, inv
       const element = document.getElementById(targetId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: direction === 'up' ? 0 : document.body.scrollHeight, behavior: 'smooth' });
       }
     } else {
       window.scrollTo({ top: direction === 'up' ? 0 : document.body.scrollHeight, behavior: 'smooth' });
